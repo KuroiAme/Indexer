@@ -4,15 +4,11 @@ using MonoTouch.UIKit;
 using System.Collections.Generic;
 using no.dctapps.Garageindex.model;
 using no.dctapps.Garageindex.dao;
-using no.dctapps.Garageindex.events;
-using Xamarin.Themes;
-
-using No.DCTapps.GarageIndex;
-using System.Text;
+using GarageIndex;
 using no.dctapps.Garageindex.tables;
+using no.dctapps.Garageindex.events;
+using System.Text;
 using No.Dctapps.GarageIndex;
-using MonoTouch.MessageUI;
-using no.dctapps.Garageindex.businesslogic;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -245,9 +241,7 @@ namespace no.dctapps.Garageindex.screens
 		void Initialize ()
 		{
 			this.NavigationItem.SetRightBarButtonItem (new UIBarButtonItem (UIBarButtonSystemItem.Add), false);
-			this.NavigationItem.RightBarButtonItem.Clicked += (sender, e) =>  {
-				ShowItemDetails (new Item ());
-			};
+			this.NavigationItem.RightBarButtonItem.Clicked += (sender, e) => ShowItemDetails (new Item ());
 		}
 		
 		public void ShowDetails (LagerObject myBox)
@@ -278,20 +272,9 @@ namespace no.dctapps.Garageindex.screens
 		{
 			base.ViewDidLoad ();
 			
-			ShowDetails (this.boks);
-
-//			CreateEmailBarButton ();	
-
-//			if(!InSimulator()){
-//				BlackLeatherTheme.Apply (this.View);
-//				BlackLeatherTheme.Apply (this.fieldContainerName);
-//				BlackLeatherTheme.Apply (this.fieldDescription);
-//				BlackLeatherTheme.Apply (this.inStorage);
-//				BlackLeatherTheme.Apply (this.save);
-//			}
+			ShowDetails (this.boks);s
 			
-			
-			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Container details", "Container details");
+			myTitle = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Container details", "Container details");
 			this.fieldContainerName.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Box Identifier", "Box Identifier");
 			this.fieldDescription.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Description", "Description");
 //			var title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("save", "save");
@@ -300,13 +283,9 @@ namespace no.dctapps.Garageindex.screens
 //			this.save.TouchUpInside += HandleTouchUpInside;
 
 			if(!UserInterfaceIdiomIsPhone){
-				this.fieldContainerName.Ended += (object sender, EventArgs e) => {
-				SaveIt();
-				};
+				this.fieldContainerName.Ended += (object sender, EventArgs e) => SaveIt ();
 
-				this.fieldDescription.Ended += (object sender, EventArgs e) => {
-					SaveIt();
-				};
+				this.fieldDescription.Ended += (object sender, EventArgs e) => SaveIt ();
 			}
 			
 			Initialize ();

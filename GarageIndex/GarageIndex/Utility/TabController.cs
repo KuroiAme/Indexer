@@ -2,6 +2,8 @@ using System;
 using MonoTouch.UIKit;
 using No.DCTapps.GarageIndex;
 using no.dctapps.garageindex;
+using no.dctapps.Garageindex;
+using no.dctapps.Garageindex.screens;
 
 namespace GarageIndex
 {
@@ -18,7 +20,7 @@ namespace GarageIndex
 
 
 		public BigItemMasterView bigMaster;
-		public ContainerMasterView containerMaster;
+		public no.dctapps.Garageindex.ContainerMasterView containerMaster;
 		public ItemMasterView ItemMaster;
 		public LagerMasterView LagerMaster;
 
