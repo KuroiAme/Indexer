@@ -11,7 +11,6 @@ namespace no.dctapps.Garageindex
 {
 	public class TabController : UITabBarController
 		{
-			public LagerDAO dao;
 			public UtilityViewController homescreen = null;
             public UITableViewController boxesscreen = null;
 			public UITableViewController bigitemscreen = null;
@@ -62,7 +61,7 @@ namespace no.dctapps.Garageindex
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			dao = new LagerDAO();
+//			dao = new LagerDAO();
 
 //				InitSearchScreen();
 				InitItemScreen();

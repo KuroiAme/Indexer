@@ -27,8 +27,8 @@ namespace no.dctapps.Garageindex
 //		TabController tabs;
 //		HomeScreen home;
 
-		const string AdmobID_iphone = "a151431a930a1e9";
-		const string AdmobID_ipad = "a151431e078e783";
+//		const string AdmobID_iphone = "a151431a930a1e9";
+//		const string AdmobID_ipad = "a151431e078e783";
 		
 //		GADBannerView adView;
 //		bool viewOnScreen = false;

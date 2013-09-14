@@ -16,12 +16,10 @@ namespace no.dctapps.Garageindex.tables
 //		UtilityViewController emailscreen = null;
 		UtilityViewController storageCatalogue = null;
         StatisticsScreen statscreen = null;
-//
-//		BigItemMasterView bigMaster;
-//		ContainerMasterView containerMaster;
+
 		public LagerMasterView LagerMaster;
 //
-//		UINavigationController homeNav,bigNav,boxNav;
+
 		UINavigationController lagerNav;
         UINavigationController StatNav;
 
