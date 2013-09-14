@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <ThreeChoice.ThreeChoiceButton
+        android:id="@+id/threeChoiceButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20px"
+        android:layout_marginLeft="20px" />
+    <ThreeChoice.ThreeChoiceButton
+        android:id="@+id/threeChoiceButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20px"
+        android:layout_marginRight="20px"
+        android:layout_gravity="right"
+        state="Right"
+        expandDirection="Left" />
+</LinearLayout>

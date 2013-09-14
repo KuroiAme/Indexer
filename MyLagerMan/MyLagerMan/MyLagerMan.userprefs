@@ -1,0 +1,50 @@
+﻿<Properties GitUserInfo="UsingGIT">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhoneRetina.7.0" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Screens/Statistics/StatisticsScreen.cs">
+    <Files>
+      <File FileName="Screens/Statistics/StatisticsScreen.cs" Line="37" Column="27" />
+      <File FileName="TabController.cs" Line="3" Column="1" />
+      <File FileName="../LagerMan.DAO/LagerDAO.cs" Line="1" Column="1" />
+      <File FileName="TabControllerPro.cs" Line="143" Column="56" />
+      <File FileName="AppDelegate.cs" Line="128" Column="16" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="GarageIndex" expanded="True">
+            <Node name="Resources" expanded="True" />
+            <Node name="Screens" expanded="True">
+              <Node name="BigItems" expanded="True" />
+              <Node name="Statistics" expanded="True">
+                <Node name="StatisticsScreen.cs" selected="True" />
+              </Node>
+              <Node name="storage" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="LagerMan.DAO" expanded="True" />
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>Instance.Reason</Value>
+        </State>
+      </Pad>
+      <Pad Id="ConnectionManagerPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="Screens/Item/ItemDetailScreen.cs" line="105" offsetX="365" offsetY="1560" expression="item" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
+  <AuthorInfo Name="Daniel Christopher Treidene" Email="daniel.c.treidene@gmail.com" Copyright="" Company="DCT apps" Trademark="" />
+  <MonoDevelop.Ide.ItemProperties.GarageIndex>
+    <IPhoneTestFlightSettings_27CDebug ApiToken="33947f4034a030964f088afcf030d704_MTA2MDI3MzIwMTMtMDUtMjAgMTM6NDU6MDYuODk1OTMz" TeamToken="8c1a33f71d4f6754fef35378db6c6895_MjI2MDY3MjAxMy0wNS0yMCAxMzo0NjoyOS41MTM2MDc" ReleaseNotes="Bugfixes to table, smaller executable and QR codes.&#xA;" NotifyTeamMembers="False" ReplaceBinaries="True" UploadDSYMs="False" DistributionLists="BETA Testers" />
+  </MonoDevelop.Ide.ItemProperties.GarageIndex>
+</Properties>
