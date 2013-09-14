@@ -3,10 +3,10 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using no.dctapps.Garageindex.dao;
-using Xamarin.Themes;
 using System.Collections.Generic;
 using no.dctapps.Garageindex.model;
 using no.dctapps.Garageindex.events;
+using GarageIndex;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -70,12 +70,8 @@ namespace no.dctapps.Garageindex.screens
 
 			Add (table);
 
-			BlackLeatherTheme.Apply (table, "");
-
 			this.lagertableSource = new TableSourceLagerSimple(tableItems);
-			this.lagertableSource.LagerClicked += (object sender, LagerClickedEventArgs e) => {
-				raiseDismissal(e.Lager);
-			};
+			this.lagertableSource.LagerClicked += (object sender, LagerClickedEventArgs e) => raiseDismissal (e.Lager);
 
 			table.Source = this.lagertableSource;
 		}

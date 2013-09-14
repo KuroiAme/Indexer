@@ -50,7 +50,7 @@ namespace GarageIndex
 			initTabArray ();
 		}
 
-		public override void initTabArray ()
+		public void initTabArray ()
 		{
 			UIViewController[] viewControllers = null;
 			if (UserInterfaceIdiomIsPhone) {
@@ -163,7 +163,7 @@ namespace GarageIndex
 				boxNav.PushViewController(boxesscreen, false);
 			}else{
 				//				//init splitviewController
-				containerMaster = new ContainerMasterView();
+				containerMaster = new no.dctapps.Garageindex.ContainerMasterView();
 				containerMaster.TabBarItem = new UITabBarItem();
 				containerMaster.TabBarItem.Title = box;
 				containerMaster.TabBarItem.Image = UIImage.FromBundle("Box.png");

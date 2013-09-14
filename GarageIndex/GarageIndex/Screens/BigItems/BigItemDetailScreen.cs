@@ -9,6 +9,7 @@ using no.dctapps.Garageindex.screens;
 using no.dctapps.Garageindex.events;
 using MonoTouch.MessageUI;
 using no.dctapps.Garageindex.businesslogic;
+using GarageIndex;
 
 
 namespace No.Dctapps.Garageindex.Ios.Screens
@@ -312,13 +313,9 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			base.ViewWillAppear (animated);
 			ShowDetails (this.myObject);
 
-			this.fieldBigName.Ended += (object sender, EventArgs e) => {
-				this.SaveIt();
-			};
+			this.fieldBigName.Ended += (object sender, EventArgs e) => this.SaveIt ();
 
-			this.fieldBigDescription.Ended += (object sender, EventArgs e) => {
-				this.SaveIt();
-			};
+			this.fieldBigDescription.Ended += (object sender, EventArgs e) => this.SaveIt ();
 
 			GotPicture += (object sender, GotPictureEventArgs e) => {
 				UIImageView iv = new UIImageView(ImageRectangle);
@@ -411,47 +408,87 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 		{
 			
 			var picky = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("pick image", "pick image");
-		
 			imageView = new UIImageView (ImageRectangle);
 //			Add (imageView);
-			choosePhotoButton = UIButton.FromType (UIButtonType.RoundedRect);
-			
-			choosePhotoButton.Frame = PickerRect;
-			choosePhotoButton.SetTitle (picky, UIControlState.Normal);
+//			this.
+//				btnBigPickImage = UIButton.FromType (UIButtonType.RoundedRect);
+//			choosePhotoButton.Frame = PickerRect;
+			btnBigPickImage.SetTitle (picky, UIControlState.Normal);
+			btnBigPickImage.TouchUpInside += (s, e) => SelectSource ();
+//			View.Add (choosePhotoButton);
+		}
 
-//            Xamarin.Themes.BlackLeatherTheme.Apply (choosePhotoButton);
-			choosePhotoButton.TouchUpInside += (s, e) =>  {
-				// create a new picker controller
-				imagePicker = new UIImagePickerController ();
-				// set our source to the photo library
-				imagePicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
-				// set what media types
-				imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes (UIImagePickerControllerSourceType.PhotoLibrary);
-				imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
-				imagePicker.Canceled += Handle_Canceled;
-				// show the picker
-				if(UserInterfaceIdiomIsPhone){
-					NavigationController.PresentViewController (imagePicker, true, delegate {});
+		public void SelectSource(){
+			var source = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("pick image from where?", "pick image from where?");
+			var myCancel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Cancel", "Cancel");
+			var myCamera = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Camera", "Camera");
+			var myLibrary = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Photo Library", "Photo Library");
+			actionSheet = new UIActionSheet(source);
+			actionSheet.AddButton(myCancel);
+			actionSheet.AddButton(myCamera);
+			actionSheet.AddButton(myLibrary);
+			actionSheet.CancelButtonIndex = 0;
+
+			actionSheet.Clicked += delegate(object sender, UIButtonEventArgs e2) {
+				if(e2.ButtonIndex == 0){
+					//DO nothing
+				}else if(e2.ButtonIndex == 1){
+					pickFromCamera();
 				}else{
-					Console.WriteLine("Popover");
-					Pc = new UIPopoverController(imagePicker);
-					Pc.PresentFromRect(PickerRect,(UIView) this.View, UIPopoverArrowDirection.Up, true);
+					pickFromLibrary();
 				}
-				
 			};
-			View.Add (choosePhotoButton);
+			actionSheet.ShowInView (View);
+		}
+
+
+		public void pickFromCamera(){
+			// create a new picker controller
+
+			// set our source to the photo library
+			imagePicker = new UIImagePickerController ();
+			imagePicker.SourceType = UIImagePickerControllerSourceType.Camera;
+			// set what media types
+			imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes (UIImagePickerControllerSourceType.PhotoLibrary);
+			imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
+			imagePicker.Canceled += Handle_Canceled;
+			// show the picker
+			if(UserInterfaceIdiomIsPhone){
+				NavigationController.PresentViewController (imagePicker, true, delegate {});
+			}else{
+				Console.WriteLine("Popover");
+				Pc = new UIPopoverController(imagePicker);
+				Pc.PresentFromRect(PickerRect,(UIView) this.View, UIPopoverArrowDirection.Up, true);
+			}
+		}
+
+		public void pickFromLibrary(){
+			imagePicker = new UIImagePickerController ();
+			imagePicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+			// set what media types
+			imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes (UIImagePickerControllerSourceType.PhotoLibrary);
+			imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
+			imagePicker.Canceled += Handle_Canceled;
+			// show the picker
+			if(UserInterfaceIdiomIsPhone){
+				NavigationController.PresentViewController (imagePicker, true, delegate {});
+			}else{
+				Console.WriteLine("Popover");
+				Pc = new UIPopoverController(imagePicker);
+				Pc.PresentFromRect(PickerRect,(UIView) this.View, UIPopoverArrowDirection.Up, true);
+			}
 		}
 
         UIActionSheet actionSheet;
 
         public void InitializeUnpickImage(){
             var unpicky = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("remove picture", "remove picture");
-            unselectPhotoButton = UIButton.FromType(UIButtonType.RoundedRect);
-            unselectPhotoButton.Frame = UnPickerRect;
-            unselectPhotoButton.SetTitle(unpicky, UIControlState.Normal);
+//            unselectPhotoButton = UIButton.FromType(UIButtonType.RoundedRect);
+//            unselectPhotoButton.Frame = UnPickerRect;
+			this.btnRemoveImg.SetTitle(unpicky, UIControlState.Normal);
 //            Xamarin.Themes.BlackLeatherTheme.Apply(unselectPhotoButton);
 
-            unselectPhotoButton.TouchUpInside += (sender, e) => {
+			btnRemoveImg.TouchUpInside += (sender, e) => {
                 var rmText = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("remove picture?","remove picture?");
                 var rmDel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Delete", "Delete");
                 var rmCancel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Cancel", "Cancel");
@@ -473,7 +510,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
                 actionSheet.ShowFromTabBar(this.TabBarController.TabBar);
             };
 
-            View.AddSubview(unselectPhotoButton);
+//            View.AddSubview(unselectPhotoButton);
         }
 
 		

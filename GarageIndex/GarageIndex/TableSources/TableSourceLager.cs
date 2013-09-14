@@ -1,15 +1,10 @@
-
 using System;
-using System.Drawing;
-
+using System.Collections.Generic;
+using System.IO;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.dao;
-using Xamarin.Themes;
-using System.Collections.Generic;
-using no.dctapps.Garageindex.model;
-using System.IO;
 using no.dctapps.Garageindex.events;
+using no.dctapps.Garageindex.model;
 
 namespace no.dctapps.Garageindex.tables
 {

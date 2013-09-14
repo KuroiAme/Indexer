@@ -1,10 +1,11 @@
 // WARNING
 //
 // This file has been generated automatically by Xamarin Studio to store outlets and
-// actions made in the Xcode designer. If it is removed, they will be lost.
+// actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
 using MonoTouch.Foundation;
+using System.CodeDom.Compiler;
 
 namespace No.Dctapps.Garageindex.Ios.Screens
 {
@@ -12,16 +13,22 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 	partial class BigItemDetailScreen
 	{
 		[Outlet]
-		MonoTouch.UIKit.UITextField fieldBigName { get; set; }
+		MonoTouch.UIKit.UIImageView billedvisning { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnBigPickImage { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnIn { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnRemoveImg { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField fieldBigDescription { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView billedvisning { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton btnIn { get; set; }
+		MonoTouch.UIKit.UITextField fieldBigName { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIScrollView scrollContent { get; set; }
@@ -51,6 +58,16 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			if (scrollContent != null) {
 				scrollContent.Dispose ();
 				scrollContent = null;
+			}
+
+			if (btnBigPickImage != null) {
+				btnBigPickImage.Dispose ();
+				btnBigPickImage = null;
+			}
+
+			if (btnRemoveImg != null) {
+				btnRemoveImg.Dispose ();
+				btnRemoveImg = null;
 			}
 		}
 	}

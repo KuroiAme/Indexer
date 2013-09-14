@@ -7,7 +7,6 @@ using System.Linq;
 using no.dctapps.Garageindex.events;
 using no.dctapps.Garageindex.model;
 using no.dctapps.Garageindex.dao;
-using Xamarin.Themes;
 using No.Dctapps.GarageIndex;
 
 namespace no.dctapps.Garageindex.tables

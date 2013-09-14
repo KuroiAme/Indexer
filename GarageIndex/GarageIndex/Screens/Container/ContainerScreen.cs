@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using Xamarin.Themes;
 using no.dctapps.Garageindex;
 using no.dctapps.Garageindex.dao;
 using no.dctapps.Garageindex.events;

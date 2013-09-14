@@ -1,6 +1,7 @@
 using System;
 using MonoTouch.Foundation;
 using no.dctapps.Garageindex.businesslogic;
+using GarageIndex;
 
 namespace no.dctapps.Garageindex.screens
 {

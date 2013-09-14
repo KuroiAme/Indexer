@@ -4,8 +4,6 @@ using System.Drawing;
 
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using Xamarin.Themes;
-using ThreeChoice;
 using no.dctapps.Garageindex.dao;
 using No.Dctapps.Garageindex.Ios.Screens;
 using No.Dctapps.GarageIndex;

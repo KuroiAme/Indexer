@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using no.dctapps.Garageindex.model;
 using no.dctapps.Garageindex.dao;
 using no.dctapps.Garageindex.events;
-using Xamarin.Themes;
 using No.Dctapps.Garageindex.Ios.Screens;
 using no.dctapps.Garageindex.businesslogic;
 using no.dctapps.Garageindex.tables;

@@ -5,12 +5,12 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using no.dctapps.Garageindex.dao;
-using Xamarin.Themes;
 using System.Collections.Generic;
 using no.dctapps.Garageindex.model;
 using No.Dctapps.Garageindex.Ios.Screens;
 using no.dctapps.Garageindex.events;
 using no.dctapps.Garageindex.tables;
+using GarageIndex;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -43,7 +43,6 @@ namespace no.dctapps.Garageindex.screens
 		{
 			base.LoadView ();
 			Initialize ();
-			BlackLeatherTheme.Apply(this.View);
 		}
 		
 		public override void ViewDidLoad ()
@@ -76,35 +75,31 @@ namespace no.dctapps.Garageindex.screens
 
 		void PopulateTable ()
 		{
-			Table = new UITableView (View.Bounds);
-			Table.AutoresizingMask = UIViewAutoresizing.All;
+//			Table = new UITableView (View.Bounds);
+//			Table.AutoresizingMask = UIViewAutoresizing.All;
 			List<Lager> items = (List<Lager>)dao.getAllLagers();
 //			items.Sort ();
 
 			TableSourceLager source = new TableSourceLager (items);
-			Table.Source = source;
+			this.myStorageTable.Source = source;
 			
-			source.LagerClicked += (object sender, LagerClickedEventArgs e) => {
-				ShowItemDetails (e.Lager); 
-			};
+			source.LagerClicked += (object sender, LagerClickedEventArgs e) => ShowItemDetails (e.Lager);
 			
 			source.LagerDeleted += (object sender, LagerClickedEventArgs e) => {
 				dao.DeleteLager(e.Lager.ID);
 				this.Refresh();
 			};
 			
-			Add (Table);
+//			Add (Table);
 //			BlackLeatherTheme.Apply(Table);
-			this.TabBarItem.BadgeValue = items.Count.ToString();
+//			this.TabBarItem.BadgeValue = items.Count.ToString();
 		}
 
 
 		void Initialize ()
 		{
 			this.NavigationItem.SetRightBarButtonItem (new UIBarButtonItem (UIBarButtonSystemItem.Add), false);
-			this.NavigationItem.RightBarButtonItem.Clicked += (sender, e) =>  {
-				ShowItemDetails (new Lager ());
-			};
+			this.NavigationItem.RightBarButtonItem.Clicked += (sender, e) => ShowItemDetails (new Lager ());
 		}
 
 		void ShowItemDetails (Lager lager)

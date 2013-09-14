@@ -1,12 +1,12 @@
 using System;
 using MonoTouch.Foundation;
-using Xamarin.Themes;
 using no.dctapps.Garageindex.model;
 using no.dctapps.Garageindex.dao;
 using no.dctapps.Garageindex.events;
 using MonoTouch.UIKit;
 using MonoTouch.MessageUI;
 using no.dctapps.Garageindex.businesslogic;
+using GarageIndex;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -120,7 +120,7 @@ namespace no.dctapps.Garageindex.screens
 
 //			if(!InSimulator()){
 //				BlackLeatherTheme.Apply (SaveButton, "");
-				BlackLeatherTheme.Apply(this.storageName, "");
+//				BlackLeatherTheme.Apply(this.storageName, "");
 //			}
 
 		}
@@ -184,22 +184,22 @@ namespace no.dctapps.Garageindex.screens
 			textEstimate.Text = NSBundle.MainBundle.LocalizedString ("Your storage fill degree estimate", "Your storage fill degree estimate");
 			textSpaceAvailable.Text = NSBundle.MainBundle.LocalizedString ("Space available", "Space available");
 
-			BlackLeatherTheme.Apply(this.storageName, "");
-			BlackLeatherTheme.Apply(this.address, "");
-			BlackLeatherTheme.Apply(this.textDimensions, "");
-			BlackLeatherTheme.Apply(this.textEstimate, "");
-			BlackLeatherTheme.Apply(this.textSpaceAvailable, "");
-			BlackLeatherTheme.Apply(this.keyContact, "");
-			BlackLeatherTheme.Apply(this.poststedField, "");
-			BlackLeatherTheme.Apply(this.zipField, "");
-			BlackLeatherTheme.Apply(this.x, "");
-			BlackLeatherTheme.Apply(this.y, "");
-			BlackLeatherTheme.Apply(this.z, "");
-			BlackLeatherTheme.Apply(this.prod, "");
-			BlackLeatherTheme.Apply(this.fillEst, "");
-			BlackLeatherTheme.Apply(this.remaining, "");
-			BlackLeatherTheme.Apply(this.M3, "");
-			BlackLeatherTheme.Apply(this.M3_2, "");
+//			BlackLeatherTheme.Apply(this.storageName, "");
+//			BlackLeatherTheme.Apply(this.address, "");
+//			BlackLeatherTheme.Apply(this.textDimensions, "");
+//			BlackLeatherTheme.Apply(this.textEstimate, "");
+//			BlackLeatherTheme.Apply(this.textSpaceAvailable, "");
+//			BlackLeatherTheme.Apply(this.keyContact, "");
+//			BlackLeatherTheme.Apply(this.poststedField, "");
+//			BlackLeatherTheme.Apply(this.zipField, "");
+//			BlackLeatherTheme.Apply(this.x, "");
+//			BlackLeatherTheme.Apply(this.y, "");
+//			BlackLeatherTheme.Apply(this.z, "");
+//			BlackLeatherTheme.Apply(this.prod, "");
+//			BlackLeatherTheme.Apply(this.fillEst, "");
+//			BlackLeatherTheme.Apply(this.remaining, "");
+//			BlackLeatherTheme.Apply(this.M3, "");
+//			BlackLeatherTheme.Apply(this.M3_2, "");
 		}
 
 //		void AddContactKeyButtons ()

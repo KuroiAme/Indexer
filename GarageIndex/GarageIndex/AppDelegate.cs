@@ -31,7 +31,7 @@ namespace GarageIndex
 			tabs = new TabController ();
 			
 			// If you have defined a root view controller, set it here:
-			// window.RootViewController = myViewController;
+			this.window.RootViewController = tabs; 
 			
 			// make the window visible
 			window.MakeKeyAndVisible ();

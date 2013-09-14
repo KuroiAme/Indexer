@@ -272,9 +272,9 @@ namespace no.dctapps.Garageindex.screens
 		{
 			base.ViewDidLoad ();
 			
-			ShowDetails (this.boks);s
+			ShowDetails (this.boks);
 			
-			myTitle = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Container details", "Container details");
+			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Container details", "Container details");
 			this.fieldContainerName.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Box Identifier", "Box Identifier");
 			this.fieldDescription.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Description", "Description");
 //			var title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("save", "save");

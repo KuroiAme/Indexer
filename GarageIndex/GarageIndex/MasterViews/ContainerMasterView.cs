@@ -7,11 +7,11 @@ namespace no.dctapps.Garageindex
 {
 	public partial class ContainerMasterView : UISplitViewController
 	{
-			ContainerScreen primaryview;
-			ContainerDetails secondaryview;
+			readonly ContainerScreen primaryview;
+			readonly ContainerDetails secondaryview;
 			
-			UINavigationController primarynav;
-			UINavigationController secondarynav;
+			readonly UINavigationController primarynav;
+			readonly UINavigationController secondarynav;
 	
 			public ContainerMasterView () : base ()
 	//		public ContainerMasterView () : base ("ContainerMasterView", null)

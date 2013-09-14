@@ -1,6 +1,5 @@
 
 using MonoTouch.UIKit;
-using Xamarin.Themes;
 using MonoTouch.ObjCRuntime;
 using No.Dctapps.Garageindex.Ios.Screens;
 using no.dctapps.Garageindex.screens;
