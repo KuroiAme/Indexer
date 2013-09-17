@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using no.dctapps.Garageindex.dao;
+using no.dctapps.Garageindex.businesslogic;
 
 namespace GarageIndex
 {
@@ -15,6 +17,8 @@ namespace GarageIndex
 		// class-level declarations
 		UIWindow window;
 		UITabBarController tabs;
+		public static LagerDAO dao;
+		public static GarageindexBL bl;
 
 		//
 		// This method is invoked when the application has loaded and is ready to run. In this
@@ -25,10 +29,17 @@ namespace GarageIndex
 		//
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
+			//Initialize Global Frameworks...instead of having Dependency Injection
+			dao = new LagerDAO ();
+			bl = new GarageindexBL ();
+
+
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 
 			tabs = new TabController ();
+
+			this.window.TintColor = UIColor.Purple;
 			
 			// If you have defined a root view controller, set it here:
 			this.window.RootViewController = tabs; 
@@ -36,7 +47,7 @@ namespace GarageIndex
 			// make the window visible
 			window.MakeKeyAndVisible ();
 
-			this.window.TintColor = UIColor.Purple;
+
 
 			return true;
 		}

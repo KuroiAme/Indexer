@@ -17,21 +17,21 @@ namespace no.dctapps.Garageindex.screens
 {
 	public partial class ItemDetailScreen : UtilityViewController
 	{
-		LagerDAO dao;
-		GarageindexBL bl;
+//		LagerDAO dao;
+//		GarageindexBL bl;
 
 		Item item;
 
 		UIImagePickerController imagePicker;
-		UIButton choosePhotoButton;
-        UIButton unselectPhotoButton;
+//		UIButton choosePhotoButton;
+//        UIButton unselectPhotoButton;
 	
-		UIImageView imageView;
+//		UIImageView imageView;
 		public UIImage OutputImage{ get; set;}
 		
-		public RectangleF ImageRectangle{ get; set;}
-		public RectangleF PickerRect{ get; set;}
-        public RectangleF UnPickerRect{ get; set;}
+//		public RectangleF ImageRectangle{ get; set;}
+//		public RectangleF PickerRect{ get; set;}
+//        public RectangleF UnPickerRect{ get; set;}
 		
 		public UIPopoverController Pc;
 		public UIPopoverController Ic;
@@ -44,54 +44,54 @@ namespace no.dctapps.Garageindex.screens
 		public ItemDetailScreen (Item item)
 			: base (UserInterfaceIdiomIsPhone ? "ItemDetailScreen_iPhone" : "ItemDetailScreen_iPad")
 		{
-			dao = new LagerDAO ();
-			bl = new GarageindexBL ();
+//			dao = new LagerDAO ();
+//			bl = new GarageindexBL ();
 			this.item = item;
 
-			initRectangles ();
+//			initRectangles ();
 		}
 
 		public ItemDetailScreen ()
 			: base (UserInterfaceIdiomIsPhone ? "ItemDetailScreen_iPhone" : "ItemDetailScreen_iPad")
 		{
-			dao = new LagerDAO ();
-			bl = new GarageindexBL ();
+//			dao = new LagerDAO ();
+//			bl = new GarageindexBL ();
 			
-			initRectangles ();
+//			initRectangles ();
 		}
 
-		void initRectangles ()
-		{
-			if (UserInterfaceIdiomIsPhone) {
-				ImageRectangle = new RectangleF (10, 140, 300, 300);
-//				PickerRect = new RectangleF (10, 100, 175, 30);
-//                UnPickerRect = new RectangleF(175, 100, 150, 55);
-			}
-			else {
-				//Ipad measures for this screen
-				ImageRectangle = new RectangleF (10, 150, 800, 800);
-//				PickerRect = new RectangleF (10, 100, 200, 30);
-//                UnPickerRect = new RectangleF(210, 100, 200, 55);
-			}
-		}
-
+//		void initRectangles ()
+//		{
+//			if (UserInterfaceIdiomIsPhone) {
+//				ImageRectangle = new RectangleF (10, 140, 300, 300);
+////				PickerRect = new RectangleF (10, 100, 175, 30);
+////                UnPickerRect = new RectangleF(175, 100, 150, 55);
+//			}
+//			else {
+//				//Ipad measures for this screen
+//				ImageRectangle = new RectangleF (10, 150, 800, 800);
+////				PickerRect = new RectangleF (10, 100, 200, 30);
+////                UnPickerRect = new RectangleF(210, 100, 200, 55);
+//			}
+//		}
+//
 
 		void cleanup ()
 		{
 //			item = null;
 			imagePicker = null;
-			choosePhotoButton = null;
-			imageView = null;
+//			choosePhotoButton = null;
+//			imageView = null;
 			OutputImage = null;
 			Pc = null;
-			dao = null;
+//			dao = null;
 		}
 
 		void Unclean ()
 		{
 //			this.item = new Item();
-			this.dao = new LagerDAO();
-			initRectangles();
+//			this.dao = new LagerDAO();
+//			initRectangles();
 		}
 		
 		public override void DidReceiveMemoryWarning ()
@@ -124,7 +124,7 @@ namespace no.dctapps.Garageindex.screens
 			sb.Append (NSBundle.MainBundle.LocalizedString ("In", "In"));
 			sb.Append (":");
 			if (itty != null) {
-				LagerObject lo = dao.getContainerById (itty.boxID);
+				LagerObject lo = AppDelegate.dao.getContainerById (itty.boxID);
 				if (lo != null) {
 					if (!string.IsNullOrEmpty (lo.Name)) {
 						sb.Append (lo.Name);
@@ -161,16 +161,16 @@ namespace no.dctapps.Garageindex.screens
 				if (myItem.ImageFileName != null) {
 					var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
 					string filename = System.IO.Path.Combine (documentsDirectory, myItem.ImageFileName);
-					this.imageView.Image = UIImage.FromFile (filename);
+					this.ImageItem.Image = UIImage.FromFile (filename);
 				}
 			}
 		}
 
 		public void SetImageViewImage(UIImage image){
-			if(imageView == null){
-				imageView = new UIImageView(ImageRectangle);
-			}
-			this.imageView.Image = image;
+//			if(ithis.ImageItem == null){
+//				imageView = new UIImageView(ImageRectangle);
+//			}
+			this.ImageItem.Image = image;
 		}
 
 		void HandleTouchUpInside (object sender, EventArgs e)
@@ -203,7 +203,7 @@ namespace no.dctapps.Garageindex.screens
 				int id = this.item.ID;
 				this.item.boxID = e.container.ID;
 				SetContainerButtonLabel (this.item);
-				dao.SaveItem(this.item);
+				AppDelegate.dao.SaveItem(this.item);
 			};
 		}
 
@@ -217,9 +217,9 @@ namespace no.dctapps.Garageindex.screens
 			//IS really info
 			it2.Clicked += (object sender, EventArgs e) =>  {
 				mailContr = new MFMailComposeViewController();
-				mailContr.SetSubject(bl.GenerateSubject(this.item));
-				mailContr.SetMessageBody(bl.GenerateManifest(this.item),false);
-				bl.AddPictureAttachment(mailContr, this.item);
+				mailContr.SetSubject(AppDelegate.bl.GenerateSubject(this.item));
+				mailContr.SetMessageBody(AppDelegate.bl.GenerateManifest(this.item),false);
+				AppDelegate.bl.AddPictureAttachment(mailContr, this.item);
 				this.PresentViewController(mailContr, true, delegate{});
 				mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => {
 					mailContr.DismissViewController(true, delegate{});
@@ -288,14 +288,6 @@ namespace no.dctapps.Garageindex.screens
 //			};
 			
 //			this.NavigationItem.SetRightBarButtonItem(it, true);
-			
-
-//			if(!InSimulator()){
-//				Xamarin.Themes.BlackLeatherTheme.Apply (this.View);
-//				Xamarin.Themes.BlackLeatherTheme.Apply (this.fieldName);
-//				Xamarin.Themes.BlackLeatherTheme.Apply (this.fieldDescription);
-//				Xamarin.Themes.BlackLeatherTheme.Apply (this.btnInContainer);
-//			}
 		}
 
 		void RaiseImageGotten (UIImage image)
@@ -303,7 +295,7 @@ namespace no.dctapps.Garageindex.screens
 
 			mySavePicture(image); //local event
 
-			this.imageView.Image = null;
+			this.ImageItem.Image = null;
 			var handler = this.GotPicture;
 			if (handler != null && image != null) {
 				handler(this, new GotPictureEventArgs(image));
@@ -318,7 +310,7 @@ namespace no.dctapps.Garageindex.screens
 			string[] output = SaveImage (item.Name, image);
 			item.ImageFileName = output [0];
 			item.ThumbFileName = output [1];
-			dao.SaveItem (item);
+			AppDelegate.dao.SaveItem (item);
 		}
 
 		void RaiseItemSaved ()
@@ -354,7 +346,7 @@ namespace no.dctapps.Garageindex.screens
 //			string[] output = SaveImage (item.Name, outputImage);
 //			item.ImageFileName = output [0];
 //			item.ThumbFileName = output [1];
-			dao.SaveItem (item);
+			AppDelegate.dao.SaveItem (item);
 			RaiseItemSaved();
 		}
 	
@@ -362,7 +354,7 @@ namespace no.dctapps.Garageindex.screens
             if (item != null)
             {
                 DeleteImage(item.Name);
-                imageView.Image = null;
+				this.ImageItem.Image = null;
                 item.ImageFileName = null;
                 item.ThumbFileName = null;
             }
@@ -372,12 +364,12 @@ namespace no.dctapps.Garageindex.screens
 
         public void InitializeUnpickImage(){
             var unpicky = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("remove picture", "remove picture");
-            unselectPhotoButton = UIButton.FromType(UIButtonType.RoundedRect);
-            unselectPhotoButton.Frame = UnPickerRect;
-            unselectPhotoButton.SetTitle(unpicky, UIControlState.Normal);
+//            unselectPhotoButton = UIButton.FromType(UIButtonType.RoundedRect);
+//            unselectPhotoButton.Frame = UnPickerRect;
+			this.btnUnpickImageItem.SetTitle(unpicky, UIControlState.Normal);
 //            Xamarin.Themes.BlackLeatherTheme.Apply(unselectPhotoButton);
 
-            unselectPhotoButton.TouchUpInside += (sender, e) => {
+			this.btnUnpickImageItem.TouchUpInside += (sender, e) => {
                 var rmText = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("remove picture?","remove picture?");
                 var rmDel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Delete", "Delete");
                 var rmCancel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Cancel", "Cancel");
@@ -400,21 +392,21 @@ namespace no.dctapps.Garageindex.screens
                 actionSheet.ShowFromTabBar(this.TabBarController.TabBar);
             };
 
-            View.AddSubview(unselectPhotoButton);
+//            View.AddSubview(unselectPhotoButton);
         }
 
 
 		//Bold attempt
 		public void ResetImageView(){
 			Console.WriteLine ("reset image");
-			if(imageView != null){
-				imageView.Image = null;
+			if(this.ImageItem != null){
+				this.ImageItem.Image = null;
 			}
 		}
 	
 		void RaiseImageGottenClicked (UIImage image)
 		{
-			this.imageView.Image = null;
+			this.ImageItem.Image = null;
 			var handler = this.GotPicture;
 			if (handler != null && image != null) {
 				handler(this, new GotPictureEventArgs(image));
@@ -446,13 +438,12 @@ namespace no.dctapps.Garageindex.screens
 				imagePicker.Canceled += Handle_Canceled;
 				// show the picker
 				if (UserInterfaceIdiomIsPhone) {
-					NavigationController.PresentViewController (imagePicker, true, delegate {
-					});
+					NavigationController.PresentViewController (imagePicker, true, delegate {});
 				}
 				else {
 					Console.WriteLine ("Popover");
 					Pc = new UIPopoverController (imagePicker);
-					Pc.PresentFromRect (PickerRect, (UIView)this.View, UIPopoverArrowDirection.Up, true);
+					Pc.PresentFromRect (this.btnPickImageItem.Frame, (UIView)this.View, UIPopoverArrowDirection.Up, true);
 				}
 			};
 //			View.Add (choosePhotoButton);
@@ -497,7 +488,7 @@ namespace no.dctapps.Garageindex.screens
 				if(originalImage != null) {
 					// do something with the image
 					Console.WriteLine ("got the original image");
-					imageView.Image = originalImage;
+					this.ImageItem.Image = originalImage;
 					OutputImage = originalImage;
 					RaiseImageGotten(originalImage);
 				}
@@ -507,7 +498,7 @@ namespace no.dctapps.Garageindex.screens
 				if(editedImage != null) {
 					// do something with the image
 					Console.WriteLine ("got the edited image");
-					imageView.Image = editedImage;
+					this.ImageItem.Image = editedImage;
 					OutputImage = editedImage;
 					RaiseImageGotten(editedImage);
 				}

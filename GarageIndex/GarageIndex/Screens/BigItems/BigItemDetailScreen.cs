@@ -17,20 +17,18 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 	public partial class BigItemDetailScreen : UtilityViewController
 	{
 		LagerObject myObject;
-		LagerDAO dao;
-		GarageindexBL bl;
 
 		UIImagePickerController imagePicker;
-		UIButton choosePhotoButton;
-        UIButton unselectPhotoButton;
+//		UIButton choosePhotoButton;
+//        UIButton unselectPhotoButton;
 	
 		UIImageView imageView;
 		public UIImage OutputImage{ get; set;}
 		public string InitialImageFileName{ get; set;}
 		
 //		public RectangleF ir{ get; set;}
-		public RectangleF PickerRect{ get; set;}
-        public RectangleF UnPickerRect{ get; set;}
+//		public RectangleF PickerRect{ get; set;}
+//        public RectangleF UnPickerRect{ get; set;}
 
 //		SelectContainer sc;
 		SelectLager sl;
@@ -45,21 +43,20 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 		public BigItemDetailScreen (LagerObject myObject)
 			: base (UserInterfaceIdiomIsPhone ? "BigItemDetailScreen_iPhone" : "BigItemDetailScreen_iPad")
 		{
-			dao = new LagerDAO();
-			bl = new GarageindexBL ();
+//			dao = new LagerDAO();
+//			bl = new GarageindexBL ();
 
 			this.myObject = myObject;
 //			InitialImageFileName = myObject.imageFileName;
 
 			if(UserInterfaceIdiomIsPhone){
-				ImageRectangle = new RectangleF (10, 150, 500, 275);
-				PickerRect = new RectangleF (20, 95, 130, 55);
-                UnPickerRect = new RectangleF(150, 95, 150, 55);
+				ImageRectangle = new RectangleF (10, 200, 500, 275);
+//				PickerRect = new RectangleF (20, 95, 130, 55);
+//                UnPickerRect = new RectangleF(150, 95, 150, 55);
 			}else{
-//				pro = true; //TODO change this please
-				ImageRectangle = new RectangleF (100, 150, 500, 400);
-				PickerRect = new RectangleF (100, 120, 200, 55);
-                UnPickerRect = new RectangleF(320, 170, 200, 55);
+				ImageRectangle = new RectangleF (100, 200, 500, 400);
+//				PickerRect = new RectangleF (100, 120, 200, 55);
+//                UnPickerRect = new RectangleF(320, 170, 200, 55);
 			}
 		}
 
@@ -67,18 +64,17 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			: base (UserInterfaceIdiomIsPhone ? "BigItemDetailScreen_iPhone" : "BigItemDetailScreen_iPad")
 		{
 			//empty use with Con()
-			dao = new LagerDAO();
-			bl = new GarageindexBL ();
+//			dao = new LagerDAO();
+//			bl = new GarageindexBL ();
 
 			if(UserInterfaceIdiomIsPhone){
 				ImageRectangle = new RectangleF (10, 120, 200, 200);
-				PickerRect = new RectangleF (20, 95, 250, 45);
-                UnPickerRect = new RectangleF(150, 95, 150, 55);
+//				PickerRect = new RectangleF (20, 95, 250, 45);
+//                UnPickerRect = new RectangleF(150, 95, 150, 55);
 			}else{
-//				pro = true; //TODO change this please
-				ImageRectangle = new RectangleF (50, 200, 500, 500);
-				PickerRect = new RectangleF (50, 120, 250, 45);
-                UnPickerRect = new RectangleF(320, 120, 200, 55);
+					ImageRectangle = new RectangleF (50, 200, 500, 500);
+//				PickerRect = new RectangleF (50, 120, 250, 45);
+//                UnPickerRect = new RectangleF(320, 120, 200, 55);
 			}
 		}
 
@@ -93,15 +89,13 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			//IS really info
 			it.Clicked += (object sender, EventArgs e) =>  {
 				mailContr = new MFMailComposeViewController();
-					mailContr.SetSubject(bl.GenerateSubject(myobby));
-					mailContr.SetMessageBody(bl.GenerateManifest(myobby),false);
-					bl.AddPictureAttachment(mailContr, myobby);
-                    bl.AddQRPictureAttachment(mailContr, myobby);
+					mailContr.SetSubject(AppDelegate.bl.GenerateSubject(myobby));
+					mailContr.SetMessageBody(AppDelegate.bl.GenerateContainerManifest(myobby),false);
+					AppDelegate.bl.AddPictureAttachment(mailContr, myobby);
+					AppDelegate.bl.AddQRPictureAttachment(mailContr, myobby);
 				this.PresentViewController(mailContr, true, delegate{});
 				
-				mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => {
-					mailContr.DismissViewController(true, delegate{});
-				};
+				mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => mailContr.DismissViewController (true, delegate {});
 			};
 			
 
@@ -112,9 +106,9 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 		public void Cleanup ()
 		{
 //			this.View = null;
-			dao = null;
+//			dao = null;
 			imagePicker = null;
-			choosePhotoButton = null;
+//			choosePhotoButton = null;
 		}
 
 
@@ -202,7 +196,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 				if(myObject != null){
 				this.myObject.LagerID = e.Lager.ID;
 				SetLagerButtonLabel (this.myObject);
-				dao.saveLagerObject(this.myObject);
+				AppDelegate.dao.saveLagerObject(this.myObject);
 				RaiseSavedEvent();
 				}
 			};
@@ -214,7 +208,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			sb.Append (MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("In", "In"));
 			sb.Append (":");
 			if (itty != null) {
-				Lager lager = dao.GetLagerById (itty.LagerID);
+				Lager lager = AppDelegate.dao.GetLagerById (itty.LagerID);
 				//				boks.LagerID = lo.ID;
 				//				SaveIt ();
 				if (lager != null) {
@@ -276,8 +270,6 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 		{
 			base.ViewDidLoad ();
 
-			dao = new LagerDAO ();
-
 //			FixScrollContent ();
 
 			ShowDetails (this.myObject);
@@ -318,9 +310,9 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			this.fieldBigDescription.Ended += (object sender, EventArgs e) => this.SaveIt ();
 
 			GotPicture += (object sender, GotPictureEventArgs e) => {
-				UIImageView iv = new UIImageView(ImageRectangle);
-				iv.Image = e.image;
-				SetImageViewImage(iv);
+//				UIImageView iv = new UIImageView(ImageRectangle);
+				this.imageView.Image = e.image;
+//				SetImageViewImage(iv);
 				this.SaveIt();
 			};
 		}
@@ -352,7 +344,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 				myObject.imageFileName = result[0];
 				myObject.thumbFileName = result[1];
 
-				dao.saveLagerObject (myObject);
+				AppDelegate.dao.saveLagerObject (myObject);
 				RaiseSavedEvent();
 			}
 		}
@@ -394,7 +386,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
             string[] output = SaveImage (myObject.Name, image);
             myObject.imageFileName = output [0];
             myObject.thumbFileName = output [1];
-            dao.saveLagerObject (myObject);
+			AppDelegate.dao.saveLagerObject (myObject);
         }
 
         void RaiseDerez(){
@@ -449,7 +441,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			imagePicker = new UIImagePickerController ();
 			imagePicker.SourceType = UIImagePickerControllerSourceType.Camera;
 			// set what media types
-			imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes (UIImagePickerControllerSourceType.PhotoLibrary);
+			imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes (UIImagePickerControllerSourceType.Camera);
 			imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
 			imagePicker.Canceled += Handle_Canceled;
 			// show the picker
@@ -458,7 +450,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			}else{
 				Console.WriteLine("Popover");
 				Pc = new UIPopoverController(imagePicker);
-				Pc.PresentFromRect(PickerRect,(UIView) this.View, UIPopoverArrowDirection.Up, true);
+				Pc.PresentFromRect(this.btnBigPickImage.Frame,(UIView) this.View, UIPopoverArrowDirection.Up, true);
 			}
 		}
 
@@ -475,7 +467,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			}else{
 				Console.WriteLine("Popover");
 				Pc = new UIPopoverController(imagePicker);
-				Pc.PresentFromRect(PickerRect,(UIView) this.View, UIPopoverArrowDirection.Up, true);
+				Pc.PresentFromRect(this.btnBigPickImage.Frame,(UIView) this.View, UIPopoverArrowDirection.Up, true);
 			}
 		}
 
@@ -541,9 +533,9 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			Console.Write("Reference URL: [" + UIImagePickerController.ReferenceUrl + "]");
 			
 			// get common info (shared between images and video)
-			NSUrl referenceURL = e.Info[new NSString("UIImagePickerControllerReferenceUrl")] as NSUrl;
-			if (referenceURL != null) 
-				Console.WriteLine(referenceURL.ToString ());
+//			NSUrl referenceURL = e.Info[new NSString("UIImagePickerControllerReferenceUrl")] as NSUrl;
+//			if (referenceURL != null) 
+//				Console.WriteLine(referenceURL.ToString ());
 			
 			// if it was an image, get the other image info
 			if(isImage) {
@@ -552,8 +544,8 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 				UIImage originalImage = e.Info[UIImagePickerController.OriginalImage] as UIImage;
 				if (originalImage != null) {
 					// do something with the image
-					Console.WriteLine ("got the original image");
-					imageView.Image = originalImage;
+//					Console.WriteLine ("got the original image");
+//					imageView.Image = originalImage;
 //					OutputImage = originalImage;
 					RaiseImageGotten (originalImage);
 				} else {
@@ -562,8 +554,8 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 					UIImage editedImage = e.Info [UIImagePickerController.EditedImage] as UIImage;
 					if (editedImage != null) {
 						// do something with the image
-						Console.WriteLine ("got the edited image");
-						imageView.Image = editedImage;
+//						Console.WriteLine ("got the edited image");
+//						imageView.Image = editedImage;
 //					OutputImage = editedImage;
 						RaiseImageGotten (editedImage);
 					}

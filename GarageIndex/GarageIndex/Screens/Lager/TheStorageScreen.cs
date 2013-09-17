@@ -13,8 +13,8 @@ namespace no.dctapps.Garageindex.screens
 	public partial class TheStorageScreen : UtilityViewController
 	{
 		Lager lm;
-		LagerDAO dao;
-		GarageindexBL bl;
+//		LagerDAO dao;
+//		GarageindexBL bl;
 
 		public event EventHandler<LagerClickedEventArgs> LagerSaved;
 
@@ -30,7 +30,7 @@ namespace no.dctapps.Garageindex.screens
 		public TheStorageScreen (Lager lager)
 			: base (UserInterfaceIdiomIsPhone ? "TheStorageScreen_iPhone" : "TheStorageScreen_iPad")
 		{
-			dao = new LagerDAO();
+//			dao = new LagerDAO();
 //			bl = new GarageindexBL();
 			lm = lager;
 		}
@@ -38,7 +38,7 @@ namespace no.dctapps.Garageindex.screens
 		public TheStorageScreen ()
 			: base (UserInterfaceIdiomIsPhone ? "TheStorageScreen_iPhone" : "TheStorageScreen_iPad")
 		{
-			dao = new LagerDAO();
+//			dao = new LagerDAO();
 			//			bl = new GarageindexBL();
 		}
 
@@ -52,12 +52,10 @@ namespace no.dctapps.Garageindex.screens
 			//IS really info
 			it.Clicked += (object sender, EventArgs e) =>  {
                 mailContr = new MFMailComposeViewController();
-                mailContr.SetSubject(bl.GenerateSubject(lm));
-                mailContr.SetMessageBody(bl.GenerateManifest(lm),false);
+				mailContr.SetSubject(AppDelegate.bl.GenerateSubject(lm));
+				mailContr.SetMessageBody(AppDelegate.bl.GenerateManifest(lm),false);
 				this.PresentViewController(mailContr, true, delegate{});
-                mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => {
-                    mailContr.DismissViewController(true, delegate{});
-                };
+                mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => mailContr.DismissViewController (true, delegate{});
 			};
 			this.NavigationItem.SetRightBarButtonItem (it, true);
 		}
@@ -140,20 +138,20 @@ namespace no.dctapps.Garageindex.screens
 		void cleanup ()
 		{
 //			lm = null;
-			dao = null;
+//			dao = null;
 		}
 
-		void Unclean ()
-		{
-			if(dao == null)
-			{
-				dao = new LagerDAO();
-			}
-
-//			if(lm == null){
-//				lm = bl.GetActiveActiveLager();
+//		void Unclean ()
+//		{
+//			if(dao == null)
+//			{
+//				dao = new LagerDAO();
 //			}
-		}
+//
+////			if(lm == null){
+////				lm = bl.GetActiveActiveLager();
+////			}
+//		}
 
 		public override void DidReceiveMemoryWarning ()
 		{
@@ -227,7 +225,7 @@ namespace no.dctapps.Garageindex.screens
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			bl = new GarageindexBL ();
+//			bl = new GarageindexBL ();
 
 
 //			UIView mymy = this.View;
@@ -293,7 +291,7 @@ namespace no.dctapps.Garageindex.screens
 		public override void ViewWillAppear (bool animated){
 			base.ViewWillAppear (animated);
 			Calculate ();
-			Unclean();
+//			Unclean();
 			
 		}
 
@@ -402,7 +400,7 @@ namespace no.dctapps.Garageindex.screens
 			lm.postnr = this.zipField.Text;
 			lm.poststed = this.poststedField.Text;
 
-			dao.SaveLager(lm);
+			AppDelegate.dao.SaveLager(lm);
 			raiseLagerSaved (lm);
 //			dao.updateLager(lm);
 			}

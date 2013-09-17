@@ -11,7 +11,6 @@
                 <outlet property="btnRemoveImg" destination="YqH-0k-XMp" id="Iwu-7S-vtu"/>
                 <outlet property="fieldBigDescription" destination="40" id="41"/>
                 <outlet property="fieldBigName" destination="38" id="42"/>
-                <outlet property="scrollContent" destination="31" id="32"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -20,10 +19,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="31">
-                    <rect key="frame" x="14" y="188" width="280" height="272"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                </scrollView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="34">
                     <rect key="frame" x="148" y="67" width="146" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

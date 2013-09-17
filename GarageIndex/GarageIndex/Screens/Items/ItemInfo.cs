@@ -7,13 +7,14 @@ using MonoTouch.UIKit;
 using no.dctapps.Garageindex.dao;
 using No.Dctapps.Garageindex.Ios.Screens;
 using No.Dctapps.GarageIndex;
+using GarageIndex;
 
 namespace no.dctapps.Garageindex.screens
 {
 	public partial class ItemInfo : UIViewController
 	{
 		Item item;
-		LagerDAO dao;
+//		LagerDAO dao;
 
 //		public event EventHandler<ItemSavedEventArgs> DismissInfo;
 
@@ -25,7 +26,7 @@ namespace no.dctapps.Garageindex.screens
 			: base (UserInterfaceIdiomIsPhone ? "ItemInfo_iPhone" : "ItemInfo_iPad", null)
 		{
 			this.item = item;
-			dao = new LagerDAO();
+//			dao = new LagerDAO();
 		}
 		
 		public override void DidReceiveMemoryWarning ()
@@ -82,7 +83,7 @@ namespace no.dctapps.Garageindex.screens
 			this.fieldActionComment.Ended += (object sender, EventArgs e) => {
 				Console.WriteLine("action comment:"+fieldActionComment.Text);
 				item.ActionComment = this.fieldActionComment.Text;
-				dao.SaveItem(item);
+				AppDelegate.dao.SaveItem(item);
 			};
 
 //			this.btnDismiss.TouchUpInside += (object sender, EventArgs e) => {

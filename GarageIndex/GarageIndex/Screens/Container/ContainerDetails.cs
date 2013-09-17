@@ -9,24 +9,24 @@ using no.dctapps.Garageindex.tables;
 using no.dctapps.Garageindex.events;
 using System.Text;
 using No.Dctapps.GarageIndex;
+using MonoTouch.MessageUI;
+using no.dctapps.Garageindex.businesslogic;
 
 namespace no.dctapps.Garageindex.screens
 {
 	public partial class ContainerDetails : UtilityViewController
 	{
 		LagerObject boks;
-		LagerDAO dao;
-//		GarageindexBL bl;
-		public UITableView Table;
+//		public UITableView Table;
 		//		IList<Item> tableitems;
-		TableSourceItems itemtableSource;
+
 		public UIPopoverController popme;
 		SelectLager lagerselect;
 		const bool test = true;
 		//		UIBarButtonItem edit, done, insert;
 		
 		//		public event EventHandler<GotPictureEventArgs> GotPicture;
-		public event EventHandler<ContainerDetailClickedEventArgs> ActivateDetail;
+
 		public event EventHandler<LagerObjectSavedEventArgs> LagerObjectSaved;
 		
 		
@@ -34,15 +34,11 @@ namespace no.dctapps.Garageindex.screens
 			: base (UserInterfaceIdiomIsPhone ? "ContainerDetails_iPhone" : "ContainerDetails_iPad")
 		{
 			this.boks = boks;
-			this.dao = new LagerDAO ();
-//			this.bl = new GarageindexBL ();
 		}
 		
 		public ContainerDetails () 
 			: base (UserInterfaceIdiomIsPhone ? "ContainerDetails_iPhone" : "ContainerDetails_iPad")
 		{
-			this.dao = new LagerDAO ();
-//			this.bl = new GarageindexBL ();
 		}
 		
 		void RaiseSavedEvent ()
@@ -60,19 +56,19 @@ namespace no.dctapps.Garageindex.screens
 		void cleanup ()
 		{
 			boks = null;
-			dao = null;
+//			dao = null;
 			//			table = null;
 			//			itemtableSource = null;
 		}
 		
-		void Unclean ()
-		{
-			if(dao == null)
-			{
-				dao = new LagerDAO();
-			}
-
-		}
+//		void Unclean ()
+//		{
+//			if(dao == null)
+//			{
+//				dao = new LagerDAO();
+//			}
+//
+//		}
 		
 		public override void DidReceiveMemoryWarning ()
 		{
@@ -99,6 +95,10 @@ namespace no.dctapps.Garageindex.screens
 				textField.ResignFirstResponder ();
 				return true;
 			};
+			this.textType.ShouldReturn += textField => {
+				textField.ResignFirstResponder();
+				return true;
+			};
 		}
 
 		void initializeMoveLager ()
@@ -122,7 +122,7 @@ namespace no.dctapps.Garageindex.screens
 				}
 				this.boks.LagerID = e.Lager.ID;
 				SetLagerButtonLabel (this.boks);
-				dao.saveLagerObject(this.boks);
+				AppDelegate.dao.saveLagerObject(this.boks);
 			};
 		}
 
@@ -132,7 +132,7 @@ namespace no.dctapps.Garageindex.screens
 			sb.Append (MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("In", "In"));
 			sb.Append (":");
 			if (itty != null) {
-				Lager lager = dao.GetLagerById (itty.LagerID);
+				Lager lager = AppDelegate.dao.GetLagerById (itty.LagerID);
 				//				boks.LagerID = lo.ID;
 				//				SaveIt ();
 				if (lager != null) {
@@ -143,107 +143,34 @@ namespace no.dctapps.Garageindex.screens
 			}
 			this.inStorage.SetTitle (sb.ToString (), UIControlState.Normal);
 		}
-		
-		public void PopulateTable ()
-		{
-			Console.WriteLine("PopulateTable ()");
-			dao = new LagerDAO ();
-			RectangleF rect;
-			
-//			if(UserInterfaceIdiomIsPhone){
-//				Console.WriteLine("phone?");
-//				rect = new RectangleF(10,100,300,240);
-//			}else{
-//				Console.WriteLine("ipad!");
-//				rect = new RectangleF(10,160,300,800);
-//			}
-//            this.myTable;
-//			Table = new UITableView(rect);
-			
-			//			table.AutoresizingMask = UIViewAutoresizing.All;
-			
-			IList<Item> tableItems = new List<Item> ();
-			
-			try{
-				tableItems = dao.getAllItemsInBox(boks);
-			}catch(Exception e){
-				Console.WriteLine ("catastrophe avoided:" + e.ToString ());
-			}
-			
-//			Add (Table);
-			
-//			BlackLeatherTheme.Apply (Table, "");
-			
-			TableSourceItems itemsource = new TableSourceItems (tableItems);
-			myTable.Source = itemsource;
-			this.itemtableSource = new TableSourceItems (tableItems);
-			
-			this.itemtableSource.ItemDeleted += (object sender, ItemClickedEventArgs e) => this.DeleteTaskRow(e.Item.ID);
-			this.itemtableSource.ItemClicked += (object sender, ItemClickedEventArgs e) => this.ShowItemDetails(e.Item);
-			myTable.Source = this.itemtableSource;
-			
-		}
-		
-		protected void DeleteTaskRow(int id)
-		{	
-			dao.DeleteItem(id);
-			this.PopulateTable();
-		}
-		
-		void ShowItemDetails (Item item)
-		{
-			Console.WriteLine ("call itemdetailscreen");
-			item.boxID = boks.ID;
-			ItemDetailScreen itemdetail = new ItemDetailScreen (item);
-			this.NavigationController.PushViewController(itemdetail, true);
-		}
-		
-		void RaiseContainerItemClicked (Item item)
-		{
-			var handler = this.ActivateDetail;
-			Console.WriteLine("item:"+item.ToString());
-			if (handler != null && item != null) {
-				handler(this, new ContainerDetailClickedEventArgs(item));
-			}
-		}
 
-//		MFMailComposeViewController mailContr;
-//
-//		private void CreateEmailBarButton ()
-//		{
-//			//DO NOT DELETE
-//			UIBarButtonItem it = new UIBarButtonItem ();
-//			mailContr = new MFMailComposeViewController();
-//			mailContr.SetSubject(bl.GenerateSubject(this.boks));
-//			mailContr.SetMessageBody(bl.GenerateManifest(this.boks),false);
+		MFMailComposeViewController mailContr;
+
+		private void CreateEmailBarButton ()
+		{
+			//DO NOT DELETE
+			UIBarButtonItem it = new UIBarButtonItem ();
+			mailContr = new MFMailComposeViewController();
+			mailContr.SetSubject(AppDelegate.bl.GenerateContainerSubject(this.boks));
+			mailContr.SetMessageBody(AppDelegate.bl.GenerateContainerManifest(this.boks),false);
+			AppDelegate.bl.AddQRPictureAttachment(mailContr, this.boks);
 //			bl.AddPictureAttachment(mailContr, this.boks);
-//			it.Title = "email";
-//			//IS really info
-//			it.Clicked += (object sender, EventArgs e) =>  {
-//				this.PresentViewController(mailContr, true, delegate{});
-//			};
-//			mailContr.Finished += (object sender, MFComposeResultEventArgs e) => {
-//				mailContr.DismissViewController(true, delegate{});
-//			};
-//
-//			this.NavigationItem.SetRightBarButtonItem (it, true);
-//		}
+			it.Title = "email";
+			//IS really info
+			it.Clicked += (object sender, EventArgs e) => this.PresentViewController (mailContr, true, delegate {});
+			mailContr.Finished += (object sender, MFComposeResultEventArgs e) => mailContr.DismissViewController (true, delegate{});
+
+			this.NavigationItem.SetRightBarButtonItem (it, true);
+		}
 		
 		
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
-			this.PopulateTable ();	
-			Unclean();
+			this.ShowDetails (this.boks);
+//			Unclean();
+		}
 
-		}
-		
-		void Initialize ()
-		{
-			this.NavigationItem.SetRightBarButtonItem (new UIBarButtonItem (UIBarButtonSystemItem.Add), false);
-			this.NavigationItem.RightBarButtonItem.Clicked += (sender, e) => ShowItemDetails (new Item ());
-		}
-		
 		public void ShowDetails (LagerObject myBox)
 		{
 			if(myBox == null){
@@ -252,22 +179,17 @@ namespace no.dctapps.Garageindex.screens
 			}
 
 			boks = myBox;
+
 			
 			this.fieldContainerName.Text = myBox.Name;
 			this.fieldDescription.Text = myBox.Description;
+			this.textType.Text = myBox.type;
 			
 			//luckily no picture to display
-			
-			//but there is a table to repop.
-			this.PopulateTable();
+
+			this.CreateEmailBarButton ();
 		}
-		
-//		void HandleTouchUpInside (object sender, EventArgs e)
-//		{
-//			this.SaveIt();
-//		}
-		
-		
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -277,18 +199,28 @@ namespace no.dctapps.Garageindex.screens
 			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Container details", "Container details");
 			this.fieldContainerName.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Box Identifier", "Box Identifier");
 			this.fieldDescription.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Description", "Description");
+			this.textType.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Type","Type");
+
 //			var title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("save", "save");
 //			this.save.SetTitle(title, UIControlState.Normal);
 			
 //			this.save.TouchUpInside += HandleTouchUpInside;
 
+			this.btnShowContent.SetTitle(MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Show Content", "Show content"),UIControlState.Normal);
+
+			this.btnShowContent.TouchUpInside += (object sender, EventArgs e) => {
+				ContainerContent cc = new ContainerContent(boks);
+				this.NavigationController.PushViewController(cc, true);
+			};
+
 			if(!UserInterfaceIdiomIsPhone){
 				this.fieldContainerName.Ended += (object sender, EventArgs e) => SaveIt ();
 
 				this.fieldDescription.Ended += (object sender, EventArgs e) => SaveIt ();
+				this.textType.Ended += (object sender, EventArgs e) => SaveIt();
 			}
 			
-			Initialize ();
+
 			ReleaseKeyboard ();
 //			this.NavigationController.Title = "Box Details";
 			SetLagerButtonLabel (this.boks);
@@ -307,8 +239,9 @@ namespace no.dctapps.Garageindex.screens
 		{
 			this.boks.Name = this.fieldContainerName.Text;
 			this.boks.Description = this.fieldDescription.Text;
+			this.boks.type = this.textType.Text;
 			
-			dao.saveLagerObject (boks);
+			AppDelegate.dao.saveLagerObject (boks);
 			RaiseSavedEvent();
 //			this.NavigationController.PopToRootViewController(true);
 		}

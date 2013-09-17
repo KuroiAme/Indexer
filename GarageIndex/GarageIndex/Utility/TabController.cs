@@ -2,7 +2,6 @@ using System;
 using MonoTouch.UIKit;
 using No.DCTapps.GarageIndex;
 using no.dctapps.garageindex;
-using no.dctapps.Garageindex;
 using no.dctapps.Garageindex.screens;
 
 namespace GarageIndex
@@ -12,9 +11,9 @@ namespace GarageIndex
 		public UtilityViewController homescreen = null;
 		public UITableViewController boxesscreen = null;
 		public UITableViewController bigitemscreen = null;
-		public UtilityViewController ItemCatalogue = null;
+		public UITableViewController ItemCatalogue = null;
 		public UtilityViewController preferences = null;
-		UtilityViewController storageCatalogue = null;
+		public UITableViewController LagerList = null;
 		StatisticsScreen statscreen = null;
 		public Scanner scanner;
 
@@ -119,13 +118,13 @@ namespace GarageIndex
 				ItemNav = new UINavigationController();
 				ItemNav.TabBarItem = new UITabBarItem ();
 				ItemNav.TabBarItem.Title = lbtext;
-				ItemNav.TabBarItem.Image = UIImage.FromBundle("frimerke.png");
+				ItemNav.TabBarItem.Image = UIImage.FromBundle("stampy.png");
 				ItemNav.PushViewController(ItemCatalogue, false);
 			}else{
 				ItemMaster = new ItemMasterView();
 				ItemMaster.TabBarItem = new UITabBarItem ();
 				ItemMaster.TabBarItem.Title = lbtext;
-				ItemMaster.TabBarItem.Image = UIImage.FromBundle("frimerke.png");
+				ItemMaster.TabBarItem.Image = UIImage.FromBundle("stampy.png");
 			}
 		}
 
@@ -138,14 +137,13 @@ namespace GarageIndex
 				bigNav = new UINavigationController();
 				bigNav.TabBarItem = new UITabBarItem ();
 				bigNav.TabBarItem.Title = lbtext;
-				bigNav.TabBarItem.Image = UIImage.FromBundle("bord.png");
+				bigNav.TabBarItem.Image = UIImage.FromBundle("table.png");
 				bigNav.PushViewController(bigitemscreen, false);
 			}else{
-				Console.WriteLine("que pasa?");
 				bigMaster = new BigItemMasterView();
 				bigMaster.TabBarItem = new UITabBarItem ();
 				bigMaster.TabBarItem.Title = lbtext;
-				bigMaster.TabBarItem.Image = UIImage.FromBundle("bord.png");
+				bigMaster.TabBarItem.Image = UIImage.FromBundle("table.png");
 			}
 		}
 
@@ -159,14 +157,14 @@ namespace GarageIndex
 
 				boxNav.TabBarItem = new UITabBarItem();
 				boxNav.TabBarItem.Title = box;
-				boxNav.TabBarItem.Image = UIImage.FromBundle ("Box.png");
+				boxNav.TabBarItem.Image = UIImage.FromBundle ("box.png");
 				boxNav.PushViewController(boxesscreen, false);
 			}else{
 				//				//init splitviewController
 				containerMaster = new no.dctapps.Garageindex.ContainerMasterView();
 				containerMaster.TabBarItem = new UITabBarItem();
 				containerMaster.TabBarItem.Title = box;
-				containerMaster.TabBarItem.Image = UIImage.FromBundle("Box.png");
+				containerMaster.TabBarItem.Image = UIImage.FromBundle("box.png");
 			}
 		}
 
@@ -208,19 +206,19 @@ namespace GarageIndex
 			var lagre = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Storages", "Storages");
 
 			if(UserInterfaceIdiomIsPhone){
-				storageCatalogue = new StorageCatalogue();
+				LagerList = new LagerList();
 				lagerNav = new UINavigationController();
 
 				lagerNav.TabBarItem = new UITabBarItem();
 				lagerNav.TabBarItem.Title = lagre;
-				lagerNav.TabBarItem.Image = UIImage.FromBundle("lagre.png");
-				lagerNav.PushViewController(storageCatalogue, false);
+//				lagerNav.TabBarItem.Image = UIImage.FromBundle("lagre.png");
+				lagerNav.PushViewController(LagerList, false);
 			}else{
 				//				//init splitviewController
 				LagerMaster = new LagerMasterView();
 				LagerMaster.TabBarItem = new UITabBarItem();
 				LagerMaster.TabBarItem.Title = lagre;
-				LagerMaster.TabBarItem.Image = UIImage.FromBundle("lagre.png");
+//				LagerMaster.TabBarItem.Image = UIImage.FromBundle("lagre.png");
 			}
 		}
 

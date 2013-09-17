@@ -10,12 +10,12 @@ using GarageIndex;
 
 namespace no.dctapps.Garageindex.screens
 {
-	public partial class SelectLager : UtilityViewController
+	public partial class SelectLager : UITableViewController
 	{
 
-		LagerDAO dao;
+//		LagerDAO dao;
 
-		UITableView table;
+//		UITableView table;
 		TableSourceLagerSimple lagertableSource;
 
 		public event EventHandler<LagerClickedEventArgs> DismissEvent;
@@ -25,7 +25,7 @@ namespace no.dctapps.Garageindex.screens
 //		}
 
 		public SelectLager ()
-			: base (UserInterfaceIdiomIsPhone ? "SelectLager_iPhone" : "SelectLager_iPad")
+			: base ()
 		{
 		}
 
@@ -54,8 +54,8 @@ namespace no.dctapps.Garageindex.screens
 		}
 
 		public void PopulateTable(){
-			dao = new LagerDAO ();
-			table = new UITableView(View.Bounds);
+//			dao = new LagerDAO ();
+//			table = new UITableView(View.Bounds);
 			//			if (UserInterfaceIdiomIsPhone)
 			//				table = new UITableView (new RectangleF (0, 0, 300, 310)); //TODO FIx this with space for iAds
 			//			else {
@@ -63,17 +63,17 @@ namespace no.dctapps.Garageindex.screens
 			//			}
 			IList<Lager> tableItems = new List<Lager> ();
 			try {
-				tableItems = (List<Lager>) dao.getAllLagers();
+				tableItems = (List<Lager>) AppDelegate.dao.getAllLagers();
 			} catch (Exception e) {
 				Console.WriteLine ("catastrophe avoided:"+e.ToString());
 			}
 
-			Add (table);
+//			Add (table);
 
 			this.lagertableSource = new TableSourceLagerSimple(tableItems);
 			this.lagertableSource.LagerClicked += (object sender, LagerClickedEventArgs e) => raiseDismissal (e.Lager);
 
-			table.Source = this.lagertableSource;
+			this.TableView.Source = this.lagertableSource;
 		}
 
 		void raiseDismissal (Lager l)

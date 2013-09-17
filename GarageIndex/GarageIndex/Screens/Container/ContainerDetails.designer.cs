@@ -13,6 +13,9 @@ namespace no.dctapps.Garageindex.screens
 	partial class ContainerDetails
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnShowContent { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UITextField fieldContainerName { get; set; }
 
 		[Outlet]
@@ -23,6 +26,9 @@ namespace no.dctapps.Garageindex.screens
 
 		[Outlet]
 		MonoTouch.UIKit.UITableView myTable { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UITextField textType { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -44,6 +50,16 @@ namespace no.dctapps.Garageindex.screens
 			if (myTable != null) {
 				myTable.Dispose ();
 				myTable = null;
+			}
+
+			if (btnShowContent != null) {
+				btnShowContent.Dispose ();
+				btnShowContent = null;
+			}
+
+			if (textType != null) {
+				textType.Dispose ();
+				textType = null;
 			}
 		}
 	}

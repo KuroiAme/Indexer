@@ -13,9 +13,6 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 	partial class BigItemDetailScreen
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIImageView billedvisning { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UIButton btnBigPickImage { get; set; }
 
 		[Outlet]
@@ -35,19 +32,9 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (fieldBigName != null) {
-				fieldBigName.Dispose ();
-				fieldBigName = null;
-			}
-
-			if (fieldBigDescription != null) {
-				fieldBigDescription.Dispose ();
-				fieldBigDescription = null;
-			}
-
-			if (billedvisning != null) {
-				billedvisning.Dispose ();
-				billedvisning = null;
+			if (btnBigPickImage != null) {
+				btnBigPickImage.Dispose ();
+				btnBigPickImage = null;
 			}
 
 			if (btnIn != null) {
@@ -55,19 +42,24 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 				btnIn = null;
 			}
 
-			if (scrollContent != null) {
-				scrollContent.Dispose ();
-				scrollContent = null;
-			}
-
-			if (btnBigPickImage != null) {
-				btnBigPickImage.Dispose ();
-				btnBigPickImage = null;
-			}
-
 			if (btnRemoveImg != null) {
 				btnRemoveImg.Dispose ();
 				btnRemoveImg = null;
+			}
+
+			if (fieldBigDescription != null) {
+				fieldBigDescription.Dispose ();
+				fieldBigDescription = null;
+			}
+
+			if (fieldBigName != null) {
+				fieldBigName.Dispose ();
+				fieldBigName = null;
+			}
+
+			if (scrollContent != null) {
+				scrollContent.Dispose ();
+				scrollContent = null;
 			}
 		}
 	}

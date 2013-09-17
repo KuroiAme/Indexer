@@ -1,37 +1,18 @@
-
-using System;
-using System.Drawing;
-
-using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.dao;
-using System.Collections.Generic;
-using no.dctapps.Garageindex.model;
-using No.Dctapps.Garageindex.Ios.Screens;
+using System;
 using no.dctapps.Garageindex.events;
-using no.dctapps.Garageindex.tables;
+using no.dctapps.Garageindex.model;
+using System.Collections.Generic;
 using GarageIndex;
+using no.dctapps.Garageindex.tables;
+
 
 namespace no.dctapps.Garageindex.screens
 {
-	public partial class StorageCatalogue : UtilityViewController
+	public partial class StorageCatalogue : UITableViewController
 	{
-		UITableView Table;
-		LagerDAO dao;
-
 		public event EventHandler<LagerClickedEventArgs> LagerClicked;
 
-//		static bool UserInterfaceIdiomIsPhone {
-//			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
-//		}
-
-		public StorageCatalogue ()
-			: base (UserInterfaceIdiomIsPhone ? "StorageCatalogue_iPhone" : "StorageCatalogue_iPad")
-		{
-			dao = new LagerDAO();
-		}
-
-		
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
@@ -48,8 +29,7 @@ namespace no.dctapps.Garageindex.screens
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Storages", "Storages");
-			this.PopulateTable();
+
 			
 			// Perform any additional setup after loading the view, typically from a nib.
 		}
@@ -77,22 +57,18 @@ namespace no.dctapps.Garageindex.screens
 		{
 //			Table = new UITableView (View.Bounds);
 //			Table.AutoresizingMask = UIViewAutoresizing.All;
-			List<Lager> items = (List<Lager>)dao.getAllLagers();
+			List<Lager> items = (List<Lager>)AppDelegate.dao.getAllLagers();
 //			items.Sort ();
 
 			TableSourceLager source = new TableSourceLager (items);
-			this.myStorageTable.Source = source;
+			this.TableView.Source = source;
 			
 			source.LagerClicked += (object sender, LagerClickedEventArgs e) => ShowItemDetails (e.Lager);
 			
 			source.LagerDeleted += (object sender, LagerClickedEventArgs e) => {
-				dao.DeleteLager(e.Lager.ID);
+				AppDelegate.dao.DeleteLager(e.Lager.ID);
 				this.Refresh();
 			};
-			
-//			Add (Table);
-//			BlackLeatherTheme.Apply(Table);
-//			this.TabBarItem.BadgeValue = items.Count.ToString();
 		}
 
 
@@ -116,6 +92,9 @@ namespace no.dctapps.Garageindex.screens
 			}
 		}
 
+		static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+		}
 
 	}
 }

@@ -12,15 +12,9 @@ namespace no.dctapps.Garageindex.screens
 	[Register ("StorageCatalogue")]
 	partial class StorageCatalogue
 	{
-		[Outlet]
-		MonoTouch.UIKit.UITableView myStorageTable { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (myStorageTable != null) {
-				myStorageTable.Dispose ();
-				myStorageTable = null;
-			}
 		}
 	}
 }

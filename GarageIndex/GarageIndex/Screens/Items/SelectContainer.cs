@@ -8,14 +8,15 @@ using no.dctapps.Garageindex.dao;
 using no.dctapps.Garageindex.model;
 using System.Collections.Generic;
 using no.dctapps.Garageindex.events;
+using GarageIndex;
 
 namespace no.dctapps.Garageindex.screens
 {
-	public partial class SelectContainer : UIViewController
+	public partial class SelectContainer : UITableViewController
 	{
-		LagerDAO dao;
+//		LagerDAO dao;
 
-		UITableView table;
+//		UITableView table;
 		TableSourceLagerObjectsSimple boxtableSource;
 
 		public event EventHandler<ContainerClickedEventArgs> DismissEvent;
@@ -25,7 +26,7 @@ namespace no.dctapps.Garageindex.screens
 		}
 
 		public SelectContainer ()
-			: base (UserInterfaceIdiomIsPhone ? "SelectContainer_iPhone" : "SelectContainer_iPad", null)
+			: base ()
 		{
 		}
 		
@@ -53,7 +54,7 @@ namespace no.dctapps.Garageindex.screens
 		}
 
 		public void PopulateTable(){
-			dao = new LagerDAO ();
+//			dao = new LagerDAO ();
 //            SizeF sf = new SizeF();
 //			table = new UITableView(View.SizeThatFits(sf));
 //			if (UserInterfaceIdiomIsPhone)
@@ -63,7 +64,7 @@ namespace no.dctapps.Garageindex.screens
 //			}
 			IList<LagerObject> tableItems = new List<LagerObject> ();
 			try {
-				tableItems = (List<LagerObject>) dao.getAllContainers ();
+				tableItems = (List<LagerObject>) AppDelegate.dao.getAllContainers ();
 			} catch (Exception e) {
 				Console.WriteLine ("catastrophe avoided:"+e.ToString());
 			}
@@ -74,7 +75,7 @@ namespace no.dctapps.Garageindex.screens
 
 			this.boxtableSource = new TableSourceLagerObjectsSimple(tableItems);
 			this.boxtableSource.LagerObjectClicked += (object sender, no.dctapps.Garageindex.events.LagerObjectClickedEventArgs e) => raiseDismissal(e.LagerObject);
-            this.mySelectTable.Source = this.boxtableSource;
+            this.TableView.Source = this.boxtableSource;
 		}
 
 		void raiseDismissal (LagerObject lo)

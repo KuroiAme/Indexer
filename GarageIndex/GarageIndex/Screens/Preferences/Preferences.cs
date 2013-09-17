@@ -7,7 +7,7 @@ namespace no.dctapps.Garageindex.screens
 {
 	public partial class Preferences : UtilityViewController
 	{
-		GarageindexBL bl;
+//		GarageindexBL bl;
 
 //		static bool UserInterfaceIdiomIsPhone {
 //			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
@@ -16,7 +16,7 @@ namespace no.dctapps.Garageindex.screens
 		public Preferences ()
 			: base (UserInterfaceIdiomIsPhone ? "Preferences_iPhone" : "Preferences_iPad")
 		{
-			bl = new GarageindexBL();
+//			bl = new GarageindexBL();
 		}
 		
 		public override void DidReceiveMemoryWarning ()
@@ -39,17 +39,17 @@ namespace no.dctapps.Garageindex.screens
 		{
 			base.ViewDidLoad ();
 
-			this.switchContainers.On = bl.GetContainersAsLarge();
-            this.switchQR.On = bl.IncludeQr();
+			this.switchContainers.On = AppDelegate.bl.GetContainersAsLarge();
+			this.switchQR.On = AppDelegate.bl.IncludeQr();
 
 			this.switchContainers.ValueChanged += (object sender, EventArgs e) => {
 				Console.WriteLine("Value changed:"+switchContainers.On.ToString());
-				bl.SaveContainersAsLarge(switchContainers.On);
+				AppDelegate.bl.SaveContainersAsLarge(switchContainers.On);
 			};
 
             this.switchQR.ValueChanged += (object sender, EventArgs e) => {
                 Console.WriteLine("Value changed:"+switchQR.On.ToString());
-                bl.SaveIncludeQR(switchQR.On);
+				AppDelegate.bl.SaveIncludeQR(switchQR.On);
             };
 
 //			Xamarin.Themes.BlackLeatherTheme.Apply(this.View);

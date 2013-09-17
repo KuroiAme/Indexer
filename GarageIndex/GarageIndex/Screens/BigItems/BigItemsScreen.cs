@@ -7,6 +7,7 @@ using no.dctapps.Garageindex.events;
 using No.Dctapps.Garageindex.Ios.Screens;
 using no.dctapps.Garageindex.businesslogic;
 using no.dctapps.Garageindex.tables;
+using GarageIndex;
 
 
 namespace no.dctapps.Garageindex.screens
@@ -22,9 +23,6 @@ namespace no.dctapps.Garageindex.screens
 
 		public UIPopoverController Pc;
 
-		LagerDAO dao;
-		GarageindexBL bl;
-
         public static bool UserInterfaceIdiomIsPhone {
             get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
         }
@@ -33,8 +31,6 @@ namespace no.dctapps.Garageindex.screens
 		public BigItemsScreen () : base ()
 //			: base (UserInterfaceIdiomIsPhone ? "BigItemsScreen_iPhone" : "BigItemsScreen_iPad", null)
 		{
-			dao = new LagerDAO ();
-			bl = new GarageindexBL();
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -49,7 +45,7 @@ namespace no.dctapps.Garageindex.screens
 		}
 
 		public void Cleanup(){
-			dao = null;
+//			dao = null;
 //			Table = null;
 			TableSource = null;
 			tableItems = null;
@@ -142,14 +138,14 @@ namespace no.dctapps.Garageindex.screens
 		}		
 		void PopulateTable ()
 		{
-			dao = new LagerDAO ();
+//			dao = new LagerDAO ();
 //			this.view = new UITableView (GetDyn()); 
-			if(bl.GetContainersAsLarge()){
+			if(AppDelegate.bl.GetContainersAsLarge()){
 				Console.WriteLine ("loadbigitems");
-				tableItems = dao.GetAllLagerObjects();
+				tableItems = AppDelegate.dao.GetAllLagerObjects();
 			}else{
 				Console.WriteLine ("getalllargeitems");
-				tableItems = dao.GetAllLargeItems();
+				tableItems = AppDelegate.dao.GetAllLargeItems();
 			}
 
 			PopulateWithDummyData ();
@@ -181,7 +177,7 @@ namespace no.dctapps.Garageindex.screens
 
 		protected void DeleteLagerObjectRow(int id)
 		{
-			dao.DeleteBigItem(id);
+			AppDelegate.dao.DeleteBigItem(id);
 			this.PopulateTable();
 		}
 	}

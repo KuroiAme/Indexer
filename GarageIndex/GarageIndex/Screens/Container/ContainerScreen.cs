@@ -9,6 +9,7 @@ using no.dctapps.Garageindex.events;
 using no.dctapps.Garageindex.model;
 using No.DCTapps.GarageIndex;
 using no.dctapps.Garageindex.tables;
+using GarageIndex;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -16,7 +17,7 @@ namespace no.dctapps.Garageindex.screens
 	{
 //		UITableView table;
 		TableSourceLagerObjects boxtableSource;
-		LagerDAO dao;
+//		LagerDAO dao;
 
 		public event EventHandler<ContainerClickedEventArgs> ActivateDetail;
 
@@ -32,7 +33,7 @@ namespace no.dctapps.Garageindex.screens
 
 		void cleanup ()
 		{
-			dao = null;
+//			dao = null;
 			boxtableSource = null;
 //			table = null;
 		}
@@ -105,7 +106,8 @@ namespace no.dctapps.Garageindex.screens
 
 		void PopulateTable ()
 		{
-			dao = new LagerDAO ();
+
+//			dao = new LagerDAO ();
 //			if (UserInterfaceIdiomIsPhone)
 //				TableView = new UITableView (new RectangleF (0, 0, 300, 310)); //TODO FIx this with space for iAds
 //			else {
@@ -113,7 +115,7 @@ namespace no.dctapps.Garageindex.screens
 //			}
 			IList<LagerObject> tableItems = new List<LagerObject> ();
 			try {
-				tableItems = (List<LagerObject>) dao.getAllContainers ();
+				tableItems = (List<LagerObject>) AppDelegate.dao.getAllContainers ();
 			} catch (Exception e) {
 				Console.WriteLine ("catastrophe avoided:"+e.ToString());
 			}
@@ -153,7 +155,7 @@ namespace no.dctapps.Garageindex.screens
 
 		protected void DeleteTaskRow(int id)
 		{	
-			dao.DeleteBox(id);
+			AppDelegate.dao.DeleteBox(id);
 			this.PopulateTable();
 		}
 	}

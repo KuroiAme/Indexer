@@ -8,6 +8,7 @@ using no.dctapps.Garageindex.model;
 using System.Collections.Generic;
 using no.dctapps.Garageindex.screens;
 using No.Dctapps.Garageindex.Ios.Screens;
+using GarageIndex;
 
 namespace No.DCTapps.GarageIndex
 {
@@ -66,7 +67,7 @@ namespace No.DCTapps.GarageIndex
             {
                 var msg = "NO barcode!";
                 msg = "barcode: " + result.Text + "was not in your database";
-                LagerDAO dao = new LagerDAO();
+//                LagerDAO dao = new LagerDAO();
                 int id = -1;
                 try{
                     id = Convert.ToInt32(result.Text);
@@ -75,7 +76,7 @@ namespace No.DCTapps.GarageIndex
                 }
                 IList<LagerObject> lol = null;
                 if(id != -1){
-                    lol = dao.getLagerObjectByID(id);
+					lol = AppDelegate.dao.getLagerObjectByID(id);
                 }
 
                 if (lol != null)

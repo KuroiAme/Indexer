@@ -14,19 +14,19 @@ using GarageIndex;
 
 namespace no.dctapps.garageindex
 {
-	public partial class ItemCatalogue : UtilityViewController
+	public partial class ItemCatalogue : UITableViewController
 	{
-		UITableView Table;
-		LagerDAO dao;
+//		UITableView Table;
+//		LagerDAO dao;
 
 
 		public event EventHandler<ItemClickedEventArgs> ActivateDetail;
 
-		public ItemCatalogue ()
-			: base (UserInterfaceIdiomIsPhone ? "ItemCatalogue_iPhone" : "ItemCatalogue_iPad")
-		{
-			dao = new LagerDAO();
-		}
+//		public ItemCatalogue ()
+//			: base (UserInterfaceIdiomIsPhone ? "ItemCatalogue_iPhone" : "ItemCatalogue_iPad")
+//		{
+//			dao = new LagerDAO();
+//		}
 		
 		public override void DidReceiveMemoryWarning ()
 		{
@@ -53,7 +53,8 @@ namespace no.dctapps.garageindex
 		{
 //			Table = new UITableView (View.Bounds);
 //			Table.AutoresizingMask = UIViewAutoresizing.All;
-			List<Item> items = (List<Item>)dao.getAllItems ();
+
+			List<Item> items = (List<Item>)AppDelegate.dao.getAllItems ();
 			items.Sort ();
 			List<String> strlist = new List<String> ();
 			foreach (Item it in items) {
@@ -61,12 +62,12 @@ namespace no.dctapps.garageindex
 			}
 			string[] tableItems = strlist.ToArray ();
 			TableSourceItemsIndexed source = new TableSourceItemsIndexed (tableItems);
-			ItemCatalogueTable.Source = source;
+			TableView.Source = source;
 
 			source.ItemClicked += (object sender, ItemClickedEventArgs e) => this.ShowItemDetails(e.Item);
 
 			source.ItemDeleted += (object sender, ItemClickedEventArgs e) => {
-				dao.DeleteItem(e.Item.ID);
+				AppDelegate.dao.DeleteItem(e.Item.ID);
 				this.Refresh();
 			};
 
@@ -115,6 +116,10 @@ namespace no.dctapps.garageindex
 		{
 			base.ViewWillAppear (animated);
 			PopulateTable ();
+		}
+
+		public static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 	}
 }

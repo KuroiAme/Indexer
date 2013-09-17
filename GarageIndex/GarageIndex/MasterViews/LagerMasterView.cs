@@ -4,6 +4,7 @@ using MonoTouch.UIKit;
 using MonoTouch.ObjCRuntime;
 using no.dctapps.Garageindex.screens;
 using no.dctapps.Garageindex.events;
+using GarageIndex;
 
 namespace No.DCTapps.GarageIndex
 {
@@ -11,18 +12,16 @@ namespace No.DCTapps.GarageIndex
 	{
 		public LagerMasterView () : base()
 		{
-			StorageCatalogue primaryview;
+			LagerList primaryview;
 			TheStorageScreen secondaryview;
 			
 			UINavigationController primarynav;
 			UINavigationController secondarynav;
 		
-			primaryview = new StorageCatalogue();
+			primaryview = new LagerList();
 			secondaryview = new TheStorageScreen();
 			
-			primaryview.LagerClicked += (object sender, LagerClickedEventArgs e) => {
-				secondaryview.ShowDetails(e.Lager);
-			};
+			primaryview.LagerClicked += (object sender, LagerClickedEventArgs e) => secondaryview.ShowDetails (e.Lager);
 			
 			secondaryview.LagerSaved += delegate(object sender, LagerClickedEventArgs e) {
 				primaryview.Refresh();
