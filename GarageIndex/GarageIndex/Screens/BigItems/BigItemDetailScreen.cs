@@ -309,12 +309,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 
 			this.fieldBigDescription.Ended += (object sender, EventArgs e) => this.SaveIt ();
 
-			GotPicture += (object sender, GotPictureEventArgs e) => {
-//				UIImageView iv = new UIImageView(ImageRectangle);
-				this.imageView.Image = e.image;
-//				SetImageViewImage(iv);
-				this.SaveIt();
-			};
+			GotPicture += (object sender, GotPictureEventArgs e) => this.imageView.Image = e.image;
 		}
 
 		public override void ViewWillDisappear (bool animated)
@@ -345,7 +340,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 				myObject.thumbFileName = result[1];
 
 				AppDelegate.dao.saveLagerObject (myObject);
-				RaiseSavedEvent();
+				RaiseSavedEvent(); //TODO this first?
 			}
 		}
 
@@ -401,13 +396,8 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			
 			var picky = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("pick image", "pick image");
 			imageView = new UIImageView (ImageRectangle);
-//			Add (imageView);
-//			this.
-//				btnBigPickImage = UIButton.FromType (UIButtonType.RoundedRect);
-//			choosePhotoButton.Frame = PickerRect;
 			btnBigPickImage.SetTitle (picky, UIControlState.Normal);
 			btnBigPickImage.TouchUpInside += (s, e) => SelectSource ();
-//			View.Add (choosePhotoButton);
 		}
 
 		public void SelectSource(){
@@ -425,16 +415,16 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 				if(e2.ButtonIndex == 0){
 					//DO nothing
 				}else if(e2.ButtonIndex == 1){
-					pickFromCamera();
+					PickFromCamera();
 				}else{
-					pickFromLibrary();
+					PickFromLibrary();
 				}
 			};
 			actionSheet.ShowInView (View);
 		}
 
 
-		public void pickFromCamera(){
+		public void PickFromCamera(){
 			// create a new picker controller
 
 			// set our source to the photo library
@@ -454,20 +444,26 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			}
 		}
 
-		public void pickFromLibrary(){
+		public void PickFromLibrary(){
 			imagePicker = new UIImagePickerController ();
 			imagePicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
 			// set what media types
 			imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes (UIImagePickerControllerSourceType.PhotoLibrary);
+			extractImage ();
+		}
+
+		void extractImage ()
+		{
 			imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
 			imagePicker.Canceled += Handle_Canceled;
 			// show the picker
-			if(UserInterfaceIdiomIsPhone){
-				NavigationController.PresentViewController (imagePicker, true, delegate {});
-			}else{
-				Console.WriteLine("Popover");
-				Pc = new UIPopoverController(imagePicker);
-				Pc.PresentFromRect(this.btnBigPickImage.Frame,(UIView) this.View, UIPopoverArrowDirection.Up, true);
+			if (UserInterfaceIdiomIsPhone) {
+				NavigationController.PresentViewController (imagePicker, true, delegate{});
+			}
+			else {
+				Console.WriteLine ("Popover");
+				Pc = new UIPopoverController (imagePicker);
+				Pc.PresentFromRect (this.btnBigPickImage.Frame, (UIView)this.View, UIPopoverArrowDirection.Up, true);
 			}
 		}
 
@@ -530,7 +526,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 				break;
 			}
 			
-			Console.Write("Reference URL: [" + UIImagePickerController.ReferenceUrl + "]");
+//			Console.Write("Reference URL: [" + UIImagePickerController.ReferenceUrl + "]");
 			
 			// get common info (shared between images and video)
 //			NSUrl referenceURL = e.Info[new NSString("UIImagePickerControllerReferenceUrl")] as NSUrl;

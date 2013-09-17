@@ -26,30 +26,12 @@ namespace no.dctapps.Garageindex.screens
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField fieldName { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIImageView ImageItem { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (fieldName != null) {
-				fieldName.Dispose ();
-				fieldName = null;
-			}
-
-			if (fieldDescription != null) {
-				fieldDescription.Dispose ();
-				fieldDescription = null;
-			}
-
 			if (btnInContainer != null) {
 				btnInContainer.Dispose ();
 				btnInContainer = null;
-			}
-
-			if (ImageItem != null) {
-				ImageItem.Dispose ();
-				ImageItem = null;
 			}
 
 			if (btnPickImageItem != null) {
@@ -60,6 +42,16 @@ namespace no.dctapps.Garageindex.screens
 			if (btnUnpickImageItem != null) {
 				btnUnpickImageItem.Dispose ();
 				btnUnpickImageItem = null;
+			}
+
+			if (fieldDescription != null) {
+				fieldDescription.Dispose ();
+				fieldDescription = null;
+			}
+
+			if (fieldName != null) {
+				fieldName.Dispose ();
+				fieldName = null;
 			}
 		}
 	}

@@ -6,7 +6,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ItemDetailScreen">
             <connections>
-                <outlet property="ImageItem" destination="dG1-zt-hUf" id="7MX-T9-Gt2"/>
                 <outlet property="btnInContainer" destination="17" id="18"/>
                 <outlet property="btnPickImageItem" destination="FJ3-oe-7a1" id="VZl-bH-W9G"/>
                 <outlet property="btnUnpickImageItem" destination="06c-mF-w3a" id="i1Y-py-jUF"/>
@@ -53,10 +52,6 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="dG1-zt-hUf">
-                    <rect key="frame" x="20" y="189" width="280" height="271"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

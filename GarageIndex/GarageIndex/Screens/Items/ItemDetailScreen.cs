@@ -26,7 +26,7 @@ namespace no.dctapps.Garageindex.screens
 //		UIButton choosePhotoButton;
 //        UIButton unselectPhotoButton;
 	
-//		UIImageView imageView;
+		UIImageView imageView;
 		public UIImage OutputImage{ get; set;}
 		
 //		public RectangleF ImageRectangle{ get; set;}
@@ -44,36 +44,32 @@ namespace no.dctapps.Garageindex.screens
 		public ItemDetailScreen (Item item)
 			: base (UserInterfaceIdiomIsPhone ? "ItemDetailScreen_iPhone" : "ItemDetailScreen_iPad")
 		{
-//			dao = new LagerDAO ();
-//			bl = new GarageindexBL ();
 			this.item = item;
 
-//			initRectangles ();
+			initRectangles ();
 		}
 
 		public ItemDetailScreen ()
 			: base (UserInterfaceIdiomIsPhone ? "ItemDetailScreen_iPhone" : "ItemDetailScreen_iPad")
 		{
-//			dao = new LagerDAO ();
-//			bl = new GarageindexBL ();
 			
-//			initRectangles ();
+			initRectangles ();
 		}
 
-//		void initRectangles ()
-//		{
-//			if (UserInterfaceIdiomIsPhone) {
-//				ImageRectangle = new RectangleF (10, 140, 300, 300);
-////				PickerRect = new RectangleF (10, 100, 175, 30);
-////                UnPickerRect = new RectangleF(175, 100, 150, 55);
-//			}
-//			else {
-//				//Ipad measures for this screen
-//				ImageRectangle = new RectangleF (10, 150, 800, 800);
-////				PickerRect = new RectangleF (10, 100, 200, 30);
-////                UnPickerRect = new RectangleF(210, 100, 200, 55);
-//			}
-//		}
+		void initRectangles ()
+		{
+			if (UserInterfaceIdiomIsPhone) {
+				ImageRectangle = new RectangleF (10, 200, 300, 300);
+//				PickerRect = new RectangleF (10, 100, 175, 30);
+//                UnPickerRect = new RectangleF(175, 100, 150, 55);
+			}
+			else {
+				//Ipad measures for this screen
+				ImageRectangle = new RectangleF (10, 200, 800, 800);
+//				PickerRect = new RectangleF (10, 100, 200, 30);
+//                UnPickerRect = new RectangleF(210, 100, 200, 55);
+			}
+		}
 //
 
 		void cleanup ()
@@ -91,7 +87,7 @@ namespace no.dctapps.Garageindex.screens
 		{
 //			this.item = new Item();
 //			this.dao = new LagerDAO();
-//			initRectangles();
+			//initRectangles();
 		}
 		
 		public override void DidReceiveMemoryWarning ()
@@ -148,10 +144,10 @@ namespace no.dctapps.Garageindex.screens
 			SetContainerButtonLabel (myItem);
 
 			if(myItem != null){
-                float x = this.ImageItem.Frame.X;
-                float y = this.ImageItem.Frame.Y;
-                this.ImageItem  = LoadImage(new PointF(x,y),myItem.ImageFileName);
-//				Add (imageView);
+                float x = this.ImageRectangle.X;
+                float y = this.ImageRectangle.Y;
+                this.imageView  = LoadImage(new PointF(x,y),myItem.ImageFileName);
+				Add (imageView);
 				this.item = myItem;
 
 				this.fieldName.Text = myItem.Name;
@@ -161,16 +157,16 @@ namespace no.dctapps.Garageindex.screens
 				if (myItem.ImageFileName != null) {
 					var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
 					string filename = System.IO.Path.Combine (documentsDirectory, myItem.ImageFileName);
-					this.ImageItem.Image = UIImage.FromFile (filename);
+					this.imageView.Image = UIImage.FromFile (filename);
 				}
 			}
 		}
 
 		public void SetImageViewImage(UIImage image){
-//			if(ithis.ImageItem == null){
-//				imageView = new UIImageView(ImageRectangle);
-//			}
-			this.ImageItem.Image = image;
+			if(this.imageView == null){
+				imageView = new UIImageView(ImageRectangle);
+			}
+			this.imageView.Image = image;
 		}
 
 		void HandleTouchUpInside (object sender, EventArgs e)
@@ -221,9 +217,7 @@ namespace no.dctapps.Garageindex.screens
 				mailContr.SetMessageBody(AppDelegate.bl.GenerateManifest(this.item),false);
 				AppDelegate.bl.AddPictureAttachment(mailContr, this.item);
 				this.PresentViewController(mailContr, true, delegate{});
-				mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => {
-					mailContr.DismissViewController(true, delegate{});
-				};
+				mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => mailContr.DismissViewController (true, delegate{});
 			};
 
 
@@ -234,14 +228,10 @@ namespace no.dctapps.Garageindex.screens
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-//			this.btnSave.TouchUpInside += HandleTouchUpInside;
 
 			GotPicture += (object sender, GotPictureEventArgs e) => SetImageViewImage(e.image);
 
 			initializeMoveContainer();
-
-
-//			this.btnSaveIt.TouchUpInside += HandleTouchUpInside;
 
 			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Item details", "Item details");
 
@@ -295,7 +285,7 @@ namespace no.dctapps.Garageindex.screens
 
 			mySavePicture(image); //local event
 
-			this.ImageItem.Image = null;
+			this.imageView.Image = null;
 			var handler = this.GotPicture;
 			if (handler != null && image != null) {
 				handler(this, new GotPictureEventArgs(image));
@@ -326,7 +316,7 @@ namespace no.dctapps.Garageindex.screens
         void RaiseDerez ()
         {
             Console.WriteLine("Raising Derez");
-//            ResetImageView ();
+            //ResetImageView ();
             var handler = this.Derez;
             if (handler != null) {
                 handler(this, new DerezEventArgs());
@@ -354,7 +344,7 @@ namespace no.dctapps.Garageindex.screens
             if (item != null)
             {
                 DeleteImage(item.Name);
-				this.ImageItem.Image = null;
+//				this.ImageItem.Image = null;
                 item.ImageFileName = null;
                 item.ThumbFileName = null;
             }
@@ -364,10 +354,8 @@ namespace no.dctapps.Garageindex.screens
 
         public void InitializeUnpickImage(){
             var unpicky = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("remove picture", "remove picture");
-//            unselectPhotoButton = UIButton.FromType(UIButtonType.RoundedRect);
-//            unselectPhotoButton.Frame = UnPickerRect;
+
 			this.btnUnpickImageItem.SetTitle(unpicky, UIControlState.Normal);
-//            Xamarin.Themes.BlackLeatherTheme.Apply(unselectPhotoButton);
 
 			this.btnUnpickImageItem.TouchUpInside += (sender, e) => {
                 var rmText = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("remove picture?","remove picture?");
@@ -391,22 +379,22 @@ namespace no.dctapps.Garageindex.screens
                 };
                 actionSheet.ShowFromTabBar(this.TabBarController.TabBar);
             };
-
-//            View.AddSubview(unselectPhotoButton);
         }
 
 
 		//Bold attempt
 		public void ResetImageView(){
 			Console.WriteLine ("reset image");
-			if(this.ImageItem != null){
-				this.ImageItem.Image = null;
+			if(this.imageView != null){
+				this.imageView.Image = null;
 			}
 		}
 	
 		void RaiseImageGottenClicked (UIImage image)
 		{
-			this.ImageItem.Image = null;
+			this.mySavePicture (image);
+
+			this.imageView.Image = null;
 			var handler = this.GotPicture;
 			if (handler != null && image != null) {
 				handler(this, new GotPictureEventArgs(image));
@@ -415,38 +403,100 @@ namespace no.dctapps.Garageindex.screens
 	
 	
 	
+//		public void InitializeImagePicker ()
+//			//		public static void InitializeImagePicker (RectangleF imageRect,RectangleF PickerReckt, UIView myview)
+//		{
+//            var picky = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("pick image", "pick image");
+////			imageView = new UIImageView (ImageRectangle);
+////			Add (imageView);
+////			choosePhotoButton = UIButton.FromType (UIButtonType.RoundedRect);
+////			choosePhotoButton.Frame = PickerRect;
+//            this.btnPickImageItem.SetTitle (picky, UIControlState.Normal);
+////			choosePhotoButton.SetTitle
+////			Xamarin.Themes.BlackLeatherTheme.Apply (choosePhotoButton, "");
+//			btnPickImageItem.TouchUpInside += (s, e) =>  {
+//				// create a new picker controller
+//				imagePicker = new UIImagePickerController ();
+//				// set our source to the photo library
+//                //TODO add opportunity to add from camera directly
+//				imagePicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+//				// set what media types
+//				imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes (UIImagePickerControllerSourceType.PhotoLibrary);
+//				imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
+//				imagePicker.Canceled += Handle_Canceled;
+//				// show the picker
+//				if (UserInterfaceIdiomIsPhone) {
+//					NavigationController.PresentViewController (imagePicker, true, delegate {});
+//				}
+//				else {
+//					Console.WriteLine ("Popover");
+//					Pc = new UIPopoverController (imagePicker);
+//					Pc.PresentFromRect (this.btnPickImageItem.Frame, (UIView)this.View, UIPopoverArrowDirection.Up, true);
+//				}
+//			};
+////			View.Add (choosePhotoButton);
+//		}
+
 		public void InitializeImagePicker ()
-			//		public static void InitializeImagePicker (RectangleF imageRect,RectangleF PickerReckt, UIView myview)
 		{
-            var picky = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("pick image", "pick image");
-//			imageView = new UIImageView (ImageRectangle);
-//			Add (imageView);
-//			choosePhotoButton = UIButton.FromType (UIButtonType.RoundedRect);
-//			choosePhotoButton.Frame = PickerRect;
-            this.btnPickImageItem.SetTitle (picky, UIControlState.Normal);
-//			choosePhotoButton.SetTitle
-//			Xamarin.Themes.BlackLeatherTheme.Apply (choosePhotoButton, "");
-			btnPickImageItem.TouchUpInside += (s, e) =>  {
-				// create a new picker controller
-				imagePicker = new UIImagePickerController ();
-				// set our source to the photo library
-                //TODO add opportunity to add from camera directly
-				imagePicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
-				// set what media types
-				imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes (UIImagePickerControllerSourceType.PhotoLibrary);
-				imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
-				imagePicker.Canceled += Handle_Canceled;
-				// show the picker
-				if (UserInterfaceIdiomIsPhone) {
-					NavigationController.PresentViewController (imagePicker, true, delegate {});
-				}
-				else {
-					Console.WriteLine ("Popover");
-					Pc = new UIPopoverController (imagePicker);
-					Pc.PresentFromRect (this.btnPickImageItem.Frame, (UIView)this.View, UIPopoverArrowDirection.Up, true);
+
+			var picky = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("pick image", "pick image");
+			imageView = new UIImageView (ImageRectangle);
+			this.btnPickImageItem.SetTitle (picky, UIControlState.Normal);
+			this.btnPickImageItem.TouchUpInside += (s, e) => SelectSource ();
+		}
+
+		public void SelectSource(){
+			var source = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("pick image from where?", "pick image from where?");
+			var myCancel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Cancel", "Cancel");
+			var myCamera = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Camera", "Camera");
+			var myLibrary = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Photo Library", "Photo Library");
+			actionSheet = new UIActionSheet(source);
+			actionSheet.AddButton(myCancel);
+			actionSheet.AddButton(myCamera);
+			actionSheet.AddButton(myLibrary);
+			actionSheet.CancelButtonIndex = 0;
+
+			actionSheet.Clicked += delegate(object sender, UIButtonEventArgs e2) {
+				if(e2.ButtonIndex == 0){
+					//DO nothing
+				}else if(e2.ButtonIndex == 1){
+					PickFromCamera();
+				}else{
+					PickFromLibrary();
 				}
 			};
-//			View.Add (choosePhotoButton);
+			actionSheet.ShowInView (View);
+		}
+
+
+		public void PickFromCamera(){
+			imagePicker = new UIImagePickerController ();
+			imagePicker.SourceType = UIImagePickerControllerSourceType.Camera;
+			imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes (UIImagePickerControllerSourceType.Camera);
+			this.ExtractImage ();
+		}
+
+		public void PickFromLibrary(){
+			imagePicker = new UIImagePickerController ();
+			imagePicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+			imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes (UIImagePickerControllerSourceType.PhotoLibrary);
+			ExtractImage ();
+		}
+
+		public void ExtractImage ()
+		{
+			imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
+			imagePicker.Canceled += Handle_Canceled;
+			// show the picker
+			if (UserInterfaceIdiomIsPhone) {
+				NavigationController.PresentViewController (imagePicker, true, delegate{});
+			}
+			else {
+				Console.WriteLine ("Popover");
+				Pc = new UIPopoverController (imagePicker);
+				Pc.PresentFromRect (this.btnPickImageItem.Frame, (UIView)this.View, UIPopoverArrowDirection.Up, true);
+			}
 		}
 	
 		// Do something when the 
@@ -473,12 +523,12 @@ namespace no.dctapps.Garageindex.screens
 				break;
 			}
 			
-			Console.Write("Reference URL: [" + UIImagePickerController.ReferenceUrl + "]");
-			
-			// get common info (shared between images and video)
-			NSUrl referenceURL = e.Info[new NSString("UIImagePickerControllerReferenceUrl")] as NSUrl;
-			if (referenceURL != null) 
-				Console.WriteLine(referenceURL.ToString ());
+//			Console.Write("Reference URL: [" + UIImagePickerController.ReferenceUrl + "]");
+//			
+//			// get common info (shared between images and video)
+//			NSUrl referenceURL = e.Info[new NSString("UIImagePickerControllerReferenceUrl")] as NSUrl;
+//			if (referenceURL != null) 
+//				Console.WriteLine(referenceURL.ToString ());
 			
 			// if it was an image, get the other image info
 			if(isImage) {
@@ -488,8 +538,8 @@ namespace no.dctapps.Garageindex.screens
 				if(originalImage != null) {
 					// do something with the image
 					Console.WriteLine ("got the original image");
-					this.ImageItem.Image = originalImage;
-					OutputImage = originalImage;
+//					this.imageView.Image = originalImage;
+//					OutputImage = originalImage;
 					RaiseImageGotten(originalImage);
 				}
 				
@@ -498,31 +548,21 @@ namespace no.dctapps.Garageindex.screens
 				if(editedImage != null) {
 					// do something with the image
 					Console.WriteLine ("got the edited image");
-					this.ImageItem.Image = editedImage;
-					OutputImage = editedImage;
+//					this.imageView.Image = editedImage;
+//					OutputImage = editedImage;
 					RaiseImageGotten(editedImage);
 				}
-				
-				//- get the image metadata
-				NSDictionary imageMetadata = e.Info[UIImagePickerController.MediaMetadata] as NSDictionary;
-				if(imageMetadata != null) {
-					// do something with the metadata
-					Console.WriteLine ("got image metadata");
-				}
-				
 			}
-			// if it's a video
-			else {
-				// get video url
-				NSUrl mediaURL = e.Info[UIImagePickerController.MediaURL] as NSUrl;
-				if(mediaURL != null) {
-					//
-					Console.WriteLine(mediaURL.ToString());
-				}
-			}
-			
-			
-			
+//			// if it's a video
+//			else {
+//				// get video url
+//				NSUrl mediaURL = e.Info[UIImagePickerController.MediaURL] as NSUrl;
+//				if(mediaURL != null) {
+//					//
+//					Console.WriteLine(mediaURL.ToString());
+//				}
+//			}
+
 			if(UserInterfaceIdiomIsPhone){
 				imagePicker.DismissViewController (true, delegate{});
 			}else{
@@ -533,8 +573,11 @@ namespace no.dctapps.Garageindex.screens
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
-			Unclean();
+
 			CreateEmailBarButton ();
+			this.GotPicture += (object sender, GotPictureEventArgs e) => this.imageView.Image = e.image;
+
+
 		}
 
 		public override void ViewWillDisappear (bool animated)
