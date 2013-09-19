@@ -47,8 +47,6 @@ namespace GarageIndex
 			// make the window visible
 			window.MakeKeyAndVisible ();
 
-
-
 			return true;
 		}
 	}

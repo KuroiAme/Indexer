@@ -46,7 +46,7 @@
 "Item details" = "Details Artikel";
 "In" = "In";
 "Items in this container" = "Gegenstände in diesem Behälter";
-"Preferences" = "Vorlieben";
+"Preferences" = "Einstellungen";
 "List containers in the large object list" = "Behältern mit grösserer Sachen listen";
 "Scanner" =  "Scanner";
 "Include QRcode in emails where applicable" = "QR-kode in emails mitnehmen";
@@ -54,3 +54,5 @@
 "Delete" = "entfernen";
 "Cancel" = "abbrechen";
 "remove picture" = "Bild entfernen";
+"Number of" = "Anzahl von";
+"Statistics" = "Statistik";

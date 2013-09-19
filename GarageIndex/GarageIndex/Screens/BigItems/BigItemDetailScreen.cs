@@ -331,16 +331,8 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			if(myObject != null){
 				myObject.Name = this.fieldBigName.Text;
 				myObject.Description = this.fieldBigDescription.Text;
-					
-//				imageView.Image = OutputImage;
-
-				String[] result = SaveImage(myObject.Name, imageView.Image);
-
-				myObject.imageFileName = result[0];
-				myObject.thumbFileName = result[1];
-
 				AppDelegate.dao.saveLagerObject (myObject);
-				RaiseSavedEvent(); //TODO this first?
+				RaiseSavedEvent();
 			}
 		}
 
@@ -354,12 +346,12 @@ namespace No.Dctapps.Garageindex.Ios.Screens
             }
         }
 		
-        public void SetImageViewImage(UIImage image){
-            if(imageView == null){
-                imageView = new UIImageView(ImageRectangle);
-            }
-            this.imageView.Image = image;
-        }
+//        public void SetImageViewImage(UIImage image){
+//            if(imageView == null){
+//                imageView = new UIImageView(ImageRectangle);
+//            }
+//            this.imageView.Image = image;
+//        }
 		
 		void RaiseImageGotten (UIImage image)
 		{
@@ -382,6 +374,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
             myObject.imageFileName = output [0];
             myObject.thumbFileName = output [1];
 			AppDelegate.dao.saveLagerObject (myObject);
+			RaiseSavedEvent ();
         }
 
         void RaiseDerez(){
@@ -409,7 +402,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			actionSheet.AddButton(myCancel);
 			actionSheet.AddButton(myCamera);
 			actionSheet.AddButton(myLibrary);
-			actionSheet.CancelButtonIndex = 0;
+//			actionSheet.CancelButtonIndex = 0;
 
 			actionSheet.Clicked += delegate(object sender, UIButtonEventArgs e2) {
 				if(e2.ButtonIndex == 0){

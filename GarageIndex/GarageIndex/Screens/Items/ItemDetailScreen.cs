@@ -2,15 +2,11 @@ using System;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex;
-using no.dctapps.Garageindex.dao;
 using no.dctapps.Garageindex.events;
-using No.DCTapps.GarageIndex;
 using System.Text;
 using no.dctapps.Garageindex.model;
 using No.Dctapps.GarageIndex;
 using MonoTouch.MessageUI;
-using no.dctapps.Garageindex.businesslogic;
 using GarageIndex;
 
 namespace no.dctapps.Garageindex.screens
@@ -20,7 +16,7 @@ namespace no.dctapps.Garageindex.screens
 //		LagerDAO dao;
 //		GarageindexBL bl;
 
-		Item item;
+		private Item item;
 
 		UIImagePickerController imagePicker;
 //		UIButton choosePhotoButton;
@@ -93,7 +89,7 @@ namespace no.dctapps.Garageindex.screens
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
+           base.DidReceiveMemoryWarning ();
 
 			if(this.IsViewLoaded && this.View.Window == null){
 				cleanup ();
@@ -146,8 +142,8 @@ namespace no.dctapps.Garageindex.screens
 			if(myItem != null){
                 float x = this.ImageRectangle.X;
                 float y = this.ImageRectangle.Y;
-                this.imageView  = LoadImage(new PointF(x,y),myItem.ImageFileName);
-				Add (imageView);
+				UIImageView imageholder  = LoadImage(new PointF(x,y),myItem.ImageFileName);
+				this.SetImageViewImage(imageholder);
 				this.item = myItem;
 
 				this.fieldName.Text = myItem.Name;
@@ -162,18 +158,22 @@ namespace no.dctapps.Garageindex.screens
 			}
 		}
 
-		public void SetImageViewImage(UIImage image){
-			if(this.imageView == null){
-				imageView = new UIImageView(ImageRectangle);
+		public void SetImageViewImage (UIImageView imageholder)
+		{
+			Console.WriteLine ("setImageViewImage");
+			if(imageholder != null){
+
+				Console.WriteLine ("Not null");
+				this.imageView = imageholder;
+				Add (imageholder);
 			}
-			this.imageView.Image = image;
 		}
 
-		void HandleTouchUpInside (object sender, EventArgs e)
-		{
-			this.SaveIt();
-			this.NavigationController.PopViewControllerAnimated(true);
-		}
+//		void HandleTouchUpInside (object sender, EventArgs e)
+//		{
+//			this.SaveIt();
+//			this.NavigationController.PopViewControllerAnimated(true);
+//		}
 
 		SelectContainer sc;
 
@@ -229,7 +229,7 @@ namespace no.dctapps.Garageindex.screens
 		{
 			base.ViewDidLoad ();
 
-			GotPicture += (object sender, GotPictureEventArgs e) => SetImageViewImage(e.image);
+
 
 			initializeMoveContainer();
 
@@ -301,12 +301,11 @@ namespace no.dctapps.Garageindex.screens
 			item.ImageFileName = output [0];
 			item.ThumbFileName = output [1];
 			AppDelegate.dao.SaveItem (item);
+			RaiseItemSaved ();
 		}
 
 		void RaiseItemSaved ()
 		{
-			
-			ResetImageView ();
 			var handler = this.ItemSaved;
 			if (handler != null) {
 				handler(this, new ItemSavedEventArgs());
@@ -316,7 +315,6 @@ namespace no.dctapps.Garageindex.screens
         void RaiseDerez ()
         {
             Console.WriteLine("Raising Derez");
-            //ResetImageView ();
             var handler = this.Derez;
             if (handler != null) {
                 handler(this, new DerezEventArgs());
@@ -333,9 +331,6 @@ namespace no.dctapps.Garageindex.screens
 				item.Name = this.fieldName.Text;
 			if (this.fieldDescription.Text != null)
 				item.Description = this.fieldDescription.Text;
-//			string[] output = SaveImage (item.Name, outputImage);
-//			item.ImageFileName = output [0];
-//			item.ThumbFileName = output [1];
 			AppDelegate.dao.SaveItem (item);
 			RaiseItemSaved();
 		}
@@ -344,7 +339,6 @@ namespace no.dctapps.Garageindex.screens
             if (item != null)
             {
                 DeleteImage(item.Name);
-//				this.ImageItem.Image = null;
                 item.ImageFileName = null;
                 item.ThumbFileName = null;
             }
@@ -574,10 +568,11 @@ namespace no.dctapps.Garageindex.screens
 		{
 			base.ViewWillAppear (animated);
 
+			this.ShowDetails (this.item);
+
 			CreateEmailBarButton ();
+
 			this.GotPicture += (object sender, GotPictureEventArgs e) => this.imageView.Image = e.image;
-
-
 		}
 
 		public override void ViewWillDisappear (bool animated)

@@ -28,6 +28,7 @@ namespace No.DCTapps.GarageIndex
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+			Title = NSBundle.MainBundle.LocalizedString ("Statistics","Statistics");
 //			this.populateStats ();
 			populateStats ();
             // Perform any additional setup after loading the view, typically from a nib.
@@ -50,7 +51,7 @@ namespace No.DCTapps.GarageIndex
 			string nom_items = NumberOf + " " + NSBundle.MainBundle.LocalizedString ("Items", "Items") + " : " + AppDelegate.dao.getAntallTing();
 			this.number_items.Text = nom_items;
 
-			string nom_large = NumberOf + " " + NSBundle.MainBundle.LocalizedString ("Large Items", "Large Items") + " : " + AppDelegate.dao.getAntallStore ();
+			string nom_large = NumberOf + " " + NSBundle.MainBundle.LocalizedString ("Large Objects", "Large Objects") + " : " + AppDelegate.dao.getAntallStore ();
 			this.number_large.Text = nom_large;
 
 		}

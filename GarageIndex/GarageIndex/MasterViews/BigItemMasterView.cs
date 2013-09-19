@@ -21,9 +21,7 @@ namespace no.dctapps.garageindex
 			masterView = new BigItemsScreen();
 			detailview = new BigItemDetailScreen();
 
-			masterView.ActivateDetail += (object sender, BigItemDetailClickedEventArgs e) => {
-				detailview.ShowDetails (e.lagerobject);
-			};
+			masterView.ActivateDetail += (object sender, BigItemDetailClickedEventArgs e) => detailview.ShowDetails (e.lagerobject);
 
 
 			detailview.BigItemSaved += delegate(object sender, BigItemSavedEventArgs e) {
@@ -34,6 +32,8 @@ namespace no.dctapps.garageindex
                 detailnav.PopViewControllerAnimated(true);
                 masterView.Refresh();
             };
+
+			detailview.GotPicture += (object sender, GotPictureEventArgs e) => masterView.Refresh ();
 
 			masternav = new UINavigationController();
 			masternav.PushViewController(masterView, false);

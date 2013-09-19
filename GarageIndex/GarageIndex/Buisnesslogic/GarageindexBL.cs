@@ -151,9 +151,11 @@ namespace no.dctapps.Garageindex.businesslogic
 			foreach(LagerObject lobj in storeting){
 				sb.AppendLine(lobj.toString());
 			}
-
+			
+				sb.AppendLine ("");
 			sb.AppendLine("-----------------------------------");
 			sb.AppendLine(cont+":"+AppDelegate.dao.getAntallBeholdere());
+				sb.AppendLine ("");
 
 
 			IList<LagerObject> containers = AppDelegate.dao.getAllContainers(input.ID);

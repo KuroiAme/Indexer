@@ -103,7 +103,7 @@ namespace GarageIndex
 			scanNav = new UINavigationController();
 			scanNav.TabBarItem = new UITabBarItem();
 			scanNav.TabBarItem.Title = title;
-			scanNav.TabBarItem.Image = UIImage.FromBundle("eye.png");
+			scanNav.TabBarItem.Image = UIImage.FromBundle("weye.png");
 
 			scanNav.PushViewController(scanner, true);
 
@@ -118,13 +118,13 @@ namespace GarageIndex
 				ItemNav = new UINavigationController();
 				ItemNav.TabBarItem = new UITabBarItem ();
 				ItemNav.TabBarItem.Title = lbtext;
-				ItemNav.TabBarItem.Image = UIImage.FromBundle("stampy.png");
+				ItemNav.TabBarItem.Image = UIImage.FromBundle("mystamp.png");
 				ItemNav.PushViewController(ItemCatalogue, false);
 			}else{
 				ItemMaster = new ItemMasterView();
 				ItemMaster.TabBarItem = new UITabBarItem ();
 				ItemMaster.TabBarItem.Title = lbtext;
-				ItemMaster.TabBarItem.Image = UIImage.FromBundle("stampy.png");
+				ItemMaster.TabBarItem.Image = UIImage.FromBundle("mystamp.png");
 			}
 		}
 
@@ -137,13 +137,13 @@ namespace GarageIndex
 				bigNav = new UINavigationController();
 				bigNav.TabBarItem = new UITabBarItem ();
 				bigNav.TabBarItem.Title = lbtext;
-				bigNav.TabBarItem.Image = UIImage.FromBundle("table.png");
+				bigNav.TabBarItem.Image = UIImage.FromBundle("wtable.png");
 				bigNav.PushViewController(bigitemscreen, false);
 			}else{
 				bigMaster = new BigItemMasterView();
 				bigMaster.TabBarItem = new UITabBarItem ();
 				bigMaster.TabBarItem.Title = lbtext;
-				bigMaster.TabBarItem.Image = UIImage.FromBundle("table.png");
+				bigMaster.TabBarItem.Image = UIImage.FromBundle("wtable.png");
 			}
 		}
 
@@ -183,7 +183,7 @@ namespace GarageIndex
 			prefNav = new UINavigationController();
 			prefNav.TabBarItem = new UITabBarItem();
 			prefNav.TabBarItem.Title = title;
-			prefNav.TabBarItem.Image = UIImage.FromBundle("HomeScreenTab.png");
+			prefNav.TabBarItem.Image = UIImage.FromBundle("pref.png");
 
 			prefNav.PushViewController(preferences, false);
 
@@ -196,7 +196,7 @@ namespace GarageIndex
 			StatNav = new UINavigationController();
 			StatNav.TabBarItem = new UITabBarItem();
 			StatNav.TabBarItem.Title = stats;
-			StatNav.TabBarItem.Image = UIImage.FromBundle("eye.png");
+			StatNav.TabBarItem.Image = UIImage.FromBundle("math.png");
 			StatNav.PushViewController(statscreen, true);
 
 		}
@@ -211,14 +211,14 @@ namespace GarageIndex
 
 				lagerNav.TabBarItem = new UITabBarItem();
 				lagerNav.TabBarItem.Title = lagre;
-//				lagerNav.TabBarItem.Image = UIImage.FromBundle("lagre.png");
+				lagerNav.TabBarItem.Image = UIImage.FromBundle("mh.png");
 				lagerNav.PushViewController(LagerList, false);
 			}else{
 				//				//init splitviewController
 				LagerMaster = new LagerMasterView();
 				LagerMaster.TabBarItem = new UITabBarItem();
 				LagerMaster.TabBarItem.Title = lagre;
-//				LagerMaster.TabBarItem.Image = UIImage.FromBundle("lagre.png");
+				LagerMaster.TabBarItem.Image = UIImage.FromBundle("mh.png");
 			}
 		}
 
