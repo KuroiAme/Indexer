@@ -3,7 +3,6 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using ZXing.Mobile;
-using no.dctapps.Garageindex.dao;
 using no.dctapps.Garageindex.model;
 using System.Collections.Generic;
 using no.dctapps.Garageindex.screens;
@@ -76,7 +75,7 @@ namespace No.DCTapps.GarageIndex
                 }
                 IList<LagerObject> lol = null;
                 if(id != -1){
-					lol = AppDelegate.dao.getLagerObjectByID(id);
+					lol = AppDelegate.dao.GetLagerObjectByID(id);
                 }
 
                 if (lol != null)

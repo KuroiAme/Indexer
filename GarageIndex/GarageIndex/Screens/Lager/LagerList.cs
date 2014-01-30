@@ -64,7 +64,7 @@ namespace GarageIndex
 		{
 			//			Table = new UITableView (View.Bounds);
 			//			Table.AutoresizingMask = UIViewAutoresizing.All;
-			List<Lager> items = (List<Lager>)AppDelegate.dao.getAllLagers();
+			List<Lager> items = (List<Lager>)AppDelegate.dao.GetAllLagers();
 			//			items.Sort ();
 
 			TableSourceLager source = new TableSourceLager (items);

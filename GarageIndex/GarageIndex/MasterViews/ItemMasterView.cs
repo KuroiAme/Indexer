@@ -22,15 +22,16 @@ namespace no.dctapps.Garageindex.screens
 			primaryview = new ItemCatalogue();
 			secondaryview = new ItemDetailScreen();
 
-			primaryview.ActivateDetail += (object sender, ItemClickedEventArgs e) => {
-				secondaryview.ShowDetails(e.Item);
-			};
+			primaryview.ActivateDetail += (object sender, ItemClickedEventArgs e) => secondaryview.ShowDetails (e.Item);
 
-			secondaryview.ItemSaved += delegate(object sender, ItemSavedEventArgs e) {
-				primaryview.Refresh();
-			};
+			secondaryview.ItemSaved += (object sender, ItemSavedEventArgs e) => primaryview.Refresh ();
 
             secondaryview.Derez += (object sender, DerezEventArgs e) => secondarynav.PopToRootViewController(true);
+
+			secondaryview.Derez += (object sender, DerezEventArgs e) => {
+				secondarynav.PopViewControllerAnimated(true);
+				primaryview.Refresh();
+			};
 
 			primarynav = new UINavigationController();
 			primarynav.PushViewController(primaryview, false);

@@ -4,7 +4,6 @@ using System.Drawing;
 
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.dao;
 using No.Dctapps.Garageindex.Ios.Screens;
 using No.Dctapps.GarageIndex;
 using GarageIndex;

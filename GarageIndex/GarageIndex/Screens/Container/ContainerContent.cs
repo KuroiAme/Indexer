@@ -2,7 +2,6 @@ using System;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.dao;
 using System.Collections.Generic;
 using No.Dctapps.GarageIndex;
 using no.dctapps.Garageindex.events;
@@ -84,7 +83,7 @@ namespace GarageIndex
 			IList<Item> tableItems = new List<Item> ();
 
 			try{
-				tableItems = AppDelegate.dao.getAllItemsInBox(boks);
+				tableItems = AppDelegate.dao.GetAllItemsInBox(boks);
 			}catch(Exception e){
 				Console.WriteLine ("catastrophe avoided:" + e.ToString ());
 			}

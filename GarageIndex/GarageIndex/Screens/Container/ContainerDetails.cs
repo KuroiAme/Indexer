@@ -3,7 +3,6 @@ using System.Drawing;
 using MonoTouch.UIKit;
 using System.Collections.Generic;
 using no.dctapps.Garageindex.model;
-using no.dctapps.Garageindex.dao;
 using GarageIndex;
 using no.dctapps.Garageindex.tables;
 using no.dctapps.Garageindex.events;
@@ -122,7 +121,7 @@ namespace no.dctapps.Garageindex.screens
 				}
 				this.boks.LagerID = e.Lager.ID;
 				SetLagerButtonLabel (this.boks);
-				AppDelegate.dao.saveLagerObject(this.boks);
+				AppDelegate.dao.SaveLagerObject(this.boks);
 			};
 		}
 
@@ -241,7 +240,7 @@ namespace no.dctapps.Garageindex.screens
 			this.boks.Description = this.fieldDescription.Text;
 			this.boks.type = this.textType.Text;
 			
-			AppDelegate.dao.saveLagerObject (boks);
+			AppDelegate.dao.SaveLagerObject (boks);
 			RaiseSavedEvent();
 //			this.NavigationController.PopToRootViewController(true);
 		}

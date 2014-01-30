@@ -5,12 +5,11 @@ using no.dctapps.Garageindex;
 using No.Dctapps.Garageindex.Ios.Screens;
 using MonoTouch.Foundation;
 using No.DCTapps.GarageIndex;
-using no.dctapps.Garageindex.dao;
-using no.dctapps.Garageindex.screens;
+using GarageIndex;
 using no.dctapps.Garageindex.events;
 using No.Dctapps.GarageIndex;
 using no.dctapps.Garageindex.tables;
-using GarageIndex;
+using no.dctapps.Garageindex.screens;
 
 namespace no.dctapps.garageindex
 {
@@ -54,7 +53,7 @@ namespace no.dctapps.garageindex
 //			Table = new UITableView (View.Bounds);
 //			Table.AutoresizingMask = UIViewAutoresizing.All;
 
-			List<Item> items = (List<Item>)AppDelegate.dao.getAllItems ();
+			List<Item> items = (List<Item>)AppDelegate.dao.GetAllItems ();
 			items.Sort ();
 			List<String> strlist = new List<String> ();
 			foreach (Item it in items) {

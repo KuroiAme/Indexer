@@ -1,20 +1,18 @@
-using System;
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using no.dctapps.Garageindex.events;
-using System.Text;
-using no.dctapps.Garageindex.model;
-using No.Dctapps.GarageIndex;
-using MonoTouch.MessageUI;
-using GarageIndex;
-
 namespace no.dctapps.Garageindex.screens
 {
+	using System;
+	using System.Drawing;
+	using MonoTouch.Foundation;
+	using MonoTouch.UIKit;
+	using no.dctapps.Garageindex.events;
+	using System.Text;
+	using no.dctapps.Garageindex.model;
+	using No.Dctapps.GarageIndex;
+	using MonoTouch.MessageUI;
+	using GarageIndex;
+
 	public partial class ItemDetailScreen : UtilityViewController
-	{
-//		LagerDAO dao;
-//		GarageindexBL bl;
+      {
 
 		private Item item;
 
@@ -116,7 +114,7 @@ namespace no.dctapps.Garageindex.screens
 			sb.Append (NSBundle.MainBundle.LocalizedString ("In", "In"));
 			sb.Append (":");
 			if (itty != null) {
-				LagerObject lo = AppDelegate.dao.getContainerById (itty.boxID);
+				LagerObject lo = AppDelegate.dao.GetContainerById (itty.boxID);
 				if (lo != null) {
 					if (!string.IsNullOrEmpty (lo.Name)) {
 						sb.Append (lo.Name);
@@ -165,6 +163,12 @@ namespace no.dctapps.Garageindex.screens
 
 				Console.WriteLine ("Not null");
 				this.imageView = imageholder;
+				//				if(imageholder.Image != null){
+				//				this.scrollContent.ContentSize = imageholder.Image.Size;
+				//
+				//				this.scrollContent.AutosizesSubviews = true;
+				//				this.scrollContent.BringSubviewToFront(imageholder);
+				//				this.scrollContent.AddSubview (imageholder);
 				Add (imageholder);
 			}
 		}
@@ -248,7 +252,7 @@ namespace no.dctapps.Garageindex.screens
 			releaseKeyboard ();
 
 			InitializeImagePicker ();
-            InitializeUnpickImage();
+			InitializeUnpickImage();
 
 
 
@@ -266,7 +270,7 @@ namespace no.dctapps.Garageindex.screens
 //
 //				
 //			if(UserInterfaceIdiomIsPhone){
-////				NavigationController.PresentViewController (li, true, delegate {});
+//				NavigationController.PresentViewController (li, true, delegate {});
 //					NavigationController.PushViewController(li,true);
 //				}else{
 //					Pc.PresentFromBarButtonItem(it,UIPopoverArrowDirection.Up, true);
@@ -339,12 +343,14 @@ namespace no.dctapps.Garageindex.screens
             if (item != null)
             {
                 DeleteImage(item.Name);
+				this.imageView.Image = null;
                 item.ImageFileName = null;
                 item.ThumbFileName = null;
             }
         }
+			
 
-        UIActionSheet actionSheet;
+		UIActionSheet aSheet;
 
         public void InitializeUnpickImage(){
             var unpicky = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("remove picture", "remove picture");
@@ -355,8 +361,8 @@ namespace no.dctapps.Garageindex.screens
                 var rmText = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("remove picture?","remove picture?");
                 var rmDel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Delete", "Delete");
                 var rmCancel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Cancel", "Cancel");
-                actionSheet = new UIActionSheet(rmText, null, rmCancel, rmDel, null);
-                actionSheet.Clicked += delegate(object a, UIButtonEventArgs b) {
+				aSheet = new UIActionSheet(rmText, null, rmCancel, rmDel, null);
+				aSheet.Clicked += delegate(object a, UIButtonEventArgs b) {
                     Console.WriteLine("button" + b.ButtonIndex.ToString() + " clicked");
                     if(b.ButtonIndex == 0){
                         Console.WriteLine("deleting picture!");
@@ -371,7 +377,7 @@ namespace no.dctapps.Garageindex.screens
                         }
                     }
                 };
-                actionSheet.ShowFromTabBar(this.TabBarController.TabBar);
+				aSheet.ShowFromTabBar(this.TabBarController.TabBar);
             };
         }
 
@@ -440,18 +446,21 @@ namespace no.dctapps.Garageindex.screens
 			this.btnPickImageItem.TouchUpInside += (s, e) => SelectSource ();
 		}
 
+
+		UIActionSheet bSheet;
+
 		public void SelectSource(){
 			var source = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("pick image from where?", "pick image from where?");
 			var myCancel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Cancel", "Cancel");
 			var myCamera = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Camera", "Camera");
 			var myLibrary = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Photo Library", "Photo Library");
-			actionSheet = new UIActionSheet(source);
-			actionSheet.AddButton(myCancel);
-			actionSheet.AddButton(myCamera);
-			actionSheet.AddButton(myLibrary);
-			actionSheet.CancelButtonIndex = 0;
+			bSheet = new UIActionSheet(source);
+			bSheet.AddButton(myCancel);
+			bSheet.AddButton(myCamera);
+			bSheet.AddButton(myLibrary);
+			//			actionSheet.CancelButtonIndex = 0;
 
-			actionSheet.Clicked += delegate(object sender, UIButtonEventArgs e2) {
+			bSheet.Clicked += delegate(object sender, UIButtonEventArgs e2) {
 				if(e2.ButtonIndex == 0){
 					//DO nothing
 				}else if(e2.ButtonIndex == 1){
@@ -460,7 +469,7 @@ namespace no.dctapps.Garageindex.screens
 					PickFromLibrary();
 				}
 			};
-			actionSheet.ShowInView (View);
+			bSheet.ShowInView (View);
 		}
 
 

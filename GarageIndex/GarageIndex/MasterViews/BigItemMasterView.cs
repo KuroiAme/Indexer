@@ -24,9 +24,7 @@ namespace no.dctapps.garageindex
 			masterView.ActivateDetail += (object sender, BigItemDetailClickedEventArgs e) => detailview.ShowDetails (e.lagerobject);
 
 
-			detailview.BigItemSaved += delegate(object sender, BigItemSavedEventArgs e) {
-				masterView.Refresh();
-			};
+			detailview.BigItemSaved += (object sender, BigItemSavedEventArgs e) => masterView.Refresh ();
 
             detailview.Derezzy += (object sender, DerezEventArgs e) => {
                 detailnav.PopViewControllerAnimated(true);

@@ -8,13 +8,14 @@ namespace GarageIndex
 {
 	public class TabController : UITabBarController
 	{
+		public UIViewController galleryscreen = null;
 		public UtilityViewController homescreen = null;
 		public UITableViewController boxesscreen = null;
 		public UITableViewController bigitemscreen = null;
 		public UITableViewController ItemCatalogue = null;
 		public UtilityViewController preferences = null;
 		public UITableViewController LagerList = null;
-		StatisticsScreen statscreen = null;
+		PiePlot piescreen = null;
 		public Scanner scanner;
 
 
@@ -27,6 +28,7 @@ namespace GarageIndex
 		UINavigationController StatNav;
 		public UINavigationController homeNav,bigNav,boxNav, ItemNav, prefNav;
 		public UINavigationController scanNav;
+		public UINavigationController galleryNav;
 
 		static bool UserInterfaceIdiomIsPhone {
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
@@ -37,6 +39,7 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 
+			InitGallery ();
 			InitItemScreen();
 			InitBoxesScreen();
 			InitBigItemScreen ( );
@@ -54,6 +57,7 @@ namespace GarageIndex
 			UIViewController[] viewControllers = null;
 			if (UserInterfaceIdiomIsPhone) {
 				viewControllers = new UIViewController[] {
+					galleryNav,
 					ItemNav,
 					boxNav,
 					bigNav,
@@ -66,6 +70,7 @@ namespace GarageIndex
 			else {
 				Console.WriteLine("init viewcontrollers for ipad");
 				viewControllers = new UIViewController[] {
+					galleryNav,
 					ItemMaster,
 					containerMaster,
 					bigMaster,
@@ -86,6 +91,26 @@ namespace GarageIndex
 				SelectedViewController = ItemMaster;
 			}
 
+		}
+
+		void InitGallery ()
+		{
+			var title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Gallery", "Gallery");
+
+			//Home tab
+			if (UserInterfaceIdiomIsPhone) {
+				galleryscreen = new TaggedImageViewController ();
+				galleryscreen.Title = title;
+			}else{
+				galleryscreen = new TaggedImageViewController ();
+			}
+
+			galleryNav = new UINavigationController();
+			galleryNav.TabBarItem = new UITabBarItem();
+			galleryNav.TabBarItem.Title = title;
+			galleryNav.TabBarItem.Image = UIImage.FromBundle("weye.png");
+
+			galleryNav.PushViewController(galleryscreen, true);
 		}
 
 		public void InitScanner ()
@@ -137,13 +162,13 @@ namespace GarageIndex
 				bigNav = new UINavigationController();
 				bigNav.TabBarItem = new UITabBarItem ();
 				bigNav.TabBarItem.Title = lbtext;
-				bigNav.TabBarItem.Image = UIImage.FromBundle("wtable.png");
+				bigNav.TabBarItem.Image = UIImage.FromBundle("mytable.png");
 				bigNav.PushViewController(bigitemscreen, false);
 			}else{
 				bigMaster = new BigItemMasterView();
 				bigMaster.TabBarItem = new UITabBarItem ();
 				bigMaster.TabBarItem.Title = lbtext;
-				bigMaster.TabBarItem.Image = UIImage.FromBundle("wtable.png");
+				bigMaster.TabBarItem.Image = UIImage.FromBundle("mytable.png");
 			}
 		}
 
@@ -157,14 +182,14 @@ namespace GarageIndex
 
 				boxNav.TabBarItem = new UITabBarItem();
 				boxNav.TabBarItem.Title = box;
-				boxNav.TabBarItem.Image = UIImage.FromBundle ("box.png");
+				boxNav.TabBarItem.Image = UIImage.FromBundle ("mybox.png");
 				boxNav.PushViewController(boxesscreen, false);
 			}else{
 				//				//init splitviewController
 				containerMaster = new no.dctapps.Garageindex.ContainerMasterView();
 				containerMaster.TabBarItem = new UITabBarItem();
 				containerMaster.TabBarItem.Title = box;
-				containerMaster.TabBarItem.Image = UIImage.FromBundle("box.png");
+				containerMaster.TabBarItem.Image = UIImage.FromBundle("mybox.png");
 			}
 		}
 
@@ -192,12 +217,12 @@ namespace GarageIndex
 		void InitStatisticsScreen(){
 			var stats = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Statistics", "Statistics");
 
-			statscreen = new StatisticsScreen();
+			piescreen = new PiePlot();
 			StatNav = new UINavigationController();
 			StatNav.TabBarItem = new UITabBarItem();
 			StatNav.TabBarItem.Title = stats;
 			StatNav.TabBarItem.Image = UIImage.FromBundle("math.png");
-			StatNav.PushViewController(statscreen, true);
+			StatNav.PushViewController(piescreen, true);
 
 		}
 
@@ -211,7 +236,7 @@ namespace GarageIndex
 
 				lagerNav.TabBarItem = new UITabBarItem();
 				lagerNav.TabBarItem.Title = lagre;
-				lagerNav.TabBarItem.Image = UIImage.FromBundle("mh.png");
+				lagerNav.TabBarItem.Image = UIImage.FromBundle("m\th.png");
 				lagerNav.PushViewController(LagerList, false);
 			}else{
 				//				//init splitviewController
@@ -221,8 +246,6 @@ namespace GarageIndex
 				LagerMaster.TabBarItem.Image = UIImage.FromBundle("mh.png");
 			}
 		}
-
-
 	}
 }
 

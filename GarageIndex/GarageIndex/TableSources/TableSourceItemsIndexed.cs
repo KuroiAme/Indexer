@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using no.dctapps.Garageindex.events;
 using no.dctapps.Garageindex.model;
-using no.dctapps.Garageindex.dao;
 using No.Dctapps.GarageIndex;
+using no.dctapps.Garageindex.dao;
 
 namespace no.dctapps.Garageindex.tables
 {
@@ -83,7 +83,7 @@ namespace no.dctapps.Garageindex.tables
 
 			string input = indexedTableItems[keys[indexPath.Section]][indexPath.Row];
 
-			IList<Item> R = dao.getItemsWithName(input);
+			IList<Item> R = dao.GetItemsWithName(input);
 			foreach(Item X in R){
 				Console.WriteLine(X.toString());
 			}
@@ -147,7 +147,7 @@ namespace no.dctapps.Garageindex.tables
 				
 				string input = indexedTableItems[keys[indexPath.Section]][indexPath.Row];
 						
-				IList<Item> R = dao.getItemsWithName(input);
+				IList<Item> R = dao.GetItemsWithName(input);
 				Item x = R[0];
 
 				this.RaiseItemDeleted(x);

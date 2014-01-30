@@ -42,16 +42,16 @@ namespace No.DCTapps.GarageIndex
 
 		private void populateStats(){
 			string NumberOf = NSBundle.MainBundle.LocalizedString("Number of", "Number of");
-			string nom_storages = NumberOf + " " + NSBundle.MainBundle.LocalizedString("Storages","Storages") +" : "+AppDelegate.dao.getAntallLagre();
+			string nom_storages = NumberOf + " " + NSBundle.MainBundle.LocalizedString("Storages","Storages") +" : "+AppDelegate.dao.GetAntallLagre();
 			this.number_storages.Text = nom_storages;
 
-			string nom_containers = NumberOf + " " + NSBundle.MainBundle.LocalizedString ("Containers", "Containers") + " : " + AppDelegate.dao.getAntallBeholdere ();
+			string nom_containers = NumberOf + " " + NSBundle.MainBundle.LocalizedString ("Containers", "Containers") + " : " + AppDelegate.dao.GetAntallBeholdere ();
 			this.number_containers.Text = nom_containers;
 
-			string nom_items = NumberOf + " " + NSBundle.MainBundle.LocalizedString ("Items", "Items") + " : " + AppDelegate.dao.getAntallTing();
+			string nom_items = NumberOf + " " + NSBundle.MainBundle.LocalizedString ("Items", "Items") + " : " + AppDelegate.dao.GetAntallTing();
 			this.number_items.Text = nom_items;
 
-			string nom_large = NumberOf + " " + NSBundle.MainBundle.LocalizedString ("Large Objects", "Large Objects") + " : " + AppDelegate.dao.getAntallStore ();
+			string nom_large = NumberOf + " " + NSBundle.MainBundle.LocalizedString ("Large Objects", "Large Objects") + " : " + AppDelegate.dao.GetAntallStore ();
 			this.number_large.Text = nom_large;
 
 		}

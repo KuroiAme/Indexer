@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.dao;
 using no.dctapps.Garageindex.businesslogic;
+using TipOfTheDay;
+using no.dctapps.Garageindex.dao;
 
 namespace GarageIndex
 {
@@ -14,11 +15,22 @@ namespace GarageIndex
 	[Register ("AppDelegate")]
 	public partial class AppDelegate : UIApplicationDelegate
 	{
+
+		static AppDelegate()
+		{
+			CurrentSystemVersion = new Version (UIDevice.CurrentDevice.SystemVersion);
+			iOS7 = new Version (7, 0);
+		}
+
+		public static readonly Version CurrentSystemVersion;
+		public static readonly Version iOS7;
+
 		// class-level declarations
 		UIWindow window;
 		UITabBarController tabs;
 		public static LagerDAO dao;
 		public static GarageindexBL bl;
+		//public static CouchDB db;
 
 		//
 		// This method is invoked when the application has loaded and is ready to run. In this
@@ -32,6 +44,7 @@ namespace GarageIndex
 			//Initialize Global Frameworks...instead of having Dependency Injection
 			dao = new LagerDAO ();
 			bl = new GarageindexBL ();
+			//db = new CouchDB ();
 
 
 			// create a new window instance based on the screen size
@@ -39,6 +52,7 @@ namespace GarageIndex
 
 			tabs = new TabController ();
 
+//			if(MonoTouch.Foundation.isi
 			this.window.TintColor = UIColor.Purple;
 			
 			// If you have defined a root view controller, set it here:
@@ -46,8 +60,18 @@ namespace GarageIndex
 			
 			// make the window visible
 			window.MakeKeyAndVisible ();
+			if (UserInterfaceIdiomIsPhone) {
+				if (CurrentSystemVersion >= iOS7) {
+					TipOfTheDayControl<GarageIndexTipsProvider, DefaultTipsSettings>.Show (window);
+				}
+			}
 
 			return true;
+		}
+		
+		public static bool UserInterfaceIdiomIsPhone 
+		{
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 	}
 }

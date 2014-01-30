@@ -4,12 +4,10 @@ using System.Text;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using no.dctapps.Garageindex.model;
-using no.dctapps.Garageindex.dao;
+using GarageIndex;
 using no.dctapps.Garageindex.screens;
 using no.dctapps.Garageindex.events;
 using MonoTouch.MessageUI;
-using no.dctapps.Garageindex.businesslogic;
-using GarageIndex;
 
 
 namespace No.Dctapps.Garageindex.Ios.Screens
@@ -196,7 +194,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 				if(myObject != null){
 				this.myObject.LagerID = e.Lager.ID;
 				SetLagerButtonLabel (this.myObject);
-				AppDelegate.dao.saveLagerObject(this.myObject);
+				AppDelegate.dao.SaveLagerObject(this.myObject);
 				RaiseSavedEvent();
 				}
 			};
@@ -236,51 +234,15 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 				Add (imageholder);
 			}
 		}
-//		}
-
-//		void FixScrollContent ()
-//		{
-//			Console.WriteLine("frame:"+scrollContent.Frame);
-//			if (imageView == null) {
-//				imageView = new UIImageView (scrollContent.Frame);
-//			}
-//			this.scrollContent.AddSubview (this.imageView);
-//			this.scrollContent.AlignmentRectForFrame(scrollContent.Frame);
-//
-//			this.scrollContent.ContentOffset = new PointF (200f, 50f);
-//			this.scrollContent.PagingEnabled = true;
-//			this.scrollContent.MinimumZoomScale = 0.5f;
-//			this.scrollContent.MaximumZoomScale = 4f;
-//			this.scrollContent.ViewForZoomingInScrollView = delegate {
-//				return this.imageView;
-//			};
-//			this.scrollContent.ZoomScale = 1f;
-//			this.scrollContent.IndicatorStyle = UIScrollViewIndicatorStyle.White;
-//
-//		}
-
-
-//		void HandleTouchUpInside (object sender, EventArgs e)
-//		{
-//			this.SaveIt();
-//		}
-
 		
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 
-//			FixScrollContent ();
-
 			ShowDetails (this.myObject);
 				
 			InitializeImagePicker ();
             InitializeUnpickImage();
-
-//			Xamarin.Themes.BlackLeatherTheme.Apply(this.View);
-//			Xamarin.Themes.BlackLeatherTheme.Apply(this.fieldBigName);
-//			Xamarin.Themes.BlackLeatherTheme.Apply(this.fieldBigDescription);
-//			Xamarin.Themes.BlackLeatherTheme.Apply(this.btnIn);
 
 			SetLagerButtonLabel (this.myObject);
 			initializeMoveLager ();
@@ -331,7 +293,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			if(myObject != null){
 				myObject.Name = this.fieldBigName.Text;
 				myObject.Description = this.fieldBigDescription.Text;
-				AppDelegate.dao.saveLagerObject (myObject);
+				AppDelegate.dao.SaveLagerObject (myObject);
 				RaiseSavedEvent();
 			}
 		}
@@ -373,7 +335,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
             string[] output = SaveImage (myObject.Name, image);
             myObject.imageFileName = output [0];
             myObject.thumbFileName = output [1];
-			AppDelegate.dao.saveLagerObject (myObject);
+			AppDelegate.dao.SaveLagerObject (myObject);
 			RaiseSavedEvent ();
         }
 

@@ -20,7 +20,7 @@
 "Item Name" =  "Artikelname";
 "Item description" = "Artikelbeschreibung";     
 "Box Identifier can be your initials pluss a number that you can use to write on your boxes so you know for sure" = "Der Boxindendifizier kann aus ihren Initalen plus einer Zahl bestehen, mit der sie die Box zur sicheren Wiedererkennung beschriften";
-"swipe to delete things" = "Löschen bei swiping";
+"swipe right to left to delete things" = "Löschen bei swiping rechts nach links";
 "Overview" = "Übersicht";
 "Number of boxes" = "Anzahl der Schachteln";
 "Number of Large Items" =  "Anzahl grosser Gegenstände";

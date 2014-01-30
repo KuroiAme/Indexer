@@ -1,7 +1,6 @@
 using System;
 using MonoTouch.Foundation;
 using no.dctapps.Garageindex.model;
-using no.dctapps.Garageindex.dao;
 using no.dctapps.Garageindex.events;
 using MonoTouch.UIKit;
 using MonoTouch.MessageUI;

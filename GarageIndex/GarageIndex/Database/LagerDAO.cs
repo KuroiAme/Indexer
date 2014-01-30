@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections;
 using no.dctapps.Garageindex.model;
 using No.Dctapps.GarageIndex;
+using GarageIndex;
 
 namespace no.dctapps.Garageindex.dao
 {
@@ -16,13 +17,15 @@ namespace no.dctapps.Garageindex.dao
 		public LagerDAO ()
 		{
 			var documents = Environment.GetFolderPath (Environment.SpecialFolder.LocalApplicationData);
-			pathToDatabase = Path.Combine (documents, "db_sqlite-net.db");
+			pathToDatabase = Path.Combine(documents, "db_sqlite-net.db");
 
-			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)){
+			using (var conn= new SQLiteConnection(pathToDatabase)){
 				Console.WriteLine("dbpath:"+pathToDatabase);
 				conn.CreateTable<Item>();
 				conn.CreateTable<LagerObject>();
 				conn.CreateTable<Lager>();
+				conn.CreateTable<GalleryObject> ();
+				conn.CreateTable<ImageTag> ();
 			}
 		}
 
@@ -36,10 +39,26 @@ namespace no.dctapps.Garageindex.dao
 			}
 		}
 
-		public void saveLagerObject (LagerObject myObject)
+		public void SaveGalleryObject (GalleryObject myObject)
 		{
 			Console.WriteLine(myObject.ID);
-			IList<LagerObject> thelist = this.getLagerObjectByID (myObject.ID);
+			GalleryObject item = this.GetGalleryObjectByID (myObject.ID);
+
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				if(item == null){
+					Console.WriteLine("insert");
+					conn.Insert (myObject);
+				}else{
+					Console.WriteLine("update");
+					conn.Update (myObject);
+				}
+			}
+		}
+
+		public void SaveLagerObject (LagerObject myObject)
+		{
+			Console.WriteLine(myObject.ID);
+			IList<LagerObject> thelist = this.GetLagerObjectByID(myObject.ID);
 			Console.WriteLine(thelist.Count);
 
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
@@ -53,7 +72,16 @@ namespace no.dctapps.Garageindex.dao
 			}
 		}
 
-		public IList<LagerObject> getLagerObjectByID (int ID)
+		public IList<ImageTag> GetTagsByGalleryObjectID (int iD)
+		{
+			IList<ImageTag> myList = new List<ImageTag>();
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<ImageTag> ("select * from ImageTag where GalleryObjectID = ?", iD);
+			}
+			return myList;
+		}
+
+		public IList<LagerObject> GetLagerObjectByID (int ID)
 		{
 			IList<LagerObject> myList = new List<LagerObject>();
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
@@ -62,9 +90,36 @@ namespace no.dctapps.Garageindex.dao
 			return myList;
 		}
 
+		public GalleryObject GetGalleryObjectByIndex (int index)
+		{
+			IList<GalleryObject> myList = new List<GalleryObject>();
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<GalleryObject> ("select * from GalleryObject");
+			}
+			return myList[index];
+		}
+
+		public string GetThumbfilenameForIndex (uint index)
+		{
+			IList<GalleryObject> myList = new List<GalleryObject>();
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<GalleryObject> ("select * from GalleryObject");
+			}
+			return myList[(int) index].thumbFileName;
+		}
+
+		public int GetNumberOfItemsInGallery(){
+			IList<GalleryObject> myList = new List<GalleryObject>();
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<GalleryObject> ("select * from GalleryObject");
+			}
+			int x = myList.Count;
+			Console.WriteLine ("Number of items in gallery:"+x);
+			return x;
+		}
 
 
-		public IList<Item> getItemsWithName (string text)
+		public IList<Item> GetItemsWithName (string text)
 		{
 			IList<Item> myList = new List<Item>();
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
@@ -106,6 +161,21 @@ namespace no.dctapps.Garageindex.dao
 					conn.Insert (item);
 					}else{
 						conn.Update (item);
+					}
+				}
+			}
+		}
+
+		public void SaveTag (ImageTag tag)
+		{
+			if(tag != null && tag.TagString != ""){
+				ImageTag checktag = GetTagById (tag.ID);
+				using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+
+					if(checktag == null){
+						conn.Insert (tag);
+					}else{
+						conn.Update (tag);
 					}
 				}
 			}
@@ -156,51 +226,78 @@ namespace no.dctapps.Garageindex.dao
 			}
 		}
 
-		public void insertLager (object lm)
+		public void InsertLager (object lm)
 		{
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)){
 				conn.Insert (lm);
 			}
 		}
 
-		public void updateLager (Lager lm)
+		public void UpdateLager (Lager lm)
 		{
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)){
 				conn.Update (lm);
 			}
 		}
 
-		public string getAntallTing ()
+		public string GetAntallTing ()
 		{
-			IList<Item> list = getAllItems();
+			IList<Item> list = GetAllItems();
 			return list.Count.ToString();
 		}
 
-		public string getAntallStore ()
+		public string GetAntallStore ()
 		{
 			IList<LagerObject> list = GetAllLargeItems();
 			return list.Count.ToString();
 		}
 
-		public string getAntallStore (int lagerID)
+		public string GetAntallStore (int lagerID)
 		{
 			IList<LagerObject> list = GetAllLargeItems(lagerID);
 			return list.Count.ToString();
 		}
 
-		public string getAntallBeholdere ()
+		public string GetAntallBeholdere ()
 		{
-			IList<LagerObject> mylist = getAllContainers();
+			IList<LagerObject> mylist = GetAllContainers();
 			return mylist.Count.ToString();
 		}
 
-		public string getAntallLagre ()
+		public string GetAntallLagre ()
 		{
-			IList<Lager> mylist = getAllLagers();
+			IList<Lager> mylist = GetAllLagers();
 			return mylist.Count.ToString();
 		}
 
-		public LagerObject getContainerById (int ID)
+
+		public GalleryObject GetGalleryObjectByID (object iD)
+		{
+			IList<GalleryObject> myList = null;
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<GalleryObject> ("select * from GalleryObject where ID = ?", iD);
+			}
+			if(myList.Count == 0){
+				return null;
+			}else{
+				return myList [0];
+			}
+		}
+
+		ImageTag GetTagById (int iD)
+		{
+			IList<ImageTag> myList = null;
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<ImageTag> ("select * from ImageTag where ID = ?", iD);
+			}
+			if(myList.Count == 0){
+				return null;
+			}else{
+				return myList [0];
+			}
+		}
+
+		public LagerObject GetContainerById (int ID)
 		{
 			IList<LagerObject> myList = null;
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
@@ -243,7 +340,7 @@ namespace no.dctapps.Garageindex.dao
 			}
 		}
 
-		public IList<Item> getAllItemsInBox (LagerObject boks)
+		public IList<Item> GetAllItemsInBox (LagerObject boks)
 		{
 
 			SQLiteConnection conn = new SQLiteConnection (pathToDatabase);
@@ -278,7 +375,7 @@ namespace no.dctapps.Garageindex.dao
 			}
 		}
 
-		public IList<LagerObject> loadBigItems ()
+		public IList<LagerObject> LoadBigItems ()
 		{
 
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)){
@@ -287,34 +384,34 @@ namespace no.dctapps.Garageindex.dao
 			}
 		}
 
-		public IList<Item> getAllItems ()
+		public IList<Item> GetAllItems ()
 		{
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)){
 				return conn.Query<Item>("select * from Item");
 			}
 		}
 
-		public IList<LagerObject> getAllContainers(){
+		public IList<LagerObject> GetAllContainers(){
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)){
 				string x = "true";
 				return conn.Query<LagerObject>("select * from LagerObject where isContainer = ?", x);
 			}
 		}
 
-		public IList<LagerObject> getAllContainers(int lagerid){
+		public IList<LagerObject> GetAllContainers(int lagerid){
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)){
 				string x = "true";
 				return conn.Query<LagerObject>("select * from LagerObject where isContainer = ? and LagerID = ?", x, lagerid);
 			}
 		}
 
-		public IList<Lager> getAllLagers(){
+		public IList<Lager> GetAllLagers(){
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)){
 				return conn.Query<Lager>("select * from Lager");
 			}
 		}
 
-		public Lager getLagerByID(int ID){
+		public Lager GetLagerByID(int ID){
 			IList<Lager> results;
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)){
 				results = conn.Query<Lager>("select * from Lager where ID = ?", ID);

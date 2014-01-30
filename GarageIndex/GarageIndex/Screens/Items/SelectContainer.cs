@@ -4,7 +4,6 @@ using System.Drawing;
 
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.dao;
 using no.dctapps.Garageindex.model;
 using System.Collections.Generic;
 using no.dctapps.Garageindex.events;
@@ -64,7 +63,7 @@ namespace no.dctapps.Garageindex.screens
 //			}
 			IList<LagerObject> tableItems = new List<LagerObject> ();
 			try {
-				tableItems = (List<LagerObject>) AppDelegate.dao.getAllContainers ();
+				tableItems = (List<LagerObject>) AppDelegate.dao.GetAllContainers ();
 			} catch (Exception e) {
 				Console.WriteLine ("catastrophe avoided:"+e.ToString());
 			}

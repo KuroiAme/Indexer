@@ -1,5 +1,4 @@
 using System;
-using no.dctapps.Garageindex.dao;
 using no.dctapps.Garageindex.model;
 using System.Collections.Generic;
 using System.Text;
@@ -111,7 +110,7 @@ namespace no.dctapps.Garageindex.businesslogic
 		public void AddPictureAttachments (MFMailComposeViewController mailContr, bool items)
 		{
 			var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
-			IList<LagerObject> storeting = AppDelegate.dao.loadBigItems();
+			IList<LagerObject> storeting = AppDelegate.dao.LoadBigItems();
 			foreach(LagerObject lobj in storeting){
 				if (!string.IsNullOrEmpty (lobj.imageFileName)) {
 					string jpg = lobj.Name + ".jpg";
@@ -123,7 +122,7 @@ namespace no.dctapps.Garageindex.businesslogic
 			}
 
 			if(items){
-				IList<Item> itemsList = AppDelegate.dao.getAllItems();
+				IList<Item> itemsList = AppDelegate.dao.GetAllItems();
 				foreach(Item it in itemsList){
 					if (!string.IsNullOrEmpty (it.ImageFileName)) {
 						string jpg = it.Name + ".jpg";
@@ -145,7 +144,7 @@ namespace no.dctapps.Garageindex.businesslogic
 
 			StringBuilder sb = new StringBuilder();
 			if(input != null){
-			sb.AppendLine(lo+":"+AppDelegate.dao.getAntallStore(input.ID));
+			sb.AppendLine(lo+":"+AppDelegate.dao.GetAntallStore(input.ID));
 			IList<LagerObject> storeting = AppDelegate.dao.GetAllLargeItems(input.ID);
 			sb.Append(getHeaderTextLagerObject());
 			foreach(LagerObject lobj in storeting){
@@ -154,15 +153,15 @@ namespace no.dctapps.Garageindex.businesslogic
 			
 				sb.AppendLine ("");
 			sb.AppendLine("-----------------------------------");
-			sb.AppendLine(cont+":"+AppDelegate.dao.getAntallBeholdere());
+			sb.AppendLine(cont+":"+AppDelegate.dao.GetAntallBeholdere());
 				sb.AppendLine ("");
 
 
-			IList<LagerObject> containers = AppDelegate.dao.getAllContainers(input.ID);
+			IList<LagerObject> containers = AppDelegate.dao.GetAllContainers(input.ID);
 			foreach(LagerObject con in containers){
 				sb.AppendLine("-----------------------------------");
 				sb.AppendLine(con.toString());
-				IList<Item> items = AppDelegate.dao.getAllItemsInBox(con);
+				IList<Item> items = AppDelegate.dao.GetAllItemsInBox(con);
 				sb.AppendLine (ic+":"+items.Count);
 				sb.AppendLine("++++++++++++++++++++++++");
 				foreach(Item it in items){
@@ -181,7 +180,7 @@ namespace no.dctapps.Garageindex.businesslogic
 			string inn = NSBundle.MainBundle.LocalizedString ("In", "In");
 
 			StringBuilder sb = new StringBuilder();
-			Lager laggy = AppDelegate.dao.getLagerByID (input.LagerID);
+			Lager laggy = AppDelegate.dao.GetLagerByID (input.LagerID);
             sb.AppendLine(name + ":" + input.Name +"--"+ desc + ":"+input.Description );
 			if(laggy != null){
                 sb.AppendLine(inn+":"+laggy.Name); 
@@ -189,7 +188,7 @@ namespace no.dctapps.Garageindex.businesslogic
 
 			if (input.isContainer == "true") {
 				sb.AppendLine (ic+";");
-				IList<Item> items = AppDelegate.dao.getAllItemsInBox (input);
+				IList<Item> items = AppDelegate.dao.GetAllItemsInBox (input);
 				foreach (Item itty in items) {
 					sb.AppendLine (itty.toString());		
 				}
@@ -202,7 +201,7 @@ namespace no.dctapps.Garageindex.businesslogic
 		
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine (input.toString());
-			LagerObject lo = AppDelegate.dao.getContainerById (input.boxID);
+			LagerObject lo = AppDelegate.dao.GetContainerById (input.boxID);
 			if(lo != null){
 				sb.AppendLine (inn +":"+lo.Name);
 			}
@@ -230,12 +229,12 @@ namespace no.dctapps.Garageindex.businesslogic
 
 			int id = Convert.ToInt32(store.GetString("ActiveLagerID"));
 
-			Lager ActiveLager = AppDelegate.dao.getLagerByID (id);
+			Lager ActiveLager = AppDelegate.dao.GetLagerByID (id);
 
 			//In the case that theres never been stored anything
 			if (ActiveLager == null) {
 				ActiveLager = new Lager ();
-				AppDelegate.dao.insertLager (ActiveLager);
+				AppDelegate.dao.InsertLager (ActiveLager);
 				store.SetString ("ActiveLagerID", ActiveLager.ID.ToString ());
 				store.Synchronize ();
 			}
@@ -249,7 +248,7 @@ namespace no.dctapps.Garageindex.businesslogic
 			//TODO implement async here when async (mono 3.0) gets out of BETA
 			List<Item> res = new List<Item>();
 
-			res.AddRange(AppDelegate.dao.getItemsWithName(text));
+			res.AddRange(AppDelegate.dao.GetItemsWithName(text));
 			res.AddRange(AppDelegate.dao.GetItemsWithDesc(text));
 
 			Console.WriteLine("Found "+res.Count + " items "); 
