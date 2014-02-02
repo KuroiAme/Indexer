@@ -46,6 +46,7 @@ namespace GarageIndex
 		{
 			GAI.SharedInstance.DispatchInterval = 20;
 			GAI.SharedInstance.TrackUncaughtExceptions = true;
+			Tracker = GAI.SharedInstance.GetTracker (TrackingId);
 
 
 			//Initialize Global Frameworks...instead of having Dependency Injection

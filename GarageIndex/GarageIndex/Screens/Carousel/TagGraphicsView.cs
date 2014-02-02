@@ -14,7 +14,7 @@ using MonoTouch.CoreText;
 
 namespace GarageIndex
 {
-	public class TagGraphicsView : UIView
+	public class TagGraphicsView : UIScrollView
 	{
 		GalleryObject go;
 
@@ -22,8 +22,13 @@ namespace GarageIndex
 		public TagGraphicsView (GalleryObject go)
 		{
 			this.go = go;	
-			this.BackgroundColor = UIColor.White;
+
 		}
+
+		public void testy(){
+
+		}
+
 
 		public override void Draw (RectangleF rect)
 		{
@@ -53,7 +58,15 @@ namespace GarageIndex
 				string imagefilename = go.imageFileName;
 				string path = Path.Combine (gallerydirectory, imagefilename);
 
-				g.DrawImage (rec, UIImage.FromFile (path).CGImage);
+				UIImage i = UIImage.FromFile (path);
+				CGImage c = i.CGImage;
+//				c.
+				SizeF f = i.Size;
+				PointF p = new PointF (0, 0);
+				RectangleF r = new RectangleF (p, f);
+
+
+				g.DrawImage (r,c);
 			}
 		}
 

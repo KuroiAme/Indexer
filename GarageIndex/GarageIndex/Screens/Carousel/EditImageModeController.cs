@@ -20,46 +20,43 @@ namespace GarageIndex
 
 		TagGraphicsView tgv;
 
+//		UIScrollView S
+
 		public EditImageModeController (GalleryObject go)
 		{
 			this.go = go;
-//			var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
-//			var gallerydirectory = Path.Combine (documentsDirectory, "gallery");
-//			string imagefilename = go.imageFileName;
-//			string path = Path.Combine (gallerydirectory, imagefilename);
 
-//			Console.WriteLine ("path:" + path);
-//			UIImage currentImage = UIImage.FromFile (path);
-//			UIImageView iv = new UIImageView (this.View.Bounds);
-//			iv.Image = currentImage;
-//			this.View.AddSubview (iv);
+		}
+
+		public override void ViewDidLoad ()
+		{
+			base.ViewDidLoad ();
 
 
 
-			tgv = new TagGraphicsView (go){Frame = UIScreen.MainScreen.Bounds};
-			this.View.AddSubview (tgv);
+//			tgv = new TagGraphicsView (go){Frame = UIScreen.MainScreen.Bounds};
+//			this.View.AddSubview (tgv);
+//
+//			//			this.View.SendSubviewToBack (iv);
+//			tgv.SetNeedsDisplay ();
 
-//			this.View.SendSubviewToBack (iv);
-			tgv.SetNeedsDisplay ();
-
-			tgv.UserInteractionEnabled = true;
-
-			var pinchGesture = new UIPinchGestureRecognizer (ScaleImage);
-			//			pinchGesture.Delegate = new GestureDelegate (this);
-			tgv.AddGestureRecognizer (pinchGesture);
-
-			var panGesture = new UIPanGestureRecognizer (PanImage);
-			panGesture.MaximumNumberOfTouches = 2;
-			//			panGesture.Delegate = new GestureDelegate (this);
-			tgv.AddGestureRecognizer (panGesture);
-
-			var longPressGesture = new UILongPressGestureRecognizer (ShowResetMenu);
-			tgv.AddGestureRecognizer (longPressGesture);
-
-			var doubletap = new UITapGestureRecognizer (AddTag);
-			doubletap.NumberOfTapsRequired = 2;
-			tgv.AddGestureRecognizer (doubletap);
-
+//			tgv.UserInteractionEnabled = true;
+//
+//			var pinchGesture = new UIPinchGestureRecognizer (ScaleImage);
+//			//			pinchGesture.Delegate = new GestureDelegate (this);
+//			tgv.AddGestureRecognizer (pinchGesture);
+//
+//			var panGesture = new UIPanGestureRecognizer (PanImage);
+//			panGesture.MaximumNumberOfTouches = 2;
+//			//			panGesture.Delegate = new GestureDelegate (this);
+//			tgv.AddGestureRecognizer (panGesture);
+//
+//			var longPressGesture = new UILongPressGestureRecognizer (ShowResetMenu);
+//			tgv.AddGestureRecognizer (longPressGesture);
+//
+//			var doubletap = new UITapGestureRecognizer (AddTag);
+//			doubletap.NumberOfTapsRequired = 2;
+//			tgv.AddGestureRecognizer (doubletap);
 
 		}
 
