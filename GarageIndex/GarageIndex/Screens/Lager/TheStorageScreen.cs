@@ -6,6 +6,7 @@ using MonoTouch.UIKit;
 using MonoTouch.MessageUI;
 using no.dctapps.Garageindex.businesslogic;
 using GarageIndex;
+using GoogleAnalytics.iOS;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -39,6 +40,13 @@ namespace no.dctapps.Garageindex.screens
 		{
 //			dao = new LagerDAO();
 			//			bl = new GarageindexBL();
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Storage edit Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 
 		MFMailComposeViewController mailContr;

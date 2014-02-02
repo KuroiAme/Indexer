@@ -9,6 +9,7 @@ using no.dctapps.Garageindex.model;
 using No.DCTapps.GarageIndex;
 using no.dctapps.Garageindex.tables;
 using GarageIndex;
+using GoogleAnalytics.iOS;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -40,6 +41,13 @@ namespace no.dctapps.Garageindex.screens
 		public void Refresh ()
 		{
 			PopulateTable();
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Container overview Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 		
 		public override void DidReceiveMemoryWarning ()

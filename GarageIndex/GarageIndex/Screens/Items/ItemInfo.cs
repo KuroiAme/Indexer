@@ -7,6 +7,7 @@ using MonoTouch.UIKit;
 using No.Dctapps.Garageindex.Ios.Screens;
 using No.Dctapps.GarageIndex;
 using GarageIndex;
+using GoogleAnalytics.iOS;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -37,6 +38,13 @@ namespace no.dctapps.Garageindex.screens
 		}
 
 //		ThreeChoiceButton button;
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Item info Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
+		}
 		
 		public override void ViewDidLoad ()
 		{

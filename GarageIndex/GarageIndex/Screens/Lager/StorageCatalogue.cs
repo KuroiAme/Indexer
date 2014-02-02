@@ -5,6 +5,7 @@ using no.dctapps.Garageindex.model;
 using System.Collections.Generic;
 using GarageIndex;
 using no.dctapps.Garageindex.tables;
+using GoogleAnalytics.iOS;
 
 
 namespace no.dctapps.Garageindex.screens
@@ -32,6 +33,13 @@ namespace no.dctapps.Garageindex.screens
 
 			
 			// Perform any additional setup after loading the view, typically from a nib.
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "StorageCatalogue Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 
 		public override void ViewWillAppear (bool animated)

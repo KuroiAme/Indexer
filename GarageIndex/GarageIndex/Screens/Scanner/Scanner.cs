@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using no.dctapps.Garageindex.screens;
 using No.Dctapps.Garageindex.Ios.Screens;
 using GarageIndex;
+using GoogleAnalytics.iOS;
 
 namespace No.DCTapps.GarageIndex
 {
@@ -37,6 +38,13 @@ namespace No.DCTapps.GarageIndex
 
             Scannit();
         }
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Scanner Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
+		}
 
         async void Scannit()
         {

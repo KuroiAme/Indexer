@@ -10,6 +10,7 @@ using System.Linq;
 using MonoTouch.CoreGraphics;
 using MonoTouch.ObjCRuntime;
 //using paintcode;
+using GoogleAnalytics.iOS;
 
 namespace GarageIndex
 {
@@ -60,6 +61,13 @@ namespace GarageIndex
 			tgv.AddGestureRecognizer (doubletap);
 
 
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Gallery Edit Image mode");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 
 		void AddTag (UITapGestureRecognizer gestureRecognizer){

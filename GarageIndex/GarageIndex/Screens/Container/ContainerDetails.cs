@@ -10,6 +10,7 @@ using System.Text;
 using No.Dctapps.GarageIndex;
 using MonoTouch.MessageUI;
 using no.dctapps.Garageindex.businesslogic;
+using GoogleAnalytics.iOS;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -68,6 +69,13 @@ namespace no.dctapps.Garageindex.screens
 //			}
 //
 //		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Container detail Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
+		}
 		
 		public override void DidReceiveMemoryWarning ()
 		{

@@ -7,6 +7,7 @@ using no.dctapps.Garageindex.events;
 using MonoTouch.Foundation;
 using System.IO;
 using System.Linq;
+using GoogleAnalytics.iOS;
 
 namespace GarageIndex
 {
@@ -45,6 +46,13 @@ namespace GarageIndex
 
 
 
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Gallery");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 
 		UIBarButtonItem it;

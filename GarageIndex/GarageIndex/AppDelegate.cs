@@ -6,6 +6,7 @@ using MonoTouch.UIKit;
 using no.dctapps.Garageindex.businesslogic;
 using TipOfTheDay;
 using no.dctapps.Garageindex.dao;
+using GoogleAnalytics.iOS;
 
 namespace GarageIndex
 {
@@ -15,6 +16,8 @@ namespace GarageIndex
 	[Register ("AppDelegate")]
 	public partial class AppDelegate : UIApplicationDelegate
 	{
+		public IGAITracker Tracker;
+		public static readonly string TrackingId = "UA-47719330-1";
 
 		static AppDelegate()
 		{
@@ -41,6 +44,10 @@ namespace GarageIndex
 		//
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
+			GAI.SharedInstance.DispatchInterval = 20;
+			GAI.SharedInstance.TrackUncaughtExceptions = true;
+
+
 			//Initialize Global Frameworks...instead of having Dependency Injection
 			dao = new LagerDAO ();
 			bl = new GarageindexBL ();

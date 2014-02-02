@@ -10,6 +10,7 @@ using no.dctapps.Garageindex.events;
 using No.Dctapps.GarageIndex;
 using no.dctapps.Garageindex.tables;
 using no.dctapps.Garageindex.screens;
+using GoogleAnalytics.iOS;
 
 namespace no.dctapps.garageindex
 {
@@ -41,6 +42,13 @@ namespace no.dctapps.garageindex
 			base.LoadView ();
 //			BlackLeatherTheme.Apply(this.View);
 			Initialize();
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Item Catalogue Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 
 		public void Refresh ()

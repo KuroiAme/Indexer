@@ -6,6 +6,7 @@ using no.dctapps.Garageindex.tables;
 using GarageIndex;
 using no.dctapps.Garageindex.events;
 using No.Dctapps.Garageindex.Ios.Screens;
+using GoogleAnalytics.iOS;
 
 
 namespace no.dctapps.Garageindex.screens
@@ -125,6 +126,13 @@ namespace no.dctapps.Garageindex.screens
 			base.ViewWillAppear (animated);
 			// reload/refresh
 			this.Refresh ();
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Big items overview Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 
 		void printTableItems (IList<LagerObject> list)

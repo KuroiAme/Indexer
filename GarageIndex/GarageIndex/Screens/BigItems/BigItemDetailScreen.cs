@@ -8,6 +8,7 @@ using GarageIndex;
 using no.dctapps.Garageindex.screens;
 using no.dctapps.Garageindex.events;
 using MonoTouch.MessageUI;
+using GoogleAnalytics.iOS;
 
 
 namespace No.Dctapps.Garageindex.Ios.Screens
@@ -99,6 +100,13 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 
 			this.NavigationItem.SetRightBarButtonItem (it, true);
 			}
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Big items detail Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 
 		public void Cleanup ()

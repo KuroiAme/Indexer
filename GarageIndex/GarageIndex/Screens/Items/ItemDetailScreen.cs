@@ -1,3 +1,5 @@
+using GoogleAnalytics.iOS;
+
 namespace no.dctapps.Garageindex.screens
 {
 	using System;
@@ -82,6 +84,13 @@ namespace no.dctapps.Garageindex.screens
 //			this.item = new Item();
 //			this.dao = new LagerDAO();
 			//initRectangles();
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "items detail Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 		
 		public override void DidReceiveMemoryWarning ()

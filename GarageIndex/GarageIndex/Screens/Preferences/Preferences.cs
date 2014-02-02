@@ -2,6 +2,7 @@ using System;
 using MonoTouch.Foundation;
 using no.dctapps.Garageindex.businesslogic;
 using GarageIndex;
+using GoogleAnalytics.iOS;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -25,6 +26,13 @@ namespace no.dctapps.Garageindex.screens
 			base.DidReceiveMemoryWarning ();
 			
 			// Release any cached data, images, etc that aren't in use.
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Preferences Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 
 		public override void LoadView ()

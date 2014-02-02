@@ -13,6 +13,7 @@ using CorePlot;
 using MonoTouch.CoreGraphics;
 using MonoTouch.UIKit;
 using System.Drawing;
+using GoogleAnalytics.iOS;
 
 namespace GarageIndex
 {
@@ -32,6 +33,12 @@ namespace GarageIndex
 				HostedGraph = Graph
 			};
 			View.AddSubview (host);
+		}
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Statistics Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 	}
 

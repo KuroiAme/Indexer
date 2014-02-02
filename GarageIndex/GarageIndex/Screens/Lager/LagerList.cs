@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using no.dctapps.Garageindex.model;
 using no.dctapps.Garageindex.events;
 using no.dctapps.Garageindex.screens;
+using GoogleAnalytics.iOS;
 
 namespace GarageIndex
 {
@@ -39,6 +40,13 @@ namespace GarageIndex
 			this.Initialize ();
 			
 			// Perform any additional setup after loading the view, typically from a nib.
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "LagerList Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 
 		public override void ViewWillAppear (bool animated)
