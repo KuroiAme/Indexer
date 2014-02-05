@@ -20,7 +20,9 @@ namespace GarageIndex
 
 		TagGraphicsView tgv;
 
-//		UIScrollView S
+		UIScrollView scrollView;
+
+		UIView blend;
 
 		public EditImageModeController (GalleryObject go)
 		{
@@ -32,32 +34,52 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 
+			RectangleF myBounds = UIScreen.MainScreen.Bounds;
+
+			scrollView = new UIScrollView (myBounds);
 
 
-//			tgv = new TagGraphicsView (go){Frame = UIScreen.MainScreen.Bounds};
-//			this.View.AddSubview (tgv);
-//
-//			//			this.View.SendSubviewToBack (iv);
-//			tgv.SetNeedsDisplay ();
+			var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+			var gallerydirectory = Path.Combine (documentsDirectory, "gallery");
+			string imagefilename = go.imageFileName;
+			string path = Path.Combine (gallerydirectory, imagefilename);
+			UIImage image = UIImage.FromFile (path);
+			var CanvasSize = image.Size;
+			RectangleF Canvas = new RectangleF (new PointF (0, 0), CanvasSize);
+			UIImageView iv = new UIImageView (image);
 
-//			tgv.UserInteractionEnabled = true;
-//
-//			var pinchGesture = new UIPinchGestureRecognizer (ScaleImage);
-//			//			pinchGesture.Delegate = new GestureDelegate (this);
-//			tgv.AddGestureRecognizer (pinchGesture);
-//
-//			var panGesture = new UIPanGestureRecognizer (PanImage);
-//			panGesture.MaximumNumberOfTouches = 2;
-//			//			panGesture.Delegate = new GestureDelegate (this);
-//			tgv.AddGestureRecognizer (panGesture);
-//
-//			var longPressGesture = new UILongPressGestureRecognizer (ShowResetMenu);
-//			tgv.AddGestureRecognizer (longPressGesture);
-//
-//			var doubletap = new UITapGestureRecognizer (AddTag);
-//			doubletap.NumberOfTapsRequired = 2;
-//			tgv.AddGestureRecognizer (doubletap);
 
+			tgv = new TagGraphicsView (go, Canvas);
+
+			scrollView.ContentSize = image.Size;
+
+
+
+			scrollView.MaximumZoomScale = 3f;
+			scrollView.MinimumZoomScale = .1f;
+			scrollView.SetZoomScale (1f, true);
+
+			blend = new UIView (Canvas);
+			blend.Frame = Canvas;
+			blend.Opaque = true;
+			blend.BackgroundColor = UIColor.Clear;
+			blend.AddSubview(iv);
+			blend.AddSubview(tgv);
+
+			scrollView.AddSubview (blend);
+			this.View = scrollView;
+
+//			blend.SetNeedsDisplay ();
+
+//			scrollView.SetNeedsDisplay ();
+//			blend.SetNeedsDisplay ();
+
+
+			scrollView.ViewForZoomingInScrollView += (UIScrollView sv) => blend;
+
+			var doubletap = new UITapGestureRecognizer (AddTag);
+			doubletap.NumberOfTapsRequired = 2;
+			scrollView.AddGestureRecognizer (doubletap);
 		}
 
 		public override void ViewDidAppear (bool animated)
@@ -66,7 +88,7 @@ namespace GarageIndex
 			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Gallery Edit Image mode");
 			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
-
+			
 		void AddTag (UITapGestureRecognizer gestureRecognizer){
 			Console.WriteLine ("ADDTAG");
 			ImageTag tag = new ImageTag ();
@@ -78,9 +100,14 @@ namespace GarageIndex
 			av.Clicked += (object sender, UIButtonEventArgs e) => {
 				String tagText = av.GetTextField (0).Text;
 				tag.TagString = tagText;
-//				PointF center = gestureRecognizer.LocationOfTouch(0,tgv);
-//				RectangleF newframe = new RectangleF(center.X,center.Y, tgv.Bounds.Width,tgv.Bounds.Height);
-				tag.StoreRectangleF(gestureRecognizer.View.Bounds);
+				PointF origo = gestureRecognizer.LocationInView(blend);
+				var image = gestureRecognizer.View;
+				var woot = scrollView.ContentOffset;
+				var woot2 = scrollView.ContentSize;
+				RectangleF mywoot = new RectangleF(woot, woot2);
+				Console.WriteLine("image:"+image);
+				//				tag.StoreRectangleF(gestureRecognizer.LocationInView();)
+				tag.StoreRectangleF(mywoot);
 				AppDelegate.dao.SaveTag(tag);
 				Console.WriteLine("tagtext:"+tag.TagString);
 				Console.WriteLine("spot:"+tag.FetchAsRectangleF());
@@ -88,59 +115,6 @@ namespace GarageIndex
 			};
 
 			av.Show();
-		}
-
-
-
-		void PanImage (UIPanGestureRecognizer gestureRecognizer)
-		{
-			AdjustAnchorPointForGestureRecognizer (gestureRecognizer);
-			var image = gestureRecognizer.View;
-			if (gestureRecognizer.State == UIGestureRecognizerState.Began || gestureRecognizer.State == UIGestureRecognizerState.Changed) {
-				var translation = gestureRecognizer.TranslationInView (View);
-				image.Center = new PointF (image.Center.X + translation.X, image.Center.Y + translation.Y);
-				// Reset the gesture recognizer's translation to {0, 0} - the next callback will get a delta from the current position.
-				gestureRecognizer.SetTranslation (PointF.Empty, image);
-			}
-		}
-
-		void ScaleImage (UIPinchGestureRecognizer gestureRecognizer)
-		{
-			AdjustAnchorPointForGestureRecognizer (gestureRecognizer);
-			if (gestureRecognizer.State == UIGestureRecognizerState.Began || gestureRecognizer.State == UIGestureRecognizerState.Changed) {
-				gestureRecognizer.View.Transform *= CGAffineTransform.MakeScale (gestureRecognizer.Scale, gestureRecognizer.Scale);
-				// Reset the gesture recognizer's scale - the next callback will get a delta from the current scale.
-				gestureRecognizer.Scale = 1;
-			}
-		}
-
-		void AdjustAnchorPointForGestureRecognizer (UIGestureRecognizer gestureRecognizer)
-		{
-			if (gestureRecognizer.State == UIGestureRecognizerState.Began) {
-				var image = gestureRecognizer.View;
-				var locationInView = gestureRecognizer.LocationInView (image);
-				var locationInSuperview = gestureRecognizer.LocationInView (image.Superview);
-
-				image.Layer.AnchorPoint = new PointF (locationInView.X / image.Bounds.Size.Width, locationInView.Y / image.Bounds.Size.Height);
-				image.Center = locationInSuperview;
-			}
-		}
-		UIView imageForReset;
-		// Display a menu with a single item to allow the piece's transform to be reset
-		[Export("ShowResetMenu")]
-		void ShowResetMenu (UILongPressGestureRecognizer gestureRecognizer)
-		{
-			if (gestureRecognizer.State == UIGestureRecognizerState.Began) {
-				var menuController = UIMenuController.SharedMenuController;
-				var resetMenuItem = new UIMenuItem ("Reset", new Selector ("ResetImage"));
-				var location = gestureRecognizer.LocationInView (gestureRecognizer.View);
-				BecomeFirstResponder ();
-				menuController.MenuItems = new [] { resetMenuItem };
-				menuController.SetTargetRect (new RectangleF (location.X, location.Y, 0, 0), gestureRecognizer.View);
-				menuController.MenuVisible = true;
-				//                                menuController.Animated = true;
-				imageForReset = gestureRecognizer.View;
-			}
 		}
 	}
 }

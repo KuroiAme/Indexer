@@ -28,6 +28,20 @@ namespace GarageIndex
 		public float height{ get; set;}
 
 
+		public float ax{ get; set;}
+		public float ay{ get; set;}
+
+		public float bx{ get; set;}
+		public float by{ get; set;}
+
+		public float cx{ get; set;}
+		public float cy{ get; set;}
+
+		public float dx{ get; set;}
+		public float dy{ get; set;}
+
+
+
 		public RectangleF FetchAsRectangleF(){
 			RectangleF myF = new RectangleF (x, y, width, height);
 			return myF;
@@ -40,6 +54,40 @@ namespace GarageIndex
 			height = miffed.Height;
 		}
 
+		public void StorePoints (PointF a, PointF b, PointF c, PointF d)
+		{
+			ax = a.X;
+			ay = a.Y;
+
+			ax = a.X;
+			ay = a.Y;
+
+			ax = a.X;
+			ay = a.Y;
+
+			ax = a.X;
+			ay = a.Y;
+
+		}
+
+		public CGPath FetchAsPath ()
+		{
+			try{
+			PointF[] pointarray = {
+									new PointF(ax,ay),
+									new PointF(bx,by),
+									new PointF(cx,cy),
+									new PointF(dx,dy),
+									};
+
+			CGPath path = new CGPath();
+			path.AddLines(pointarray);
+			path.CloseSubpath();
+			return path;
+			}catch(Exception ex){
+				return null;
+			}
+		}
 	}
 }
 

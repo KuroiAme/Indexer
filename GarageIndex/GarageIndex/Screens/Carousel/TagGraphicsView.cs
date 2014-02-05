@@ -14,31 +14,27 @@ using MonoTouch.CoreText;
 
 namespace GarageIndex
 {
-	public class TagGraphicsView : UIScrollView
+	public class TagGraphicsView : UIView
 	{
 		GalleryObject go;
+		public RectangleF Canvas;
+		public SizeF CanvasSize;
 
-
-		public TagGraphicsView (GalleryObject go)
+		public TagGraphicsView (GalleryObject go, RectangleF canvas)
 		{
-			this.go = go;	
-
+			this.go = go;
+			Frame = canvas;
+			BackgroundColor = UIColor.Clear;
+			Opaque = false;
 		}
-
-		public void testy(){
-
-		}
-
-
+			
 		public override void Draw (RectangleF rect)
 		{
-			Console.WriteLine ("draw()");
 			base.Draw (rect);
-			DrawImage (go.imageFileName, rect);
+//			
+			Console.WriteLine ("draw():"+rect);
 			IList<ImageTag> tags = AppDelegate.dao.GetTagsByGalleryObjectID (go.ID);
 			RenderTags (tags);
-
-
 		}
 
 		private void RenderTags(IList<ImageTag> tags) {
@@ -47,43 +43,22 @@ namespace GarageIndex
 			}
 		}
 
-		void DrawImage (string imageFileName, RectangleF rec)
-		{
-			using (CGContext g = UIGraphics.GetCurrentContext ()) {
-				g.ScaleCTM (1, -1);
-				g.TranslateCTM (0, -Bounds.Height);
-
-				var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
-				var gallerydirectory = Path.Combine (documentsDirectory, "gallery");
-				string imagefilename = go.imageFileName;
-				string path = Path.Combine (gallerydirectory, imagefilename);
-
-				UIImage i = UIImage.FromFile (path);
-				CGImage c = i.CGImage;
-//				c.
-				SizeF f = i.Size;
-				PointF p = new PointF (0, 0);
-				RectangleF r = new RectangleF (p, f);
-
-
-				g.DrawImage (r,c);
-			}
-		}
-
 		void DrawCoreText (RectangleF myframe, string tagString)
 		{
-			var gctx = UIGraphics.GetCurrentContext ();
-			gctx.TranslateCTM (0.5f * Frame.Width, 0.5f * Frame.Height);
-			gctx.ScaleCTM (1, -1);
-			gctx.RotateCTM ((float)Math.PI * 120 / 180);
-			gctx.SetFillColor (UIColor.Green.CGColor);
-			var attributedString = new NSAttributedString (tagString, 
-				                       new MonoTouch.CoreText.CTStringAttributes {
-					ForegroundColorFromContext = true,
-					Font = new MonoTouch.CoreText.CTFont ("Arial", 48)
-			});
-			using (var textLine = new CTLine (attributedString)) {
-				textLine.Draw (gctx);
+			using (CGContext gctx = UIGraphics.GetCurrentContext ()) {
+				gctx.TranslateCTM (0, myframe.Height);
+				gctx.ScaleCTM (1f, -1f);
+				//gctx.RotateCTM ((float)Math.PI * 120 / 180);
+				gctx.SetFillColor (UIColor.Green.CGColor);
+				var attributedString = new NSAttributedString (tagString, 
+					                      new MonoTouch.CoreText.CTStringAttributes {
+						ForegroundColorFromContext = true,
+						Font = new MonoTouch.CoreText.CTFont ("ArialMT", 48)
+					});
+				gctx.TextPosition = new PointF (myframe.X, myframe.Y);
+				using (var textLine = new CTLine (attributedString)) {
+					textLine.Draw (gctx);
+				}
 			}
 		}
 
@@ -91,40 +66,25 @@ namespace GarageIndex
 		{
 			Console.WriteLine ("Rendertag()");
 			Console.WriteLine (tag.TagString);
-			RectangleF myframe = tag.FetchAsRectangleF ();
-			Console.WriteLine (myframe);
+			RectangleF tagFrame = tag.FetchAsRectangleF ();
+			Console.WriteLine (tagFrame);
+//			var savedContext = UIGraphics.GetCurrentContext;
 
-			using (CGContext g = UIGraphics.GetCurrentContext ()) {
-				g.RotateCTM (0);
-				g.SetLineWidth(4);
-				UIColor.Yellow.SetStroke ();
-				var path = new CGPath ();
-				g.SetLineDash(0, new float[] {10,4});
-				path.AddRect (myframe);
-				//UIBezierPath Bpath = new UIBezierPath ().BezierPathWithIOS7RoundedRect (myframe, 30);
-				g.AddPath (path);
-				g.DrawPath (CGPathDrawingMode.Stroke);
+			if (tagFrame != null) {
+				using (CGContext g = UIGraphics.GetCurrentContext ()) {
+					g.MoveTo (0, 0);
+					g.SetLineWidth (4);
+					UIColor.Yellow.SetStroke ();
+					g.SetLineDash (0, new float[] { 10, 4 });
 
-//				float fontSize = 35f;
-//				g.TranslateCTM (0, fontSize);
-//				g.SetLineWidth (1.0f);
-//				g.SetStrokeColor (UIColor.Yellow.CGColor);
-//				g.SetFillColor (UIColor.Red.CGColor);
-//				g.SetShadowWithColor (new SizeF (5, 5), 0, UIColor.Blue.CGColor);
-//
-//				g.SetTextDrawingMode (CGTextDrawingMode.FillStroke);
-//				g.SelectFont ("Helvetica", fontSize, CGTextEncoding.MacRoman);
+					UIBezierPath path = UIBezierPath.FromRoundedRect (tagFrame, 30);
 
-				DrawCoreText (myframe, tag.TagString);
+					g.AddPath (path.CGPath);
 
-
-
+					g.DrawPath (CGPathDrawingMode.Stroke);
+				}
+				DrawCoreText (tagFrame, tag.TagString);
 			}
-
-
-
-
-
 		}
 	}
 }
