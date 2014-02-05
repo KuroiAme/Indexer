@@ -38,53 +38,52 @@ namespace GarageIndex
 		}
 
 		private void RenderTags(IList<ImageTag> tags) {
+			List<RectangleF> rects = new List<RectangleF> ();
+			List<String> tagStrings = new List<string>();
 			foreach(ImageTag tag in tags){
-				RenderTag (tag);
+				Console.WriteLine("RenderTags():"+tag.ToString());
+				rects.Add (tag.FetchAsRectangleF ());
+				tagStrings.Add(tag.TagString);
 			}
+			PaintBoxes(rects);
+			DrawTexts (tagStrings, rects);
 		}
-
-		void DrawCoreText (RectangleF myframe, string tagString)
+			
+		void DrawTexts (List<string> tagStrings, List<RectangleF> rects)
 		{
 			using (CGContext gctx = UIGraphics.GetCurrentContext ()) {
-				gctx.TranslateCTM (0, myframe.Height);
-				gctx.ScaleCTM (1f, -1f);
-				//gctx.RotateCTM ((float)Math.PI * 120 / 180);
+				//gctx.TranslateCTM (0, Bounds.Height);
+				//gctx.ScaleCTM (1f, -1f);
 				gctx.SetFillColor (UIColor.Green.CGColor);
-				var attributedString = new NSAttributedString (tagString, 
-					                      new MonoTouch.CoreText.CTStringAttributes {
-						ForegroundColorFromContext = true,
-						Font = new MonoTouch.CoreText.CTFont ("ArialMT", 48)
-					});
-				gctx.TextPosition = new PointF (myframe.X, myframe.Y);
-				using (var textLine = new CTLine (attributedString)) {
-					textLine.Draw (gctx);
+				for (int i = 0; i < tagStrings.Count; i++) {
+					var attributedString = new NSAttributedString (tagStrings[i], 
+						                      new MonoTouch.CoreText.CTStringAttributes {
+							ForegroundColorFromContext = true,
+							Font = new MonoTouch.CoreText.CTFont ("ArialMT", 48)
+						});
+					gctx.TextPosition = new PointF (rects[i].X, rects[i].Y);
+					using (var textLine = new CTLine (attributedString)) {
+						textLine.Draw (gctx);
+					}
 				}
 			}
 		}
 
-		void RenderTag (ImageTag tag)
+		void PaintBoxes (List<RectangleF> rects)
 		{
-			Console.WriteLine ("Rendertag()");
-			Console.WriteLine (tag.TagString);
-			RectangleF tagFrame = tag.FetchAsRectangleF ();
-			Console.WriteLine (tagFrame);
-//			var savedContext = UIGraphics.GetCurrentContext;
+			Console.WriteLine ("PaintBoxes()");
+			using (CGContext g = UIGraphics.GetCurrentContext ()) {
+				g.SetLineWidth (4);
+				UIColor.Yellow.SetStroke ();
+				g.SetLineDash (0, new float[] { 10, 4 });
 
-			if (tagFrame != null) {
-				using (CGContext g = UIGraphics.GetCurrentContext ()) {
-					g.MoveTo (0, 0);
-					g.SetLineWidth (4);
-					UIColor.Yellow.SetStroke ();
-					g.SetLineDash (0, new float[] { 10, 4 });
-
-					UIBezierPath path = UIBezierPath.FromRoundedRect (tagFrame, 30);
-
+				foreach (RectangleF rect in rects) {
+					UIBezierPath path = UIBezierPath.FromRoundedRect (rect, 80);
 					g.AddPath (path.CGPath);
-
 					g.DrawPath (CGPathDrawingMode.Stroke);
 				}
-				DrawCoreText (tagFrame, tag.TagString);
 			}
+
 		}
 	}
 }

@@ -102,12 +102,16 @@ namespace GarageIndex
 				tag.TagString = tagText;
 				PointF origo = gestureRecognizer.LocationInView(blend);
 				var image = gestureRecognizer.View;
+				var imageRect = image.Bounds;
+				Console.WriteLine("imageRect:"+imageRect);
+				Console.WriteLine("locInView():"+gestureRecognizer.LocationInView(this.blend));
 				var woot = scrollView.ContentOffset;
 				var woot2 = scrollView.ContentSize;
 				RectangleF mywoot = new RectangleF(woot, woot2);
+				Console.WriteLine("mywoot:"+mywoot);
 				Console.WriteLine("image:"+image);
 				//				tag.StoreRectangleF(gestureRecognizer.LocationInView();)
-				tag.StoreRectangleF(mywoot);
+				tag.StoreRectangleF(imageRect);
 				AppDelegate.dao.SaveTag(tag);
 				Console.WriteLine("tagtext:"+tag.TagString);
 				Console.WriteLine("spot:"+tag.FetchAsRectangleF());
