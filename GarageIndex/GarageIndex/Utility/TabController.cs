@@ -3,6 +3,7 @@ using MonoTouch.UIKit;
 using No.DCTapps.GarageIndex;
 using no.dctapps.garageindex;
 using no.dctapps.Garageindex.screens;
+using MonoTouch.CoreGraphics;
 
 namespace GarageIndex
 {
@@ -108,7 +109,10 @@ namespace GarageIndex
 			galleryNav = new UINavigationController();
 			galleryNav.TabBarItem = new UITabBarItem();
 			galleryNav.TabBarItem.Title = title;
-			galleryNav.TabBarItem.Image = UIImage.FromBundle("weye.png");
+//			CGImage cg = new CGImage ();
+//			cg.
+//			galleryNav.TabBarItem.Image = UIImage.
+			galleryNav.TabBarItem.Image = UIImage.FromBundle("wand.png");
 
 			galleryNav.PushViewController(galleryscreen, true);
 		}

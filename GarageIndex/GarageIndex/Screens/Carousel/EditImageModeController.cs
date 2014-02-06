@@ -88,6 +88,12 @@ namespace GarageIndex
 			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Gallery Edit Image mode");
 			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
+
+		RectangleF MakeRectFromCenter (PointF again, SizeF meh)
+		{
+			PointF origoRect = new PointF (again.X - meh.Width, again.Y - meh.Height);
+			return new RectangleF (origoRect, meh);
+		}
 			
 		void AddTag (UITapGestureRecognizer gestureRecognizer){
 			Console.WriteLine ("ADDTAG");
@@ -100,18 +106,11 @@ namespace GarageIndex
 			av.Clicked += (object sender, UIButtonEventArgs e) => {
 				String tagText = av.GetTextField (0).Text;
 				tag.TagString = tagText;
-				PointF origo = gestureRecognizer.LocationInView(blend);
-				var image = gestureRecognizer.View;
-				var imageRect = image.Bounds;
-				Console.WriteLine("imageRect:"+imageRect);
-				Console.WriteLine("locInView():"+gestureRecognizer.LocationInView(this.blend));
-				var woot = scrollView.ContentOffset;
-				var woot2 = scrollView.ContentSize;
-				RectangleF mywoot = new RectangleF(woot, woot2);
-				Console.WriteLine("mywoot:"+mywoot);
-				Console.WriteLine("image:"+image);
-				//				tag.StoreRectangleF(gestureRecognizer.LocationInView();)
-				tag.StoreRectangleF(imageRect);
+				var scale = scrollView.ZoomScale;
+				RectangleF contentFrame = new RectangleF(scrollView.ContentOffset.X / scale, scrollView.ContentOffset.Y / scale, scrollView.Frame.Size.Width / scale, scrollView.Frame.Size.Height /scale);
+				contentFrame.Y = contentFrame.Y + this.NavigationController.View.Bounds.Y;
+				contentFrame.X = contentFrame.X + this.NavigationController.View.Bounds.X;
+				tag.StoreRectangleF(contentFrame);
 				AppDelegate.dao.SaveTag(tag);
 				Console.WriteLine("tagtext:"+tag.TagString);
 				Console.WriteLine("spot:"+tag.FetchAsRectangleF());
