@@ -255,7 +255,11 @@ namespace GarageIndex
 			if(ourpic == null)
 				return new string[2]{"",""};
 			Console.WriteLine ("Save");
-			UIImage thumbPic = ImageHelper.ResizeImage(ourpic, 200,200); //measurements taken from CustomCell, alternatly 33x33
+			float aspectRatio = ourpic.Size.Width / ourpic.Size.Height;
+			Console.WriteLine ("ratio:" + aspectRatio);
+			float sc = 200;
+			SizeF newSize = new SizeF (sc, sc / aspectRatio);
+			UIImage thumbPic = ourpic.Scale (newSize); //measurements taken from CustomCell, alternatly 33x33
 
 			if (ourpic != null) {
 				var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
@@ -322,12 +326,7 @@ namespace GarageIndex
 
 			var imgView = reusingView as UIImageView;
 
-			//create new view if none is availble fr recycling
-			if (imgView == null) {
-				imgView = new UIImageView(new RectangleF(0,0, 200, 200)){
-					ContentMode = UIViewContentMode.ScaleAspectFit
-				};
-			}
+
 
 			var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
 			var gallerydirectory = Path.Combine (documentsDirectory, "gallery");
@@ -336,6 +335,14 @@ namespace GarageIndex
 			string path = Path.Combine (gallerydirectory, thumbfilename);
 			Console.WriteLine ("path:" + path);
 			UIImage currentImage = UIImage.FromFile (path);
+			SizeF dim = currentImage.Size;
+
+			//create new view if none is availble fr recycling
+			if (imgView == null) {
+				imgView = new UIImageView(new RectangleF(0,0, dim.Width,dim.Height)){
+					ContentMode = UIViewContentMode.ScaleAspectFit
+				};
+			}
 
 			if (currentImage == null) {
 				Console.WriteLine ("Fubar image");
@@ -350,7 +357,6 @@ namespace GarageIndex
 
 			return reusingView;
 		}
-
 	}
 
 	public class TaggedImageDelegate : iCarouselDelegate{
@@ -368,7 +374,6 @@ namespace GarageIndex
 			var eimc = new EditImageModeController (go);
 			tivc.NavigationController.PushViewController (eimc, true);
 		}
-
 	}
 }
 

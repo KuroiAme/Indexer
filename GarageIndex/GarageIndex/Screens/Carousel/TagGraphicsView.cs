@@ -107,7 +107,6 @@ namespace GarageIndex
 				}
 				g.RestoreState ();
 			}
-
 		}
 
 		void PaintTaggedBox(RectangleF rect, String myText){

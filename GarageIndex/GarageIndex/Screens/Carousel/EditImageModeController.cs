@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using MonoTouch.CoreGraphics;
 using MonoTouch.ObjCRuntime;
-//using paintcode;
 using GoogleAnalytics.iOS;
 
 namespace GarageIndex

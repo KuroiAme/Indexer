@@ -112,7 +112,7 @@ namespace GarageIndex
 //			CGImage cg = new CGImage ();
 //			cg.
 //			galleryNav.TabBarItem.Image = UIImage.
-			galleryNav.TabBarItem.Image = UIImage.FromBundle("wand.png");
+			galleryNav.TabBarItem.Image = UIImage.FromBundle("startree.png");
 
 			galleryNav.PushViewController(galleryscreen, true);
 		}
