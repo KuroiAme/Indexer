@@ -16,6 +16,8 @@ namespace GarageIndex
 		public iCarousel carousel;
 		UIImagePickerController imagePicker;
 		public UIPopoverController Pc;
+		LoadingOverlay loadingOverlay;
+
 		public event EventHandler<GotPictureEventArgs> GotPicture;
 
 		public TaggedImageViewController ()
@@ -224,7 +226,10 @@ namespace GarageIndex
 
 		void RaiseImageGotten (UIImage image)
 		{
+			loadingOverlay = new LoadingOverlay (UIScreen.MainScreen.Bounds);
+			View.Add (loadingOverlay);
 			mySavePicture(image); //local event
+			loadingOverlay.Hide ();
 
 //			this.imageView.Image = null;
 
@@ -234,7 +239,11 @@ namespace GarageIndex
 //			}
 		}
 
+
+
 		private void mySavePicture(UIImage image){
+
+
 			Console.WriteLine ("mySavePicture()");
 			string name = RandomGeneratedName ();
 			string[] names = SaveGalleryImage (name, image);
@@ -242,7 +251,6 @@ namespace GarageIndex
 			go.Name = name;
 			go.imageFileName = names [0];
 			go.thumbFileName = names [1];
-
 
 			AppDelegate.dao.SaveGalleryObject (go);
 
@@ -260,6 +268,7 @@ namespace GarageIndex
 			float sc = 200;
 			SizeF newSize = new SizeF (sc, sc / aspectRatio);
 			UIImage thumbPic = ourpic.Scale (newSize); //measurements taken from CustomCell, alternatly 33x33
+			UIImage resImage = ourpic.Scale (new SizeF (ourpic.Size.Width, ourpic.Size.Height));
 
 			if (ourpic != null) {
 				var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
@@ -275,7 +284,7 @@ namespace GarageIndex
 				var thumbpicname = name + "_thumb.png";
 				string pngfileName = System.IO.Path.Combine (gallerydirectory, picname);
 				string thumbpngfileName = System.IO.Path.Combine (gallerydirectory, thumbpicname);
-				NSData imgData = ourpic.AsPNG ();
+				NSData imgData = resImage.AsPNG ();
 				NSData img2Data = thumbPic.AsPNG();
 
 				NSError err = null;

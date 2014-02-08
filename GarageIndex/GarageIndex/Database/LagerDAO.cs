@@ -39,6 +39,16 @@ namespace no.dctapps.Garageindex.dao
 			}
 		}
 
+		public void DeleteTag (int id)
+		{
+			using (var conn = new SQLite.SQLiteConnection(pathToDatabase)) {
+				ImageTag deleteme = new ImageTag ();
+				deleteme.ID = id;
+				int deleted = conn.Delete (deleteme);
+				Console.Write("deleted:"+deleted);
+			}
+		}
+
 		public void SaveGalleryObject (GalleryObject myObject)
 		{
 			Console.WriteLine(myObject.ID);

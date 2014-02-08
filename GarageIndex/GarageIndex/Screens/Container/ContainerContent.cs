@@ -27,7 +27,6 @@ namespace GarageIndex
 		public ContainerContent (LagerObject boks)
 			: base ()
 		{
-//			this.dao = new LagerDAO ();
 			this.boks = boks;
 		}
 

@@ -10,6 +10,7 @@ using System.Linq;
 using MonoTouch.CoreGraphics;
 using MonoTouch.ObjCRuntime;
 using SQLite;
+using System.Text;
 
 namespace GarageIndex
 {
@@ -85,6 +86,7 @@ namespace GarageIndex
 			path.CloseSubpath();
 			return path;
 			}catch(Exception ex){
+				Console.WriteLine ("ex happend:" + ex.ToString ());
 				return null;
 			}
 		}
@@ -92,6 +94,18 @@ namespace GarageIndex
 		public override string ToString ()
 		{
 			return string.Format ("[ImageTag: ID={0}, TagString={1}, GalleryObjectID={2}, x={3}, y={4}, width={5}, height={6}, ax={7}, ay={8}, bx={9}, by={10}, cx={11}, cy={12}, dx={13}, dy={14}]", ID, TagString, GalleryObjectID, x, y, width, height, ax, ay, bx, by, cx, cy, dx, dy);
+		}
+
+		public void StoreTagList (string[] taglist)
+		{
+			StringBuilder sb = new StringBuilder ();
+			for (int i = 0; i < taglist.Length; i++) {
+				if (i != 0) {
+					sb.Append (",");
+				}
+				sb.Append (taglist [i]);
+			}
+			TagString = sb.ToString ();
 		}
 	}
 }

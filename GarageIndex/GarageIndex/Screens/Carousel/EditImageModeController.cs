@@ -22,11 +22,18 @@ namespace GarageIndex
 		UIScrollView scrollView;
 
 		UIView blend;
+		UIImageView iv;
 
 		public EditImageModeController (GalleryObject go)
 		{
 			this.go = go;
 
+		}
+
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+			tgv.SetNeedsDisplay ();
 		}
 
 		public override void ViewDidLoad ()
@@ -45,12 +52,26 @@ namespace GarageIndex
 			UIImage image = UIImage.FromFile (path);
 			var CanvasSize = image.Size;
 			RectangleF Canvas = new RectangleF (new PointF (0, 0), CanvasSize);
-			UIImageView iv = new UIImageView (image);
+
+//			string thumbfilename = AppDelegate.dao.GetThumbfilenameForIndex (index);
+//			string path = Path.Combine (gallerydirectory, thumbfilename);
+//			Console.WriteLine ("path:" + path);
+//			UIImage currentImage = UIImage.FromFile (path);
+//			SizeF dim = currentImage.Size;
+
+			//create new view if none is availble fr recycling
+//			if (iv == null) {
+			iv = new UIImageView(new RectangleF(0,0, CanvasSize.Width,CanvasSize.Height)){
+				ContentMode = UIViewContentMode.ScaleAspectFill
+			};
+//			}
+			iv.Image = image;
 
 
 			tgv = new TagGraphicsView (go, Canvas);
 
-			scrollView.ContentSize = image.Size;
+
+			scrollView.ContentSize = iv.Frame.Size;
 
 
 
@@ -68,17 +89,30 @@ namespace GarageIndex
 			scrollView.AddSubview (blend);
 			this.View = scrollView;
 
-//			blend.SetNeedsDisplay ();
-
-//			scrollView.SetNeedsDisplay ();
-//			blend.SetNeedsDisplay ();
-
-
 			scrollView.ViewForZoomingInScrollView += (UIScrollView sv) => blend;
 
 			var doubletap = new UITapGestureRecognizer (AddTag);
 			doubletap.NumberOfTapsRequired = 2;
 			scrollView.AddGestureRecognizer (doubletap);
+
+			CreateEditBarButton ();
+		}
+
+		UIBarButtonItem it;
+
+		private void CreateEditBarButton ()
+		{
+
+			it = new UIBarButtonItem ();
+			it.Title = "Tags";
+			//IS really info
+
+			it.Clicked += (object sender, EventArgs e) => {
+				EditTags tagedit = new EditTags(go);
+				this.NavigationController.PushViewController(tagedit,true);;
+			};
+			NavigationItem.SetRightBarButtonItem (it, true);
+
 		}
 
 		public override void ViewDidAppear (bool animated)
@@ -106,9 +140,13 @@ namespace GarageIndex
 				String tagText = av.GetTextField (0).Text;
 				tag.TagString = tagText;
 				var scale = scrollView.ZoomScale;
-				RectangleF contentFrame = new RectangleF(scrollView.ContentOffset.X / scale, scrollView.ContentOffset.Y / scale, scrollView.Frame.Size.Width / scale, scrollView.Frame.Size.Height /scale);
-				contentFrame.Y = contentFrame.Y + this.NavigationController.View.Bounds.Y;
-				contentFrame.X = contentFrame.X + this.NavigationController.View.Bounds.X;
+				const float heightmod = 0.70f;
+				//float widthmod = 1f;
+
+				RectangleF contentFrame = new RectangleF(scrollView.ContentOffset.X / scale, scrollView.ContentOffset.Y / scale, scrollView.Frame.Size.Width / scale, scrollView.Frame.Size.Height /scale * heightmod);
+				//contentFrame.Y = contentFrame.Y + this.NavigationController.View.Bounds.Y;
+				//contentFrame.X = contentFrame.X + this.NavigationController.View.Bounds.Bottom;
+				contentFrame.Y = contentFrame.Y + 90;
 				tag.StoreRectangleF(contentFrame);
 				AppDelegate.dao.SaveTag(tag);
 				Console.WriteLine("tagtext:"+tag.TagString);
@@ -118,6 +156,15 @@ namespace GarageIndex
 
 			av.Show();
 		}
+
+
+
+		public static bool UserInterfaceIdiomIsPhone 
+		{
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+		}
+
+
 	}
 }
 
