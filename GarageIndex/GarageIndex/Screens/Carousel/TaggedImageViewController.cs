@@ -43,6 +43,7 @@ namespace GarageIndex
 
 			View.AddSubview (carousel);
 			CreateAddBarButton ();
+			CreateDeleteBarButton ();
 
 			//carousel.CurrentItemIndex
 
@@ -64,10 +65,51 @@ namespace GarageIndex
 
 			it = new UIBarButtonItem ();
 				it.Title = "add";
-				//IS really info
 				it.Clicked += (object sender, EventArgs e) => SelectSource ();
 				this.NavigationItem.SetRightBarButtonItem (it, true);
 			
+		}
+
+		UIBarButtonItem it2;
+
+		private void CreateDeleteBarButton ()
+		{
+
+			it2 = new UIBarButtonItem ();
+			it2.Title = "Delete";
+			it2.Clicked += (object sender, EventArgs e) => ReallyDelete ();
+			this.NavigationItem.SetLeftBarButtonItem (it2, true);
+
+		}
+		UIActionSheet delsheet;
+
+		private void ReallyDelete(){
+			var really = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Really Delete current image?", "Really Delete current image?");
+			var myCancel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Cancel", "Cancel");
+			var OK = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("OK", "OK");
+			delsheet = new UIActionSheet(really);
+			delsheet.AddButton (myCancel);
+			delsheet.AddButton (OK);
+
+			delsheet.Clicked += delegate(object sender, UIButtonEventArgs e2) {
+				if(e2.ButtonIndex == 0){
+					Console.WriteLine("deletion canceled");
+				}else if(e2.ButtonIndex == 1){
+					Console.WriteLine("Deletion OK");
+					DeleteCurrentPic();
+				}else{
+					Console.WriteLine("Unknown button");
+				}
+			};
+			delsheet.ShowInView (View);
+		}
+
+		void DeleteCurrentPic ()
+		{
+			int currentindex = carousel.CurrentItemIndex;
+			Console.WriteLine ("currentindex:" + currentindex);
+			AppDelegate.dao.DeleteGalleryObjectByIndex (currentindex);
+			carousel.ReloadData ();
 		}
 
 		UIActionSheet actionSheet;
@@ -228,6 +270,7 @@ namespace GarageIndex
 		{
 			loadingOverlay = new LoadingOverlay (UIScreen.MainScreen.Bounds);
 			View.Add (loadingOverlay);
+			View.BringSubviewToFront (loadingOverlay);
 			mySavePicture(image); //local event
 			loadingOverlay.Hide ();
 

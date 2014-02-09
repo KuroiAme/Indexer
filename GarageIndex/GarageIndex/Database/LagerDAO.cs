@@ -29,6 +29,8 @@ namespace no.dctapps.Garageindex.dao
 			}
 		}
 
+
+
 		public void DeleteLager (int id)
 		{
 			using (var conn = new SQLite.SQLiteConnection(pathToDatabase)) {
@@ -107,6 +109,17 @@ namespace no.dctapps.Garageindex.dao
 				myList = conn.Query<GalleryObject> ("select * from GalleryObject");
 			}
 			return myList[index];
+		}
+
+		public void DeleteGalleryObjectByIndex (int currentindex)
+		{
+			IList<GalleryObject> myList;
+			using (var conn = new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<GalleryObject> ("select * from GalleryObject");
+				GalleryObject deleteme = myList [currentindex];
+				int deleted = conn.Delete (deleteme);
+				Console.Write("deleted:"+deleted);
+			}
 		}
 
 		public string GetThumbfilenameForIndex (uint index)
