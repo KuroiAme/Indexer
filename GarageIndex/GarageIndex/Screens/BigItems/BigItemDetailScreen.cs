@@ -46,14 +46,15 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 //			bl = new GarageindexBL ();
 
 			this.myObject = myObject;
+
 //			InitialImageFileName = myObject.imageFileName;
 
 			if(UserInterfaceIdiomIsPhone){
-				ImageRectangle = new RectangleF (10, 200, 500, 275);
+				ImageRectangle = new RectangleF (10, 300, 500, 275);
 //				PickerRect = new RectangleF (20, 95, 130, 55);
 //                UnPickerRect = new RectangleF(150, 95, 150, 55);
 			}else{
-				ImageRectangle = new RectangleF (100, 200, 500, 400);
+				ImageRectangle = new RectangleF (100, 300, 500, 400);
 //				PickerRect = new RectangleF (100, 120, 200, 55);
 //                UnPickerRect = new RectangleF(320, 170, 200, 55);
 			}
@@ -67,11 +68,11 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 //			bl = new GarageindexBL ();
 
 			if(UserInterfaceIdiomIsPhone){
-				ImageRectangle = new RectangleF (10, 120, 200, 200);
+				ImageRectangle = new RectangleF (10, 220, 200, 200);
 //				PickerRect = new RectangleF (20, 95, 250, 45);
 //                UnPickerRect = new RectangleF(150, 95, 150, 55);
 			}else{
-					ImageRectangle = new RectangleF (50, 200, 500, 500);
+				ImageRectangle = new RectangleF (50, 300, 500, 500);
 //				PickerRect = new RectangleF (50, 120, 250, 45);
 //                UnPickerRect = new RectangleF(320, 120, 200, 55);
 			}
@@ -174,6 +175,8 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			}
 			releaseKeyboard ();
 			CreateEmailBarButton (myobj);
+
+			AddTagList ();
 		}
 
 		void initializeMoveLager ()
@@ -255,15 +258,26 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			SetLagerButtonLabel (this.myObject);
 			initializeMoveLager ();
 
-			AddTagList ();
+
 		}
 
 		void AddTagList ()
 		{
 			if (UserInterfaceIdiomIsPhone) {
-				RectangleF frame = new RectangleF (0, y, UIScreen.MainScreen.Bounds.Width, 100);
+				RectangleF frame = new RectangleF (30,130, UIScreen.MainScreen.Bounds.Width, 125);
+				Console.WriteLine("frame:"+frame);
 				ImageTag tag = AppDelegate.dao.GetImageTagById (this.myObject.ImageTagId);
+				if (tag == null) {
+					Console.WriteLine ("Tag er null");
+					tag = new ImageTag ();
+					int key = AppDelegate.dao.SaveTag (tag);
+					tag.ID = key;
+					this.myObject.ImageTagId = key;
+					AppDelegate.dao.SaveLagerObject (myObject);
+				}
+
 				TagListController tlc = new TagListController (tag, frame);
+				this.View.AddSubview (tlc.View);
 			}
 		}
 

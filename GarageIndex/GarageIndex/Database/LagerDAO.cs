@@ -99,7 +99,13 @@ namespace no.dctapps.Garageindex.dao
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
 				myList = conn.Query<ImageTag> ("select * from ImageTag where ID = ?", ID);
 			}
-			return myList[0];
+			if (myList.Count == 1) {
+				Console.WriteLine ("got one:"+myList[0]);
+				return myList [0];
+			} else {
+				Console.WriteLine ("didnt get one");
+				return null;
+			}
 		}
 
 		public IList<LagerObject> GetLagerObjectByID (int ID)
@@ -198,18 +204,25 @@ namespace no.dctapps.Garageindex.dao
 			}
 		}
 
-		public void SaveTag (ImageTag tag)
+		public int SaveTag (ImageTag tag)
 		{
-			if(tag != null && tag.TagString != ""){
+			if (tag != null) {
 				ImageTag checktag = GetTagById (tag.ID);
-				using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				using (var conn = new SQLite.SQLiteConnection (pathToDatabase)) {
 
-					if(checktag == null){
+					if (checktag == null) {
+						Console.WriteLine ("imageTag insert");
 						conn.Insert (tag);
-					}else{
+						return tag.ID;
+					} else {
+						Console.WriteLine ("imageTag update");
 						conn.Update (tag);
+						return tag.ID;
 					}
 				}
+			} else {
+				Console.WriteLine ("didnt save, returning -1 flag");
+				return -1;
 			}
 		}
 

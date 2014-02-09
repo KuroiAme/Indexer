@@ -10,31 +10,40 @@ namespace GarageIndex
 		ImageTag tag;
 		String[] taglist;
 		char[] sep = {' ',','};
+		RectangleF area;
+		float heightmod;
 
 		public TagListController (ImageTag tag, RectangleF area)
 		{
+//			this.heightmod = heightmod;
 			this.tag = tag;
-
-			taglist = tag.TagString.Split (sep);
+			this.area = area;
+			if (tag.TagString != null) {
+				taglist = tag.TagString.Split (sep);
+			} else {
+				Console.WriteLine ("taglist is null, making empty array");
+				taglist = new string[]{ };
+			}
 		}
 
-		TagListView tlv;
+		public TagListView tlv;
 
 		public override void ViewDidLoad ()
 		{
+			Console.WriteLine ("taglist():viewDidLoad()");
 			base.ViewDidLoad ();
-			float y = 50f; //TODO get dynamic value, this is a hack.
+			//float y = 50f; //TODO get dynamic value, this is a hack.
 //			RectangleF frame = new RectangleF (0, y, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height * 0.75f);
-			this.NavigationController.Title = "edit tag";
-			tlv = new TagListView (frame, taglist);
+			//this.NavigationController.Title = "edit tag";
+			tlv = new TagListView (area, taglist);
 			this.View = tlv;
-			this.View.BackgroundColor = UIColor.White;
+			//this.View.BackgroundColor = UIColor.White;
 			tlv.TagStringClicked += (object sender, TagStringClickedEventArgs e) => EditTagString (e.tagstring, e.pos);
 
 			var doubletap = new UITapGestureRecognizer (AddTag);
 			doubletap.NumberOfTapsRequired = 2;
 			tlv.AddGestureRecognizer (doubletap);
-
+			tlv.SetNeedsDisplay ();
 		}
 
 		void AddTag (UITapGestureRecognizer gestureRecognizer){

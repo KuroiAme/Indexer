@@ -14,29 +14,38 @@ namespace GarageIndex
 		RectangleF myframe;
 		public event EventHandler<TagStringClickedEventArgs> TagStringClicked;
 		List<RectangleF> hitTable;
+		float heightmod;
 
 		public TagListView (RectangleF frame, string[] taglist)
 		{
 			Frame = frame;
+			Console.WriteLine ("Frame=" + Frame);
 			myframe = frame;
-			this.BackgroundColor = UIColor.White;
-			this.taglist = taglist;
+			this.BackgroundColor = UIColor.Clear;
+			if (taglist != null) {
+				this.taglist = taglist;
+			} else {
+				taglist = new string[] { };
+			}
 			tagframes = new List<RectangleF> ();
 			hitTable = new List<RectangleF> ();
 		}
 
 		public override void Draw (RectangleF rect)
 		{
+			Console.WriteLine ("Taglistview:draw()");
 			base.Draw (rect);
-			DrawContainer ();
-			//UnRefactoredPaintCodeCode ();
-			for (int i = 0; i < taglist.Length; i++) {
-				DrawShadedTag (taglist [i]);
+			DrawContainer2 ();
+			if (taglist != null) {
+				for (int i = 0; i < taglist.Length; i++) {
+					DrawShadedTag (taglist [i]);
+				}
 			}
 		}
 
 		public void UpdateTagList (string[] taglist)
 		{
+			Console.WriteLine ("updateTagList()");
 			this.taglist = taglist;
 			this.charNumber = 0;
 			this.lineNumber = 0;
@@ -87,7 +96,8 @@ namespace GarageIndex
 			// Rectangle Drawing
 
 //			RectangleF dynamicFrameRect = new RectangleF (myframe.X + 20.5f,myframe.Y + 16.5f,myframe.Width - 42, myframe.Height - 26);
-			RectangleF dynamicFrameRect = new RectangleF (myframe.X + 20.5f,myframe.Y + 16.5f,myframe.Width - 42, myframe.Height - 100);
+			RectangleF dynamicFrameRect = new RectangleF (myframe.X + 20.5f,myframe.Y + 16.5f,myframe.Width - 42, myframe.Height - heightmod);
+			Console.WriteLine ("DynamicRect:" + dynamicFrameRect);
 
 			var rectanglePath = UIBezierPath.FromRoundedRect (dynamicFrameRect, 30);
 			context.SaveState ();
@@ -122,18 +132,68 @@ namespace GarageIndex
 //			return context;
 		}
 
+		private void DrawContainer2(){
+			CGContext context = UIGraphics.GetCurrentContext ();
+			// Rectangle Drawing from 240x120
+//			var rectanglePath = UIBezierPath.FromRoundedRect(myframe,30);
+			var rectanglePath = UIBezierPath.FromRoundedRect(new RectangleF(20.5f, 16.5f, 202, 87), 30);
+//			RectangleF dynamicFrameRect = new RectangleF (myframe.X + 20.5f,myframe.Y + 16.5f,myframe.Width - 42, myframe.Height - 26);
+//			RectangleF dynamicFrameRect = new RectangleF ();
+//			Console.WriteLine ("DynamicRect:" + dynamicFrameRect);
+			context.SaveState();
+			context.SetShadowWithColor(shadowOffset, shadowBlurRadius, shadow);
+			UIColor.White.SetFill();
+			rectanglePath.Fill();
+
+////// Rectangle Inner Shadow
+			var rectangleBorderRect = rectanglePath.Bounds;
+			rectangleBorderRect.Inflate(shadowBlurRadius, shadowBlurRadius);
+			rectangleBorderRect.Offset(-shadowOffset.Width, -shadowOffset.Height);
+			rectangleBorderRect = RectangleF.Union(rectangleBorderRect, rectanglePath.Bounds);
+			rectangleBorderRect.Inflate(1, 1);
+
+			var rectangleNegativePath = UIBezierPath.FromRect(rectangleBorderRect);
+			rectangleNegativePath.AppendPath(rectanglePath);
+			rectangleNegativePath.UsesEvenOddFillRule = true;
+
+			context.SaveState();
+			{
+				var xOffset = shadowOffset.Width + (float)Math.Round(rectangleBorderRect.Width);
+				var yOffset = shadowOffset.Height;
+				context.SetShadowWithColor(
+					new SizeF(xOffset + (xOffset >= 0 ? 0.1f : -0.1f), yOffset + (yOffset >= 0 ? 0.1f : -0.1f)),
+					shadowBlurRadius,
+					shadow);
+
+				rectanglePath.AddClip();
+				var transform = CGAffineTransform.MakeTranslation(-(float)Math.Round(rectangleBorderRect.Width), 0);
+				rectangleNegativePath.ApplyTransform(transform);
+				UIColor.Gray.SetFill();
+				rectangleNegativePath.Fill();
+			}
+			context.RestoreState();
+
+			context.RestoreState();
+
+			UIColor.Black.SetStroke();
+			rectanglePath.LineWidth = 1;
+			rectanglePath.Stroke();
+
+		}
+
 		float nullconst = 42f;
 		float ynullconst = 29.5f;
 		float charSize = 7.55f;
-		float lineSize = 17f;
+		float lineSize = 20f;
 		int lineNumber = 0;
 		int charNumber = 0;
 
 		private void DrawShadedTag (String paintstring){
+			Console.WriteLine("DrawShadedTag():"+paintstring);
 			CGContext context = UIGraphics.GetCurrentContext ();
 
 
-			int maxAntallCharacters = (int) Math.Round((myframe.Width - 42 * 2) / charSize);
+			int maxAntallCharacters = (int) Math.Round((myframe.Width - 42 * 4) / charSize);
 			if (paintstring.Length > maxAntallCharacters) {
 				int pos = (int) Math.Floor(paintstring.Length / 2.00);
 				string a = paintstring.Substring (0, pos);
@@ -150,8 +210,8 @@ namespace GarageIndex
 
 			//TODO Implement maxantall linjer for tags.
 
-			float x = myframe.X + nullconst + (charNumber * charSize);
-			float y = myframe.Y + ynullconst + (lineNumber * lineSize);
+			float x = nullconst + (charNumber * charSize);
+			float y = ynullconst + (lineNumber * lineSize);
 			float width = charSize * paintstring.Length+1;
 			// nine Drawing
 			var nineRect = new RectangleF(x,y, width, 13);

@@ -55,13 +55,13 @@ namespace no.dctapps.Garageindex.screens
 		void initRectangles ()
 		{
 			if (UserInterfaceIdiomIsPhone) {
-				ImageRectangle = new RectangleF (10, 200, 300, 300);
+				ImageRectangle = new RectangleF (10, 300, 300, 300);
 //				PickerRect = new RectangleF (10, 100, 175, 30);
 //                UnPickerRect = new RectangleF(175, 100, 150, 55);
 			}
 			else {
 				//Ipad measures for this screen
-				ImageRectangle = new RectangleF (10, 200, 800, 800);
+				ImageRectangle = new RectangleF (10, 300, 800, 800);
 //				PickerRect = new RectangleF (10, 100, 200, 30);
 //                UnPickerRect = new RectangleF(210, 100, 200, 55);
 			}
@@ -162,6 +162,28 @@ namespace no.dctapps.Garageindex.screens
 					string filename = System.IO.Path.Combine (documentsDirectory, myItem.ImageFileName);
 					this.imageView.Image = UIImage.FromFile (filename);
 				}
+			}
+			AddTagList ();
+		}
+
+		void AddTagList ()
+		{
+			if (UserInterfaceIdiomIsPhone) {
+				RectangleF frame = new RectangleF (30,135, UIScreen.MainScreen.Bounds.Width, 125);
+				Console.WriteLine("frame:"+frame);
+				ImageTag tag = AppDelegate.dao.GetImageTagById (this.item.ImageTagId);
+				if (tag == null) {
+					Console.WriteLine ("Tag er null");
+					tag = new ImageTag ();
+					int key = AppDelegate.dao.SaveTag (tag);
+					tag.ID = key;
+					Console.WriteLine ("key:" + key);
+					this.item.ImageTagId = key;
+					AppDelegate.dao.SaveItem (item);
+				}
+
+				TagListController tlc = new TagListController (tag, frame);
+				this.View.AddSubview (tlc.View);
 			}
 		}
 

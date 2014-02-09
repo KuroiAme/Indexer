@@ -424,6 +424,10 @@ namespace GarageIndex
 			Console.WriteLine ("Selected: " + ++index);
 			GalleryObject go = AppDelegate.dao.GetGalleryObjectByIndex (--index);
 			var eimc = new EditImageModeController (go);
+			eimc.ThumbChanged += (object sender, ThumbChangedEventArgs e) => {
+				Console.WriteLine("reloading data");
+				carousel.ReloadData ();
+			};
 			tivc.NavigationController.PushViewController (eimc, true);
 		}
 	}

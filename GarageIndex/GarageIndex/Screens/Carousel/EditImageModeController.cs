@@ -24,6 +24,8 @@ namespace GarageIndex
 		UIView blend;
 		UIImageView iv;
 
+		public event EventHandler<ThumbChangedEventArgs> ThumbChanged;
+
 		public EditImageModeController (GalleryObject go)
 		{
 			this.go = go;
@@ -96,6 +98,87 @@ namespace GarageIndex
 			scrollView.AddGestureRecognizer (doubletap);
 
 			CreateEditBarButton ();
+
+			ExtractNewThumbnail ();
+		}
+
+		void ExtractNewThumbnail ()
+		{
+			Console.WriteLine ("extracting thumbnail");
+			//UIView snapshotview = blend.SnapshotView (true);
+			UIImage render = ImageWithView (blend);
+			string res = SaveGalleryThumbnail (go.Name, render);
+			go.thumbFileName = res;
+			RaiseThumbchanged ();
+		}
+
+		void RaiseThumbchanged ()
+		{
+			var handler = this.ThumbChanged;
+			Console.WriteLine ("thumb changed");
+			if (handler != null) {
+				handler (this, new ThumbChangedEventArgs ());
+			}
+		}
+
+		public static string SaveGalleryThumbnail (string name, UIImage ourpic)
+		{
+			if (ourpic == null)
+				return "";
+			Console.WriteLine ("Save");
+			float aspectRatio = ourpic.Size.Width / ourpic.Size.Height;
+			Console.WriteLine ("ratio:" + aspectRatio);
+			float sc = 200;
+			SizeF newSize = new SizeF (sc, sc / aspectRatio);
+			UIImage thumbPic = ourpic.Scale (newSize); //measurements taken from CustomCell, alternatly 33x33
+
+			if (ourpic != null) {
+				var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+				var gallerydirectory = Path.Combine (documentsDirectory, "gallery");
+
+				if (!Directory.Exists (gallerydirectory)) {
+					Directory.CreateDirectory (gallerydirectory);
+				}
+
+				var thumbpicname = name + "_thumb.png";
+				string thumbpngfileName = System.IO.Path.Combine (gallerydirectory, thumbpicname);
+
+				NSData img2Data = thumbPic.AsPNG();
+
+				NSError err = null;
+				if (img2Data.Save (thumbpngfileName, false, out err)) {
+					Console.WriteLine ("saved as " + thumbpngfileName);
+					string result = thumbpicname;
+					return result;
+
+				} else {
+					Console.WriteLine ("NOT saved as " + thumbpngfileName + " because" + err.LocalizedDescription);
+					return null;
+				}
+			}
+			return "";
+		}
+
+
+//		static string RandomGeneratedName ()
+//		{
+//			var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+//			var random = new Random();
+//			var result = new string(
+//				Enumerable.Repeat(chars, 8)
+//				.Select(s => s[random.Next(s.Length)])
+//				.ToArray());
+//			return result;
+//		}
+
+
+
+		UIImage ImageWithView (UIView view){
+			UIGraphics.BeginImageContextWithOptions (view.Bounds.Size, view.Opaque, 0.0f);
+			view.Layer.RenderInContext (UIGraphics.GetCurrentContext ());
+			UIImage img = UIGraphics.GetImageFromCurrentImageContext ();
+			UIGraphics.EndImageContext ();
+			return img;
 		}
 
 		UIBarButtonItem it;
@@ -152,6 +235,7 @@ namespace GarageIndex
 				Console.WriteLine("tagtext:"+tag.TagString);
 				Console.WriteLine("spot:"+tag.FetchAsRectangleF());
 				tgv.SetNeedsDisplay();
+				ExtractNewThumbnail ();
 			};
 
 			av.Show();

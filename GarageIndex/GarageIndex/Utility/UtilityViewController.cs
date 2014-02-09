@@ -24,7 +24,7 @@ namespace GarageIndex
 			if(ourpic == null)
 				return new string[2]{"",""};
 			Console.WriteLine ("Save");
-			UIImage thumbPic = ImageHelper.ResizeImage(ourpic, 50,50); //measurements taken from CustomCell, alternatly 33x33
+			UIImage thumbPic = ourpic.Scale(new SizeF(50,50)); //measurements taken from CustomCell, alternatly 33x33
 
 			if (ourpic != null) {
 				var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
