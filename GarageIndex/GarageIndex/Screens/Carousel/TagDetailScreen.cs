@@ -29,10 +29,29 @@ namespace GarageIndex
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			tlc = new TagListController (tag);
+			RectangleF frame = new RectangleF (0, y, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height * 0.75f);
+			tlc = new TagListController (tag, frame);
 			this.Add (tlc.View);
 			
 			// Perform any additional setup after loading the view, typically from a nib.
+		}
+
+		UIBarButtonItem it;
+		private void CreateEditBarButton ()
+		{
+
+			it = new UIBarButtonItem ();
+			it.Title = "Extract";
+			//IS really info
+
+			it.Clicked += (object sender, EventArgs e) => Extract ();
+			NavigationItem.SetRightBarButtonItem (it, true);
+
+		}
+
+		void Extract ()
+		{
+			throw new NotImplementedException ();
 		}
 	}
 }

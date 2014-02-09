@@ -93,6 +93,15 @@ namespace no.dctapps.Garageindex.dao
 			return myList;
 		}
 
+		public ImageTag GetImageTagById (int ID)
+		{
+			IList<ImageTag> myList = new List<ImageTag>();
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<ImageTag> ("select * from ImageTag where ID = ?", ID);
+			}
+			return myList[0];
+		}
+
 		public IList<LagerObject> GetLagerObjectByID (int ID)
 		{
 			IList<LagerObject> myList = new List<LagerObject>();

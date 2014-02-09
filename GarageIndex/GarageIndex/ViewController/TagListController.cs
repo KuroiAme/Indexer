@@ -11,7 +11,7 @@ namespace GarageIndex
 		String[] taglist;
 		char[] sep = {' ',','};
 
-		public TagListController (ImageTag tag)
+		public TagListController (ImageTag tag, RectangleF area)
 		{
 			this.tag = tag;
 
@@ -24,7 +24,8 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 			float y = 50f; //TODO get dynamic value, this is a hack.
-			RectangleF frame = new RectangleF (0, y, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height * 0.55f);
+//			RectangleF frame = new RectangleF (0, y, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height * 0.75f);
+			this.NavigationController.Title = "edit tag";
 			tlv = new TagListView (frame, taglist);
 			this.View = tlv;
 			this.View.BackgroundColor = UIColor.White;
@@ -33,6 +34,7 @@ namespace GarageIndex
 			var doubletap = new UITapGestureRecognizer (AddTag);
 			doubletap.NumberOfTapsRequired = 2;
 			tlv.AddGestureRecognizer (doubletap);
+
 		}
 
 		void AddTag (UITapGestureRecognizer gestureRecognizer){

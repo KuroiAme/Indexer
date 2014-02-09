@@ -29,6 +29,7 @@ namespace No.Dctapps.GarageIndex
 		public string ImageFileName{ get; set;}
 		public string boxName{get; set;}
 		public int boxID{ get; set;}
+		public int ImageTagId{ get; set;}
 
 		public string Action {
 			get;

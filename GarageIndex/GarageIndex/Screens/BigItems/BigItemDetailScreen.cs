@@ -254,8 +254,18 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 
 			SetLagerButtonLabel (this.myObject);
 			initializeMoveLager ();
+
+			AddTagList ();
 		}
 
+		void AddTagList ()
+		{
+			if (UserInterfaceIdiomIsPhone) {
+				RectangleF frame = new RectangleF (0, y, UIScreen.MainScreen.Bounds.Width, 100);
+				ImageTag tag = AppDelegate.dao.GetImageTagById (this.myObject.ImageTagId);
+				TagListController tlc = new TagListController (tag, frame);
+			}
+		}
 
 
 		void releaseKeyboard ()

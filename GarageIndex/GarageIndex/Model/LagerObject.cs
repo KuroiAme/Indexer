@@ -16,6 +16,7 @@ namespace  no.dctapps.Garageindex.model
 		public string isContainer{get; set;}
 		public string isLargeObject{get; set;}
 		public int LagerID{get; set;}
+		public int ImageTagId{ get; set;}
 
 		public string thumbFileName {
 			get;
