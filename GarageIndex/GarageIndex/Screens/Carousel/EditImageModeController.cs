@@ -24,11 +24,17 @@ namespace GarageIndex
 		UIView blend;
 		UIImageView iv;
 
+		bool mylock;
+		bool found;
+
 		public event EventHandler<ThumbChangedEventArgs> ThumbChanged;
 
 		public EditImageModeController (GalleryObject go)
 		{
 			this.go = go;
+			//finds = new List<ImageTag> ();
+			mylock = false;
+			found = false;
 
 		}
 
@@ -97,9 +103,62 @@ namespace GarageIndex
 			doubletap.NumberOfTapsRequired = 2;
 			scrollView.AddGestureRecognizer (doubletap);
 
+			var longPressGesture = new UILongPressGestureRecognizer (EditTagFrame);
+			scrollView.AddGestureRecognizer (longPressGesture);
+
 			CreateEditBarButton ();
 
 			ExtractNewThumbnail ();
+		}
+
+		void EditTagFrame (UIGestureRecognizer gestureRecognizer){
+			Console.WriteLine ("edittagframe triggered");
+			if (mylock == false) {
+				Console.WriteLine ("mutex aquired");
+				mylock = true;
+				PointF point = gestureRecognizer.LocationInView (this.blend);
+//			Console.WriteLine ("presspoint:" + point);
+//			PointF center = scrollView.Center;
+//			Console.WriteLine("center:"+scrollView.Center);
+//			float scale = scrollView.ZoomScale;
+//			PointF con = new PointF (scrollView.ContentOffset.X / scale, scrollView.ContentOffset.Y / scale);
+//			PointF con = new PointF (scrollView.ContentOffset.X, scrollView.ContentOffset.Y);
+//			Console.WriteLine ("con:" + con);
+//			PointF guess = new PointF (con.X + point.X, con.Y + point.Y);
+//			Console.WriteLine ("guess:" + guess);
+
+				List<RectangleF> Rects = new List<RectangleF> ();
+				IList<ImageTag> Tags = AppDelegate.dao.GetTagsByGalleryObjectID (go.ID);
+				for (int i = 0; i < Tags.Count; i++) {
+					Rects.Add (Tags [i].FetchAsRectangleF ());
+				}
+				for (int j = 0; j < Rects.Count; j++) {
+					if (Rects [j].Contains (point)) {
+//						if (finds.Exists (x => x.ID == Tags [j].ID)) {
+//							Console.WriteLine ("pushing:" + Tags [j]);
+//							finds.Remove (Tags [j]);
+						TagDetailScreen tds = new TagDetailScreen (Tags [j]);
+
+						found = true; 
+						tds.backpush += (object sender, BackClickedEventArgs e) => {
+							Console.WriteLine("mutex released");
+							mylock = false;
+						};
+						this.NavigationController.PushViewController (tds, false);
+						break;
+//						} else {
+//							Console.WriteLine ("adder:" + Tags [j]);
+//							Console.WriteLine ("finds:" + finds.Count);
+//							finds.Add (Tags [j]);
+//							break;
+//						}
+					}
+				}
+				if (!found) {
+					Console.WriteLine ("releasing mutex");
+					mylock = false;
+				}
+			}
 		}
 
 		void ExtractNewThumbnail ()

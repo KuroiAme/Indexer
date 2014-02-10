@@ -20,17 +20,20 @@ namespace GarageIndex
 		ImageTag tag;
 		TagListController tlc;
 
-		public TagDetailScreen (ImageTag tag)
+		public event EventHandler<BackClickedEventArgs> backpush;
+
+		public TagDetailScreen (ImageTag tag) : base (UserInterfaceIdiomIsPhone ? "ContainerDetails_iPhone" : "ContainerDetails_iPad",null)
 		{
 			this.tag = tag;
 		}
 
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
+		private void backpress(object sender, EventArgs e){
+			Console.WriteLine("surely you jest?");
+			var handler = this.backpush;
+			if(handler != null){
+				handler(this, new BackClickedEventArgs());
+			}
+			this.NavigationController.PopViewControllerAnimated (true);
 		}
 
 		public override void ViewDidLoad ()
@@ -40,9 +43,26 @@ namespace GarageIndex
 			tlc = new TagListController (tag, frame);
 			this.Add (tlc.View);
 			CreateExtractBarButton ();
-			
-			// Perform any additional setup after loading the view, typically from a nib.
+
+			UIBarButtonItem back = new UIBarButtonItem ("back", UIBarButtonItemStyle.Bordered,backpress);
+			this.NavigationItem.LeftBarButtonItem = back;
+//			this.NavigationController.NavigationBar.BackItem.LeftBarButtonItem.Clicked +=  (object sender, EventArgs e) => {
+//				
+//			}; 
+
+//			this.NavigationController. += (object sender, EventArgs e) => {
+//
+//			};
+//			this.NavigationController.NavigationBar.BackItem.BackBarButtonItem.Clicked += (object sender, EventArgs e) => {
+//				Console.WriteLine("Zest?");
+//			var handler = this.backpush;
+//			if(handler != null){
+//				handler(this, new BackClickedEventArgs());
+//			}
+//			};
 		}
+
+
 
 		UIBarButtonItem it;
 		private void CreateExtractBarButton ()

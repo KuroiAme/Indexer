@@ -11,7 +11,7 @@ namespace GarageIndex
 		String[] taglist;
 		char[] sep = {' ',','};
 		RectangleF area;
-		float heightmod;
+		//float heightmod;
 
 		public TagListController (ImageTag tag, RectangleF area)
 		{
@@ -36,7 +36,7 @@ namespace GarageIndex
 //			RectangleF frame = new RectangleF (0, y, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height * 0.75f);
 			//this.NavigationController.Title = "edit tag";
 			tlv = new TagListView (area, taglist);
-			this.View = tlv;
+			Add (tlv);
 			//this.View.BackgroundColor = UIColor.White;
 			tlv.TagStringClicked += (object sender, TagStringClickedEventArgs e) => EditTagString (e.tagstring, e.pos);
 

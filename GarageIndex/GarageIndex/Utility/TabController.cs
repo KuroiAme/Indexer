@@ -4,6 +4,7 @@ using No.DCTapps.GarageIndex;
 using no.dctapps.garageindex;
 using no.dctapps.Garageindex.screens;
 using MonoTouch.CoreGraphics;
+using System.Drawing;
 
 namespace GarageIndex
 {
@@ -107,14 +108,23 @@ namespace GarageIndex
 			}
 
 			galleryNav = new UINavigationController();
-			galleryNav.TabBarItem = new UITabBarItem();
+			galleryNav.TabBarItem = new UITabBarItem ();
 			galleryNav.TabBarItem.Title = title;
-//			CGImage cg = new CGImage ();
-//			cg.
-//			galleryNav.TabBarItem.Image = UIImage.
-			galleryNav.TabBarItem.Image = UIImage.FromBundle("startree.png");
+//			GalleryIcon gi = new GalleryIcon ();
+//
+//			gi.SetNeedsDisplay ();
+//			galleryNav.TabBarItem.Image = ImageWithView (gi);
+			galleryNav.TabBarItem.Image = UIImage.FromBundle("gallery.png");
 
 			galleryNav.PushViewController(galleryscreen, true);
+		}
+
+		UIImage ImageWithView (UIView view){
+			UIGraphics.BeginImageContextWithOptions (new SizeF(50,50), view.Opaque, 0.0f);
+			view.Layer.RenderInContext (UIGraphics.GetCurrentContext ());
+			UIImage img = UIGraphics.GetImageFromCurrentImageContext ();
+			UIGraphics.EndImageContext ();
+			return img;
 		}
 
 		public void InitScanner ()
