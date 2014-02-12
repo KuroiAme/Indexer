@@ -264,7 +264,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 		void AddTagList ()
 		{
 			if (UserInterfaceIdiomIsPhone) {
-				RectangleF frame = new RectangleF (30,130, UIScreen.MainScreen.Bounds.Width, 125);
+				RectangleF frame = new RectangleF (30,150, UIScreen.MainScreen.Bounds.Width, 100);
 				Console.WriteLine("frame:"+frame);
 				ImageTag tag = AppDelegate.dao.GetImageTagById (this.myObject.ImageTagId);
 				if (tag == null) {

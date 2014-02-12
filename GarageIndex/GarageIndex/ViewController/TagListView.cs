@@ -14,7 +14,7 @@ namespace GarageIndex
 		RectangleF myframe;
 		public event EventHandler<TagStringClickedEventArgs> TagStringClicked;
 		List<RectangleF> hitTable;
-		float heightmod;
+		//float heightmod;
 
 		public TagListView (RectangleF frame, string[] taglist)
 		{
@@ -80,7 +80,7 @@ namespace GarageIndex
 					break; //TODO this is a hack, could select more than one?
 				}
 			}
-
+			Console.WriteLine ("does it come to this?");
 			return base.HitTest (point, uievent);
 		}
 
@@ -96,7 +96,7 @@ namespace GarageIndex
 			// Rectangle Drawing
 
 //			RectangleF dynamicFrameRect = new RectangleF (myframe.X + 20.5f,myframe.Y + 16.5f,myframe.Width - 42, myframe.Height - 26);
-			RectangleF dynamicFrameRect = new RectangleF (myframe.X + 20.5f,myframe.Y + 16.5f,myframe.Width - 42, myframe.Height - heightmod);
+			RectangleF dynamicFrameRect = new RectangleF (myframe.X + 20.5f,myframe.Y + 16.5f,myframe.Width - 42, myframe.Height);
 			Console.WriteLine ("DynamicRect:" + dynamicFrameRect);
 
 			var rectanglePath = UIBezierPath.FromRoundedRect (dynamicFrameRect, 30);

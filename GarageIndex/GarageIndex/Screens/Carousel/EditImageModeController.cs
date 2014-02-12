@@ -278,29 +278,30 @@ namespace GarageIndex
 
 			UIAlertView av = new UIAlertView ("input tags, comma seperated", "\n", null, "Cancel", new string[] {"Create"});
 			av.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
+			int Create = av.FirstOtherButtonIndex;
 			av.Clicked += (object sender, UIButtonEventArgs e) => {
-				String tagText = av.GetTextField (0).Text;
-				tag.TagString = tagText;
-				var scale = scrollView.ZoomScale;
-				const float heightmod = 0.70f;
-				//float widthmod = 1f;
+				if(e.ButtonIndex == Create){
+					String tagText = av.GetTextField (0).Text;
+					tag.TagString = tagText;
+					var scale = scrollView.ZoomScale;
+					const float heightmod = 0.70f;
+					//float widthmod = 1f;
 
-				RectangleF contentFrame = new RectangleF(scrollView.ContentOffset.X / scale, scrollView.ContentOffset.Y / scale, scrollView.Frame.Size.Width / scale, scrollView.Frame.Size.Height /scale * heightmod);
-				//contentFrame.Y = contentFrame.Y + this.NavigationController.View.Bounds.Y;
-				//contentFrame.X = contentFrame.X + this.NavigationController.View.Bounds.Bottom;
-				contentFrame.Y = contentFrame.Y + 90;
-				tag.StoreRectangleF(contentFrame);
-				AppDelegate.dao.SaveTag(tag);
-				Console.WriteLine("tagtext:"+tag.TagString);
-				Console.WriteLine("spot:"+tag.FetchAsRectangleF());
-				tgv.SetNeedsDisplay();
-				ExtractNewThumbnail ();
+					RectangleF contentFrame = new RectangleF(scrollView.ContentOffset.X / scale, scrollView.ContentOffset.Y / scale, scrollView.Frame.Size.Width / scale, scrollView.Frame.Size.Height /scale * heightmod);
+					//contentFrame.Y = contentFrame.Y + this.NavigationController.View.Bounds.Y;
+					//contentFrame.X = contentFrame.X + this.NavigationController.View.Bounds.Bottom;
+					contentFrame.Y = contentFrame.Y + 90;
+					tag.StoreRectangleF(contentFrame);
+					AppDelegate.dao.SaveTag(tag);
+					Console.WriteLine("tagtext:"+tag.TagString);
+					Console.WriteLine("spot:"+tag.FetchAsRectangleF());
+					tgv.SetNeedsDisplay();
+					ExtractNewThumbnail ();
+				}
 			};
 
 			av.Show();
 		}
-
-
 
 		public static bool UserInterfaceIdiomIsPhone 
 		{

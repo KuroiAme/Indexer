@@ -112,15 +112,14 @@ namespace GarageIndex
 			galleryNav.TabBarItem.Title = title;
 //			GalleryIcon gi = new GalleryIcon ();
 //
-//			gi.SetNeedsDisplay ();
-//			galleryNav.TabBarItem.Image = ImageWithView (gi);
-			galleryNav.TabBarItem.Image = UIImage.FromBundle("gallery.png");
+//			galleryNav.TabBarItem.Image = ImageWithView (gi.SnapshotView(true));
+			galleryNav.TabBarItem.Image = UIImage.FromBundle("frames4832.png");
 
 			galleryNav.PushViewController(galleryscreen, true);
 		}
 
 		UIImage ImageWithView (UIView view){
-			UIGraphics.BeginImageContextWithOptions (new SizeF(50,50), view.Opaque, 0.0f);
+			UIGraphics.BeginImageContextWithOptions (new SizeF(96,64), view.Opaque, 1.0f);
 			view.Layer.RenderInContext (UIGraphics.GetCurrentContext ());
 			UIImage img = UIGraphics.GetImageFromCurrentImageContext ();
 			UIGraphics.EndImageContext ();
@@ -157,13 +156,13 @@ namespace GarageIndex
 				ItemNav = new UINavigationController();
 				ItemNav.TabBarItem = new UITabBarItem ();
 				ItemNav.TabBarItem.Title = lbtext;
-				ItemNav.TabBarItem.Image = UIImage.FromBundle("mystamp.png");
+				ItemNav.TabBarItem.Image = UIImage.FromBundle("flosshat4832.png");
 				ItemNav.PushViewController(ItemCatalogue, false);
 			}else{
 				ItemMaster = new ItemMasterView();
 				ItemMaster.TabBarItem = new UITabBarItem ();
 				ItemMaster.TabBarItem.Title = lbtext;
-				ItemMaster.TabBarItem.Image = UIImage.FromBundle("mystamp.png");
+				ItemMaster.TabBarItem.Image = UIImage.FromBundle("flosshat4832.png");
 			}
 		}
 
@@ -176,13 +175,13 @@ namespace GarageIndex
 				bigNav = new UINavigationController();
 				bigNav.TabBarItem = new UITabBarItem ();
 				bigNav.TabBarItem.Title = lbtext;
-				bigNav.TabBarItem.Image = UIImage.FromBundle("mytable.png");
+				bigNav.TabBarItem.Image = UIImage.FromBundle("table4832.png");
 				bigNav.PushViewController(bigitemscreen, false);
 			}else{
 				bigMaster = new BigItemMasterView();
 				bigMaster.TabBarItem = new UITabBarItem ();
 				bigMaster.TabBarItem.Title = lbtext;
-				bigMaster.TabBarItem.Image = UIImage.FromBundle("mytable.png");
+				bigMaster.TabBarItem.Image = UIImage.FromBundle("table4832.png");
 			}
 		}
 
@@ -196,14 +195,14 @@ namespace GarageIndex
 
 				boxNav.TabBarItem = new UITabBarItem();
 				boxNav.TabBarItem.Title = box;
-				boxNav.TabBarItem.Image = UIImage.FromBundle ("mybox.png");
+				boxNav.TabBarItem.Image = UIImage.FromBundle ("container4832.png");
 				boxNav.PushViewController(boxesscreen, false);
 			}else{
 				//				//init splitviewController
 				containerMaster = new no.dctapps.Garageindex.ContainerMasterView();
 				containerMaster.TabBarItem = new UITabBarItem();
 				containerMaster.TabBarItem.Title = box;
-				containerMaster.TabBarItem.Image = UIImage.FromBundle("mybox.png");
+				containerMaster.TabBarItem.Image = UIImage.FromBundle("container4832.png");
 			}
 		}
 
@@ -250,14 +249,14 @@ namespace GarageIndex
 
 				lagerNav.TabBarItem = new UITabBarItem();
 				lagerNav.TabBarItem.Title = lagre;
-				lagerNav.TabBarItem.Image = UIImage.FromBundle("m\th.png");
+				lagerNav.TabBarItem.Image = UIImage.FromBundle("uchi4832.png");
 				lagerNav.PushViewController(LagerList, false);
 			}else{
 				//				//init splitviewController
 				LagerMaster = new LagerMasterView();
 				LagerMaster.TabBarItem = new UITabBarItem();
 				LagerMaster.TabBarItem.Title = lagre;
-				LagerMaster.TabBarItem.Image = UIImage.FromBundle("mh.png");
+				LagerMaster.TabBarItem.Image = UIImage.FromBundle("uchi4832.png");
 			}
 		}
 	}

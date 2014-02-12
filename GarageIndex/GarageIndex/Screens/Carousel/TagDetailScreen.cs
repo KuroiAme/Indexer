@@ -20,15 +20,27 @@ namespace GarageIndex
 		ImageTag tag;
 		TagListController tlc;
 
+		RectangleF fetcher;
+
 		public event EventHandler<BackClickedEventArgs> backpush;
 
-		public TagDetailScreen (ImageTag tag) : base (UserInterfaceIdiomIsPhone ? "ContainerDetails_iPhone" : "ContainerDetails_iPad",null)
+		public TagDetailScreen (ImageTag tag) : base (UserInterfaceIdiomIsPhone ? "TagDetailScreen_iPhone" : "TagDetailScreen_iPad",null)
 		{
 			this.tag = tag;
+			Console.WriteLine ("nib:"+this.NibName);
 		}
 
+		public TagDetailScreen () : base (UserInterfaceIdiomIsPhone ? "TagDetailScreen_iPhone" : "TagDetailScreen_iPad", null){
+			//ipad constructor
+			Console.WriteLine ("nib:"+this.NibName);
+		}
+//
+//		public ContainerDetails () 
+//			: base (UserInterfaceIdiomIsPhone ? "ContainerDetails_iPhone" : "ContainerDetails_iPad")
+//		{
+//		}
+
 		private void backpress(object sender, EventArgs e){
-			Console.WriteLine("surely you jest?");
 			var handler = this.backpush;
 			if(handler != null){
 				handler(this, new BackClickedEventArgs());
@@ -39,29 +51,79 @@ namespace GarageIndex
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			RectangleF frame = new RectangleF (0, 50f, UIScreen.MainScreen.Bounds.Width, 150);
+			RectangleF frame = new RectangleF (0, 125, UIScreen.MainScreen.Bounds.Width, 125);
 			tlc = new TagListController (tag, frame);
 			this.Add (tlc.View);
 			CreateExtractBarButton ();
 
 			UIBarButtonItem back = new UIBarButtonItem ("back", UIBarButtonItemStyle.Bordered,backpress);
 			this.NavigationItem.LeftBarButtonItem = back;
-//			this.NavigationController.NavigationBar.BackItem.LeftBarButtonItem.Clicked +=  (object sender, EventArgs e) => {
-//				
-//			}; 
 
-//			this.NavigationController. += (object sender, EventArgs e) => {
-//
-//			};
-//			this.NavigationController.NavigationBar.BackItem.BackBarButtonItem.Clicked += (object sender, EventArgs e) => {
-//				Console.WriteLine("Zest?");
-//			var handler = this.backpush;
-//			if(handler != null){
-//				handler(this, new BackClickedEventArgs());
-//			}
-//			};
+
+			this.ShowDetails (tag);
 		}
 
+		void ShowDetails (ImageTag mytag)
+		{
+			fetcher = mytag.FetchAsRectangleF ();
+			string tagText = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Tag", "Tag");
+			this.tagIdLabel.Text = tagText + ":"+mytag.ID;
+			this.xTextField.Text = fetcher.X.ToString();
+			this.yTextField.Text = fetcher.Y.ToString ();
+			this.WidthLabel.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Width", "Width");
+			this.Label_Height.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Height", "Height");
+			this.TextField_height.Text = fetcher.Height.ToString ();
+			this.WidthTextField.Text = fetcher.Width.ToString ();
+
+			this.TextField_height.ValueChanged += (object sender, EventArgs e) => {
+				try{
+					float height = float.Parse(this.TextField_height.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+					fetcher.Height = height;
+					mytag.StoreRectangleF(fetcher);
+					AppDelegate.dao.SaveTag(mytag);
+				}catch(Exception ex){
+					Console.WriteLine("exception happend, defaulting value:"+ex.ToString());
+					this.Label_Height.Text = fetcher.Height.ToString();
+				}
+			};
+
+			this.WidthTextField.ValueChanged += (object sender, EventArgs e) => {
+				try{
+					float width = float.Parse(this.WidthTextField.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+					fetcher.Width = width;
+					mytag.StoreRectangleF(fetcher);
+					AppDelegate.dao.SaveTag(mytag);
+				}catch(Exception ex){
+					Console.WriteLine("exception happend, defaulting value:"+ex.ToString());
+					this.WidthTextField.Text = fetcher.Width.ToString();
+				}
+			};
+
+			this.xTextField.ValueChanged += (object sender, EventArgs e) => {
+				try{
+					float x = float.Parse(this.xTextField.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+					fetcher.X = x;
+					mytag.StoreRectangleF(fetcher);
+					AppDelegate.dao.SaveTag(mytag);
+				}catch(Exception ex){
+					Console.WriteLine("exception happend, defaulting value:"+ex.ToString());
+					this.xTextField.Text = fetcher.X.ToString();
+				}
+			};
+
+			this.yTextField.ValueChanged += (object sender, EventArgs e) => {
+				try{
+					float y = float.Parse(this.yTextField.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+					fetcher.Y = y;
+					mytag.StoreRectangleF(fetcher);
+					AppDelegate.dao.SaveTag(mytag);
+				}catch(Exception ex){
+					Console.WriteLine("exception happend, defaulting value:"+ex.ToString());
+					this.yTextField.Text = fetcher.Y.ToString();
+				}
+			};
+
+		}
 
 
 		UIBarButtonItem it;

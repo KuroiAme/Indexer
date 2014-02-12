@@ -32,6 +32,11 @@ namespace no.dctapps.Garageindex.screens
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnShowContent != null) {
+				btnShowContent.Dispose ();
+				btnShowContent = null;
+			}
+
 			if (fieldContainerName != null) {
 				fieldContainerName.Dispose ();
 				fieldContainerName = null;
@@ -50,11 +55,6 @@ namespace no.dctapps.Garageindex.screens
 			if (myTable != null) {
 				myTable.Dispose ();
 				myTable = null;
-			}
-
-			if (btnShowContent != null) {
-				btnShowContent.Dispose ();
-				btnShowContent = null;
 			}
 
 			if (textType != null) {
