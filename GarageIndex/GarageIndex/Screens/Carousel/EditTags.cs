@@ -103,11 +103,21 @@ namespace GarageIndex
 //			this.NavigationItem.RightBarButtonItem.Clicked += (sender, e) => ShowTagDetails (new ImageTag ());
 //		}
 
+//		Ic = new UIPopoverController (sl);
+//		Ic.PresentFromRect (this.btnIn.Bounds, this.View, UIPopoverArrowDirection.Up, true);
+
+//		UIPopoverController pc;
+
 		void ShowTagDetails (ImageTag tag)
 		{
 			Console.WriteLine ("call tagdetailscreen()");
 			TagDetailScreen tagdetails = new TagDetailScreen (tag);
-			this.NavigationController.PushViewController (tagdetails, true);
+			if (UserInterfaceIdiomIsPhone) {
+				this.NavigationController.PushViewController (tagdetails, true);
+			} else {
+				this.NavigationController.PresentViewController (tagdetails, true, null);
+			}
+
 		}
 	}
 }

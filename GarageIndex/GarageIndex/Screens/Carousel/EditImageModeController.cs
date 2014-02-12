@@ -241,6 +241,7 @@ namespace GarageIndex
 		}
 
 		UIBarButtonItem it;
+//		UIPopoverController uipc;
 
 		private void CreateEditBarButton ()
 		{
@@ -251,7 +252,13 @@ namespace GarageIndex
 
 			it.Clicked += (object sender, EventArgs e) => {
 				EditTags tagedit = new EditTags(go);
-				this.NavigationController.PushViewController(tagedit,true);;
+				if(UserInterfaceIdiomIsPhone){
+					this.NavigationController.PushViewController(tagedit,true);
+				}else{
+					this.NavigationController.PresentViewController(tagedit,true,null);
+//					uipc = new UIPopoverController (tagedit);
+//					uipc.PresentFromBarButtonItem (this.it,UIPopoverArrowDirection.Up, true);
+				}
 			};
 			NavigationItem.SetRightBarButtonItem (it, true);
 

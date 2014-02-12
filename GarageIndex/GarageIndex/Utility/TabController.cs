@@ -141,7 +141,7 @@ namespace GarageIndex
 			scanNav = new UINavigationController();
 			scanNav.TabBarItem = new UITabBarItem();
 			scanNav.TabBarItem.Title = title;
-			scanNav.TabBarItem.Image = UIImage.FromBundle("weye.png");
+			scanNav.TabBarItem.Image = UIImage.FromBundle("scanner4832.png");
 
 			scanNav.PushViewController(scanner, true);
 
@@ -221,7 +221,7 @@ namespace GarageIndex
 			prefNav = new UINavigationController();
 			prefNav.TabBarItem = new UITabBarItem();
 			prefNav.TabBarItem.Title = title;
-			prefNav.TabBarItem.Image = UIImage.FromBundle("pref.png");
+			prefNav.TabBarItem.Image = UIImage.FromBundle("preferences4832.png");
 
 			prefNav.PushViewController(preferences, false);
 
@@ -234,7 +234,7 @@ namespace GarageIndex
 			StatNav = new UINavigationController();
 			StatNav.TabBarItem = new UITabBarItem();
 			StatNav.TabBarItem.Title = stats;
-			StatNav.TabBarItem.Image = UIImage.FromBundle("math.png");
+			StatNav.TabBarItem.Image = UIImage.FromBundle("statistics4832.png");
 			StatNav.PushViewController(piescreen, true);
 
 		}

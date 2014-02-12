@@ -200,24 +200,29 @@ namespace no.dctapps.Garageindex.screens
 
 		void AddTagList ()
 		{
-			if (UserInterfaceIdiomIsPhone) {
-				RectangleF frame = new RectangleF (30,185, UIScreen.MainScreen.Bounds.Width, 125);
-				Console.WriteLine("frame:"+frame);
-				ImageTag tag = AppDelegate.dao.GetImageTagById (this.boks.ImageTagId);
-				if (tag == null) {
-					Console.WriteLine ("Tag er null");
-					tag = new ImageTag ();
-					int key = AppDelegate.dao.SaveTag (tag);
-					tag.ID = key;
-					Console.WriteLine ("key:" + key);
-					this.boks.ImageTagId = key;
-					AppDelegate.dao.SaveLagerObject (boks);
-				}
-				//
+			RectangleF frame;
 
-				TagListController tlc = new TagListController (tag, frame);
-				this.View.AddSubview (tlc.View);
+			if (UserInterfaceIdiomIsPhone) {
+				frame = new RectangleF (30, 185, UIScreen.MainScreen.Bounds.Width, 125);
+			} else {
+				frame = new RectangleF (30, 150, UIScreen.MainScreen.Bounds.Width, 125);
 			}
+
+			Console.WriteLine("frame:"+frame);
+			ImageTag tag = AppDelegate.dao.GetImageTagById (this.boks.ImageTagId);
+			if (tag == null) {
+				Console.WriteLine ("Tag er null");
+				tag = new ImageTag ();
+				int key = AppDelegate.dao.SaveTag (tag);
+				tag.ID = key;
+				Console.WriteLine ("key:" + key);
+				this.boks.ImageTagId = key;
+				AppDelegate.dao.SaveLagerObject (boks);
+			}
+
+			TagListController tlc = new TagListController (tag, frame);
+			this.View.AddSubview (tlc.View);
+
 		}
 
 		public override void ViewDidLoad ()

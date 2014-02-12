@@ -61,7 +61,7 @@ namespace no.dctapps.Garageindex.screens
 			}
 			else {
 				//Ipad measures for this screen
-				ImageRectangle = new RectangleF (10, 300, 800, 800);
+				ImageRectangle = new RectangleF (10, 310, 800, 800);
 //				PickerRect = new RectangleF (10, 100, 200, 30);
 //                UnPickerRect = new RectangleF(210, 100, 200, 55);
 			}
@@ -162,29 +162,35 @@ namespace no.dctapps.Garageindex.screens
 					string filename = System.IO.Path.Combine (documentsDirectory, myItem.ImageFileName);
 					this.imageView.Image = UIImage.FromFile (filename);
 				}
+				AddTagList ();
 			}
-			AddTagList ();
+
 		}
 
 		void AddTagList ()
 		{
+			RectangleF frame;
 			if (UserInterfaceIdiomIsPhone) {
-				RectangleF frame = new RectangleF (30,135, UIScreen.MainScreen.Bounds.Width, 125);
-				Console.WriteLine("frame:"+frame);
-				ImageTag tag = AppDelegate.dao.GetImageTagById (this.item.ImageTagId);
-				if (tag == null) {
-					Console.WriteLine ("Tag er null");
-					tag = new ImageTag ();
-					int key = AppDelegate.dao.SaveTag (tag);
-					tag.ID = key;
-					Console.WriteLine ("key:" + key);
-					this.item.ImageTagId = key;
-					AppDelegate.dao.SaveItem (item);
-				}
-
-				TagListController tlc = new TagListController (tag, frame);
-				this.View.AddSubview (tlc.View);
+				frame = new RectangleF (30, 135, UIScreen.MainScreen.Bounds.Width, 125);
+			} else {
+				frame = new RectangleF (30, 150, UIScreen.MainScreen.Bounds.Width, 125);			
 			}
+
+			Console.WriteLine ("frame:" + frame);
+			ImageTag tag = AppDelegate.dao.GetImageTagById (this.item.ImageTagId);
+			if (tag == null) {
+				Console.WriteLine ("Tag er null");
+				tag = new ImageTag ();
+				int key = AppDelegate.dao.SaveTag (tag);
+				tag.ID = key;
+				Console.WriteLine ("key:" + key);
+				this.item.ImageTagId = key;
+				AppDelegate.dao.SaveItem (item);
+			}
+
+			TagListController tlc = new TagListController (tag, frame);
+			this.View.AddSubview (tlc.View);
+			 
 		}
 
 		public void SetImageViewImage (UIImageView imageholder)

@@ -51,7 +51,12 @@ namespace GarageIndex
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			RectangleF frame = new RectangleF (0, 125, UIScreen.MainScreen.Bounds.Width, 125);
+			RectangleF frame;
+			if (UserInterfaceIdiomIsPhone) {
+				frame = new RectangleF (0, 125, UIScreen.MainScreen.Bounds.Width, 125);
+			} else {
+				frame = new RectangleF (0, 200, UIScreen.MainScreen.Bounds.Width, 125);
+			}
 			tlc = new TagListController (tag, frame);
 			this.Add (tlc.View);
 			CreateExtractBarButton ();
