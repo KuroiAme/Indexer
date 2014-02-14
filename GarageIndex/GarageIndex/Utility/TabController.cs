@@ -15,7 +15,7 @@ namespace GarageIndex
 		public UITableViewController boxesscreen = null;
 		public UITableViewController bigitemscreen = null;
 		public UITableViewController ItemCatalogue = null;
-		public UtilityViewController preferences = null;
+		public UIViewController preferences = null;
 		public UITableViewController LagerList = null;
 		PiePlot piescreen = null;
 		public Scanner scanner;

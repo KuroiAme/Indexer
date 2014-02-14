@@ -64,7 +64,8 @@ namespace GarageIndex
 		{
 
 			it = new UIBarButtonItem ();
-				it.Title = "add";
+			var addtext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Add", "Add");
+			it.Title = addtext;
 				it.Clicked += (object sender, EventArgs e) => SelectSource ();
 				this.NavigationItem.SetRightBarButtonItem (it, true);
 			
@@ -76,7 +77,8 @@ namespace GarageIndex
 		{
 
 			it2 = new UIBarButtonItem ();
-			it2.Title = "Delete";
+			var deltext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Delete", "Delete");
+			it2.Title = deltext;
 			it2.Clicked += (object sender, EventArgs e) => ReallyDelete ();
 			this.NavigationItem.SetLeftBarButtonItem (it2, true);
 

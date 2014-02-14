@@ -247,7 +247,8 @@ namespace GarageIndex
 		{
 
 			it = new UIBarButtonItem ();
-			it.Title = "Tags";
+			var tagstext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Tags", "Tags");
+			it.Title = tagstext;
 			//IS really info
 
 			it.Clicked += (object sender, EventArgs e) => {
@@ -282,8 +283,10 @@ namespace GarageIndex
 			ImageTag tag = new ImageTag ();
 			tag.GalleryObjectID = go.ID;
 
-
-			UIAlertView av = new UIAlertView ("input tags, comma seperated", "\n", null, "Cancel", new string[] {"Create"});
+			var cr8 = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Create", "Create");
+			var input = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("input tags, comma seperated", "input tags, comma seperated");
+			var abort = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Cancel", "Cancel");
+			UIAlertView av = new UIAlertView (input, "\n", null, abort, new string[] {cr8});
 			av.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
 			int Create = av.FirstOtherButtonIndex;
 			av.Clicked += (object sender, UIButtonEventArgs e) => {

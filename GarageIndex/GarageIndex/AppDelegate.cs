@@ -54,6 +54,9 @@ namespace GarageIndex
 			bl = new GarageindexBL ();
 			//db = new CouchDB ();
 
+//			if (!bl.StatsEnabled && !bl.firstT) {
+//				GAI.SharedInstance.Logger.LogLevel = GAILogLevel.None;
+//			}
 
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);

@@ -208,6 +208,21 @@ namespace no.dctapps.Garageindex.businesslogic
 			return sb.ToString();
 		}
 
+		public bool StatsEnabled ()
+		{
+			var store = NSUbiquitousKeyValueStore.DefaultStore;
+
+			bool enabled = store.GetBool("StatsEnabled");
+
+			return enabled;
+		}
+
+		public void SaveStatsEnabled(bool on){
+			var store = NSUbiquitousKeyValueStore.DefaultStore;
+			store.SetBool("StatsEnabled", on);
+			store.Synchronize();
+		}
+
 		public void SaveContainersAsLarge (bool on)
 		{
 			var store = NSUbiquitousKeyValueStore.DefaultStore;

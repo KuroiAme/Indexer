@@ -9,6 +9,7 @@ using MonoTouch.CoreGraphics;
 using System.Linq;
 using no.dctapps.Garageindex.model;
 using No.Dctapps.Garageindex.Ios.Screens;
+using GoogleAnalytics.iOS;
 
 namespace GarageIndex
 {
@@ -34,11 +35,13 @@ namespace GarageIndex
 			//ipad constructor
 			Console.WriteLine ("nib:"+this.NibName);
 		}
-//
-//		public ContainerDetails () 
-//			: base (UserInterfaceIdiomIsPhone ? "ContainerDetails_iPhone" : "ContainerDetails_iPad")
-//		{
-//		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Tag Detail screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
+		}
 
 		private void backpress(object sender, EventArgs e){
 			var handler = this.backpush;
@@ -136,8 +139,8 @@ namespace GarageIndex
 		{
 
 			it = new UIBarButtonItem ();
-			it.Title = "Extract";
-			//IS really info
+			var text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Extract", "Extract");
+			it.Title = text;
 
 			it.Clicked += (object sender, EventArgs e) => Extract ();
 			NavigationItem.SetRightBarButtonItem (it, true);
@@ -252,11 +255,15 @@ namespace GarageIndex
 		}
 
 		public void Extract(){
+
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.Event, "Extract image");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("userAction", "extract image", "", 0).Build ());
+
 			var source = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("What type of object is it?", "What type of object is it?");
 			var myCancel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Cancel", "Cancel");
 			var mySmall = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("small", "small");
 			var myContainer = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("container", "container");
-			var myLarge = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("large object", "large object");
+			var myLarge = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("large objects", "large objects");
 			actionSheet = new UIActionSheet(source);
 			actionSheet.AddButton(myCancel);
 			actionSheet.AddButton(mySmall);

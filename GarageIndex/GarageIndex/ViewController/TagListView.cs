@@ -34,6 +34,8 @@ namespace GarageIndex
 		public override void Draw (RectangleF rect)
 		{
 			Console.WriteLine ("Taglistview:draw()");
+			this.charNumber = 0;
+			this.lineNumber = 0;
 			base.Draw (rect);
 			DrawContainer2 ();
 			if (taglist != null) {

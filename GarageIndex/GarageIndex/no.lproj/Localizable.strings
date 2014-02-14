@@ -1,4 +1,4 @@
-"Large Objects" = "Store eiendeler";
+"Large Objects" = "Stort";
 "Storage Data" = "Lagerinfo";
 "Name of the storage unit" = "Lagernavn";
 "Address" = "Addresse";
@@ -47,7 +47,7 @@
 "In" = "inni";
 "Items in this container" = "Ting i denne beholderen";
 "Preferences" = "Preferanser";
-"List containers in the large object list" = "Vis beholdere som store objekter";
+"List containers in the large object list" = "Vis beholdere som stort";
 "Scanner" = "Scanner";
 "Include QRcode in emails where applicable" = "inkluder QRkode i epost";
 "remove picture?" = "fjern bilde?";
@@ -56,3 +56,20 @@
 "Cancel" = "avbryt";
 "Number of" = "antall";
 "Statistics" = "Statistikk";
+"allow anonymous statistics" = "tillat anonym statistikk";
+"What type of object is it?" = "hva slags type objekt er det?";
+"back" = "tilbake";
+"small" = "Smått";
+"Tags" = "Merker";
+"Tag" = "Merk";
+"Width" = "Bredde";
+"Height" = "høyde";
+"Create" = "Lag";
+"Gallery" = "Galleri";
+"Really Delete current image?" = "Virkelig slette nåværende bilde?";
+"OK" = "OK";
+"Add" = "Legg til";
+"add image from where?" = "legg til bilde fra hvor?";
+"Camera" = "Kamera";
+"Photo Library" = "Bildebiblioteket";
+"Extract" = "Ta ut";

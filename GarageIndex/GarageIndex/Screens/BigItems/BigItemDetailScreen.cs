@@ -72,7 +72,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 //				PickerRect = new RectangleF (20, 95, 250, 45);
 //                UnPickerRect = new RectangleF(150, 95, 150, 55);
 			}else{
-				ImageRectangle = new RectangleF (50, 300, 500, 500);
+				ImageRectangle = new RectangleF (50, 350, 500, 500);
 //				PickerRect = new RectangleF (50, 120, 250, 45);
 //                UnPickerRect = new RectangleF(320, 120, 200, 55);
 			}
@@ -172,8 +172,9 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 				this.fieldBigName.Font = UIFont.FromName ("Cochin-BoldItalic", 22f);
 				this.fieldBigDescription.Text = myobj.Description;
 				this.fieldBigDescription.Font = UIFont.FromName ("AmericanTypewriter", 12f);
-				AddTagList ();
+
 			}
+			AddTagList ();
 			releaseKeyboard ();
 			CreateEmailBarButton (myobj);
 
@@ -265,21 +266,27 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 		void AddTagList ()
 		{
 			RectangleF frame;
+			ImageTag tag = null;
+
 			if (UserInterfaceIdiomIsPhone) {
 				frame = new RectangleF (30, 150, UIScreen.MainScreen.Bounds.Width, 125);
 			} else {
-				frame = new RectangleF (30, 200, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (180, 180, UIScreen.MainScreen.Bounds.Width, 125);
 			}
 
 			Console.WriteLine("frame:"+frame);
-			ImageTag tag = AppDelegate.dao.GetImageTagById (this.myObject.ImageTagId);
+			if (myObject != null) {
+				tag = AppDelegate.dao.GetImageTagById (this.myObject.ImageTagId);
+			}
 			if (tag == null) {
 				Console.WriteLine ("Tag er null");
 				tag = new ImageTag ();
 				int key = AppDelegate.dao.SaveTag (tag);
 				tag.ID = key;
-				this.myObject.ImageTagId = key;
-				AppDelegate.dao.SaveLagerObject (myObject);
+				if (myObject != null) {
+					this.myObject.ImageTagId = key;
+					AppDelegate.dao.SaveLagerObject (myObject);
+				}
 			}
 
 			TagListController tlc = new TagListController (tag, frame);

@@ -205,7 +205,7 @@ namespace no.dctapps.Garageindex.screens
 			if (UserInterfaceIdiomIsPhone) {
 				frame = new RectangleF (30, 185, UIScreen.MainScreen.Bounds.Width, 125);
 			} else {
-				frame = new RectangleF (30, 150, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (100, 180, UIScreen.MainScreen.Bounds.Width, 125);
 			}
 
 			Console.WriteLine("frame:"+frame);
@@ -222,7 +222,6 @@ namespace no.dctapps.Garageindex.screens
 
 			TagListController tlc = new TagListController (tag, frame);
 			this.View.AddSubview (tlc.View);
-
 		}
 
 		public override void ViewDidLoad ()
