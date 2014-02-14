@@ -16,6 +16,8 @@ namespace no.dctapps.Garageindex.screens
 	public partial class ItemDetailScreen : UtilityViewController
       {
 
+		ItemDetailsController idc;
+
 		private Item item;
 
 		UIImagePickerController imagePicker;
@@ -41,6 +43,7 @@ namespace no.dctapps.Garageindex.screens
 			: base (UserInterfaceIdiomIsPhone ? "ItemDetailScreen_iPhone" : "ItemDetailScreen_iPad")
 		{
 			this.item = item;
+			idc = new ItemDetailsController (item);
 
 			initRectangles ();
 		}
@@ -50,6 +53,7 @@ namespace no.dctapps.Garageindex.screens
 		{
 			
 			initRectangles ();
+			idc = new ItemDetailsController ();
 		}
 
 		void initRectangles ()
