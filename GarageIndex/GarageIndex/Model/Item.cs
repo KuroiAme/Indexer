@@ -32,6 +32,16 @@ namespace No.Dctapps.GarageIndex
 		public int ImageTagId{ get; set;}
 		public int LagerID{get; set;}
 
+		public double cashValue {
+			get;
+			set;
+		}
+
+		public double antall {
+			get;
+			set;
+		}
+
 		public string Action {
 			get;
 			set;

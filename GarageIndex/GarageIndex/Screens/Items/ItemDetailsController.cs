@@ -56,7 +56,7 @@ namespace GarageIndex
 			this.View.BackgroundColor = UIColor.White;
 //			this.View.Frame = 
 			if (UserInterfaceIdiomIsPhone) {
-					this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
+				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 800);
 			} else {
 					this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
 			}
@@ -65,6 +65,48 @@ namespace GarageIndex
 		UITextField fieldName;
 
 		UITextField fieldDescription;
+
+		UIStepper antallStepper;
+		UITextField cashValue;
+		UILabel antall;
+		UILabel currency;
+
+		private void InitInsuranceInfo(){
+			RectangleF antallStepperRect;
+			RectangleF cashValueRect;
+			RectangleF antallRect;
+			RectangleF currencyRect;
+			float x;
+			float y;
+			if (UserInterfaceIdiomIsPhone) {
+				//x and y under the representative image;
+				x = 30;
+				y = 550;
+			} else {
+				//on the right in a second collumn
+				x = 500;
+				y = 80;
+			}
+			const float margin = 0;
+			const float broad = 100;
+			const float lineheight = 30;
+			const float linebuffer = 10;
+			antallRect = new RectangleF (x, y, broad, lineheight);
+			antallStepperRect = new RectangleF (x + broad, y, broad, lineheight);
+
+			currencyRect = new RectangleF (x + margin, y + linebuffer + lineheight, broad, lineheight);
+			cashValueRect = new RectangleF (x + margin +broad, y + linebuffer + lineheight, broad, lineheight);
+
+			antall = new UILabel (antallRect);
+			Add (antall);
+			antallStepper = new UIStepper (antallStepperRect);
+			Add (antallStepper);
+			currency = new UILabel (currencyRect);
+			Add (currency);
+			this.cashValue = new UITextField (cashValueRect);
+			//this.cashValue.KeyboardType = UIKeyboardType.DecimalPad; ///this pissant keyboard has no dissmiss dammit
+			Add (cashValue);
+		}
 
 		private void InitTextFields(){
 			RectangleF fieldNameRect;
@@ -103,8 +145,8 @@ namespace GarageIndex
 				btnUnpickImageItemRect = new RectangleF (30, 275, 100, 20);
 				btnPickImageItemRect = new RectangleF (150, 275, 100, 20);
 			} else {
-				btnInContainerRect = new RectangleF (300, 80, 250, 30);
-				btnInLocationRect = new RectangleF (300, 130, 250, 30);
+				btnInContainerRect = new RectangleF (250, 80, 250, 30);
+				btnInLocationRect = new RectangleF (250, 130, 250, 30);
 				btnUnpickImageItemRect = new RectangleF (30, 275, 100, 20);
 				btnPickImageItemRect = new RectangleF (150, 275, 100, 20);
 			}
@@ -135,6 +177,7 @@ namespace GarageIndex
 			InitView ();
 			InitTextFields ();
 			InitButtons ();
+			InitInsuranceInfo ();
 		}
 
 		public SizeF GetContentsize ()
@@ -206,6 +249,10 @@ namespace GarageIndex
 				textField.ResignFirstResponder ();
 				return true;
 			};
+			this.cashValue.ShouldReturn += (textField) => {
+				textField.ResignFirstResponder();
+				return true;
+			};
 		}
 
 		public void SetContainerButtonLabel (Item itty)
@@ -230,7 +277,7 @@ namespace GarageIndex
 			sb.Append (NSBundle.MainBundle.LocalizedString ("In location", "In location"));
 			sb.Append (":");
 			if (itty != null) {
-				Lager l = AppDelegate.dao.GetLagerById (itty.boxID);
+				Lager l = AppDelegate.dao.GetLagerById (itty.LagerID);
 				if (l != null) {
 					if (!string.IsNullOrEmpty (l.Name)) {
 						sb.Append (l.Name);
@@ -256,6 +303,32 @@ namespace GarageIndex
 
 			SetContainerButtonLabel (myItem);
 			SetLocationButtonLabel (myItem);
+
+			var count = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Count", "Count");
+			count = count + ":";
+			antall.Text = count + currentItem.antall.ToString ();
+			this.antallStepper.Value = currentItem.antall;
+			this.antallStepper.ValueChanged += (object sender, EventArgs e) => {
+				double ant = this.antallStepper.Value;
+				antall.Text = count + ant;
+				currentItem.antall = ant;
+				AppDelegate.dao.SaveItem(currentItem);
+			};
+			cashValue.Text = currentItem.cashValue.ToString ();
+			cashValue.ValueChanged += (object sender, EventArgs e) => {
+				try{
+					double newvalue = double.Parse(cashValue.Text);
+					currentItem.cashValue = newvalue;
+					AppDelegate.dao.SaveItem(currentItem);
+				}
+				catch(Exception ex){
+					Console.WriteLine("coudlnt parse;"+cashValue.Text+"ex:"+ex.ToString());
+					cashValue.Text = currentItem.cashValue.ToString();
+				}
+			};
+
+			currency.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Currency", "Currency");
+
 
 			if (myItem != null) {
 				Console.WriteLine ("myitem er ikke null");
@@ -374,7 +447,7 @@ namespace GarageIndex
 				}else{
 					pc.Dismiss (true);
 				}
-				this.currentItem.boxID = e.Lager.ID;
+				this.currentItem.LagerID = e.Lager.ID;
 				SetLocationButtonLabel (this.currentItem);
 				AppDelegate.dao.SaveItem(this.currentItem);
 			};
