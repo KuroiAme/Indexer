@@ -35,7 +35,7 @@ namespace no.dctapps.Garageindex.screens
 
 		public ItemDetailScreen ()
 		{
-			idc = new ItemDetailsController ();
+			idc = new ItemDetailsController (this.NavigationController);
 		}
 
 		public override void ViewDidLoad ()
@@ -51,15 +51,29 @@ namespace no.dctapps.Garageindex.screens
 			CreateEmailBarButton ();
 		}
 
+
+
 		public void ShowDetails(Item item){
 			this.item = item;
-			idc = new ItemDetailsController (item);
+			idc = new ItemDetailsController (item, this.NavigationController);
 			innerview = new UIScrollView (UIScreen.MainScreen.Bounds);
 			innerview.ContentSize = idc.GetContentsize ();
 			innerview.AddSubview (idc.View);
 			innerview.BackgroundColor = UIColor.White;
 			idc.ShowDetails (item);
 			this.View = innerview;
+
+
+
+			idc.InContainerTouched += (object sender, EventArgs e) => {
+
+			} ;
+
+
+
+
+
+
 
 //			idc.Derez += (object sender, DerezEventArgs e) => {
 //				Console.WriteLine("Raising Derez");
