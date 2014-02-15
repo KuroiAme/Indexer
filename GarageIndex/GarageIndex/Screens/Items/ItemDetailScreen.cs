@@ -41,10 +41,18 @@ namespace no.dctapps.Garageindex.screens
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Item details", "Item details");
 			ShowDetails (item);
 		}
 
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+			CreateEmailBarButton ();
+		}
+
 		public void ShowDetails(Item item){
+			this.item = item;
 			idc = new ItemDetailsController (item);
 			innerview = new UIScrollView (UIScreen.MainScreen.Bounds);
 			innerview.ContentSize = idc.GetContentsize ();
@@ -53,20 +61,20 @@ namespace no.dctapps.Garageindex.screens
 			idc.ShowDetails (item);
 			this.View = innerview;
 
-			idc.Derez += (object sender, DerezEventArgs e) => {
-				Console.WriteLine("Raising Derez");
-				var handler = this.Derez;
-				if (handler != null) {
-					handler(this, e);
-				}
-			};
-
-			this.ItemSaved += (object sender, ItemSavedEventArgs e) => {
-				var handler = this.ItemSaved;
-				if (handler != null) {
-					handler(this, e);
-				}
-			};
+//			idc.Derez += (object sender, DerezEventArgs e) => {
+//				Console.WriteLine("Raising Derez");
+//				var handler = this.Derez;
+//				if (handler != null) {
+//					handler(this, e);
+//				}
+//			};
+//
+//			this.ItemSaved += (object sender, ItemSavedEventArgs e) => {
+//				var handler = this.ItemSaved;
+//				if (handler != null) {
+//					handler(this, e);
+//				}
+//			};
 
 //			this.GotPicture += (object sender, GotPictureEventArgs e) => {
 //				var handler = this.GotPicture;
@@ -74,6 +82,27 @@ namespace no.dctapps.Garageindex.screens
 //					handler(this, new GotPictureEventArgs());
 //				}
 //			};
+		}
+
+		MFMailComposeViewController mailContr;
+
+		private void CreateEmailBarButton ()
+		{
+			//DO NOT DELETE
+			UIBarButtonItem it2 = new UIBarButtonItem ();
+			it2.Title = "email";
+			//IS really info
+			it2.Clicked += (object sender, EventArgs e) =>  {
+				mailContr = new MFMailComposeViewController();
+				mailContr.SetSubject(AppDelegate.bl.GenerateSubject(this.item));
+				mailContr.SetMessageBody(AppDelegate.bl.GenerateManifest(this.item),false);
+				AppDelegate.bl.AddPictureAttachment(mailContr, this.item);
+				this.PresentViewController(mailContr, true, delegate{});
+				mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => mailContr.DismissViewController (true, delegate{});
+			};
+
+
+			this.NavigationItem.SetRightBarButtonItem (it2, true);
 		}
 
 		public override void ViewDidAppear (bool animated)

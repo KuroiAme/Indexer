@@ -65,16 +65,18 @@ namespace GarageIndex
 			RectangleF fieldNameRect;
 			RectangleF fieldDescriptionRect;
 			if (UserInterfaceIdiomIsPhone) {
-				fieldNameRect = new RectangleF (10, 100, 100, 20);
-				fieldDescriptionRect = new RectangleF (10, 130, 100, 20);
+				fieldNameRect = new RectangleF (30, 15, 250, 22);
+				fieldDescriptionRect = new RectangleF (30, 60, 250, 22);
 			} else {
-				fieldNameRect = new RectangleF (10, 100, 100, 20);
+				fieldNameRect = new RectangleF (10, 80, 100, 40);
 				fieldDescriptionRect = new RectangleF (10, 130, 100, 20);
 			}
 
 
 			fieldName = new UITextField (fieldNameRect);
 			fieldDescription = new UITextField (fieldDescriptionRect);
+			fieldName.BorderStyle = UITextBorderStyle.RoundedRect;
+			fieldDescription.BorderStyle = UITextBorderStyle.RoundedRect;
 			Add (fieldName);
 			Add (fieldDescription);
 		}
@@ -91,10 +93,10 @@ namespace GarageIndex
 			RectangleF btnPickImageItemRect;
 
 			if (UserInterfaceIdiomIsPhone) {
-				btnInContainerRect = new RectangleF (10, 275, 100, 20);
-				btnInLocationRect = new RectangleF (10, 310, 100, 20);
-				btnUnpickImageItemRect = new RectangleF (10, 330, 100, 20);
-				btnPickImageItemRect = new RectangleF (10, 360, 100, 20);
+				btnInContainerRect = new RectangleF (10, 220, 100, 20);
+				btnInLocationRect = new RectangleF (10, 250, 100, 20);
+				btnUnpickImageItemRect = new RectangleF (30, 300, 100, 20);
+				btnPickImageItemRect = new RectangleF (150, 300, 100, 20);
 			} else {
 				btnInContainerRect = new RectangleF (10, 275, 100, 20);
 				btnInLocationRect = new RectangleF (10, 310, 100, 20);
@@ -109,9 +111,11 @@ namespace GarageIndex
 			Add (btnInLocation);
 
 			btnUnpickImageItem = new UIButton (btnUnpickImageItemRect);
+			btnUnpickImageItem.SetTitle ("temp1", UIControlState.Normal);
 			Add (btnUnpickImageItem);
 
 			btnPickImageItem = new UIButton (btnPickImageItemRect);
+			btnPickImageItem.SetTitle ("temp2", UIControlState.Normal);
 			Add (btnPickImageItem);
 
 		}
@@ -267,7 +271,7 @@ namespace GarageIndex
 		{
 			RectangleF frame;
 			if (UserInterfaceIdiomIsPhone) {
-				frame = new RectangleF (30, 135, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (30, 80, UIScreen.MainScreen.Bounds.Width, 125);
 			} else {
 				frame = new RectangleF (30, 150, UIScreen.MainScreen.Bounds.Width, 125);			
 			}
@@ -340,26 +344,7 @@ namespace GarageIndex
 			};
 		}
 
-		MFMailComposeViewController mailContr;
 
-		private void CreateEmailBarButton ()
-		{
-			//DO NOT DELETE
-			UIBarButtonItem it2 = new UIBarButtonItem ();
-			it2.Title = "email";
-			//IS really info
-			it2.Clicked += (object sender, EventArgs e) =>  {
-				mailContr = new MFMailComposeViewController();
-				mailContr.SetSubject(AppDelegate.bl.GenerateSubject(this.currentItem));
-				mailContr.SetMessageBody(AppDelegate.bl.GenerateManifest(this.currentItem),false);
-				AppDelegate.bl.AddPictureAttachment(mailContr, this.currentItem);
-				this.PresentViewController(mailContr, true, delegate{});
-				mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => mailContr.DismissViewController (true, delegate{});
-			};
-
-
-			this.NavigationItem.SetRightBarButtonItem (it2, true);
-		}
 
 
 		public override void ViewDidLoad ()
@@ -370,7 +355,7 @@ namespace GarageIndex
 
 			initializeMoveContainer();
 
-			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Item details", "Item details");
+
 
 			this.fieldName.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Item Name", "Item Name");
 			this.fieldDescription.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Item description", "Item description");
@@ -386,8 +371,6 @@ namespace GarageIndex
 
 			InitializeImagePicker ();
 			InitializeUnpickImage();
-
-
 
 			//DO NOT DELETE
 			//			UIBarButtonItem it = new UIBarButtonItem();
@@ -712,7 +695,7 @@ namespace GarageIndex
 
 			this.ShowDetails (this.currentItem);
 
-			CreateEmailBarButton ();
+
 
 			this.GotPicture += (object sender, GotPictureEventArgs e) => this.imageView.Image = e.image;
 		}
