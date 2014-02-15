@@ -23,7 +23,7 @@
 	<key>MinimumOSVersion</key>
 	<string>7.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.4</string>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>Icon</string>
@@ -40,11 +40,11 @@
 		<string>Icon-Small-40</string>
 		<string>Icon-Small-40@2x</string>
 	</array>
-	<key>CFBundleDisplayName</key>
-	<string>Indexer Lite</string>
 	<key>CFBundleIdentifier</key>
-	<string>no.dctapps.indexerlite</string>
+	<string>no.dctapps.garageindex</string>
+	<key>CFBundleDisplayName</key>
+	<string>GarageIndex</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>10</string>
 </dict>
 </plist>
