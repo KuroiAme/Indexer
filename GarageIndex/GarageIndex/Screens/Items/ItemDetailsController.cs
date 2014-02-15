@@ -35,7 +35,7 @@ namespace GarageIndex
 		public event EventHandler InContainerTouched;
 		public event EventHandler InLocationTouched;
 
-		Item currentItem;
+		public Item currentItem;
 		UINavigationController nc;
 
 		public ItemDetailsController (UINavigationController nc)
@@ -73,8 +73,8 @@ namespace GarageIndex
 				fieldNameRect = new RectangleF (30, 15, 250, 22);
 				fieldDescriptionRect = new RectangleF (30, 60, 250, 22);
 			} else {
-				fieldNameRect = new RectangleF (10, 80, 100, 40);
-				fieldDescriptionRect = new RectangleF (10, 130, 100, 20);
+				fieldNameRect = new RectangleF (30, 80, 250, 30);
+				fieldDescriptionRect = new RectangleF (30, 130, 250, 30);
 			}
 
 
@@ -103,18 +103,20 @@ namespace GarageIndex
 				btnUnpickImageItemRect = new RectangleF (30, 275, 100, 20);
 				btnPickImageItemRect = new RectangleF (150, 275, 100, 20);
 			} else {
-				btnInContainerRect = new RectangleF (10, 275, 100, 20);
-				btnInLocationRect = new RectangleF (10, 310, 100, 20);
-				btnUnpickImageItemRect = new RectangleF (10, 330, 100, 20);
-				btnPickImageItemRect = new RectangleF (10, 360, 100, 20);
+				btnInContainerRect = new RectangleF (300, 80, 250, 30);
+				btnInLocationRect = new RectangleF (300, 130, 250, 30);
+				btnUnpickImageItemRect = new RectangleF (30, 275, 100, 20);
+				btnPickImageItemRect = new RectangleF (150, 275, 100, 20);
 			}
 
 			btnInContainer = new UIButton (UIButtonType.RoundedRect);
 			btnInContainer.Frame = btnInContainerRect;
+			//btnInContainer.BackgroundColor = UIColor.Purple;
 			Add (btnInContainer);
 
 			btnInLocation = new UIButton (UIButtonType.RoundedRect);
 			btnInLocation.Frame = btnInLocationRect;
+			//btnInLocation.BackgroundColor = UIColor.Purple;
 			Add (btnInLocation);
 
 			btnUnpickImageItem = new UIButton (UIButtonType.RoundedRect);
@@ -244,9 +246,10 @@ namespace GarageIndex
 		{
 			this.ResetImageView();
 
-			if(myItem == null)
-			{
-				myItem = new Item();
+			if (myItem == null) {
+				myItem = new Item ();
+			} else {
+				
 			}
 
 			this.currentItem = myItem;
@@ -254,11 +257,12 @@ namespace GarageIndex
 			SetContainerButtonLabel (myItem);
 			SetLocationButtonLabel (myItem);
 
-			if(myItem != null){
+			if (myItem != null) {
+				Console.WriteLine ("myitem er ikke null");
 				float x = this.ImageRectangle.X;
 				float y = this.ImageRectangle.Y;
-				UIImageView imageholder  = LoadImage(new PointF(x,y),myItem.ImageFileName);
-				this.SetImageViewImage(imageholder);
+				UIImageView imageholder = LoadImage (new PointF (x, y), myItem.ImageFileName);
+				this.SetImageViewImage (imageholder);
 				this.currentItem = myItem;
 
 				this.fieldName.Text = myItem.Name;
@@ -266,13 +270,17 @@ namespace GarageIndex
 
 
 				if (myItem.ImageFileName != null) {
+					Console.WriteLine ("imagefilename er ikke null");
 					var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
 					string filename = System.IO.Path.Combine (documentsDirectory, myItem.ImageFileName);
 					this.imageView.Image = UIImage.FromFile (filename);
+				} else {
+					Console.WriteLine ("imagefilename er null");
 				}
 				AddTagList ();
+			} else {
+				Console.WriteLine ("myitem er null");
 			}
-
 		}
 
 		void AddTagList ()
@@ -304,7 +312,7 @@ namespace GarageIndex
 		public void SetImageViewImage (UIImageView imageholder)
 		{
 			Console.WriteLine ("setImageViewImage");
-			if(imageholder != null){
+			if (imageholder != null) {
 
 				Console.WriteLine ("Not null");
 				this.imageView = imageholder;
@@ -315,6 +323,8 @@ namespace GarageIndex
 				//				this.scrollContent.BringSubviewToFront(imageholder);
 				//				this.scrollContent.AddSubview (imageholder);
 				Add (imageholder);
+			} else {
+				Console.WriteLine ("imageholder er null");
 			}
 		}
 
@@ -466,7 +476,7 @@ namespace GarageIndex
 			Console.WriteLine("Raising Derez");
 			var handler = this.Derez;
 			if (handler != null) {
-				handler(this, new DerezEventArgs());
+				handler(this, new DerezEventArgs(this.currentItem));
 			}
 		}
 
@@ -719,15 +729,22 @@ namespace GarageIndex
 			}
 		}
 
+		UIImage GotPictureHandler (GotPictureEventArgs e)
+		{
+
+			return this.imageView.Image = e.image;
+
+		}
+
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
 
 			this.ShowDetails (this.currentItem);
 
+			this.GotPicture += (object sender, GotPictureEventArgs e) => {
 
-
-			this.GotPicture += (object sender, GotPictureEventArgs e) => this.imageView.Image = e.image;
+			};
 		}
 
 		public override void ViewWillDisappear (bool animated)

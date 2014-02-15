@@ -63,39 +63,27 @@ namespace no.dctapps.Garageindex.screens
 			idc.ShowDetails (item);
 			this.View = innerview;
 
+			idc.GotPicture += (object sender, GotPictureEventArgs e) => {
+				var handler = this.GotPicture;
+				if(handler != null){
+					handler(this,e);
+				}
+			};
 
+			idc.ItemSaved += (object sender, ItemSavedEventArgs e) => {
+				var handler = this.ItemSaved;
+				if(handler != null){
+					handler(sender, e);
+				}
+			};
 
-			idc.InContainerTouched += (object sender, EventArgs e) => {
+			idc.Derez += (object sender, DerezEventArgs e) => {
+				var handler = this.Derez;
+				if(handler != null){
+					handler(sender,e);
+				}
+			};
 
-			} ;
-
-
-
-
-
-
-
-//			idc.Derez += (object sender, DerezEventArgs e) => {
-//				Console.WriteLine("Raising Derez");
-//				var handler = this.Derez;
-//				if (handler != null) {
-//					handler(this, e);
-//				}
-//			};
-//
-//			this.ItemSaved += (object sender, ItemSavedEventArgs e) => {
-//				var handler = this.ItemSaved;
-//				if (handler != null) {
-//					handler(this, e);
-//				}
-//			};
-
-//			this.GotPicture += (object sender, GotPictureEventArgs e) => {
-//				var handler = this.GotPicture;
-//				if (handler != null && ) {
-//					handler(this, new GotPictureEventArgs());
-//				}
-//			};
 		}
 
 		MFMailComposeViewController mailContr;

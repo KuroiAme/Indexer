@@ -5,6 +5,7 @@ using no.dctapps.Garageindex.events;
 using no.dctapps.garageindex;
 using no.dctapps.Garageindex.screens;
 using No.Dctapps.GarageIndex;
+using System;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -24,13 +25,20 @@ namespace no.dctapps.Garageindex.screens
 
 			primaryview.ActivateDetail += (object sender, ItemClickedEventArgs e) => secondaryview.ShowDetails (e.Item);
 
-			secondaryview.idc.ItemSaved += (object sender, ItemSavedEventArgs e) => primaryview.Refresh ();
+			secondaryview.ItemSaved += (object sender, ItemSavedEventArgs e) => primaryview.Refresh ();
 
-			secondaryview.idc.Derez += (object sender, DerezEventArgs e) => secondarynav.PopToRootViewController(true);
-
-			secondaryview.idc.Derez += (object sender, DerezEventArgs e) => {
-				secondarynav.PopViewControllerAnimated(true);
+			secondaryview.Derez += (object sender, DerezEventArgs e) => {
+				Console.WriteLine("Derezzing...");
+				secondarynav.PopToRootViewController(true);
 				primaryview.Refresh();
+				secondaryview.ShowDetails(e.item);
+			};
+
+			secondaryview.GotPicture += (object sender, GotPictureEventArgs e) => {
+				Console.WriteLine("Derezzing...");
+				//secondarynav.PopToRootViewController(true);
+				primaryview.Refresh();
+				secondaryview.ShowDetails(secondaryview.idc.currentItem);
 			};
 
 			primarynav = new UINavigationController();

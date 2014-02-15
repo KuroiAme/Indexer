@@ -37,7 +37,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 		
 		public event EventHandler<GotPictureEventArgs> GotPicture;
 		public event EventHandler<BigItemSavedEventArgs> BigItemSaved;
-        public event EventHandler<DerezEventArgs> Derezzy;
+		public event EventHandler<DerezLargeObjectEventArgs> Derezzy;
 
 		public BigItemDetailScreen (LagerObject myObject)
 			: base (UserInterfaceIdiomIsPhone ? "BigItemDetailScreen_iPhone" : "BigItemDetailScreen_iPad")
@@ -387,7 +387,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
         void RaiseDerez(){
             var handler = this.Derezzy;
             if (handler != null){
-                handler(this, new DerezEventArgs());
+				handler(this, new DerezLargeObjectEventArgs());
             }
         }
 
