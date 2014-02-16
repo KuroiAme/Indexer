@@ -229,6 +229,8 @@ namespace GarageIndex
 			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Big Items Details", "Big Items Details");
 			this.fieldBigName.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Name", "Name");
 			this.fieldBigDescription.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Description", "Description");
+			var count = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Count", "Count");
+			count = count + ":";
 			if (myobj != null) {
 				Console.WriteLine("ID:"+myobj.ID);
 				if(myobj.imageFileName != null){
@@ -240,32 +242,31 @@ namespace GarageIndex
 				this.fieldBigDescription.Text = myobj.Description;
 				this.fieldBigDescription.Font = UIFont.FromName ("AmericanTypewriter", 12f);
 
+				antall.Text = count + myObject.antall.ToString ();
 			}
 			AddTagList ();
 			releaseKeyboard ();
 
-			var count = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Count", "Count");
-			count = count + ":";
-			antall.Text = count + myObject.antall.ToString ();
-			this.antallStepper.Value = myObject.antall;
-			this.antallStepper.ValueChanged += (object sender, EventArgs e) => {
-				double ant = this.antallStepper.Value;
-				antall.Text = count + ant;
-				myObject.antall = ant;
-				AppDelegate.dao.SaveLagerObject(myObject);
-			};
-			cashValue.Text = myObject.cashValue.ToString ();
-			cashValue.ValueChanged += (object sender, EventArgs e) => {
-				try{
-					double newvalue = double.Parse(cashValue.Text);
-					myObject.cashValue = newvalue;
-					AppDelegate.dao.SaveLagerObject(myObject);
-				}
-				catch(Exception ex){
-					Console.WriteLine("coudlnt parse;"+cashValue.Text+"ex:"+ex.ToString());
-					cashValue.Text = myObject.cashValue.ToString();
-				}
-			};
+			if (myObject != null) {
+				this.antallStepper.Value = myObject.antall;
+				this.antallStepper.ValueChanged += (object sender, EventArgs e) => {
+					double ant = this.antallStepper.Value;
+					antall.Text = count + ant;
+					myObject.antall = ant;
+					AppDelegate.dao.SaveLagerObject (myObject);
+				};
+				cashValue.Text = myObject.cashValue.ToString ();
+				cashValue.ValueChanged += (object sender, EventArgs e) => {
+					try {
+						double newvalue = double.Parse (cashValue.Text);
+						myObject.cashValue = newvalue;
+						AppDelegate.dao.SaveLagerObject (myObject);
+					} catch (Exception ex) {
+						Console.WriteLine ("coudlnt parse;" + cashValue.Text + "ex:" + ex.ToString ());
+						cashValue.Text = myObject.cashValue.ToString ();
+					}
+				};
+			}
 
 			currency.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Currency", "Currency");
 
