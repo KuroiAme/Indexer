@@ -140,6 +140,8 @@ namespace GarageIndex
 			Add (btnShowContent);
 		}
 
+
+
 		/// <summary>
 		/// Releases the keyboard aka. resign first responder. Otherwise keyboard wont go away.
 		/// </summary>
