@@ -11,6 +11,7 @@ using No.Dctapps.GarageIndex;
 using MonoTouch.MessageUI;
 using no.dctapps.Garageindex.businesslogic;
 using GoogleAnalytics.iOS;
+using GoogleAdMobAds;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -44,6 +45,39 @@ namespace no.dctapps.Garageindex.screens
 			base.ViewDidLoad ();
 			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Container details", "Container details");
 			ShowDetails (boks);
+			InitializeAdds ();
+		}
+
+		public static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+		}
+
+		GADBannerView adView;
+		bool viewOnScreen = false;
+
+		void InitializeAdds ()
+		{
+			PointF origo;
+			GADAdSize type;
+			if (UserInterfaceIdiomIsPhone) {
+				origo = new PointF (0, UIScreen.MainScreen.Bounds.Height);
+				type = GADAdSizeCons.Banner;
+			} else {
+				origo = new PointF (0, UIScreen.MainScreen.Bounds.Height);
+				type = GADAdSizeCons.FullBanner;
+			}
+
+			adView = new GADBannerView (size: type, origin: origo) {
+				AdUnitID = AppDelegate.AdmobID,
+				RootViewController = this
+			};
+
+			adView.DidReceiveAd += (sender, args) => {
+				if (!viewOnScreen) View.AddSubview (adView);
+				viewOnScreen = true;
+			};
+
+			adView.LoadRequest (GADRequest.Request);
 		}
 
 		UIScrollView innerview;

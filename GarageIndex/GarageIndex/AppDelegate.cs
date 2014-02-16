@@ -7,6 +7,7 @@ using no.dctapps.Garageindex.businesslogic;
 using TipOfTheDay;
 using no.dctapps.Garageindex.dao;
 using GoogleAnalytics.iOS;
+using GoogleAdMobAds;
 
 namespace GarageIndex
 {
@@ -16,6 +17,8 @@ namespace GarageIndex
 	[Register ("AppDelegate")]
 	public partial class AppDelegate : UIApplicationDelegate
 	{
+
+		public static string AdmobID;
 		public IGAITracker Tracker;
 		public static readonly string TrackingId = "UA-47719330-1";
 
@@ -23,6 +26,12 @@ namespace GarageIndex
 		{
 			CurrentSystemVersion = new Version (UIDevice.CurrentDevice.SystemVersion);
 			iOS7 = new Version (7, 0);
+
+			if (UserInterfaceIdiomIsPhone) {
+				AdmobID = "a151431a930a1e9";
+			} else {
+				AdmobID = "a151431e078e783";
+			}
 		}
 
 		public static readonly Version CurrentSystemVersion;
@@ -76,6 +85,8 @@ namespace GarageIndex
 					TipOfTheDayControl<GarageIndexTipsProvider, DefaultTipsSettings>.Show (window);
 				}
 			}
+
+
 
 			return true;
 		}

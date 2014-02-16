@@ -6,6 +6,7 @@ using no.dctapps.Garageindex.events;
 using No.Dctapps.Garageindex.Ios.Screens;
 using System.Drawing;
 using System.Text;
+using GoogleAdMobAds;
 
 namespace GarageIndex
 {
@@ -358,8 +359,8 @@ namespace GarageIndex
 			SetLagerButtonLabel (this.myObject);
 			initializeMoveLager ();
 
-
 		}
+
 
 		void AddTagList ()
 		{
