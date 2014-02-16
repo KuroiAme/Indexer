@@ -174,12 +174,14 @@ namespace GarageIndex
 		UITextField cashValue;
 		UILabel antall;
 		UILabel currency;
+		UIButton showReceipts;
 
 		private void InitInsuranceInfo(){
 			RectangleF antallStepperRect;
 			RectangleF cashValueRect;
 			RectangleF antallRect;
 			RectangleF currencyRect;
+			RectangleF showReceiptsRect;
 			float x;
 			float y;
 			if (UserInterfaceIdiomIsPhone) {
@@ -200,6 +202,7 @@ namespace GarageIndex
 
 			currencyRect = new RectangleF (x + margin, y + linebuffer + lineheight, broad, lineheight);
 			cashValueRect = new RectangleF (x + margin +broad, y + linebuffer + lineheight, broad, lineheight);
+			showReceiptsRect = new RectangleF (x + margin, y + linebuffer * 2 + lineheight * 2, broad * 2, lineheight);
 
 			antall = new UILabel (antallRect);
 			Add (antall);
@@ -210,6 +213,10 @@ namespace GarageIndex
 			this.cashValue = new UITextField (cashValueRect);
 			//this.cashValue.KeyboardType = UIKeyboardType.DecimalPad; ///this pissant keyboard has no dissmiss dammit
 			Add (cashValue);
+
+			showReceipts = new UIButton (UIButtonType.RoundedRect);
+			showReceipts.Frame = showReceiptsRect;
+			Add (showReceipts);
 		}
 
 		public void ShowDetails (LagerObject myobj)
@@ -261,6 +268,12 @@ namespace GarageIndex
 			};
 
 			currency.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Currency", "Currency");
+
+			showReceipts.SetTitle (MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Show Receipts", "Show Receipts"), UIControlState.Normal);
+			showReceipts.TouchUpInside += (object sender, EventArgs e) => {
+				InsurancePhotoController ipc = new InsurancePhotoController(myobj);
+				nc.PushViewController(ipc,false);
+			};
 
 
 

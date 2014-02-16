@@ -218,20 +218,6 @@ namespace GarageIndex
 			return "";
 		}
 
-
-//		static string RandomGeneratedName ()
-//		{
-//			var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-//			var random = new Random();
-//			var result = new string(
-//				Enumerable.Repeat(chars, 8)
-//				.Select(s => s[random.Next(s.Length)])
-//				.ToArray());
-//			return result;
-//		}
-
-
-
 		UIImage ImageWithView (UIView view){
 			UIGraphics.BeginImageContextWithOptions (view.Bounds.Size, view.Opaque, 0.0f);
 			view.Layer.RenderInContext (UIGraphics.GetCurrentContext ());

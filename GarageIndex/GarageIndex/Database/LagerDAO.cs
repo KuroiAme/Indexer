@@ -26,6 +26,7 @@ namespace no.dctapps.Garageindex.dao
 				conn.CreateTable<Lager>();
 				conn.CreateTable<GalleryObject> ();
 				conn.CreateTable<ImageTag> ();
+				conn.CreateTable<InsurancePhoto> ();
 			}
 		}
 
@@ -67,6 +68,22 @@ namespace no.dctapps.Garageindex.dao
 			}
 		}
 
+		public void SaveInsurancePhoto (InsurancePhoto photo)
+		{
+			Console.WriteLine(photo.ID);
+			InsurancePhoto item = this.InsurancePhotoByID (photo.ID);
+
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				if(item == null){
+					Console.WriteLine("insert");
+					conn.Insert (photo);
+				}else{
+					Console.WriteLine("update");
+					conn.Update (photo);
+				}
+			}
+		}
+
 		public void SaveLagerObject (LagerObject myObject)
 		{
 			Console.WriteLine(myObject.ID);
@@ -91,6 +108,67 @@ namespace no.dctapps.Garageindex.dao
 				myList = conn.Query<ImageTag> ("select * from ImageTag where GalleryObjectID = ?", iD);
 			}
 			return myList;
+		}
+
+		public int GetNumberofInsurancePhotosForLargeID (int iD)
+		{
+			IList<InsurancePhoto> myList = GetLargeObjectInsurancePhotosByID (iD);
+			return myList.Count;
+		}
+
+		public int GetNumberOfInsurancePhotosForItemId (int iD)
+		{
+			IList<InsurancePhoto> myList = GetItemInsurancePhotosByID (iD);
+			return myList.Count;
+		}
+
+		IList<InsurancePhoto> GetLargeObjectInsurancePhotosByID (int iD)
+		{
+			IList<InsurancePhoto> myList = new List<InsurancePhoto>();
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<InsurancePhoto> ("select * from InsurancePhoto where ObjectReferenceID = ? and IsLargeObject = ? ORDER BY ID", iD, "true");
+			}
+			return myList;
+		}
+
+		public InsurancePhoto getInsurancePhotoLargeByIdandIndex (int iD, uint index)
+		{
+			IList<InsurancePhoto> myList = new List<InsurancePhoto>();
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<InsurancePhoto> ("select * from InsurancePhoto where ObjectReferenceID = ? and IsLargeObject = ? ORDER BY ID", iD, "true");
+			}
+			return myList[(int)index];
+		}
+
+		public InsurancePhoto getInsurancePhotoItemByIdAndIndex (int iD, uint index)
+		{
+			IList<InsurancePhoto> myList = new List<InsurancePhoto>();
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<InsurancePhoto> ("select * from InsurancePhoto where ObjectReferenceID = ? and IsLargeObject = ? ORDER BY ID", iD, "false");
+			}
+			return myList[(int) index];
+		}
+
+		IList<InsurancePhoto> GetItemInsurancePhotosByID (int iD)
+		{
+			IList<InsurancePhoto> myList = new List<InsurancePhoto>();
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<InsurancePhoto> ("select * from InsurancePhoto where ObjectReferenceID = ? and IsLargeObject = ? ORDER BY ID", iD, "false");
+			}
+			return myList;
+		}
+
+		InsurancePhoto InsurancePhotoByID (int iD)
+		{
+			IList<InsurancePhoto> myList = new List<InsurancePhoto>();
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<InsurancePhoto> ("select * from InsurancePhoto where ID = ? ORDER BY ID", iD);
+			}
+			if (myList.Count > 0) {
+				return myList [0];
+			} else {
+				return null;
+			}
 		}
 
 		public ImageTag GetImageTagById (int ID)
@@ -417,6 +495,17 @@ namespace no.dctapps.Garageindex.dao
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)){
 				string value = "false";
 				return conn.Query<LagerObject>("select * from LagerObject where isContainer = ? and LagerID = ?", value, lagerid);
+			}
+		}
+
+		public void DeleteInsurancePhotoByIndexAndObjectId (int currentindex, int objectID)
+		{
+			IList<InsurancePhoto> myList;
+			using (var conn = new SQLite.SQLiteConnection(pathToDatabase)) {
+				myList = conn.Query<InsurancePhoto> ("select * from InsurancePhoto where ObjectReferenceID = ? ORDER BY ID", objectID);
+				InsurancePhoto deleteme = myList [currentindex++];
+				int deleted = conn.Delete (deleteme);
+				Console.Write("deleted:"+deleted);
 			}
 		}
 
