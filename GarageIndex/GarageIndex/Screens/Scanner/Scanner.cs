@@ -99,7 +99,7 @@ namespace No.DCTapps.GarageIndex
                         LagerObject lo = lol[0];
                         if (lo.isContainer == "true")
                         {
-                            ContainerDetails cd = new ContainerDetails(lo);
+							var cd = new no.dctapps.Garageindex.screens.ContainerDetails(lo);
                             this.NavigationController.PushViewController(cd, true);
                         }
                         else if (lo.isLargeObject == "true")

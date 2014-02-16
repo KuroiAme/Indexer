@@ -180,18 +180,21 @@ namespace no.dctapps.Garageindex.businesslogic
 			string inn = NSBundle.MainBundle.LocalizedString ("In", "In");
 
 			StringBuilder sb = new StringBuilder();
-			Lager laggy = AppDelegate.dao.GetLagerByID (input.LagerID);
-            sb.AppendLine(name + ":" + input.Name +"--"+ desc + ":"+input.Description );
-			if(laggy != null){
-                sb.AppendLine(inn+":"+laggy.Name); 
-			}
-
-			if (input.isContainer == "true") {
-				sb.AppendLine (ic+";");
-				IList<Item> items = AppDelegate.dao.GetAllItemsInBox (input);
-				foreach (Item itty in items) {
-					sb.AppendLine (itty.toString());		
+			if (input != null) {
+				Lager laggy = AppDelegate.dao.GetLagerByID (input.LagerID);
+				sb.AppendLine(name + ":" + input.Name +"--"+ desc + ":"+input.Description );
+				if(laggy != null){
+					sb.AppendLine(inn+":"+laggy.Name); 
 				}
+
+				if (input.isContainer == "true") {
+					sb.AppendLine (ic+";");
+					IList<Item> items = AppDelegate.dao.GetAllItemsInBox (input);
+					foreach (Item itty in items) {
+						sb.AppendLine (itty.toString());		
+					}
+				}
+
 			}
 			return sb.ToString();
 		}
@@ -271,17 +274,23 @@ namespace no.dctapps.Garageindex.businesslogic
 		}
 
         public UIImage MakeQr(LagerObject lo){
-            var writer = new BarcodeWriter();
-            writer.Format = BarcodeFormat.QR_CODE;
-            var result = writer.Write(lo.ID.ToString());
-            return result;
+			if (lo != null) {
+				var writer = new BarcodeWriter ();
+				writer.Format = BarcodeFormat.QR_CODE;
+				var result = writer.Write (lo.ID.ToString ());
+				return result;
+			} else {
+				return null;
+			}
         }
 
         public void AddQRPictureAttachment (MFMailComposeViewController mailContr, LagerObject input){
             if (this.IncludeQr()) {
-                UIImage image = MakeQr(input);
-                NSData imagedata = image.AsPNG ();
-                mailContr.AddAttachmentData (imagedata, "image/png", "QR.png");
+				if (input != null) {
+					UIImage image = MakeQr (input);
+					NSData imagedata = image.AsPNG ();
+					mailContr.AddAttachmentData (imagedata, "image/png", "QR.png");
+				}
             }
         }
 
