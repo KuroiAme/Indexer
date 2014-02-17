@@ -22,8 +22,6 @@
 	</array>
 	<key>MinimumOSVersion</key>
 	<string>7.0</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.4</string>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>Icon-Small-40@2x</string>
@@ -43,8 +41,10 @@
 	<key>CFBundleIdentifier</key>
 	<string>no.dctapps.garageindex</string>
 	<key>CFBundleDisplayName</key>
-	<string>GarageIndex</string>
+	<string>Indexer</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.0</string>
 	<key>CFBundleVersion</key>
-	<string>10</string>
+	<string>11</string>
 </dict>
 </plist>

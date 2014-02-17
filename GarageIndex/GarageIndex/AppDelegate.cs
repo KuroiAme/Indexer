@@ -7,6 +7,7 @@ using no.dctapps.Garageindex.businesslogic;
 using TipOfTheDay;
 using no.dctapps.Garageindex.dao;
 using GoogleAnalytics.iOS;
+using MTiRate;
 
 namespace GarageIndex
 {
@@ -23,7 +24,18 @@ namespace GarageIndex
 		{
 			CurrentSystemVersion = new Version (UIDevice.CurrentDevice.SystemVersion);
 			iOS7 = new Version (7, 0);
+
+			iRate.SharedInstance.DaysUntilPrompt = 5;
+			iRate.SharedInstance.UsesUntilPrompt = 15;
+
+			iRate.SharedInstance.UserDidAttemptToRateApp += (sender, e) => Console.WriteLine ("User is rating app now!");
+
+			iRate.SharedInstance.UserDidDeclineToRateApp += (sender, e) => Console.WriteLine ("User does not want to rate app");
+
+			iRate.SharedInstance.UserDidRequestReminderToRateApp += (sender, e) => Console.WriteLine ("User will rate app later");
 		}
+
+
 
 		public static readonly Version CurrentSystemVersion;
 		public static readonly Version iOS7;
@@ -76,6 +88,8 @@ namespace GarageIndex
 					TipOfTheDayControl<GarageIndexTipsProvider, DefaultTipsSettings>.Show (window);
 				}
 			}
+
+
 
 			return true;
 		}

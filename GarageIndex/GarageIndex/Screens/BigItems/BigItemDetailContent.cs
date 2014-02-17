@@ -370,7 +370,7 @@ namespace GarageIndex
 			if (UserInterfaceIdiomIsPhone) {
 				frame = new RectangleF (30, 150, UIScreen.MainScreen.Bounds.Width, 125);
 			} else {
-				frame = new RectangleF (180, 180, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (30, 170, UIScreen.MainScreen.Bounds.Width, 125);
 			}
 
 			Console.WriteLine("frame:"+frame);
