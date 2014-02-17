@@ -368,9 +368,9 @@ namespace GarageIndex
 			ImageTag tag = null;
 
 			if (UserInterfaceIdiomIsPhone) {
-				frame = new RectangleF (30, 150, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (30, 150, 300, 125);
 			} else {
-				frame = new RectangleF (30, 170, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (30, 170, 300, 125);
 			}
 
 			Console.WriteLine("frame:"+frame);

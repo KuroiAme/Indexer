@@ -88,9 +88,9 @@ namespace GarageIndex
 
 			};
 			if (UserInterfaceIdiomIsPhone) {
-				SelectedViewController = ItemNav;
+				SelectedViewController = galleryNav;
 			} else {
-				SelectedViewController = ItemMaster;
+				SelectedViewController = galleryNav;
 			}
 
 		}

@@ -153,12 +153,12 @@ namespace GarageIndex
 			if (UserInterfaceIdiomIsPhone) {
 				btnInContainerRect = new RectangleF (30, 210, 250, 22);
 				btnInLocationRect = new RectangleF (30, 240, 250, 22);
-				btnUnpickImageItemRect = new RectangleF (30, 275, 100, 20);
-				btnPickImageItemRect = new RectangleF (150, 275, 100, 20);
+				btnUnpickImageItemRect = new RectangleF (30, 275, 150, 20);
+				btnPickImageItemRect = new RectangleF (200, 275, 100, 20);
 			} else {
 				btnInContainerRect = new RectangleF (250, 90, 250, 30);
 				btnInLocationRect = new RectangleF (250, 140, 250, 30);
-				btnUnpickImageItemRect = new RectangleF (30, 275, 100, 20);
+				btnUnpickImageItemRect = new RectangleF (10, 275, 150, 20);
 				btnPickImageItemRect = new RectangleF (150, 275, 100, 20);
 			}
 
@@ -379,9 +379,9 @@ namespace GarageIndex
 		{
 			RectangleF frame;
 			if (UserInterfaceIdiomIsPhone) {
-				frame = new RectangleF (30, 80, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (30, 80, 300, 125);
 			} else {
-				frame = new RectangleF (30, 150, UIScreen.MainScreen.Bounds.Width, 125);			
+				frame = new RectangleF (30, 150, 300, 125);			
 			}
 
 			Console.WriteLine ("frame:" + frame);
