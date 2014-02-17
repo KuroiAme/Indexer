@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using no.dctapps.Garageindex.businesslogic;
 using TipOfTheDay;
 using no.dctapps.Garageindex.dao;
 using GoogleAnalytics.iOS;
-using GoogleAdMobAds;
+using MTiRate;
 
 namespace GarageIndex
 {
@@ -28,12 +26,24 @@ namespace GarageIndex
 			CurrentSystemVersion = new Version (UIDevice.CurrentDevice.SystemVersion);
 			iOS7 = new Version (7, 0);
 
+
 			if (UserInterfaceIdiomIsPhone) {
 				AdmobID = "a151431a930a1e9";
 			} else {
 				AdmobID = "a151431e078e783";
 			}
+
+			iRate.SharedInstance.DaysUntilPrompt = 5;
+			iRate.SharedInstance.UsesUntilPrompt = 15;
+
+			iRate.SharedInstance.UserDidAttemptToRateApp += (sender, e) => Console.WriteLine ("User is rating app now!");
+
+			iRate.SharedInstance.UserDidDeclineToRateApp += (sender, e) => Console.WriteLine ("User does not want to rate app");
+
+			iRate.SharedInstance.UserDidRequestReminderToRateApp += (sender, e) => Console.WriteLine ("User will rate app later");
 		}
+
+
 
 		public static readonly Version CurrentSystemVersion;
 		public static readonly Version iOS7;

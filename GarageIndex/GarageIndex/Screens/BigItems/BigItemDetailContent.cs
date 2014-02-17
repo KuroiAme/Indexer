@@ -277,7 +277,7 @@ namespace GarageIndex
 				nc.PushViewController(ipc,false);
 			};
 
-
+			makeCornersRound ();
 
 		}
 
@@ -369,9 +369,9 @@ namespace GarageIndex
 			ImageTag tag = null;
 
 			if (UserInterfaceIdiomIsPhone) {
-				frame = new RectangleF (30, 150, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (30, 150, 300, 125);
 			} else {
-				frame = new RectangleF (180, 180, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (30, 170, 300, 125);
 			}
 
 			Console.WriteLine("frame:"+frame);
@@ -481,11 +481,19 @@ namespace GarageIndex
 				myObject.Name = this.fieldBigName.Text;
 			if (this.fieldBigDescription.Text != null)
 				myObject.Description = this.fieldBigDescription.Text;
+			image = image.Scale(image.Size);
 			string[] output = SaveImage (myObject.Name, image);
 			myObject.imageFileName = output [0];
 			myObject.thumbFileName = output [1];
 			AppDelegate.dao.SaveLagerObject (myObject);
 			RaiseSavedEvent ();
+		}
+
+		void makeCornersRound(){
+			if (this.imageView != null) {
+				this.imageView.Layer.CornerRadius = 7;
+				this.imageView.ClipsToBounds = true;
+			}
 		}
 
 		void RaiseDerez(){

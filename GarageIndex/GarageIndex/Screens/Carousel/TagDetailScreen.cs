@@ -69,6 +69,9 @@ namespace GarageIndex
 
 
 			this.ShowDetails (tag);
+
+
+
 		}
 
 		void ShowDetails (ImageTag mytag)
@@ -129,6 +132,24 @@ namespace GarageIndex
 					Console.WriteLine("exception happend, defaulting value:"+ex.ToString());
 					this.yTextField.Text = fetcher.Y.ToString();
 				}
+			};
+
+			this.xTextField.ShouldReturn += textField => {
+				textField.ResignFirstResponder();
+				return true;
+			};
+			this.yTextField.ShouldReturn += textField => {
+				textField.ResignFirstResponder();
+				return true;
+			};
+
+			this.TextField_height.ShouldReturn += textField => {
+				textField.ResignFirstResponder();
+				return true;
+			};
+			this.WidthTextField.ShouldReturn += textField => {
+				textField.ResignFirstResponder();
+				return true;
 			};
 
 		}

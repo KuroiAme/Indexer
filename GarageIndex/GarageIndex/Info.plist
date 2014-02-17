@@ -22,29 +22,29 @@
 	</array>
 	<key>MinimumOSVersion</key>
 	<string>7.0</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.4</string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>Icon</string>
-		<string>Icon@2x</string>
-		<string>Icon-72</string>
-		<string>Icon-72@2x</string>
-		<string>Icon-Small</string>
-		<string>Icon-Small@2x</string>
-		<string>Icon-Small-50</string>
-		<string>Icon-Small-50@2x</string>
-		<string>Icon-60@2x</string>
-		<string>Icon-76</string>
-		<string>Icon-76@2x</string>
-		<string>Icon-Small-40</string>
 		<string>Icon-Small-40@2x</string>
+		<string>Icon-Small-40</string>
+		<string>Icon-Small@2x</string>
+		<string>Icon-Small</string>
+		<string>Icon-72</string>
+		<string>Icon-60@2x</string>
+		<string>Icon-Small-50@2x</string>
+		<string>Icon@2x</string>
+		<string>Icon-Small-50</string>
+		<string>Icon-76</string>
+		<string>Icon-72@2x</string>
+		<string>Icon</string>
+		<string>Icon-76@2x</string>
 	</array>
 	<key>CFBundleIdentifier</key>
 	<string>no.dctapps.garageindex</string>
 	<key>CFBundleDisplayName</key>
-	<string>GarageIndex</string>
+	<string>Indexer</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.0</string>
 	<key>CFBundleVersion</key>
-	<string>10</string>
+	<string>12</string>
 </dict>
 </plist>

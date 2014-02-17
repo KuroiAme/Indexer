@@ -52,13 +52,17 @@ namespace GarageIndex
 			initRectangles ();
 		}
 
+		SizeF contentSize;
+
 		private void InitView(){
 			this.View.BackgroundColor = UIColor.White;
 //			this.View.Frame = 
 			if (UserInterfaceIdiomIsPhone) {
+				contentSize = new SizeF (UIScreen.MainScreen.Bounds.Width, 800);
 				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 800);
 			} else {
-					this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
+				contentSize = new SizeF (UIScreen.MainScreen.Bounds.Width, 1000);
+				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
 			}
 		}
 
@@ -147,14 +151,14 @@ namespace GarageIndex
 			RectangleF btnPickImageItemRect;
 
 			if (UserInterfaceIdiomIsPhone) {
-				btnInContainerRect = new RectangleF (30, 200, 250, 22);
-				btnInLocationRect = new RectangleF (30, 230, 250, 22);
-				btnUnpickImageItemRect = new RectangleF (30, 275, 100, 20);
-				btnPickImageItemRect = new RectangleF (150, 275, 100, 20);
+				btnInContainerRect = new RectangleF (30, 210, 250, 22);
+				btnInLocationRect = new RectangleF (30, 240, 250, 22);
+				btnUnpickImageItemRect = new RectangleF (30, 275, 150, 20);
+				btnPickImageItemRect = new RectangleF (200, 275, 100, 20);
 			} else {
-				btnInContainerRect = new RectangleF (250, 80, 250, 30);
-				btnInLocationRect = new RectangleF (250, 130, 250, 30);
-				btnUnpickImageItemRect = new RectangleF (30, 275, 100, 20);
+				btnInContainerRect = new RectangleF (250, 90, 250, 30);
+				btnInLocationRect = new RectangleF (250, 140, 250, 30);
+				btnUnpickImageItemRect = new RectangleF (10, 275, 150, 20);
 				btnPickImageItemRect = new RectangleF (150, 275, 100, 20);
 			}
 
@@ -367,15 +371,17 @@ namespace GarageIndex
 				InsurancePhotoController ipc = new InsurancePhotoController(myItem);
 				nc.PushViewController(ipc,false);
 			};
+			makeCornersRound ();
+			//AddShadowToImageView ();
 		}
 
 		void AddTagList ()
 		{
 			RectangleF frame;
 			if (UserInterfaceIdiomIsPhone) {
-				frame = new RectangleF (30, 80, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (30, 80, 300, 125);
 			} else {
-				frame = new RectangleF (30, 150, UIScreen.MainScreen.Bounds.Width, 125);			
+				frame = new RectangleF (30, 150, 300, 125);			
 			}
 
 			Console.WriteLine ("frame:" + frame);
@@ -466,6 +472,20 @@ namespace GarageIndex
 			};
 		}
 
+		void AddShadowToImageView ()
+		{
+			this.imageView.Layer.ShadowColor = UIColor.Purple.CGColor;
+			this.imageView.Layer.ShadowOffset = new SizeF (0, 1);
+			this.imageView.Layer.ShadowOpacity = 1;
+			this.imageView.Layer.ShadowRadius = 1.0f;
+			//this.imageView.Layer.ShouldRasterize = true;
+			imageView.ClipsToBounds = false;
+		}
+
+		void makeCornersRound(){
+			this.imageView.Layer.CornerRadius = 7;
+			this.imageView.ClipsToBounds = true;
+		}
 
 
 
@@ -473,12 +493,6 @@ namespace GarageIndex
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-
-
-
-
-
-
 
 			this.fieldName.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Item Name", "Item Name");
 			this.fieldDescription.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Item description", "Item description");
