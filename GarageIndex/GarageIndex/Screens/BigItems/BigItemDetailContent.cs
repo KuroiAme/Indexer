@@ -276,7 +276,7 @@ namespace GarageIndex
 				nc.PushViewController(ipc,false);
 			};
 
-
+			makeCornersRound ();
 
 		}
 
@@ -480,11 +480,19 @@ namespace GarageIndex
 				myObject.Name = this.fieldBigName.Text;
 			if (this.fieldBigDescription.Text != null)
 				myObject.Description = this.fieldBigDescription.Text;
+			image = image.Scale(image.Size);
 			string[] output = SaveImage (myObject.Name, image);
 			myObject.imageFileName = output [0];
 			myObject.thumbFileName = output [1];
 			AppDelegate.dao.SaveLagerObject (myObject);
 			RaiseSavedEvent ();
+		}
+
+		void makeCornersRound(){
+			if (this.imageView != null) {
+				this.imageView.Layer.CornerRadius = 7;
+				this.imageView.ClipsToBounds = true;
+			}
 		}
 
 		void RaiseDerez(){

@@ -1,6 +1,6 @@
 "Large Objects" = "Stort";
 "Storage Data" = "Lagerinfo";
-"Name of the storage unit" = "Lagernavn";
+"Name of the storage unit" = "stedsnavn";
 "Address" = "Addresse";
 "Key contact" = "Nøkkelkontakt";
 "Zip Code" = "Postnummer";
@@ -42,7 +42,7 @@
 "Include item images" = "inkluder bilder fra eskeinnhold";
 "Items" = "Smått";
 "Item Catalogue" = "småting-katalog";
-"Storages" = "Lagre";
+"Storages" = "steder";
 "Item details" = "småting detaljer";
 "In" = "inni";
 "Items in this container" = "Ting i denne beholderen";
@@ -77,3 +77,4 @@
 "Count" = "Antall";
 "Show Content" = "Vis innhold";
 "Show Receipts" = "Vis kvitteringer";
+"Enter tag text" = "Skriv nøkkelord";

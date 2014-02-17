@@ -27,6 +27,7 @@ namespace GarageIndex
 		}
 
 		public TagListView tlv;
+		UITextField entertag;
 
 		public override void ViewDidLoad ()
 		{
@@ -40,10 +41,35 @@ namespace GarageIndex
 			//this.View.BackgroundColor = UIColor.White;
 			tlv.TagStringClicked += (object sender, TagStringClickedEventArgs e) => EditTagString (e.tagstring, e.pos);
 
-			var doubletap = new UITapGestureRecognizer (AddTag);
-			doubletap.NumberOfTapsRequired = 2;
-			tlv.AddGestureRecognizer (doubletap);
-			tlv.SetNeedsDisplay ();
+//			var doubletap = new UITapGestureRecognizer (AddTag);
+//			doubletap.NumberOfTapsRequired = 2;
+//			tlv.AddGestureRecognizer (doubletap);
+//			tlv.SetNeedsDisplay ();
+			entertag = new UITextField(new RectangleF(55.0f, 105.0f, 140, 22));
+			var def = entertag.Text;
+			entertag.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Enter tag text", "Enter tag text");
+			entertag.Ended += (object sender, EventArgs e) => {
+				var text = entertag.Text;
+				entertag.Text = def;
+				saveTagText(text);
+				entertag.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Enter tag text", "Enter tag text");
+			};
+			entertag.EditingDidBegin += (object sender, EventArgs e) => entertag.Placeholder = "";
+
+			Add (entertag);
+
+			this.entertag.ShouldReturn += (textField) => {
+				textField.ResignFirstResponder();
+				return true;
+			};
+		}
+
+		void saveTagText (string tagText)
+		{
+			AddTagString (tagText);
+			tlv.UpdateTagList (taglist);
+			tag.StoreTagList (taglist);
+			AppDelegate.dao.SaveTag (tag);
 		}
 
 		void AddTag (UITapGestureRecognizer gestureRecognizer){
@@ -54,10 +80,7 @@ namespace GarageIndex
 			av.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
 			av.Clicked += (object sender, UIButtonEventArgs e) => {
 				String tagText = av.GetTextField (0).Text;
-				AddTagString(tagText);
-				tlv.UpdateTagList(taglist);
-				tag.StoreTagList(taglist);
-				AppDelegate.dao.SaveTag(tag);
+				saveTagText (tagText);
 			};
 
 			av.Show();
