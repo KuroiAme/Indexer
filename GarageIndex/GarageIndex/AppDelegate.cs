@@ -17,7 +17,8 @@ namespace GarageIndex
 	[Register ("AppDelegate")]
 	public partial class AppDelegate : UIApplicationDelegate
 	{
-
+		public static Boolean IsLite = true;
+		public static int MaxAntall = 10;
 		public static string AdmobID;
 		public IGAITracker Tracker;
 		public static readonly string TrackingId = "UA-47719330-1";

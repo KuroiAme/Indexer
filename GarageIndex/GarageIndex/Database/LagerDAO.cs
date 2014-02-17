@@ -20,7 +20,6 @@ namespace no.dctapps.Garageindex.dao
 			pathToDatabase = Path.Combine(documents, "db_sqlite-net.db");
 
 			using (var conn= new SQLiteConnection(pathToDatabase)){
-				Console.WriteLine("dbpath:"+pathToDatabase);
 				conn.CreateTable<Item>();
 				conn.CreateTable<LagerObject>();
 				conn.CreateTable<Lager>();
@@ -54,15 +53,31 @@ namespace no.dctapps.Garageindex.dao
 
 		public void SaveGalleryObject (GalleryObject myObject)
 		{
-			Console.WriteLine(myObject.ID);
-			GalleryObject item = this.GetGalleryObjectByID (myObject.ID);
+			const int maxGalleryObjects = 10;
+			if (AppDelegate.IsLite) {
+				int x = this.GetNumberOfItemsInGallery ();
+				if (x <= maxGalleryObjects) {
+					saveGalleryObjectInner (myObject);
+				} else {
+					// DO NOTHING AT ALL!!! (LITE VERSION LIMITATION)
+				}
+			} else {
+				saveGalleryObjectInner (myObject);
 
-			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
-				if(item == null){
-					Console.WriteLine("insert");
+			}
+		}
+
+		void saveGalleryObjectInner (GalleryObject myObject)
+		{
+			Console.WriteLine (myObject.ID);
+			GalleryObject item = this.GetGalleryObjectByID (myObject.ID);
+			using (var conn = new SQLite.SQLiteConnection (pathToDatabase)) {
+				if (item == null) {
+					Console.WriteLine ("insert");
 					conn.Insert (myObject);
-				}else{
-					Console.WriteLine("update");
+				}
+				else {
+					Console.WriteLine ("update");
 					conn.Update (myObject);
 				}
 			}
@@ -86,16 +101,29 @@ namespace no.dctapps.Garageindex.dao
 
 		public void SaveLagerObject (LagerObject myObject)
 		{
-			Console.WriteLine(myObject.ID);
-			IList<LagerObject> thelist = this.GetLagerObjectByID(myObject.ID);
-			Console.WriteLine(thelist.Count);
+			if (AppDelegate.IsLite) {
+				const int maxLagerObjects = 10;
+				int x = this.GetantallLagerObjects ();
+				if (x <= maxLagerObjects) {
+					saveLagerObjectInner (myObject);
+				} else {
+					//DO NOTHING (LITE VERSION LIMITATION)
+				}
+			} else {
+				saveLagerObjectInner (myObject);
+			}
+		}
 
-			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
-				if(thelist.Count == 0){
-					Console.WriteLine("insert");
+		void saveLagerObjectInner (LagerObject myObject)
+		{
+			IList<LagerObject> thelist = this.GetLagerObjectByID (myObject.ID);
+			using (var conn = new SQLite.SQLiteConnection (pathToDatabase)) {
+				if (thelist.Count == 0) {
+					Console.WriteLine ("insert");
 					conn.Insert (myObject);
-				}else{
-					Console.WriteLine("update");
+				}
+				else {
+					Console.WriteLine ("update");
 					conn.Update (myObject);
 				}
 			}
@@ -269,13 +297,28 @@ namespace no.dctapps.Garageindex.dao
 
 		public void SaveItem (Item item)
 		{
-			if(item != null && item.Name != ""){
+			if (AppDelegate.IsLite) {
+				const int maxItems = 10;
+				int x = int.Parse(this.GetAntallTing ());
+				if (x <= maxItems) {
+					saveItemInner (item);
+				} else {
+					//DO DIDDLY (LITE VERSION LIMITATION.)
+				}
+			} else {
+				saveItemInner (item);
+			}
+		}
+
+		void saveItemInner (Item item)
+		{
+			if (item != null && item.Name != "") {
 				IList<Item> items = GetItemById (item.ID);
-				using (var conn= new SQLite.SQLiteConnection(pathToDatabase)) {
-			
-					if(items.Count == 0){
-					conn.Insert (item);
-					}else{
+				using (var conn = new SQLite.SQLiteConnection (pathToDatabase)) {
+					if (items.Count == 0) {
+						conn.Insert (item);
+					}
+					else {
 						conn.Update (item);
 					}
 				}
@@ -284,21 +327,37 @@ namespace no.dctapps.Garageindex.dao
 
 		public int SaveTag (ImageTag tag)
 		{
+			if (AppDelegate.IsLite) {
+				int x = this.GetantallTags ();
+				if (x <= AppDelegate.MaxAntall) {
+					return saveTagInner (tag);
+				} else {
+					return -1;
+				}
+			} else {
+				return saveTagInner (tag);
+			}
+
+		}
+
+		int saveTagInner (ImageTag tag)
+		{
 			if (tag != null) {
 				ImageTag checktag = GetTagById (tag.ID);
 				using (var conn = new SQLite.SQLiteConnection (pathToDatabase)) {
-
 					if (checktag == null) {
 						Console.WriteLine ("imageTag insert");
 						conn.Insert (tag);
 						return tag.ID;
-					} else {
+					}
+					else {
 						Console.WriteLine ("imageTag update");
 						conn.Update (tag);
 						return tag.ID;
 					}
 				}
-			} else {
+			}
+			else {
 				Console.WriteLine ("didnt save, returning -1 flag");
 				return -1;
 			}
@@ -361,6 +420,12 @@ namespace no.dctapps.Garageindex.dao
 			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)){
 				conn.Update (lm);
 			}
+		}
+
+		int GetantallTags ()
+		{
+			IList<ImageTag> myList = GetAllImageTags ();
+			return myList.Count;
 		}
 
 		public string GetAntallTing ()
@@ -473,6 +538,19 @@ namespace no.dctapps.Garageindex.dao
 			printAllBoxes (output);
 			conn.Dispose ();
 			return output;
+		}
+
+		int GetantallLagerObjects ()
+		{
+			IList<LagerObject> myList = GetAllLagerObjects ();
+			return myList.Count;
+		}
+
+		IList<ImageTag> GetAllImageTags ()
+		{
+			using (var conn= new SQLite.SQLiteConnection(pathToDatabase)){
+				return conn.Query<ImageTag>("select * from ImageTag");
+			}
 		}
 
 		public IList<LagerObject> GetAllLagerObjects ()
