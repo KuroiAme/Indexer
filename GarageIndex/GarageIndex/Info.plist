@@ -39,12 +39,12 @@
 		<string>Icon-76@2x</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>no.dctapps.garageindex</string>
+	<string>no.dctapps.indexerlite</string>
 	<key>CFBundleDisplayName</key>
-	<string>Indexer</string>
+	<string>Indexer Lite</string>
 	<key>CFBundleShortVersionString</key>
 	<string>2.0</string>
 	<key>CFBundleVersion</key>
-	<string>12</string>
+	<string>13</string>
 </dict>
 </plist>
