@@ -239,13 +239,8 @@ namespace GarageIndex
 
 			it.Clicked += (object sender, EventArgs e) => {
 				EditTags tagedit = new EditTags(go);
-				if(UserInterfaceIdiomIsPhone){
-					this.NavigationController.PushViewController(tagedit,true);
-				}else{
-					this.NavigationController.PresentViewController(tagedit,true,null);
-//					uipc = new UIPopoverController (tagedit);
-//					uipc.PresentFromBarButtonItem (this.it,UIPopoverArrowDirection.Up, true);
-				}
+				this.NavigationController.PushViewController(tagedit,true);
+				
 			};
 			NavigationItem.SetRightBarButtonItem (it, true);
 

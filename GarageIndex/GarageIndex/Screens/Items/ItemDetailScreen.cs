@@ -20,6 +20,7 @@ namespace no.dctapps.Garageindex.screens
 
 		public event EventHandler<ItemSavedEventArgs> ItemSaved;
 		public event EventHandler<DerezEventArgs> Derez;
+		public event EventHandler ItemDeleted;
 
 		public ItemDetailsController idc;
 
@@ -53,6 +54,7 @@ namespace no.dctapps.Garageindex.screens
 
 
 
+
 		public void ShowDetails(Item item){
 			this.item = item;
 			idc = new ItemDetailsController (item, this.NavigationController);
@@ -79,6 +81,13 @@ namespace no.dctapps.Garageindex.screens
 
 			idc.Derez += (object sender, DerezEventArgs e) => {
 				var handler = this.Derez;
+				if(handler != null){
+					handler(sender,e);
+				}
+			};
+
+			idc.ItemDeleted += (object sender, EventArgs e) => {
+				var handler = this.ItemDeleted;
 				if(handler != null){
 					handler(sender,e);
 				}

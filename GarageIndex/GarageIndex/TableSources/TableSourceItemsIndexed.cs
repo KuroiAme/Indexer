@@ -27,10 +27,10 @@ namespace no.dctapps.Garageindex.tables
 			indexedTableItems = new Dictionary<string, List<string>>();
 			foreach (var t in items) {
 				if (!string.IsNullOrEmpty (t)) {
-					if (indexedTableItems.ContainsKey (t [0].ToString ())) {
-						indexedTableItems [t [0].ToString ()].Add (t);
+					if (indexedTableItems.ContainsKey (t [0].ToString ().ToLower())) {
+						indexedTableItems [t [0].ToString ().ToLower()].Add (t);
 					} else {
-						indexedTableItems.Add (t [0].ToString (), new List<string> () {t});
+						indexedTableItems.Add (t [0].ToString ().ToLower(), new List<string> () {t});
 					}
 				}
 			}
@@ -111,8 +111,11 @@ namespace no.dctapps.Garageindex.tables
 			if (cell == null)
 				cell = new CustomLagerCell ((MonoTouch.Foundation.NSString)cellIdentifier);
 
-			
+			//cell.Editing = true; // Make the cell deletable
+			//cell.ShouldIndentWhileEditing = true;
+			//cell.ShowingDeleteConfirmation = true;
 			cell.TextLabel.Text = indexedTableItems[keys[indexPath.Section]][indexPath.Row];
+			//cell.
 
 
 //			BlackLeatherTheme.Apply(cell);
@@ -120,15 +123,15 @@ namespace no.dctapps.Garageindex.tables
 			return cell;
 		}
 
-		void RaiseItemDeleted (Item raised)
-		{
-			var handler = this.ItemDeleted;
-
-			if (handler != null){
-				handler(this, new ItemClickedEventArgs(raised));
-			}
-
-		}
+//		void RaiseItemDeleted (Item raised)
+//		{
+//			var handler = this.ItemDeleted;
+//
+//			if (handler != null){
+//				handler(this, new ItemClickedEventArgs(raised));
+//			}
+//
+//		}
 
 //		void RaiseTaskDeleted (int row)
 //		{
@@ -139,49 +142,49 @@ namespace no.dctapps.Garageindex.tables
 //			}
 //		}
 //
-		public override void CommitEditingStyle (UITableView tableView, UITableViewCellEditingStyle editingStyle, MonoTouch.Foundation.NSIndexPath indexPath)
-		{
-			switch (editingStyle) {
-			case UITableViewCellEditingStyle.Delete:
-				// remove the item from the underlying data source
-				
-				string input = indexedTableItems[keys[indexPath.Section]][indexPath.Row];
-						
-				IList<Item> R = dao.GetItemsWithName(input);
-				Item x = R[0];
-
-				this.RaiseItemDeleted(x);
-
-//				this.indexedTableItems.RemoveAt(indexPath.Row);
-				this.indexedTableItems.Remove(x.Name);
-				
-				// delete the row from the table
-//				tableView.DeleteRows (new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
-				
-				
-				break;
-				
-//			case UITableViewCellEditingStyle.Insert:
-//				//---- create a new item and add it to our underlying data
+//		public override void CommitEditingStyle (UITableView tableView, UITableViewCellEditingStyle editingStyle, MonoTouch.Foundation.NSIndexPath indexPath)
+//		{
+//			switch (editingStyle) {
+//			case UITableViewCellEditingStyle.Delete:
+//				// remove the item from the underlying data source
 //				
-//				LagerObject obj = new LagerObject();
-//				obj.Name = "Inserted";
-//				obj.imageFileName = "second.png";
+//				string input = indexedTableItems[keys[indexPath.Section]][indexPath.Row];
+//						
+//				IList<Item> R = dao.GetItemsWithName(input);
+//				Item x = R[0];
+//
+//				this.RaiseItemDeleted(x);
+//
+////				this.indexedTableItems.RemoveAt(indexPath.Row);
+//				this.indexedTableItems.Remove(x.Name);
 //				
-//				tableItems.Insert (indexPath.Row, obj);
+//				// delete the row from the table
+////				tableView.DeleteRows (new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
 //				
 //				
-//				
-//				
-//				//---- insert a new row in the table
-//				tableView.InsertRows (new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
 //				break;
-				
-			case UITableViewCellEditingStyle.None:
-				Console.WriteLine ("CommitEditingStyle:None called");
-				break;
-			}
-		}
+//				
+////			case UITableViewCellEditingStyle.Insert:
+////				//---- create a new item and add it to our underlying data
+////				
+////				LagerObject obj = new LagerObject();
+////				obj.Name = "Inserted";
+////				obj.imageFileName = "second.png";
+////				
+////				tableItems.Insert (indexPath.Row, obj);
+////				
+////				
+////				
+////				
+////				//---- insert a new row in the table
+////				tableView.InsertRows (new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
+////				break;
+//				
+//			case UITableViewCellEditingStyle.None:
+//				Console.WriteLine ("CommitEditingStyle:None called");
+//				break;
+//			}
+//		}
 	}
 }
 

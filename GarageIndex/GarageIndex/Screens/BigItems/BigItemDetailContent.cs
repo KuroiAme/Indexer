@@ -359,7 +359,6 @@ namespace GarageIndex
 			SetLagerButtonLabel (this.myObject);
 			initializeMoveLager ();
 
-
 		}
 
 		void AddTagList ()
@@ -389,7 +388,10 @@ namespace GarageIndex
 			}
 
 			TagListController tlc = new TagListController (tag, frame);
-			this.View.AddSubview (tlc.View);
+			this.Add (tlc.View);
+			tlc.entertag.EditingDidBegin += (object sender, EventArgs e) => {
+				tlc.entertag.Placeholder = "";
+			};
 
 		}
 

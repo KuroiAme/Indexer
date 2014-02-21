@@ -41,6 +41,11 @@ namespace no.dctapps.Garageindex.screens
 				secondaryview.ShowDetails(secondaryview.idc.currentItem);
 			};
 
+			secondaryview.ItemDeleted += (object sender, EventArgs e) => {
+				Console.WriteLine("item deleted");
+				primaryview.Refresh();
+			};
+
 			primarynav = new UINavigationController();
 			primarynav.PushViewController(primaryview, false);
 			
