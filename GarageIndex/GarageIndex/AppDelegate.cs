@@ -73,21 +73,22 @@ namespace GarageIndex
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 
-			tabs = new TabController ();
+			//tabs = new TabController ();
+			TaggedImageViewController carousel = new TaggedImageViewController();
 
 //			if(MonoTouch.Foundation.isi
-			this.window.TintColor = UIColor.Purple;
+			this.window.TintColor = UIColor.White;
 			
 			// If you have defined a root view controller, set it here:
-			this.window.RootViewController = tabs; 
+			this.window.RootViewController = carousel; 
 			
 			// make the window visible
 			window.MakeKeyAndVisible ();
-			if (UserInterfaceIdiomIsPhone) {
-				if (CurrentSystemVersion >= iOS7) {
-					TipOfTheDayControl<GarageIndexTipsProvider, DefaultTipsSettings>.Show (window);
-				}
-			}
+//			if (UserInterfaceIdiomIsPhone) {
+//				if (CurrentSystemVersion >= iOS7) {
+//					TipOfTheDayControl<GarageIndexTipsProvider, DefaultTipsSettings>.Show (window);
+//				}
+//			}
 
 
 

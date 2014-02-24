@@ -10,6 +10,7 @@ using System.Linq;
 using MonoTouch.CoreGraphics;
 using MonoTouch.ObjCRuntime;
 using GoogleAnalytics.iOS;
+using SlideDownMenu;
 
 namespace GarageIndex
 {
@@ -42,6 +43,13 @@ namespace GarageIndex
 		{
 			base.ViewWillAppear (animated);
 			tgv.SetNeedsDisplay ();
+			AddLongPress ();
+		}
+
+		void AddLongPress ()
+		{
+			var longPressGesture = new UILongPressGestureRecognizer (EditTagFrame);
+			scrollView.AddGestureRecognizer (longPressGesture);
 		}
 
 		public override void ViewDidLoad ()
@@ -95,7 +103,7 @@ namespace GarageIndex
 			blend.AddSubview(tgv);
 
 			scrollView.AddSubview (blend);
-			this.View = scrollView;
+			Add(scrollView);
 
 			scrollView.ViewForZoomingInScrollView += (UIScrollView sv) => blend;
 
@@ -103,13 +111,50 @@ namespace GarageIndex
 			doubletap.NumberOfTapsRequired = 2;
 			scrollView.AddGestureRecognizer (doubletap);
 
-			var longPressGesture = new UILongPressGestureRecognizer (EditTagFrame);
-			scrollView.AddGestureRecognizer (longPressGesture);
+			AddLongPress ();
 
 			CreateEditBarButton ();
 
 			ExtractNewThumbnail ();
+
+			CreateSlideDownMenu ();
+
+			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
+			backbutton.SetImage (backarrow.MakeBackArrow(), UIControlState.Normal);
+			backbutton.TouchUpInside += (object sender, EventArgs e) => DismissViewControllerAsync (true);
+			Add (backbutton);
+
 		}
+
+		void CreateSlideDownMenu ()
+		{
+			var item0 = new MenuItem ("Options", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+			});
+			item0.Tag = 0;
+			var extract = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Add tag at zoomed object", "Add tag at zoomed object");
+			var item1 = new MenuItem (extract, UIImage.FromBundle ("startree.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+				AddTagInner();
+
+			});
+			item1.Tag = 1;
+			var item2 = new MenuItem ("List of tags", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+				EditTags tags = new EditTags(this.go);
+				PresentViewControllerAsync(tags,true);
+			});
+			item2.Tag = 2;
+
+
+			//item0.tag = 0;
+
+			var slideMenu = new SlideMenu (new List<MenuItem> { item0, item1, item2});
+			slideMenu.Center = new PointF (slideMenu.Center.X, slideMenu.Center.Y + 25);
+			this.View.AddSubview (slideMenu);
+		}
+
+
 
 		void EditTagFrame (UIGestureRecognizer gestureRecognizer){
 			Console.WriteLine ("edittagframe triggered");
@@ -144,7 +189,8 @@ namespace GarageIndex
 							Console.WriteLine("mutex released");
 							mylock = false;
 						};
-						this.NavigationController.PushViewController (tds, false);
+						this.PresentViewControllerAsync (tds, true);
+						//this.NavigationController.PushViewController (tds, false);
 						break;
 //						} else {
 //							Console.WriteLine ("adder:" + Tags [j]);
@@ -258,40 +304,46 @@ namespace GarageIndex
 			PointF origoRect = new PointF (again.X - meh.Width, again.Y - meh.Height);
 			return new RectangleF (origoRect, meh);
 		}
-			
-		void AddTag (UITapGestureRecognizer gestureRecognizer){
-			Console.WriteLine ("ADDTAG");
+
+		void AddTagInner ()
+		{
 			ImageTag tag = new ImageTag ();
 			tag.GalleryObjectID = go.ID;
-
 			var cr8 = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Create", "Create");
 			var input = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("input tags, comma seperated", "input tags, comma seperated");
 			var abort = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Cancel", "Cancel");
-			UIAlertView av = new UIAlertView (input, "\n", null, abort, new string[] {cr8});
+			UIAlertView av = new UIAlertView (input, "\n", null, abort, new string[] {
+				cr8
+			});
 			av.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
 			int Create = av.FirstOtherButtonIndex;
-			av.Clicked += (object sender, UIButtonEventArgs e) => {
-				if(e.ButtonIndex == Create){
+			av.Clicked += (object sender, UIButtonEventArgs e) =>  {
+				if (e.ButtonIndex == Create) {
 					String tagText = av.GetTextField (0).Text;
 					tag.TagString = tagText;
 					var scale = scrollView.ZoomScale;
 					const float heightmod = 0.70f;
 					//float widthmod = 1f;
-
-					RectangleF contentFrame = new RectangleF(scrollView.ContentOffset.X / scale, scrollView.ContentOffset.Y / scale, scrollView.Frame.Size.Width / scale, scrollView.Frame.Size.Height /scale * heightmod);
+					RectangleF contentFrame = new RectangleF (scrollView.ContentOffset.X / scale, scrollView.ContentOffset.Y / scale, scrollView.Frame.Size.Width / scale, scrollView.Frame.Size.Height / scale * heightmod);
 					//contentFrame.Y = contentFrame.Y + this.NavigationController.View.Bounds.Y;
 					//contentFrame.X = contentFrame.X + this.NavigationController.View.Bounds.Bottom;
 					contentFrame.Y = contentFrame.Y + 90;
-					tag.StoreRectangleF(contentFrame);
-					AppDelegate.dao.SaveTag(tag);
-					Console.WriteLine("tagtext:"+tag.TagString);
-					Console.WriteLine("spot:"+tag.FetchAsRectangleF());
-					tgv.SetNeedsDisplay();
+					tag.StoreRectangleF (contentFrame);
+					AppDelegate.dao.SaveTag (tag);
+					Console.WriteLine ("tagtext:" + tag.TagString);
+					Console.WriteLine ("spot:" + tag.FetchAsRectangleF ());
+					tgv.SetNeedsDisplay ();
 					ExtractNewThumbnail ();
 				}
 			};
+			av.Show ();
+		}
+			
+		void AddTag (UITapGestureRecognizer gestureRecognizer){
+			Console.WriteLine ("ADDTAG");
+			AddTagInner ();
 
-			av.Show();
+
 		}
 
 		public static bool UserInterfaceIdiomIsPhone 

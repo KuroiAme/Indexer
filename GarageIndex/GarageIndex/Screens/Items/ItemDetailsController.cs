@@ -37,18 +37,19 @@ namespace GarageIndex
 		public event EventHandler InLocationTouched;
 
 		public Item currentItem;
-		UINavigationController nc;
+		//UINavigationController nc;
+		UIViewController parent;
 
-		public ItemDetailsController (UINavigationController nc)
+		public ItemDetailsController (UIViewController parent)
 		{
-			this.nc = nc;
+			this.parent = parent;
 			initRectangles ();
 
 		}
 
-		public ItemDetailsController (Item item, UINavigationController nc)
+		public ItemDetailsController (Item item, UIViewController parent)
 		{
-			this.nc = nc;
+			this.parent = parent;
 			currentItem = item;
 			initRectangles ();
 		}
@@ -131,11 +132,11 @@ namespace GarageIndex
 			RectangleF fieldNameRect;
 			RectangleF fieldDescriptionRect;
 			if (UserInterfaceIdiomIsPhone) {
-				fieldNameRect = new RectangleF (30, 15, 250, 22);
-				fieldDescriptionRect = new RectangleF (30, 60, 250, 22);
+				fieldNameRect = new RectangleF (30, 100, 250, 22);
+				fieldDescriptionRect = new RectangleF (30, 140, 250, 22);
 			} else {
-				fieldNameRect = new RectangleF (30, 80, 250, 30);
-				fieldDescriptionRect = new RectangleF (30, 130, 250, 30);
+				fieldNameRect = new RectangleF (30, 160, 250, 30);
+				fieldDescriptionRect = new RectangleF (30, 210, 250, 30);
 			}
 
 
@@ -159,15 +160,15 @@ namespace GarageIndex
 			RectangleF btnPickImageItemRect;
 
 			if (UserInterfaceIdiomIsPhone) {
-				btnInContainerRect = new RectangleF (30, 210, 250, 22);
-				btnInLocationRect = new RectangleF (30, 240, 250, 22);
-				btnUnpickImageItemRect = new RectangleF (30, 275, 150, 20);
-				btnPickImageItemRect = new RectangleF (200, 275, 100, 20);
+				btnInContainerRect = new RectangleF (30, 290, 250, 22);
+				btnInLocationRect = new RectangleF (30, 320, 250, 22);
+				btnUnpickImageItemRect = new RectangleF (30, 360, 150, 20);
+				btnPickImageItemRect = new RectangleF (200, 360, 100, 20);
 			} else {
-				btnInContainerRect = new RectangleF (250, 90, 250, 30);
-				btnInLocationRect = new RectangleF (250, 140, 250, 30);
-				btnUnpickImageItemRect = new RectangleF (10, 275, 150, 20);
-				btnPickImageItemRect = new RectangleF (150, 275, 100, 20);
+				btnInContainerRect = new RectangleF (250, 170, 250, 30);
+				btnInLocationRect = new RectangleF (250, 220, 250, 30);
+				btnUnpickImageItemRect = new RectangleF (10, 360, 150, 20);
+				btnPickImageItemRect = new RectangleF (150, 360, 100, 20);
 			}
 
 			btnInContainer = new UIButton (UIButtonType.RoundedRect);
@@ -211,13 +212,13 @@ namespace GarageIndex
 		void initRectangles ()
 		{
 			if (UserInterfaceIdiomIsPhone) {
-				ImageRectangle = new RectangleF (10, 300, 300, 300);
+				ImageRectangle = new RectangleF (10, 380, 300, 300);
 				//				PickerRect = new RectangleF (10, 100, 175, 30);
 				//                UnPickerRect = new RectangleF(175, 100, 150, 55);
 			}
 			else {
 				//Ipad measures for this screen
-				ImageRectangle = new RectangleF (10, 310, 800, 800);
+				ImageRectangle = new RectangleF (10, 390, 800, 800);
 				//				PickerRect = new RectangleF (10, 100, 200, 30);
 				//                UnPickerRect = new RectangleF(210, 100, 200, 55);
 			}
@@ -319,11 +320,11 @@ namespace GarageIndex
 							ass.DismissWithClickedButtonIndex(c,true);
 							AppDelegate.dao.DeleteItem (myItem.ID);
 							RaiseItemDeleted ();
-							nc.PopViewControllerAnimated (false);
+							DismissViewControllerAsync(true);
 						}
 					}
 				};
-				ass.ShowInView (nc.View);
+				ass.ShowInView (parent.View);
 			};
 		}
 
@@ -397,7 +398,8 @@ namespace GarageIndex
 			showReceipts.SetTitle (MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Show Receipts", "Show Receipts"), UIControlState.Normal);
 			showReceipts.TouchUpInside += (object sender, EventArgs e) => {
 				InsurancePhotoController ipc = new InsurancePhotoController(myItem);
-				nc.PushViewController(ipc,false);
+				PresentViewControllerAsync(ipc,true);
+				//nc.PushViewController(ipc,false);
 			};
 			makeCornersRound ();
 
@@ -419,9 +421,9 @@ namespace GarageIndex
 		{
 			RectangleF frame;
 			if (UserInterfaceIdiomIsPhone) {
-				frame = new RectangleF (30, 80, 300, 125);
+				frame = new RectangleF (30, 160, 300, 125);
 			} else {
-				frame = new RectangleF (30, 150, 300, 125);			
+				frame = new RectangleF (30, 230, 300, 125);			
 			}
 
 			Console.WriteLine ("frame:" + frame);
@@ -471,7 +473,8 @@ namespace GarageIndex
 
 			this.btnInContainer.TouchUpInside += (object sender, EventArgs e) =>  {
 				if(UserInterfaceIdiomIsPhone){
-					nc.PushViewController(sc, true);
+					PresentViewControllerAsync(sc,true);
+					//nc.PushViewController(sc, true);
 				}else{
 					Ic = new UIPopoverController (sc);
 					Ic.PresentFromRect (this.btnInContainer.Bounds, this.View, UIPopoverArrowDirection.Up, true);
@@ -480,7 +483,8 @@ namespace GarageIndex
 
 			sc.DismissEvent += (object sender, ContainerClickedEventArgs e) => {
 				if(UserInterfaceIdiomIsPhone){
-					nc.PopViewControllerAnimated(true);
+					DismissViewControllerAsync(true);
+					//nc.PopViewControllerAnimated(true);
 				}else{
 					Ic.Dismiss (true);
 				}
@@ -493,7 +497,7 @@ namespace GarageIndex
 
 			this.btnInLocation.TouchUpInside += (object sender, EventArgs e) =>  {
 				if(UserInterfaceIdiomIsPhone){
-					nc.PushViewController(sl, true);
+					PresentViewControllerAsync(sl,true);
 				}else{
 					pc = new UIPopoverController (sl);
 					pc.PresentFromRect (this.btnInLocation.Bounds, this.View, UIPopoverArrowDirection.Up, true);
@@ -502,7 +506,7 @@ namespace GarageIndex
 
 			sl.DismissEvent += (object sender, LagerClickedEventArgs e) => {
 				if(UserInterfaceIdiomIsPhone){
-					nc.PopViewControllerAnimated(true);
+					DismissViewControllerAsync(true);
 				}else{
 					pc.Dismiss (true);
 				}
@@ -534,6 +538,15 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 
+			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground")){
+				ContentMode = UIViewContentMode.ScaleToFill,
+				AutoresizingMask = UIViewAutoresizing.All,
+				Frame = View.Bounds
+			};
+
+			View.AddSubview (imgView);
+			View.SendSubviewToBack (imgView);
+
 			this.fieldName.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Item Name", "Item Name");
 			this.fieldDescription.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Item description", "Item description");
 
@@ -549,7 +562,11 @@ namespace GarageIndex
 			InitializeImagePicker ();
 			InitializeUnpickImage();
 			initializePlaceObject();
-			//Initia
+
+			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
+			backbutton.SetImage (backarrow.MakeBackArrow(), UIControlState.Normal);
+			backbutton.TouchUpInside += (object sender, EventArgs e) => parent.DismissViewControllerAsync (true);
+			Add (backbutton);
 
 			//DO NOT DELETE
 			//			UIBarButtonItem it = new UIBarButtonItem();
@@ -665,14 +682,14 @@ namespace GarageIndex
 						DeletePic();
 						//POP this view to refresh.
 						if(UserInterfaceIdiomIsPhone){
-							nc.PopViewControllerAnimated(true);
+							DismissViewControllerAsync(true);
 						}else{
 							//ASSUME IPAD
 							RaiseDerez();
 						}
 					}
 				};
-				aSheet.ShowInView(this.View);
+				aSheet.ShowInView(parent.View);
 				//aSheet.ShowFromTabBar(this.TabBarController.TabBar);
 			};
 		}
@@ -765,7 +782,7 @@ namespace GarageIndex
 					PickFromLibrary();
 				}
 			};
-			bSheet.ShowInView (View);
+			bSheet.ShowInView (parent.View);
 		}
 
 
@@ -789,7 +806,8 @@ namespace GarageIndex
 			imagePicker.Canceled += Handle_Canceled;
 			// show the picker
 			if (UserInterfaceIdiomIsPhone) {
-				nc.PresentViewController (imagePicker, true, delegate{});
+				PresentViewControllerAsync (imagePicker, true);
+				//nc.PresentViewController (imagePicker, true, delegate{});
 			}
 			else {
 				Console.WriteLine ("Popover");

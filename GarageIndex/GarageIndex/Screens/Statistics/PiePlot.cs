@@ -32,13 +32,29 @@ namespace GarageIndex
 			host = new CPTGraphHostingView (new RectangleF (10, 40, 300, 300)) {
 				HostedGraph = Graph
 			};
+			host.BackgroundColor = UIColor.Clear;
+			this.View.BackgroundColor = UIColor.Clear;
 			View.AddSubview (host);
+
 		}
 		public override void ViewDidAppear (bool animated)
 		{
 			base.ViewDidAppear (animated);
 			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Statistics Screen");
 			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
+		}
+
+		public override void ViewDidLoad ()
+		{
+			base.ViewDidLoad ();
+			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground.png")){
+				ContentMode = UIViewContentMode.ScaleToFill,
+				AutoresizingMask = UIViewAutoresizing.All,
+				Frame = View.Bounds
+			};
+
+			View.AddSubview (imgView);
+			View.SendSubviewToBack (imgView);
 		}
 	}
 
@@ -64,7 +80,7 @@ namespace GarageIndex
 				Stocks         => Stocks theme.
 			*/
 
-			var theme = CPTTheme.ThemeNamed (CPTTheme.PlainWhiteTheme);
+			var theme = CPTTheme.ThemeNamed (CPTTheme.DarkGradientTheme);
 
 			graph = new CPTXYGraph {
 				PaddingLeft = 0,
@@ -73,8 +89,9 @@ namespace GarageIndex
 				PaddingBottom = 0,
 			};
 			graph.ApplyTheme (theme);
+			graph.BackgroundColor = UIColor.Clear.CGColor;
 
-			this.View.BackgroundColor = UIColor.White;
+			this.View.BackgroundColor = UIColor.Clear;
 		}
 
 		void SetupAxes ()
@@ -106,6 +123,8 @@ namespace GarageIndex
 				SliceDirection = CPTPieDirection.CounterClockwise,
 				BorderLineStyle = CPTLineStyle.LineStyle
 			};
+
+			piePlot.BackgroundColor = UIColor.Clear.CGColor;
 					
 			float one = float.Parse(AppDelegate.dao.GetAntallBeholdere ());
 			float two = float.Parse (AppDelegate.dao.GetAntallTing ());
@@ -147,7 +166,7 @@ namespace GarageIndex
 		{
 			if (whiteText == null) {
 				whiteText = new CPTMutableTextStyle ();
-				whiteText.Color = CPTColor.BlackColor;
+				whiteText.Color = CPTColor.WhiteColor;
 			}
 
 			data = yValues;

@@ -273,7 +273,8 @@ namespace GarageIndex
 			showReceipts.SetTitle (MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Show Receipts", "Show Receipts"), UIControlState.Normal);
 			showReceipts.TouchUpInside += (object sender, EventArgs e) => {
 				InsurancePhotoController ipc = new InsurancePhotoController(myobj);
-				nc.PushViewController(ipc,false);
+				PresentViewControllerAsync(ipc,true);
+				//nc.PushViewController(ipc,false);
 			};
 
 			makeCornersRound ();
@@ -289,7 +290,9 @@ namespace GarageIndex
 				Console.WriteLine("touchupinside");
 				if(UserInterfaceIdiomIsPhone){
 					Console.WriteLine("iphone??");
-					nc.PushViewController(sl, true);
+					PresentViewControllerAsync(sl,true);
+					//PresentViewController(sl,true);
+					//nc.PushViewController(sl, true);
 				}else{
 					Console.WriteLine("ipad??");
 					Ic = new UIPopoverController (sl);
@@ -299,7 +302,8 @@ namespace GarageIndex
 			sl.DismissEvent += (object sender, LagerClickedEventArgs e) =>  {
 				Console.WriteLine("dismiss?");
 				if(UserInterfaceIdiomIsPhone){
-					nc.PopViewControllerAnimated(true);
+					DismissViewControllerAsync(true);
+					//nc.PopViewControllerAnimated(true);
 				}else{
 					Ic.Dismiss (true);
 				}
@@ -549,7 +553,8 @@ namespace GarageIndex
 			imagePicker.Canceled += Handle_Canceled;
 			// show the picker
 			if(UserInterfaceIdiomIsPhone){
-				nc.PresentViewController (imagePicker, true, delegate {});
+				PresentViewControllerAsync (imagePicker, true);
+				//nc.PresentViewController (imagePicker, true, delegate {});
 			}else{
 				Console.WriteLine("Popover");
 				Pc = new UIPopoverController(imagePicker);
@@ -571,7 +576,8 @@ namespace GarageIndex
 			imagePicker.Canceled += Handle_Canceled;
 			// show the picker
 			if (UserInterfaceIdiomIsPhone) {
-				nc.PresentViewController (imagePicker, true, delegate{});
+				PresentViewControllerAsync (imagePicker, true);
+				//nc.PresentViewController (imagePicker, true, delegate{});
 			}
 			else {
 				Console.WriteLine ("Popover");
@@ -602,7 +608,8 @@ namespace GarageIndex
 						DeletePic();
 						//POP this view to refresh.
 						if(UserInterfaceIdiomIsPhone){
-							nc.PopViewControllerAnimated(true);
+							DismissViewControllerAsync(true);
+							//nc.PopViewControllerAnimated(true);
 						}else{
 							RaiseDerez();
 						}

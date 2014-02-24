@@ -119,6 +119,20 @@ namespace no.dctapps.Garageindex.screens
 		{
 			base.ViewDidLoad ();
 
+			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground.png")){
+				ContentMode = UIViewContentMode.ScaleToFill,
+				AutoresizingMask = UIViewAutoresizing.All,
+				Frame = View.Bounds
+			};
+
+			View.AddSubview (imgView);
+			View.SendSubviewToBack (imgView);
+
+			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
+			backbutton.SetImage (UIImage.FromBundle ("backarrow.png"), UIControlState.Normal);
+			backbutton.TouchUpInside += (object sender, EventArgs e) => DismissViewControllerAsync (true);
+			Add (backbutton);
+
 			this.switchLO.On = AppDelegate.bl.GetContainersAsLarge();
 			this.switchQR.On = AppDelegate.bl.IncludeQr();
 			this.switchGAI.On = AppDelegate.bl.StatsEnabled ();

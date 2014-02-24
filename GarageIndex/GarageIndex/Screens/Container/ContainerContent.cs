@@ -41,7 +41,7 @@ namespace GarageIndex
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			Initialize ();
+			//Initialize ();
 			
 			// Perform any additional setup after loading the view, typically from a nib.
 		}
@@ -117,7 +117,8 @@ namespace GarageIndex
 			Console.WriteLine ("call itemdetailscreen");
 			item.boxID = boks.ID;
 			ItemDetailScreen itemdetail = new ItemDetailScreen (item);
-			this.NavigationController.PushViewController(itemdetail, true);
+			PresentViewControllerAsync (itemdetail, true);
+			//this.NavigationController.PushViewController(itemdetail, true);
 		}
 	}
 }

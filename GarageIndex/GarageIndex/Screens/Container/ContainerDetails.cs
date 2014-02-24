@@ -42,7 +42,7 @@ namespace no.dctapps.Garageindex.screens
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Container details", "Container details");
+			//Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Container details", "Container details");
 			ShowDetails (boks);
 		}
 
@@ -65,7 +65,7 @@ namespace no.dctapps.Garageindex.screens
 					handler(this,e);
 				}
 			};
-			this.CreateEmailBarButton ();
+			//this.CreateEmailBarButton ();
 		}
 
 		MFMailComposeViewController mailContr;

@@ -66,11 +66,11 @@ namespace no.dctapps.Garageindex.screens
 			base.ViewDidLoad ();
 //			BlackLeatherTheme.Apply (this.View);
 
-			Title = NSBundle.MainBundle.LocalizedString ("Containers", "Containers");
+			//Title = NSBundle.MainBundle.LocalizedString ("Containers", "Containers");
 
-			this.NavigationController.Title = NSBundle.MainBundle.LocalizedString ("Containers", "Containers");
+			//this.NavigationController.Title = NSBundle.MainBundle.LocalizedString ("Containers", "Containers");
 
-			Initialize ();
+			//Initialize ();
 			PopulateTable ();
 
 		}
@@ -90,7 +90,8 @@ namespace no.dctapps.Garageindex.screens
 			if(UserInterfaceIdiomIsPhone){
 				Console.WriteLine ("showBoxItemDetails()");
 				ContainerDetails boxdetail = new ContainerDetails (box);
-				this.NavigationController.PushViewController (boxdetail, true);
+				PresentViewControllerAsync (boxdetail, true);
+				//this.NavigationController.PushViewController (boxdetail, true);
 			}else{
 				RaiseContainerClicked(box);
 			}

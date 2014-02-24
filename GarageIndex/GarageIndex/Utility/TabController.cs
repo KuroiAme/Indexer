@@ -47,7 +47,7 @@ namespace GarageIndex
 			InitBigItemScreen ( );
 			InitPreferencesScreen();
 			InitScanner();
-			InitLagerCatalogueScreen();
+			//InitLagerCatalogueScreen();
 			InitStatisticsScreen();
 
 
@@ -132,38 +132,35 @@ namespace GarageIndex
 
 			//Home tab
 			if (UserInterfaceIdiomIsPhone) {
-				scanner = new Scanner();
-				scanner.Title = title;
+				scanner = new Scanner(this);
+				//scanner.Title = title;
 			}else{
-				scanner = new Scanner();
+				scanner = new Scanner(this);
 			}
 
 			scanNav = new UINavigationController();
 			scanNav.TabBarItem = new UITabBarItem();
 			scanNav.TabBarItem.Title = title;
 			scanNav.TabBarItem.Image = UIImage.FromBundle("scanner4832.png");
-
-			scanNav.PushViewController(scanner, true);
-
 		}
 
 		public void InitItemScreen ()
 		{
-			var lbtext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Items", "Items");
-
-			if(UserInterfaceIdiomIsPhone){
-				ItemCatalogue = new ItemCatalogue();
-				ItemNav = new UINavigationController();
-				ItemNav.TabBarItem = new UITabBarItem ();
-				ItemNav.TabBarItem.Title = lbtext;
-				ItemNav.TabBarItem.Image = UIImage.FromBundle("flosshat4832.png");
-				ItemNav.PushViewController(ItemCatalogue, false);
-			}else{
-				ItemMaster = new ItemMasterView();
-				ItemMaster.TabBarItem = new UITabBarItem ();
-				ItemMaster.TabBarItem.Title = lbtext;
-				ItemMaster.TabBarItem.Image = UIImage.FromBundle("flosshat4832.png");
-			}
+//			var lbtext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Items", "Items");
+//
+//			if(UserInterfaceIdiomIsPhone){
+//				ItemCatalogue = new ItemCatalogue();
+//				ItemNav = new UINavigationController();
+//				ItemNav.TabBarItem = new UITabBarItem ();
+//				ItemNav.TabBarItem.Title = lbtext;
+//				ItemNav.TabBarItem.Image = UIImage.FromBundle("flosshat4832.png");
+//				ItemNav.PushViewController(ItemCatalogue, false);
+//			}else{
+//				ItemMaster = new ItemMasterView();
+//				ItemMaster.TabBarItem = new UITabBarItem ();
+//				ItemMaster.TabBarItem.Title = lbtext;
+//				ItemMaster.TabBarItem.Image = UIImage.FromBundle("flosshat4832.png");
+//			}
 		}
 
 		public void InitBigItemScreen ()
@@ -239,26 +236,26 @@ namespace GarageIndex
 
 		}
 
-		void InitLagerCatalogueScreen ()
-		{
-			var lagre = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Storages", "Storages");
-
-			if(UserInterfaceIdiomIsPhone){
-				LagerList = new LagerList();
-				lagerNav = new UINavigationController();
-
-				lagerNav.TabBarItem = new UITabBarItem();
-				lagerNav.TabBarItem.Title = lagre;
-				lagerNav.TabBarItem.Image = UIImage.FromBundle("uchi4832.png");
-				lagerNav.PushViewController(LagerList, false);
-			}else{
-				//				//init splitviewController
-				LagerMaster = new LagerMasterView();
-				LagerMaster.TabBarItem = new UITabBarItem();
-				LagerMaster.TabBarItem.Title = lagre;
-				LagerMaster.TabBarItem.Image = UIImage.FromBundle("uchi4832.png");
-			}
-		}
+//		void InitLagerCatalogueScreen ()
+//		{
+//			var lagre = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Storages", "Storages");
+//
+//			if(UserInterfaceIdiomIsPhone){
+//				LagerList = new LagerList();
+//				lagerNav = new UINavigationController();
+//
+//				lagerNav.TabBarItem = new UITabBarItem();
+//				lagerNav.TabBarItem.Title = lagre;
+//				lagerNav.TabBarItem.Image = UIImage.FromBundle("uchi4832.png");
+//				lagerNav.PushViewController(LagerList, false);
+//			}else{
+//				//				//init splitviewController
+//				LagerMaster = new LagerMasterView();
+//				LagerMaster.TabBarItem = new UITabBarItem();
+//				LagerMaster.TabBarItem.Title = lagre;
+//				LagerMaster.TabBarItem.Image = UIImage.FromBundle("uchi4832.png");
+//			}
+//		}
 	}
 }
 

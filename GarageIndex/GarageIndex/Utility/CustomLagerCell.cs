@@ -14,7 +14,7 @@ namespace no.dctapps.Garageindex
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 
-		public CustomLagerCell (NSString cellId) : base (UITableViewCellStyle.Default, cellId)
+		public CustomLagerCell (NSString cellId) : base (UITableViewCellStyle.Subtitle, cellId)
 		{
 			SelectionStyle = UITableViewCellSelectionStyle.Gray;
 			imageView = new UIImageView();

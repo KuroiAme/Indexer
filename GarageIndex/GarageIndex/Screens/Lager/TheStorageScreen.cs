@@ -7,6 +7,9 @@ using MonoTouch.MessageUI;
 using no.dctapps.Garageindex.businesslogic;
 using GarageIndex;
 using GoogleAnalytics.iOS;
+using SlideDownMenu;
+using System.Drawing;
+using System.Collections.Generic;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -51,6 +54,17 @@ namespace no.dctapps.Garageindex.screens
 
 		MFMailComposeViewController mailContr;
 
+		void MakeEmail ()
+		{
+			mailContr = new MFMailComposeViewController ();
+			mailContr.SetSubject (AppDelegate.bl.GenerateSubject (lm));
+			mailContr.SetMessageBody (AppDelegate.bl.GenerateManifest (lm), false);
+			this.PresentViewController (mailContr, true, delegate {
+			});
+			mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => mailContr.DismissViewController (true, delegate {
+			});
+		}
+
 		private void CreateEmailBarButton ()
 		{
 			//DO NOT DELETE
@@ -58,11 +72,7 @@ namespace no.dctapps.Garageindex.screens
 			it.Title = "email";
 			//IS really info
 			it.Clicked += (object sender, EventArgs e) =>  {
-                mailContr = new MFMailComposeViewController();
-				mailContr.SetSubject(AppDelegate.bl.GenerateSubject(lm));
-				mailContr.SetMessageBody(AppDelegate.bl.GenerateManifest(lm),false);
-				this.PresentViewController(mailContr, true, delegate{});
-                mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => mailContr.DismissViewController (true, delegate{});
+                MakeEmail ();
 			};
 			this.NavigationItem.SetRightBarButtonItem (it, true);
 		}
@@ -228,11 +238,47 @@ namespace no.dctapps.Garageindex.screens
 //				this.DismissModalViewControllerAnimated (true);
 //			};
 //		}
+
+		void CreateSlideDownMenu ()
+		{
+			var item0 = new MenuItem ("Options", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+			});
+			item0.Tag = 0;
+			var email = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Email", "Email");
+			var item1 = new MenuItem (email, UIImage.FromBundle ("startree.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+				MakeEmail();
+
+			});
+			item1.Tag = 1;
+			var item2 = new MenuItem ("Dismiss", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+				this.DismissViewControllerAsync(true);
+			});
+			item2.Tag = 2;
+
+
+			//item0.tag = 0;
+
+			var slideMenu = new SlideMenu (new List<MenuItem> { item0, item1, item2});
+			slideMenu.Center = new PointF (slideMenu.Center.X, slideMenu.Center.Y + 25);
+			this.View.AddSubview (slideMenu);
+		}
 		
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 //			bl = new GarageindexBL ();
+
+			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground")){
+				ContentMode = UIViewContentMode.ScaleToFill,
+				AutoresizingMask = UIViewAutoresizing.All,
+				Frame = View.Bounds
+			};
+
+			View.AddSubview (imgView);
+			View.SendSubviewToBack (imgView);
 
 
 //			UIView mymy = this.View;
@@ -270,6 +316,7 @@ namespace no.dctapps.Garageindex.screens
 //			};
 
 			// Perform any additional setup after loading the view, typically from a nib.
+			CreateSlideDownMenu ();
 		}
 
 		public void ShowDetails (Lager myLager)

@@ -11,14 +11,17 @@ using No.Dctapps.GarageIndex;
 using no.dctapps.Garageindex.tables;
 using no.dctapps.Garageindex.screens;
 using GoogleAnalytics.iOS;
+using SlideDownMenu;
+using System.Drawing;
 
 namespace no.dctapps.garageindex
 {
-	public partial class ItemCatalogue : UITableViewController
+	public partial class ItemCatalogue : UIViewController
 	{
 //		UITableView Table;
 //		LagerDAO dao;
 
+		UITableView table;
 
 		public event EventHandler<ItemClickedEventArgs> ActivateDetail;
 
@@ -38,7 +41,7 @@ namespace no.dctapps.garageindex
 
 		public override void LoadView ()
 		{
-			Title = NSBundle.MainBundle.LocalizedString ("Items","Items");
+			//Title = NSBundle.MainBundle.LocalizedString ("Items","Items");
 			base.LoadView ();
 //			BlackLeatherTheme.Apply(this.View);
 			Initialize();
@@ -69,7 +72,7 @@ namespace no.dctapps.garageindex
 			}
 			string[] tableItems = strlist.ToArray ();
 			TableSourceItemsIndexed source = new TableSourceItemsIndexed (tableItems);
-			TableView.Source = source;
+			table.Source = source;
 
 			source.ItemClicked += (object sender, ItemClickedEventArgs e) => this.ShowItemDetails(e.Item);
 
@@ -78,9 +81,11 @@ namespace no.dctapps.garageindex
 				this.Refresh();
 			};
 
-//			Add (Table);
-//			BlackLeatherTheme.Apply(Table);
-//			this.TabBarItem.BadgeValue = items.Count.ToString();
+			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
+			backbutton.SetImage (backarrow.MakeBackArrow(), UIControlState.Normal);
+			backbutton.TouchUpInside += (object sender, EventArgs e) => DismissViewControllerAsync (true);
+			Add (backbutton);
+
 		}
 
 		void RaiseItemClicked (Item item)
@@ -107,18 +112,66 @@ namespace no.dctapps.garageindex
 				//item.boxID = boks.ID;
 				ItemDetailScreen itemdetail = new ItemDetailScreen (item);
 				//this.NavigationController.PresentViewController(itemdetail, true, delegate{});
-				this.NavigationController.PushViewController(itemdetail, true);
+				PresentViewControllerAsync (itemdetail, true);
+				//this.NavigationController.PushViewController(itemdetail, true);
 			}else{
 				RaiseItemClicked(item);
 			}
 		}
+		
+
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+
+			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground")){
+				ContentMode = UIViewContentMode.ScaleToFill,
+				AutoresizingMask = UIViewAutoresizing.All,
+				Frame = UIScreen.MainScreen.Bounds
+			};
+
+			View.AddSubview (imgView);
+			View.SendSubviewToBack (imgView);
+
+			table = new UITableView (new RectangleF (0, 75, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - 75), UITableViewStyle.Plain);
+			table.BackgroundColor = UIColor.Clear;
+			this.View.BackgroundColor = UIColor.Clear;
+			Add (table);
+
 			PopulateTable ();
+			CreateSlideDownMenu ();
 			// Perform any additional setup after loading the view, typically from a nib.
 		}
+		
+		void CreateSlideDownMenu ()
+		{
+			var item0 = new MenuItem ("Options", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+			});
+			item0.Tag = 0;
+					var extract = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Add Item", "Add Item");
+			var item1 = new MenuItem (extract, UIImage.FromBundle ("startree.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+				ShowItemDetails (new Item ());
+
+			});
+			item1.Tag = 1;
+			var item2 = new MenuItem ("Dismiss", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+				this.DismissViewControllerAsync(true);
+			});
+			item2.Tag = 2;
+
+
+			//item0.tag = 0;
+
+			var slideMenu = new SlideMenu (new List<MenuItem> { item0, item1, item2});
+			slideMenu.Center = new PointF (slideMenu.Center.X, slideMenu.Center.Y + 25);
+			this.View.AddSubview (slideMenu);
+		}
+
+
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);

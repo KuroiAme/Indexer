@@ -65,6 +65,7 @@ namespace no.dctapps.Garageindex.screens
 //			else
 			cell.UpdateCell (o.Name, o.Description);
 
+			cell.BackgroundColor = UIColor.Clear;
 			return cell;
 
 		}

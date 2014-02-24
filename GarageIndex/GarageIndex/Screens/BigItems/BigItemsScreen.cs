@@ -105,8 +105,9 @@ namespace no.dctapps.Garageindex.screens
 		public virtual void ShowBigItemDetails(LagerObject item)
 		{
 			if(UserInterfaceIdiomIsPhone){
-			BigItemDetailScreen neo = new BigItemDetailScreen (item);
-			this.NavigationController.PushViewController(neo, true);
+				BigItemDetailScreen neo = new BigItemDetailScreen (item);
+				PresentViewControllerAsync (neo, true);
+				//this.NavigationController.PushViewController(neo, true);
 			}else{
 				RaiseLagerObjectClicked(item);
 			}

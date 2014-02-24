@@ -12,43 +12,51 @@ using GoogleAnalytics.iOS;
 
 namespace No.DCTapps.GarageIndex
 {
-    public partial class Scanner : UIViewController
+	public partial class Scanner //: UIViewController
     {
+		UIViewController parent;
+
         static bool UserInterfaceIdiomIsPhone
         {
             get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
         }
 
-        public Scanner()
-			: base (UserInterfaceIdiomIsPhone ? "Scanner_iPhone" : "Scanner_iPad", null)
-        {
-        }
-
-        public override void DidReceiveMemoryWarning()
-        {
-            // Releases the view if it doesn't have a superview.
-            base.DidReceiveMemoryWarning();
-			
-            // Release any cached data, images, etc that aren't in use.
-        }
-
-        public override void ViewWillAppear(bool animated)
-        {
-            base.ViewWillAppear(animated);
-
-            Scannit();
-        }
-
-		public override void ViewDidAppear (bool animated)
+		public Scanner (UIViewController parent)
 		{
-			base.ViewDidAppear (animated);
-			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Scanner Screen");
-			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
+			this.parent = parent;
 		}
 
-        async void Scannit()
+//        public Scanner()
+//			//: base (UserInterfaceIdiomIsPhone ? "Scanner_iPhone" : "Scanner_iPad", null)
+//        {
+//        }
+
+//        public override void DidReceiveMemoryWarning()
+//        {
+//            // Releases the view if it doesn't have a superview.
+//            base.DidReceiveMemoryWarning();
+//			
+//            // Release any cached data, images, etc that aren't in use.
+//        }
+//
+//        public override void ViewWillAppear(bool animated)
+//        {
+//            base.ViewWillAppear(animated);
+//
+//			//Scannit();
+//        }
+//			
+//
+//		public override void ViewDidAppear (bool animated)
+//		{
+//			base.ViewDidAppear (animated);
+//			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Scanner Screen");
+//			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
+//		}
+
+		async public void Scannit()
         {
-            var scanner = new MobileBarcodeScanner(this);
+			var scanner = new MobileBarcodeScanner ();
             var opt = new MobileBarcodeScanningOptions();
             opt.PossibleFormats.Clear();
             opt.PossibleFormats.Add(ZXing.BarcodeFormat.QR_CODE);
@@ -56,15 +64,14 @@ namespace No.DCTapps.GarageIndex
             HandleResult(result);
         }
 
-        public override void ViewDidLoad()
-        {
-            base.ViewDidLoad();
-            Title = NSBundle.MainBundle.LocalizedString("Scanner", "Scanner");
+		//
+		//base.ViewDidLoad();
+			//itle = NSBundle.MainBundle.LocalizedString("Scanner", "Scanner");
 //            Xamarin.Themes.BlackLeatherTheme.Apply(this.View);
           
 
             // Perform any additional setup after loading the view, typically from a nib.
-        }
+			//}
 
 
 
@@ -100,12 +107,12 @@ namespace No.DCTapps.GarageIndex
                         if (lo.isContainer == "true")
                         {
 							var cd = new no.dctapps.Garageindex.screens.ContainerDetails(lo);
-                            this.NavigationController.PushViewController(cd, true);
+							parent.PresentViewControllerAsync(cd, true);
                         }
                         else if (lo.isLargeObject == "true")
                         {
                             BigItemDetailScreen bs = new BigItemDetailScreen(lo);
-                            this.NavigationController.PushViewController(bs, true);
+							parent.PresentViewControllerAsync(bs, true);
                        
                         }
                         else

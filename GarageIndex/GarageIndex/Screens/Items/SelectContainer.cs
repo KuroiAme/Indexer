@@ -44,6 +44,15 @@ namespace no.dctapps.Garageindex.screens
 
 			this.PopulateTable();
 			// Perform any additional setup after loading the view, typically from a nib.
+
+			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground")){
+				ContentMode = UIViewContentMode.ScaleToFill,
+				AutoresizingMask = UIViewAutoresizing.All,
+				Frame = View.Bounds
+			};
+
+			View.AddSubview (imgView);
+			View.SendSubviewToBack (imgView);
 		}
 
 		public override void ViewWillAppear (bool animated)
@@ -73,7 +82,10 @@ namespace no.dctapps.Garageindex.screens
 //			BlackLeatherTheme.Apply (table, "");
 
 			this.boxtableSource = new TableSourceLagerObjectsSimple(tableItems);
-			this.boxtableSource.LagerObjectClicked += (object sender, no.dctapps.Garageindex.events.LagerObjectClickedEventArgs e) => raiseDismissal(e.LagerObject);
+			this.boxtableSource.LagerObjectClicked += (object sender, LagerObjectClickedEventArgs e) => {
+				raiseDismissal(e.LagerObject);
+				DismissViewControllerAsync(true);
+			};
             this.TableView.Source = this.boxtableSource;
 		}
 

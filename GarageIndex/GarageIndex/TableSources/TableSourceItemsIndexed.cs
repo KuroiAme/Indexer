@@ -119,7 +119,7 @@ namespace no.dctapps.Garageindex.tables
 
 
 //			BlackLeatherTheme.Apply(cell);
-
+			cell.BackgroundColor = UIColor.Clear;
 			return cell;
 		}
 

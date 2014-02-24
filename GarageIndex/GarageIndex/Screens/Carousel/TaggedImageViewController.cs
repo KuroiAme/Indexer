@@ -8,6 +8,13 @@ using MonoTouch.Foundation;
 using System.IO;
 using System.Linq;
 using GoogleAnalytics.iOS;
+using SatelliteMenu;
+using No.DCTapps.GarageIndex;
+using SlideDownMenu;
+using no.dctapps.Garageindex.screens;
+using no.dctapps.Garageindex.model;
+using no.dctapps.garageindex;
+using no.dctapps.Garageindex;
 
 namespace GarageIndex
 {
@@ -19,15 +26,21 @@ namespace GarageIndex
 		LoadingOverlay loadingOverlay;
 
 		public event EventHandler<GotPictureEventArgs> GotPicture;
+		public event EventHandler Clear;
 
 		public TaggedImageViewController ()
 		{
 		}
 
+		void Tapped (UITapGestureRecognizer gestureRecognizer){
+			Console.WriteLine ("tapped");
+			RaiseClear ();
+		}
+
 		public override void ViewDidLoad(){
 			base.ViewDidLoad ();
 
-			var imgView = new UIImageView(UIImage.FromBundle("background")){
+			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground.png")){
 				ContentMode = UIViewContentMode.ScaleToFill,
 				AutoresizingMask = UIViewAutoresizing.All,
 				Frame = View.Bounds
@@ -41,15 +54,217 @@ namespace GarageIndex
 				Delegate = new TaggedImageDelegate(this)
 			};
 
+
+			var tap = new UITapGestureRecognizer (Tapped);
+			tap.NumberOfTapsRequired = 1;
+			carousel.AddGestureRecognizer (tap);
+
 			View.AddSubview (carousel);
-			CreateAddBarButton ();
-			CreateDeleteBarButton ();
+			//CreateAddBarButton ();
+			//CreateDeleteBarButton ();
 
 			//carousel.CurrentItemIndex
 
+			//InitSateliteMenu ();
+			InitActiveField ();
+			InitSateliteMenu ();
+			InitSlideDownMenu ();
 
 
 		}
+		UILabel active;
+		void InitActiveField ()
+		{
+			RectangleF activeRect = new RectangleF (100, 100, 200, 40);
+			active = new UILabel (activeRect);
+			active.AdjustsFontSizeToFitWidth = true;
+			active.ShadowColor = UIColor.Gray;
+			active.ShadowOffset = new SizeF(1.0f,0.2f);
+			active.TextColor = UIColor.White;
+			LagerObject myLocation = AppDelegate.bl.GetActiveGallery ();
+			if(myLocation != null){
+				active.Text = myLocation.Name;
+			}
+			Add (active);
+			View.BringSubviewToFront (active);
+
+
+		}
+
+//		private void ChangeButtonBackground(int buttonNumber)
+//		{
+//			UIView.Animate(0.2, () => {
+//				this.MainButton.SetBackgroundImage(UIImage.FromBundle (images[String.Format("{0}", buttonNumber)]), UIControlState.Normal);
+//			});
+//		}
+
+		string[] images = {"frames4832.png", "math.png", "startree.png", "house.png"};
+		LagerList locations;
+
+		void InitSlideDownMenu ()
+		{
+
+			var item0 = new MenuItem ("Options", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+				RaiseClear();
+
+			});
+			var item1 = new MenuItem ("Add Image", UIImage.FromBundle ("math.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+				SelectSource();
+				RaiseClear();
+			});
+			var item2 = new MenuItem ("Delete image", UIImage.FromBundle ("startree.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+				ReallyDelete();
+				RaiseClear();
+			});
+			var item3 = new MenuItem ("Set active", UIImage.FromBundle ("house.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+				UIActionSheet activeSheet = new UIActionSheet();
+				activeSheet.AddButton("Cancel");
+				activeSheet.AddButton("Container");
+				activeSheet.AddButton("Location");
+				activeSheet.AddButton("All");
+				activeSheet.Clicked += (object sender, UIButtonEventArgs e) => {
+					if(e.ButtonIndex == 0){
+						Console.WriteLine("Cancel");
+					}
+					if(e.ButtonIndex == 1){
+						//select container
+						Console.WriteLine("container");
+						SelectContainer sc = new SelectContainer();
+						PresentViewControllerAsync(sc,true);
+						sc.DismissEvent += (object sender2, ContainerClickedEventArgs e2) => {
+							//active.BackgroundColor = UIColor.White;
+							active.Text = e2.container.Name;
+							AppDelegate.bl.StoreActiveGallery(e2.container);
+						};
+					}
+					if(e.ButtonIndex == 2){
+						//select Lager
+						Console.WriteLine("location");
+					}
+					if(e.ButtonIndex == 3){
+						Console.WriteLine("ALL");
+
+					}
+
+				};
+				activeSheet.ShowInView(this.View);
+				RaiseClear();
+			});
+			var item4 = new MenuItem ("Edit Locations", UIImage.FromBundle ("uchi4832.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+				locations = new LagerList();
+				PresentViewControllerAsync(locations, true);
+				RaiseClear();
+			});
+
+
+
+
+
+			item0.Tag = 0;
+			item1.Tag = 1;
+			item2.Tag = 2;
+			item3.Tag = 3;
+
+
+			var slideMenu = new SlideMenu (new List<MenuItem> { item0, item1, item2, item3, item4 });
+			slideMenu.Center = new PointF (slideMenu.Center.X, slideMenu.Center.Y + 25);
+			this.MainButton.TouchUpInside += (object sender, EventArgs e) => {
+				slideMenu.ToggleMenu();
+			}; 
+			this.Clear += (object sender, EventArgs e) => {
+				slideMenu.OpenIconMenu();
+//				slideMenu.MenuState = MenuStateEnum.MainMenu;
+//				//slideMenu.SetupLayout ();
+//				slideMenu.ToggleMenu();
+//				MainButton.Collapse();
+			};
+			this.View.AddSubview (slideMenu);
+		}
+
+		void RaiseClear ()
+		{
+			var handler = this.Clear;
+			if (handler != null) {
+				handler (this, new EventArgs ());
+			}
+		}
+
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+		}
+
+		SatelliteMenuButton MainButton;
+
+		public void InitSateliteMenu(){
+
+			var image = UIImage.FromFile ("menu.png");
+			var yPos = View.Frame.Height - image.Size.Height - 10;
+			var frame = new RectangleF (10, yPos, image.Size.Width, image.Size.Height);
+
+			var items = new [] { 
+				new SatelliteMenuButtonItem (UIImage.FromBundle ("scanner4832.png"), 1, "Scanner"),
+				new SatelliteMenuButtonItem (Flosshatt.MakeFlosshatt(), 2, "Items"),
+				//new SatelliteMenuButtonItem (UIImage.FromFile ("statistics4832.png"), 3, "Statistics"),
+				new SatelliteMenuButtonItem (UIImage.FromFile ("table4832.png"), 3, "Big Items"),
+				new SatelliteMenuButtonItem (UIImage.FromFile ("container4832.png"), 4, "Containers"),
+				new SatelliteMenuButtonItem (UIImage.FromFile ("preferences4832.png"), 5, "Preferences"),
+				//new SatelliteMenuButtonItem (UIImage.FromBundle ("uchi4832.png"),7, "storages");
+			};
+
+			MainButton = new SatelliteMenuButton (View, image, items, frame);
+
+			MainButton.MenuItemClick += (_, args) => {
+				Console.WriteLine ("{0} was clicked!", args.MenuItem.Name);
+
+				if(args.MenuItem.Name == "Scanner"){
+					Scanner scanner = new Scanner(this);
+					scanner.Scannit();
+				}
+				if(args.MenuItem.Name == "Items"){
+					if(UserInterfaceIdiomIsPhone){
+						ItemCatalogue cat = new ItemCatalogue();
+						PresentViewControllerAsync(cat, true);
+					}else{
+						ItemMasterView itemMaster = new ItemMasterView();
+						PresentViewControllerAsync(itemMaster, true);
+					}
+				}
+				if(args.MenuItem.Name == "Big Items"){
+					if(UserInterfaceIdiomIsPhone){
+						BigItemsScreen biggies = new BigItemsScreen();
+						PresentViewControllerAsync(biggies, true);
+					}else{
+						BigItemMasterView bigMaster = new BigItemMasterView();
+						PresentViewControllerAsync(bigMaster, true);
+					}
+				}
+				if(args.MenuItem.Name == "Containers"){
+					if(UserInterfaceIdiomIsPhone){
+					ContainerScreen containers = new ContainerScreen();
+					PresentViewControllerAsync(containers,true);
+					}else{
+						ContainerMasterView containerMaster = new ContainerMasterView();
+						PresentViewControllerAsync(containerMaster,true);
+					}
+				}
+				if(args.MenuItem.Name == "Preferences"){
+					Preferences pref = new Preferences();
+					PresentViewControllerAsync(pref, true);
+				}
+
+
+			};
+
+			View.AddSubview (MainButton);
+		}
+
 
 		public override void ViewDidAppear (bool animated)
 		{
@@ -150,13 +365,14 @@ namespace GarageIndex
 			imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
 			imagePicker.Canceled += Handle_Canceled;
 			// show the picker
-			if(UserInterfaceIdiomIsPhone){
-				NavigationController.PresentViewController (imagePicker, true, delegate {});
-			}else{
-				Console.WriteLine("Popover");
-				Pc = new UIPopoverController(imagePicker);
-				Pc.PresentFromBarButtonItem(it, UIPopoverArrowDirection.Up, true);
-			}
+			PresentViewControllerAsync (imagePicker, true);
+//			if(UserInterfaceIdiomIsPhone){
+//				NavigationController.PresentViewController (imagePicker, true, delegate {});
+//			}else{
+//				Console.WriteLine("Popover");
+//				Pc = new UIPopoverController(imagePicker);
+//				Pc.PresentFromBarButtonItem(it, UIPopoverArrowDirection.Up, true);
+//			}
 		}
 
 		public void PickFromLibrary(){
@@ -171,15 +387,16 @@ namespace GarageIndex
 		{
 			imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
 			imagePicker.Canceled += Handle_Canceled;
+			PresentViewControllerAsync (imagePicker, true);
 			// show the picker
-			if (UserInterfaceIdiomIsPhone) {
-				NavigationController.PresentViewController (imagePicker, true, delegate{});
-			}
-			else {
-				Console.WriteLine ("Popover");
-				Pc = new UIPopoverController (imagePicker);
-				Pc.PresentFromBarButtonItem (it, UIPopoverArrowDirection.Up, true);
-			}
+//			if (UserInterfaceIdiomIsPhone) {
+//				NavigationController.PresentViewController (imagePicker, true, delegate{});
+//			}
+//			else {
+//				Console.WriteLine ("Popover");
+//				Pc = new UIPopoverController (imagePicker);
+//				Pc.PresentFromBarButtonItem (it, UIPopoverArrowDirection.Up, true);
+//			}
 		}
 
 		// Do something when the 
@@ -430,7 +647,7 @@ namespace GarageIndex
 				Console.WriteLine("reloading data");
 				carousel.ReloadData ();
 			};
-			tivc.NavigationController.PushViewController (eimc, true);
+			tivc.PresentViewControllerAsync (eimc, true);
 		}
 	}
 }

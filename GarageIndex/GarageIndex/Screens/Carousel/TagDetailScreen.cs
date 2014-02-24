@@ -10,6 +10,8 @@ using System.Linq;
 using no.dctapps.Garageindex.model;
 using No.Dctapps.Garageindex.Ios.Screens;
 using GoogleAnalytics.iOS;
+using SlideDownMenu;
+using System.Collections.Generic;
 
 namespace GarageIndex
 {
@@ -55,6 +57,16 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 			RectangleF frame;
+
+			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground")){
+				ContentMode = UIViewContentMode.ScaleToFill,
+				AutoresizingMask = UIViewAutoresizing.All,
+				Frame = View.Bounds
+			};
+
+			View.AddSubview (imgView);
+			View.SendSubviewToBack (imgView);
+
 			if (UserInterfaceIdiomIsPhone) {
 				frame = new RectangleF (0, 125, UIScreen.MainScreen.Bounds.Width, 125);
 			} else {
@@ -62,16 +74,54 @@ namespace GarageIndex
 			}
 			tlc = new TagListController (tag, frame);
 			this.Add (tlc.View);
-			CreateExtractBarButton ();
+			//CreateExtractBarButton ();
 
-			UIBarButtonItem back = new UIBarButtonItem ("back", UIBarButtonItemStyle.Bordered,backpress);
-			this.NavigationItem.LeftBarButtonItem = back;
+			//UIBarButtonItem back = new UIBarButtonItem ("back", UIBarButtonItemStyle.Bordered,backpress);
+			//this.NavigationItem.LeftBarButtonItem = back;
 
 
 			this.ShowDetails (tag);
 
+			CreateSlideDownMenu ();
+
+			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
+			backbutton.SetImage (backarrow.MakeBackArrow(), UIControlState.Normal);
+			backbutton.TouchUpInside += (object sender, EventArgs e) => {
+				var handler = this.backpush;
+				if (handler != null) {
+					handler (this, new BackClickedEventArgs ());
+				}
+				DismissViewControllerAsync (true);
+			}; 
+			Add (backbutton);
 
 
+		}
+
+		void CreateSlideDownMenu ()
+		{
+			var item0 = new MenuItem ("Options", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+			});
+			item0.Tag = 0;
+			var extract = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Extract", "Extract");
+			var item1 = new MenuItem (extract, UIImage.FromBundle ("startree.png"), (menuItem) => {
+				Console.WriteLine("Item: {0}", menuItem);
+				Extract ();
+			});
+			item1.Tag = 1;
+//			var item2 = new MenuItem ("Edit Tags", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
+//				Console.WriteLine("Item: {0}", menuItem);
+//				EditTags tags = new EditTags(this
+//			});
+//			item2.Tag = 2;
+
+
+			//item0.tag = 0;
+
+			var slideMenu = new SlideMenu (new List<MenuItem> { item0, item1});
+			slideMenu.Center = new PointF (slideMenu.Center.X, slideMenu.Center.Y + 25);
+			this.View.AddSubview (slideMenu);
 		}
 
 		void ShowDetails (ImageTag mytag)
@@ -79,6 +129,7 @@ namespace GarageIndex
 			fetcher = mytag.FetchAsRectangleF ();
 			string tagText = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Tag", "Tag");
 			this.tagIdLabel.Text = tagText + ":"+mytag.ID;
+
 			this.xTextField.Text = fetcher.X.ToString();
 			this.yTextField.Text = fetcher.Y.ToString ();
 			this.WidthLabel.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Width", "Width");

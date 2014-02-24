@@ -66,7 +66,8 @@ namespace no.dctapps.Garageindex.tables
 				cell.UpdateCell (l.Name, image, l.address);
 			else
 				cell.UpdateCell (l.Name, l.address);
-			
+
+			cell.BackgroundColor = UIColor.Clear;
 			return cell;
 			
 		}

@@ -1,1 +1,3 @@
-Indexer 2.0 BETA2
+Indexer 2.1 ALPHA1
+
+Nytt experimentalt grunnleggende interface
