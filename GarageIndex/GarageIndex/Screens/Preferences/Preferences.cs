@@ -119,7 +119,7 @@ namespace no.dctapps.Garageindex.screens
 		{
 			base.ViewDidLoad ();
 
-			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground.png")){
+			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
 				ContentMode = UIViewContentMode.ScaleToFill,
 				AutoresizingMask = UIViewAutoresizing.All,
 				Frame = View.Bounds

@@ -62,7 +62,7 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 
-			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground")){
+			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
 				ContentMode = UIViewContentMode.ScaleToFill,
 				AutoresizingMask = UIViewAutoresizing.All,
 				Frame = UIScreen.MainScreen.Bounds

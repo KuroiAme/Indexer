@@ -58,7 +58,7 @@ namespace GarageIndex
 			base.ViewDidLoad ();
 			RectangleF frame;
 
-			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground")){
+			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
 				ContentMode = UIViewContentMode.ScaleToFill,
 				AutoresizingMask = UIViewAutoresizing.All,
 				Frame = View.Bounds

@@ -45,7 +45,7 @@ namespace no.dctapps.Garageindex.screens
 			this.PopulateTable();
 			// Perform any additional setup after loading the view, typically from a nib.
 
-			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground")){
+			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
 				ContentMode = UIViewContentMode.ScaleToFill,
 				AutoresizingMask = UIViewAutoresizing.All,
 				Frame = View.Bounds

@@ -230,6 +230,21 @@ namespace no.dctapps.Garageindex.businesslogic
 			store.Synchronize ();
 		}
 
+		public string GetUserName ()
+		{
+			var store = NSUbiquitousKeyValueStore.DefaultStore;
+
+			string name = store.GetString ("UserName");
+
+			return name;
+		}
+
+		public void SaveUserName(string username){
+			var store = NSUbiquitousKeyValueStore.DefaultStore;
+			store.SetString("UserName", username);
+			store.Synchronize();
+		}
+
 		public bool StatsEnabled ()
 		{
 			var store = NSUbiquitousKeyValueStore.DefaultStore;
@@ -328,6 +343,10 @@ namespace no.dctapps.Garageindex.businesslogic
             store.Synchronize();
         }
 
+		public Lager GetBestLocationForSearchTerm (string searchTerm)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }
 

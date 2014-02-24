@@ -40,7 +40,7 @@ namespace GarageIndex
 		public override void ViewDidLoad(){
 			base.ViewDidLoad ();
 
-			var imgView = new UIImageView(UIImage.FromBundle("carribeanbackground.png")){
+			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
 				ContentMode = UIViewContentMode.ScaleToFill,
 				AutoresizingMask = UIViewAutoresizing.All,
 				Frame = View.Bounds
@@ -73,6 +73,7 @@ namespace GarageIndex
 
 		}
 		UILabel active;
+
 		void InitActiveField ()
 		{
 			RectangleF activeRect = new RectangleF (100, 100, 200, 40);
@@ -211,11 +212,9 @@ namespace GarageIndex
 			var items = new [] { 
 				new SatelliteMenuButtonItem (UIImage.FromBundle ("scanner4832.png"), 1, "Scanner"),
 				new SatelliteMenuButtonItem (Flosshatt.MakeFlosshatt(), 2, "Items"),
-				//new SatelliteMenuButtonItem (UIImage.FromFile ("statistics4832.png"), 3, "Statistics"),
 				new SatelliteMenuButtonItem (UIImage.FromFile ("table4832.png"), 3, "Big Items"),
 				new SatelliteMenuButtonItem (UIImage.FromFile ("container4832.png"), 4, "Containers"),
 				new SatelliteMenuButtonItem (UIImage.FromFile ("preferences4832.png"), 5, "Preferences"),
-				//new SatelliteMenuButtonItem (UIImage.FromBundle ("uchi4832.png"),7, "storages");
 			};
 
 			MainButton = new SatelliteMenuButton (View, image, items, frame);
