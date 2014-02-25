@@ -20,44 +20,64 @@ namespace GarageIndex
 
 		DashboardRIghtPanel rightPanel;
 
+		public UISearchBar search;
+
 		public override void LoadView ()
 		{
 			base.LoadView ();
-
+			this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height);
 		}
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			this.View.Frame = new RectangleF (buffer, statbarHeight, UIScreen.MainScreen.Bounds.Width - buffer * 2, UIScreen.MainScreen.Bounds.Height - statbarHeight);
-			this.View.BackgroundColor = UIColor.Clear;
 
 
 			Background back = new Background ();
 			Add (back.View);
 			View.SendSubviewToBack (back.View);
 
-			float statpanelwidth = (View.Bounds.Width / 3);
-			float rightPanelWidth = (View.Bounds.Width / 3 * 2);
+			float statpanelwidth = UIScreen.MainScreen.Bounds.Width / 3;
+			float rightPanelWidth = UIScreen.MainScreen.Bounds.Width - statpanelwidth - 3*buffer;
 			const float headerheight = 74;
-			float panelsHeight = View.Bounds.Height - 125;
-			StatisticsPanel statpanel = new StatisticsPanel (new RectangleF(0, headerheight + buffer, statpanelwidth , panelsHeight));
+			float panelsHeight = UIScreen.MainScreen.Bounds.Height - 125;
+			const float panelY = headerheight + buffer;
+			StatisticsPanel statpanel = new StatisticsPanel (new RectangleF(buffer, panelY, statpanelwidth , panelsHeight));
 			Add (statpanel.View);
 
-			rightPanelRect = new RectangleF (statpanelwidth + buffer, headerheight + buffer, View.Bounds.Width - statpanelwidth - buffer, panelsHeight);
+			rightPanelRect = new RectangleF (statpanelwidth + buffer, panelY, rightPanelWidth, panelsHeight);
 			rightPanel = new DashboardRIghtPanel (rightPanelWidth);
 
-			DashBoardHeader header = new DashBoardHeader (new RectangleF(0, 0,View.Bounds.Width, 44));
+			DashBoardHeader header = new DashBoardHeader (new RectangleF(0, 20 ,UIScreen.MainScreen.Bounds.Width, 22));
 			View.AddSubview (header.View);
 
+			search = new UISearchBar (new RectangleF (0, 42, UIScreen.MainScreen.Bounds.Width, 40));
+			search.SearchButtonClicked += (object sender, EventArgs e) => {
+				var find = AppDelegate.bl.GetBestLocationForSearchTerm(search.Text);
+				search.ResignFirstResponder();
+			};
+//			search.AutosizesSubviews = false;
+//			search.SizeToFit ();
 
-			IndexerSateliteMenu menu = new IndexerSateliteMenu ("Dashboard");
-			View.AddSubview (menu.View);
+			View.AddSubview (search);
 
 			UIScrollView rightPanelScroll = new UIScrollView (rightPanelRect);
 			rightPanelScroll.ContentSize = rightPanel.getSize ();
 			rightPanelScroll.AddSubview (rightPanel.View);
 			View.AddSubview (rightPanelScroll);
+
+			IndexerSateliteMenu menu = new IndexerSateliteMenu ("Dashboard");
+			View.AddSubview (menu.View);
+
+		}
+
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+			this.View.BackgroundColor = UIColor.Clear;
+
+
+
 		}
 
 		public override void ViewDidAppear (bool animated)

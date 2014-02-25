@@ -14,11 +14,18 @@ namespace GarageIndex
 			this.myFrame = myFrame;
 		}
 
+		public override void LoadView ()
+		{
+			base.LoadView ();
+			this.View.Frame = myFrame;
+			this.View.BackgroundColor = UIColor.Purple;
+		}
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			this.View.Frame = myFrame;
-			this.View.BackgroundColor = UIColor.Purple;
+			this.View.BackgroundColor = UIColor.Clear;
+		
 		}
 	}
 }

@@ -119,14 +119,9 @@ namespace no.dctapps.Garageindex.screens
 		{
 			base.ViewDidLoad ();
 
-			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
-				ContentMode = UIViewContentMode.ScaleToFill,
-				AutoresizingMask = UIViewAutoresizing.All,
-				Frame = View.Bounds
-			};
-
-			View.AddSubview (imgView);
-			View.SendSubviewToBack (imgView);
+			Background back = new Background ();
+			View.AddSubview (back.View);
+			View.SendSubviewToBack (back.View);
 
 			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
 			backbutton.SetImage (UIImage.FromBundle ("backarrow.png"), UIControlState.Normal);

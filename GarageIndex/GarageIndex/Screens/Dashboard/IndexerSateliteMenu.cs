@@ -32,10 +32,18 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 			InitSateliteMenu ();
+			//this.View.BackgroundColor = UIColor.Red;
+		}
+
+		public override void LoadView ()
+		{
+			float cube = 190;
+			base.LoadView ();
+			this.View.Frame = new RectangleF (0, UIScreen.MainScreen.Bounds.Height - cube, cube, cube);
+
 		}
 
 		public void InitSateliteMenu(){
-			this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height);
 
 			var image = UIImage.FromFile ("menu.png");
 			var yPos = View.Frame.Height - image.Size.Height - 10;

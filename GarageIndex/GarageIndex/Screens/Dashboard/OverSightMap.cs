@@ -18,11 +18,17 @@ namespace GarageIndex
 			this.myFrame = myFrame;
 		}
 
+		public override void LoadView ()
+		{
+			base.LoadView ();
+			this.View.BackgroundColor = UIColor.Orange;
+			this.View.Frame = myFrame;
+		}
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			this.View.BackgroundColor = UIColor.Orange;
-			this.View.Frame = myFrame;
+
 			mapView = new MKMapView (View.Bounds);
 			mapView.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
 			View.AddSubview(mapView);
