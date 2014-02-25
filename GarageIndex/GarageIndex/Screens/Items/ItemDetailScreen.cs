@@ -36,7 +36,7 @@ namespace no.dctapps.Garageindex.screens
 
 		public ItemDetailScreen ()
 		{
-			idc = new ItemDetailsController (this.NavigationController);
+			idc = new ItemDetailsController (this.NavigationController,this);
 		}
 
 		public override void ViewDidLoad ()
@@ -57,7 +57,7 @@ namespace no.dctapps.Garageindex.screens
 
 		public void ShowDetails(Item item){
 			this.item = item;
-			idc = new ItemDetailsController (item, this.NavigationController);
+			idc = new ItemDetailsController (item, this.NavigationController, this);
 			innerview = new UIScrollView (UIScreen.MainScreen.Bounds);
 			innerview.ContentSize = idc.GetContentsize ();
 			innerview.AddSubview (idc.View);

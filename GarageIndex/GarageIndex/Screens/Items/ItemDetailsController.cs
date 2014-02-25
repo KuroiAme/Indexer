@@ -38,19 +38,22 @@ namespace GarageIndex
 
 		public Item currentItem;
 		UINavigationController nc;
+		UIViewController parent;
 
-		public ItemDetailsController (UINavigationController nc)
+		public ItemDetailsController (UINavigationController nc, UIViewController parent)
 		{
+			this.parent = parent;
 			this.nc = nc;
 			initRectangles ();
 
 		}
 
-		public ItemDetailsController (Item item, UINavigationController nc)
+		public ItemDetailsController (Item item, UINavigationController nc, UIViewController parent)
 		{
 			this.nc = nc;
 			currentItem = item;
 			initRectangles ();
+			this.parent = parent;
 		}
 
 		SizeF contentSize;
@@ -312,18 +315,16 @@ namespace GarageIndex
 			var really = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("really delete this item?", "really delete this item?");
 			deleteBtn.TouchUpInside += (object sender, EventArgs e) =>  {
 				ass = new UIActionSheet (really, null, "Cancel", "Yes", null);
-				ass.Clicked += (object sender2, UIButtonEventArgs e2) =>  {
-					if (e2.ButtonIndex == 0) {
-						if (myItem != null) {
-							int c = ass.CancelButtonIndex;
-							ass.DismissWithClickedButtonIndex(c,true);
+				ass.Clicked += delegate (object a, UIButtonEventArgs c){
+						if (c.ButtonIndex == 0) {
 							AppDelegate.dao.DeleteItem (myItem.ID);
 							RaiseItemDeleted ();
 							nc.PopViewControllerAnimated (false);
-						}
 					}
+//					ass.DismissWithClickedButtonIndex(0,true);
+//					ass.DismissWithClickedButtonIndex(1,true);
 				};
-				ass.ShowInView (nc.View);
+				ass.ShowInView (parent.View);
 			};
 		}
 
@@ -401,7 +402,7 @@ namespace GarageIndex
 			};
 			makeCornersRound ();
 
-			AddDeleteButton (myItem);
+
 			//AddShadowToImageView ();
 		}
 
@@ -549,6 +550,8 @@ namespace GarageIndex
 			InitializeImagePicker ();
 			InitializeUnpickImage();
 			initializePlaceObject();
+
+			AddDeleteButton (this.currentItem);
 			//Initia
 
 			//DO NOT DELETE
@@ -672,7 +675,7 @@ namespace GarageIndex
 						}
 					}
 				};
-				aSheet.ShowInView(this.View);
+				aSheet.ShowInView(parent.View);
 				//aSheet.ShowFromTabBar(this.TabBarController.TabBar);
 			};
 		}
@@ -765,7 +768,7 @@ namespace GarageIndex
 					PickFromLibrary();
 				}
 			};
-			bSheet.ShowInView (View);
+			bSheet.ShowInView (parent.View);
 		}
 
 
@@ -887,11 +890,6 @@ namespace GarageIndex
 			};
 		}
 
-		public override void ViewWillDisappear (bool animated)
-		{
-			base.ViewWillDisappear (animated);
-			this.SaveIt();
-		}
 	}
 }
 
