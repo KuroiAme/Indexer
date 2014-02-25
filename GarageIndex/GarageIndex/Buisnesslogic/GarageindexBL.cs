@@ -236,6 +236,10 @@ namespace no.dctapps.Garageindex.businesslogic
 
 			string name = store.GetString ("UserName");
 
+			if(string.IsNullOrEmpty(name)){
+				return "<< Enter your name here >>";
+			}
+
 			return name;
 		}
 
@@ -345,7 +349,8 @@ namespace no.dctapps.Garageindex.businesslogic
 
 		public Lager GetBestLocationForSearchTerm (string searchTerm)
 		{
-			throw new NotImplementedException ();
+			Console.WriteLine ("searchTerm:" + searchTerm);
+			return null;
 		}
 	}
 }

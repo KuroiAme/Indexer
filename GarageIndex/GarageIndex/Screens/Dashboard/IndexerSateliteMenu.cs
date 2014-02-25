@@ -22,10 +22,16 @@ namespace GarageIndex
 		{
 		}
 
-		SatelliteMenuButton MainButton;
+		SatelliteMenuButton SateliteButton;
 
 		public static bool UserInterfaceIdiomIsPhone {
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+		}
+
+		public override void ViewDidLoad ()
+		{
+			base.ViewDidLoad ();
+			InitSateliteMenu ();
 		}
 
 		public void InitSateliteMenu(){
@@ -41,11 +47,12 @@ namespace GarageIndex
 				new SatelliteMenuButtonItem (UIImage.FromFile ("table4832.png"), 3, "Big Items"),
 				new SatelliteMenuButtonItem (UIImage.FromFile ("container4832.png"), 4, "Containers"),
 				new SatelliteMenuButtonItem (UIImage.FromFile ("preferences4832.png"), 5, "Preferences"),
+				new SatelliteMenuButtonItem (UIImage.FromBundle("frames4832.png"), 6, "Gallery")
 			};
 
-			MainButton = new SatelliteMenuButton (View, image, items, frame);
+			SateliteButton = new SatelliteMenuButton (View, image, items, frame);
 
-			MainButton.MenuItemClick += (_, args) => {
+			SateliteButton.MenuItemClick += (_, args) => {
 				Console.WriteLine ("{0} was clicked!", args.MenuItem.Name);
 
 				if(args.MenuItem.Name == "Scanner"){
@@ -84,10 +91,15 @@ namespace GarageIndex
 					PresentViewControllerAsync(pref, true);
 				}
 
+				if(args.MenuItem.Name == "Gallery"){
+					TaggedImageViewController tagGallery = new TaggedImageViewController();
+					PresentViewControllerAsync(tagGallery, true);
+				}
+
 
 			};
 			this.View.BackgroundColor = UIColor.Clear;
-			View.AddSubview (MainButton);
+			View.AddSubview (SateliteButton);
 		}
 
 	}

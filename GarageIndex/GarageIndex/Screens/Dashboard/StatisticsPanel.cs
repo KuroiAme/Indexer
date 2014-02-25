@@ -18,6 +18,7 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 			this.View.Frame = myFrame;
+			this.View.BackgroundColor = UIColor.Purple;
 		}
 	}
 }

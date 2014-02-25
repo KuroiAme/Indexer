@@ -74,13 +74,13 @@ namespace GarageIndex
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 
 			//tabs = new TabController ();
-			TaggedImageViewController carousel = new TaggedImageViewController();
+			DashBoardViewController dashboard = new DashBoardViewController ();
 
 //			if(MonoTouch.Foundation.isi
 			this.window.TintColor = UIColor.White;
 			
 			// If you have defined a root view controller, set it here:
-			this.window.RootViewController = carousel; 
+			this.window.RootViewController = dashboard; 
 			
 			// make the window visible
 			window.MakeKeyAndVisible ();

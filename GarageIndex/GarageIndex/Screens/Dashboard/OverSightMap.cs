@@ -11,16 +11,18 @@ namespace GarageIndex
 	public class OverSightMap : UIViewController
 	{
 		MKMapView mapView;
+		RectangleF myFrame;
 
 		public OverSightMap (RectangleF myFrame)
 		{
-			this.View.Frame = myFrame;
+			this.myFrame = myFrame;
 		}
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			this.View.BackgroundColor = UIColor.White;
+			this.View.BackgroundColor = UIColor.Orange;
+			this.View.Frame = myFrame;
 			mapView = new MKMapView (View.Bounds);
 			mapView.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
 			View.AddSubview(mapView);
