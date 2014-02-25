@@ -59,10 +59,12 @@ namespace no.dctapps.Garageindex.screens
 			RectangleF rect_lo;
 			RectangleF rect_qr;
 			RectangleF rect_gai;
+			RectangleF buyRect;
 			SizeF rect_size = new SizeF (20, 20);
 			PointF lop;
 			PointF qrp;
 			PointF gaip;
+
 			if (UserInterfaceIdiomIsPhone) {
 				LargeObjectsRect = new RectangleF (10, 100, 250, 20);
 				QRRect = new RectangleF (10, 140, 250, 20);
@@ -70,6 +72,7 @@ namespace no.dctapps.Garageindex.screens
 				lop = new PointF (260, 100);
 				qrp = new PointF (260, 140);
 				gaip = new PointF (260, 180);
+
 				rect_lo = new RectangleF (lop, rect_size);
 				rect_qr = new RectangleF (qrp, rect_size);
 				rect_gai = new RectangleF (gaip, rect_size);
@@ -94,6 +97,19 @@ namespace no.dctapps.Garageindex.screens
 
 			textGAI = new UILabel (GARect);
 			Add (textGAI);
+
+			buyRect = new RectangleF (10, 280, 250, 22);
+			UIButton buy = new UIButton (UIButtonType.RoundedRect);
+			buy.Frame = buyRect;
+			buy.SetTitle (NSBundle.MainBundle.LocalizedString ("Buy full version", "Buy full version"), UIControlState.Normal);
+			buy.TouchUpInside += (object sender, EventArgs e) => UIApplication.SharedApplication.OpenUrl (new NSUrl("https://itunes.apple.com/app/id647311169"));
+			Add (buy);
+
+			RectangleF pitchRect = new RectangleF (10, 310, 300, 22);
+			UILabel pitch = new UILabel (pitchRect);
+			pitch.Text = NSBundle.MainBundle.LocalizedString ("No ads, unlimited storage","No ads, unlimited storage");
+			Add (pitch);
+
 
 
 

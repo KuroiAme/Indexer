@@ -154,7 +154,7 @@ namespace no.dctapps.Garageindex.screens
 				tableItems = AppDelegate.dao.GetAllLargeItems();
 			}
 
-			PopulateWithDummyData ();
+//			PopulateWithDummyData ();
 
 //			BlackLeatherTheme.Apply (this);
 //			Add (Table);
