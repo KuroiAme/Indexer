@@ -31,25 +31,29 @@ namespace GarageIndex
 		public event EventHandler<GotPictureEventArgs> GotPicture;
 
 		public event EventHandler<ItemSavedEventArgs> ItemSaved;
+		public event EventHandler ItemDeleted;
 		public event EventHandler<DerezEventArgs> Derez;
 		public event EventHandler InContainerTouched;
 		public event EventHandler InLocationTouched;
 
 		public Item currentItem;
 		UINavigationController nc;
+		UIViewController parent;
 
-		public ItemDetailsController (UINavigationController nc)
+		public ItemDetailsController (UINavigationController nc, UIViewController parent)
 		{
+			this.parent = parent;
 			this.nc = nc;
 			initRectangles ();
 
 		}
 
-		public ItemDetailsController (Item item, UINavigationController nc)
+		public ItemDetailsController (Item item, UINavigationController nc, UIViewController parent)
 		{
 			this.nc = nc;
 			currentItem = item;
 			initRectangles ();
+			this.parent = parent;
 		}
 
 		SizeF contentSize;
@@ -75,6 +79,7 @@ namespace GarageIndex
 		UILabel antall;
 		UILabel currency;
 		UIButton showReceipts;
+		UIButton deleteBtn;
 
 		private void InitInsuranceInfo(){
 			RectangleF antallStepperRect;
@@ -82,6 +87,7 @@ namespace GarageIndex
 			RectangleF antallRect;
 			RectangleF currencyRect;
 			RectangleF showReceiptsRect;
+			RectangleF deleteBtnRect;
 			float x;
 			float y;
 			if (UserInterfaceIdiomIsPhone) {
@@ -103,6 +109,7 @@ namespace GarageIndex
 			currencyRect = new RectangleF (x + margin, y + linebuffer + lineheight, broad, lineheight);
 			cashValueRect = new RectangleF (x + margin +broad, y + linebuffer + lineheight, broad, lineheight);
 			showReceiptsRect = new RectangleF (x + margin, y + linebuffer * 2 + lineheight * 2, broad * 2, lineheight);
+			deleteBtnRect = new RectangleF (x + margin, y + linebuffer * 3 + lineheight * 3, broad * 2, lineheight);
 
 			antall = new UILabel (antallRect);
 			Add (antall);
@@ -117,6 +124,10 @@ namespace GarageIndex
 			showReceipts = new UIButton (UIButtonType.RoundedRect);
 			showReceipts.Frame = showReceiptsRect;
 			Add (showReceipts);
+
+			deleteBtn = new UIButton (UIButtonType.RoundedRect);
+			deleteBtn.Frame = deleteBtnRect;
+			Add (deleteBtn);
 		}
 
 		private void InitTextFields(){
@@ -298,6 +309,24 @@ namespace GarageIndex
 			this.btnInLocation.SetTitle (sb.ToString (), UIControlState.Normal);
 		}
 
+		void AddDeleteButton (Item myItem)
+		{
+			deleteBtn.SetTitle (MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Delete this item", "Delete this item"), UIControlState.Normal);
+			var really = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("really delete this item?", "really delete this item?");
+			deleteBtn.TouchUpInside += (object sender, EventArgs e) =>  {
+				ass = new UIActionSheet (really, null, "Cancel", "Yes", null);
+				ass.Clicked += delegate (object a, UIButtonEventArgs c){
+						if (c.ButtonIndex == 0) {
+							AppDelegate.dao.DeleteItem (myItem.ID);
+							RaiseItemDeleted ();
+							nc.PopViewControllerAnimated (false);
+					}
+//					ass.DismissWithClickedButtonIndex(0,true);
+//					ass.DismissWithClickedButtonIndex(1,true);
+				};
+				ass.ShowInView (parent.View);
+			};
+		}
 
 
 		public void ShowDetails (Item myItem)
@@ -372,8 +401,20 @@ namespace GarageIndex
 				nc.PushViewController(ipc,false);
 			};
 			makeCornersRound ();
+
+
 			//AddShadowToImageView ();
 		}
+
+		void RaiseItemDeleted ()
+		{
+			var handler = this.ItemDeleted;
+			if (handler != null) {
+				handler (this, new EventArgs ());
+			}
+		}
+
+		UIActionSheet ass;
 
 		void AddTagList ()
 		{
@@ -509,6 +550,8 @@ namespace GarageIndex
 			InitializeImagePicker ();
 			InitializeUnpickImage();
 			initializePlaceObject();
+
+			AddDeleteButton (this.currentItem);
 			//Initia
 
 			//DO NOT DELETE
@@ -632,7 +675,7 @@ namespace GarageIndex
 						}
 					}
 				};
-				aSheet.ShowInView(this.View);
+				aSheet.ShowInView(parent.View);
 				//aSheet.ShowFromTabBar(this.TabBarController.TabBar);
 			};
 		}
@@ -716,16 +759,16 @@ namespace GarageIndex
 			bSheet.AddButton(myLibrary);
 			//			actionSheet.CancelButtonIndex = 0;
 
-			bSheet.Clicked += delegate(object sender, UIButtonEventArgs e2) {
-				if(e2.ButtonIndex == 0){
+			bSheet.Clicked += (object sender, UIButtonEventArgs e) => { ;
+				if(e.ButtonIndex == 0){
 					//DO nothing
-				}else if(e2.ButtonIndex == 1){
+				}else if(e.ButtonIndex == 1){
 					PickFromCamera();
 				}else{
 					PickFromLibrary();
 				}
 			};
-			bSheet.ShowInView (View);
+			bSheet.ShowInView (parent.View);
 		}
 
 
@@ -847,11 +890,6 @@ namespace GarageIndex
 			};
 		}
 
-		public override void ViewWillDisappear (bool animated)
-		{
-			base.ViewWillDisappear (animated);
-			this.SaveIt();
-		}
 	}
 }
 

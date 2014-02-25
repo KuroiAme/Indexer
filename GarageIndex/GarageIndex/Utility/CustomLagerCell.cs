@@ -27,7 +27,7 @@ namespace no.dctapps.Garageindex
 				Font = UIFont.FromName("AmericanTypewriter", 12f),
 				TextColor = UIColor.FromRGB (38, 127, 0),
 				TextAlignment = UITextAlignment.Left,
-				BackgroundColor = UIColor.Clear
+				BackgroundColor = UIColor.Clear,
 			};
 			ContentView.Add (headingLabel);
 			ContentView.Add (subheadingLabel);
@@ -49,6 +49,17 @@ namespace no.dctapps.Garageindex
 		{
 
 			base.LayoutSubviews ();
+//
+//			foreach (UIView subview in this.Subviews) {
+//				Console.WriteLine(subview.GetType().Name);
+//				if(subview is UITableViewCellDeleteConfirmationControl_Legacy){
+//					Console.WriteLine ("found!");
+//					RectangleF newFrame = subview.Frame;
+//					newFrame.X = subview.Frame.X - 50;
+//					subview.Frame = newFrame;
+//				}
+//			}
+
 			if (UserInterfaceIdiomIsPhone) {
 				imageView.Frame = new RectangleF (ContentView.Bounds.Width - 63, 5, 50, 50);
 				headingLabel.Frame = new RectangleF (5, 4, ContentView.Bounds.Width - 63, 25);

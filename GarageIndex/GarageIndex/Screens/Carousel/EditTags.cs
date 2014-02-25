@@ -103,12 +103,7 @@ namespace GarageIndex
 		{
 			Console.WriteLine ("call tagdetailscreen()");
 			TagDetailScreen tagdetails = new TagDetailScreen (tag);
-			if (UserInterfaceIdiomIsPhone) {
-				this.NavigationController.PushViewController (tagdetails, true);
-			} else {
-				this.NavigationController.PresentViewController (tagdetails, true, null);
-			}
-
+			this.NavigationController.PushViewController (tagdetails, true);
 		}
 	}
 }

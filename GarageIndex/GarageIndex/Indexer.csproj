@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{05477D5D-9F64-40B3-A35B-3EF1F5C847DD}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>GarageIndex</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>GarageIndex</AssemblyName>
+    <ReleaseVersion>1.3</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchLink>None</MtouchLink>
+    <ConsolePause>false</ConsolePause>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchLink>None</MtouchLink>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchDebug>true</MtouchDebug>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <BuildIpa>true</BuildIpa>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+    <IpaPackageName>
+    </IpaPackageName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <ConsolePause>false</ConsolePause>
+    <IpaPackageName>
+    </IpaPackageName>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Ad-Hoc</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <BuildIpa>true</BuildIpa>
+    <ConsolePause>false</ConsolePause>
+    <CodesignProvision>Automatic:AdHoc</CodesignProvision>
+    <IpaPackageName>
+    </IpaPackageName>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\AppStore</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution: Daniel  Treidene</CodesignKey>
+    <ConsolePause>false</ConsolePause>
+    <IpaPackageName>
+    </IpaPackageName>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+    <Reference Include="Xamarin.Controls.TipOfTheDay.iOS">
+      <HintPath>..\Components\tipoftheday-1.1\lib\ios\Xamarin.Controls.TipOfTheDay.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="CorePlotiOS">
+      <HintPath>..\Components\coreplot-1.4.0\lib\ios\CorePlotiOS.dll</HintPath>
+    </Reference>
+    <Reference Include="MTiRate">
+      <HintPath>..\Components\irate-1.8.0\lib\ios\MTiRate.dll</HintPath>
+    </Reference>
+    <Reference Include="iCarouselSDK">
+      <HintPath>..\..\..\monotouch-bindings\iCarousel\binding\bin\Debug\iCarouselSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="GoogleAnalytics.iOS">
+      <HintPath>..\Components\googleanalytics-3.0.3\lib\ios\GoogleAnalytics.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLite">
+      <HintPath>..\Components\sqlite-net-1.0.1\lib\ios\SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="GoogleAdMobAds">
+      <HintPath>..\Components\googleadmob-6.8.0\lib\ios\GoogleAdMobAds.dll</HintPath>
+    </Reference>
+    <Reference Include="ZXing.Net.Mobile">
+      <HintPath>..\Components\zxing.net.mobile-1.4.2\lib\ios\ZXing.Net.Mobile.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.monotouch">
+      <HintPath>..\Components\zxing.net.mobile-1.4.2\lib\ios\zxing.monotouch.dll</HintPath>
+    </Reference>
+    <Reference Include="Blounty.SlideDownMenu">
+      <HintPath>..\Components\slide-down-menu-1.1\lib\ios\Blounty.SlideDownMenu.dll</HintPath>
+    </Reference>
+    <Reference Include="SatelliteMenu">
+      <HintPath>..\Components\satellite-menu-1.1\lib\ios\SatelliteMenu.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Utility\" />
+    <Folder Include="Screens\" />
+    <Folder Include="Screens\Statistics\" />
+    <Folder Include="Screens\Scanner\" />
+    <Folder Include="MasterViews\" />
+    <Folder Include="Screens\Container\" />
+    <Folder Include="Model\" />
+    <Folder Include="Database\" />
+    <Folder Include="TableSources\" />
+    <Folder Include="EventArgs\" />
+    <Folder Include="Screens\Lager\" />
+    <Folder Include="Screens\Items\" />
+    <Folder Include="Buisnesslogic\" />
+    <Folder Include="Screens\BigItems\" />
+    <Folder Include="Screens\Preferences\" />
+    <Folder Include="de.lproj\" />
+    <Folder Include="en.lproj\" />
+    <Folder Include="no.lproj\" />
+    <Folder Include="Screens\Carousel\" />
+    <Folder Include="ViewController\" />
+    <Folder Include="InsurancePhotos\" />
+    <Folder Include="SpecialEffects\" />
+    <Folder Include="paintcode\" />
+    <Folder Include="Screens\Dashboard\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="Utility\TabController.cs" />
+    <Compile Include="Utility\UtilityViewController.cs" />
+    <Compile Include="Utility\ImageHelper.cs" />
+    <Compile Include="Screens\Scanner\Scanner.cs" />
+    <Compile Include="Screens\Scanner\Scanner.designer.cs" />
+    <Compile Include="MasterViews\BigItemMasterView.cs" />
+    <Compile Include="MasterViews\BigItemMasterView.designer.cs" />
+    <Compile Include="MasterViews\ContainerMasterView.cs" />
+    <Compile Include="MasterViews\ItemMasterView.cs" />
+    <Compile Include="MasterViews\ItemMasterView.designer.cs" />
+    <Compile Include="MasterViews\LagerMasterView.cs" />
+    <Compile Include="Screens\Container\ContainerDetails.cs" />
+    <Compile Include="Screens\Container\ContainerScreen.cs" />
+    <Compile Include="Screens\Container\ContainerScreen.designer.cs" />
+    <Compile Include="Model\Container.cs" />
+    <Compile Include="Model\Item.cs" />
+    <Compile Include="Model\Lager.cs" />
+    <Compile Include="Model\LagerObject.cs" />
+    <Compile Include="Database\LagerDAO.cs" />
+    <Compile Include="TableSources\TableSourceBoxes.cs" />
+    <Compile Include="TableSources\TableSourceItems.cs" />
+    <Compile Include="TableSources\TableSourceItemsIndexed.cs" />
+    <Compile Include="TableSources\TableSourceLager.cs" />
+    <Compile Include="TableSources\TableSourceLagerObjects.cs" />
+    <Compile Include="TableSources\TableSourceLagerObjectsSimple.cs" />
+    <Compile Include="TableSources\TableSourceLagerSimple.cs" />
+    <Compile Include="EventArgs\BigItemDetailClickedEventArgs.cs" />
+    <Compile Include="EventArgs\BigItemSavedEventArgs.cs" />
+    <Compile Include="EventArgs\BoxClickedEventargs.cs" />
+    <Compile Include="EventArgs\ContainerClickedEventArgs.cs" />
+    <Compile Include="EventArgs\ContainerDetailClickedEventArgs.cs" />
+    <Compile Include="EventArgs\DerezEventArgs.cs" />
+    <Compile Include="EventArgs\GotPictureEventArgs.cs" />
+    <Compile Include="EventArgs\ItemClickedEventargs.cs" />
+    <Compile Include="EventArgs\ItemDeletedEventArgs.cs" />
+    <Compile Include="EventArgs\ItemSavedEventArgs.cs" />
+    <Compile Include="EventArgs\LagerClickedEventArgs.cs" />
+    <Compile Include="EventArgs\LagerObjectClickedEventArgs.cs" />
+    <Compile Include="EventArgs\LagerObjectSavedEventArgs.cs" />
+    <Compile Include="Screens\Lager\SelectLager.cs" />
+    <Compile Include="Screens\Lager\SelectLager.designer.cs" />
+    <Compile Include="Screens\Lager\StorageCatalogue.cs" />
+    <Compile Include="Screens\Lager\StorageCatalogue.designer.cs" />
+    <Compile Include="Screens\Lager\TheStorageScreen.cs" />
+    <Compile Include="Screens\Lager\TheStorageScreen.designer.cs" />
+    <Compile Include="Screens\Items\ItemCatalogue.cs" />
+    <Compile Include="Screens\Items\ItemCatalogue.designer.cs" />
+    <Compile Include="Screens\Items\ItemDetailScreen.cs" />
+    <Compile Include="Screens\Items\ItemDetailScreen.designer.cs" />
+    <Compile Include="Screens\Items\ItemInfo.cs" />
+    <Compile Include="Screens\Items\ItemInfo.designer.cs" />
+    <Compile Include="Screens\Items\SelectContainer.cs" />
+    <Compile Include="Screens\Items\SelectContainer.designer.cs" />
+    <Compile Include="Buisnesslogic\GarageindexBL.cs" />
+    <Compile Include="Screens\BigItems\BigItemDetailScreen.cs" />
+    <Compile Include="Screens\BigItems\BigItemDetailScreen.designer.cs" />
+    <Compile Include="Screens\BigItems\BigItemListInfo.cs" />
+    <Compile Include="Screens\BigItems\BigItemListInfo.designer.cs" />
+    <Compile Include="Screens\BigItems\BigItemsScreen.cs" />
+    <Compile Include="Screens\BigItems\BigItemsScreen.designer.cs" />
+    <Compile Include="Screens\Preferences\Preferences.cs" />
+    <Compile Include="Screens\Preferences\Preferences.designer.cs">
+      <DependentUpon>Preferences.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\CustomLagerCell.cs" />
+    <Compile Include="Screens\Container\ContainerContent.cs" />
+    <Compile Include="Screens\Container\ContainerContent.designer.cs">
+      <DependentUpon>ContainerContent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Container\ContainerContentListController.cs" />
+    <Compile Include="Screens\Container\ContainerContentListCell.cs" />
+    <Compile Include="Screens\Container\ContainerContentListSource.cs" />
+    <Compile Include="Screens\Lager\LagerList.cs" />
+    <Compile Include="Screens\Lager\LagerList.designer.cs">
+      <DependentUpon>LagerList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\GarageIndexTipsProvider.cs" />
+    <Compile Include="Screens\Statistics\PiePlot.cs" />
+    <Compile Include="Screens\Carousel\TaggedImageViewController.cs" />
+    <Compile Include="Model\GalleryObject.cs" />
+    <Compile Include="Screens\Carousel\EditImageModeController.cs" />
+    <Compile Include="Model\ImageTag.cs" />
+    <Compile Include="Screens\Carousel\TagGraphicsView.cs" />
+    <Compile Include="Screens\Carousel\EditTags.cs" />
+    <Compile Include="TableSources\TableSourceTags.cs" />
+    <Compile Include="EventArgs\TagClickedEventArgs.cs" />
+    <Compile Include="Screens\Carousel\TagDetailScreen.cs" />
+    <Compile Include="Screens\Carousel\TagDetailScreen.designer.cs">
+      <DependentUpon>TagDetailScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewController\TagListController.cs" />
+    <Compile Include="ViewController\TagListView.cs" />
+    <Compile Include="EventArgs\TagStringClickedEventArgs.cs">
+      <DependentUpon>TagClickedEventArgs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewController\LoadingOverlay.cs" />
+    <Compile Include="EventArgs\BackClickedEventArgs.cs" />
+    <Compile Include="EventArgs\ThumbChangedEventArgs.cs" />
+    <Compile Include="Screens\Items\ItemDetailsController.cs" />
+    <Compile Include="Screens\BigItems\DerezLargeObjectEventArgs.cs" />
+    <Compile Include="Screens\Container\ContainerDetailsContent.cs" />
+    <Compile Include="Screens\BigItems\BigItemDetailContent.cs" />
+    <Compile Include="InsurancePhotos\InsurancePhotoController.cs" />
+    <Compile Include="Model\InsurancePhoto.cs" />
+    <Compile Include="InsurancePhotos\ViewInsurancePhoto.cs" />
+    <Compile Include="paintcode\WandIcon.cs" />
+    <Compile Include="paintcode\GalleryIcon.cs" />
+    <Compile Include="paintcode\Flosshatt.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <XamarinComponentReference Include="tipoftheday">
+      <Version>1.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="coreplot">
+      <Version>1.4.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="irate">
+      <Version>1.8.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="googleanalytics">
+      <Version>3.0.3</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="sqlite-net">
+      <Version>1.0.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="googleadmob">
+      <Version>6.8.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="zxing.net.mobile">
+      <Version>1.4.2</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="slide-down-menu">
+      <Version>1.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="satellite-menu">
+      <Version>1.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="Screens\Scanner\Scanner_iPad.xib" />
+    <InterfaceDefinition Include="Screens\Scanner\Scanner_iPhone.xib" />
+    <InterfaceDefinition Include="MasterViews\BigItemMasterView.xib" />
+    <InterfaceDefinition Include="Screens\Container\ContainerScreen_iPad.xib" />
+    <InterfaceDefinition Include="Screens\Container\ContainerScreen_iPhone.xib" />
+    <InterfaceDefinition Include="Screens\Lager\SelectLager_iPad.xib" />
+    <InterfaceDefinition Include="Screens\Lager\SelectLager_iPhone.xib" />
+    <InterfaceDefinition Include="Screens\Lager\StorageCatalogue_iPad.xib" />
+    <InterfaceDefinition Include="Screens\Lager\StorageCatalogue_iPhone.xib" />
+    <InterfaceDefinition Include="Screens\Lager\TheStorageScreen_iPad.xib" />
+    <InterfaceDefinition Include="Screens\Lager\TheStorageScreen_iPhone.xib" />
+    <InterfaceDefinition Include="Screens\Items\ItemCatalogue_iPad.xib" />
+    <InterfaceDefinition Include="Screens\Items\ItemCatalogue_iPhone.xib" />
+    <InterfaceDefinition Include="Screens\Items\ItemDetailScreen_iPad.xib" />
+    <InterfaceDefinition Include="Screens\Items\ItemDetailScreen_iPhone.xib" />
+    <InterfaceDefinition Include="Screens\BigItems\BigItemDetailScreen_iPad.xib" />
+    <InterfaceDefinition Include="Screens\BigItems\BigItemDetailScreen_iPhone.xib" />
+    <InterfaceDefinition Include="Screens\BigItems\BigItemListInfo_iPad.xib" />
+    <InterfaceDefinition Include="Screens\BigItems\BigItemListInfo_iPhone.xib" />
+    <InterfaceDefinition Include="Screens\BigItems\BigItemsScreen_iPad.xib" />
+    <InterfaceDefinition Include="Screens\BigItems\BigItemsScreen_iPhone.xib" />
+    <InterfaceDefinition Include="Screens\Carousel\TagDetailScreen_iPhone.xib" />
+    <InterfaceDefinition Include="Screens\Carousel\TagDetailScreen_iPad.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Info.plist" />
+    <BundleResource Include="Resources\Default-568h%402x.png" />
+    <BundleResource Include="Resources\Default-Landscape.png" />
+    <BundleResource Include="Resources\Default-Landscape%402x.png" />
+    <BundleResource Include="Resources\Default-Portrait.png" />
+    <BundleResource Include="Resources\Default-Portrait%402x.png" />
+    <BundleResource Include="Resources\Default.png" />
+    <BundleResource Include="Resources\Default%402x.png" />
+    <BundleResource Include="Resources\box.png" />
+    <BundleResource Include="Resources\box2x.png" />
+    <BundleResource Include="Resources\house.png" />
+    <BundleResource Include="Resources\house%402x.png" />
+    <BundleResource Include="Resources\math.png" />
+    <BundleResource Include="Resources\math%402x.png" />
+    <BundleResource Include="Resources\pref.png" />
+    <BundleResource Include="Resources\pref%402x.png" />
+    <BundleResource Include="Resources\pyrahat.png" />
+    <BundleResource Include="Resources\pyrahat%402x.png" />
+    <BundleResource Include="Resources\stamp.png" />
+    <BundleResource Include="Resources\stamp%402x.png" />
+    <BundleResource Include="Resources\stampy.png" />
+    <BundleResource Include="Resources\stampy%402x.png" />
+    <BundleResource Include="Resources\weye.png" />
+    <BundleResource Include="Resources\weye%402x.png" />
+    <BundleResource Include="Resources\wtable.png" />
+    <BundleResource Include="Resources\wtable%402x.png" />
+    <BundleResource Include="Resources\mh.png" />
+    <BundleResource Include="Resources\mh%402x.png" />
+    <BundleResource Include="de.lproj\Localizable.strings" />
+    <BundleResource Include="en.lproj\Localizable.strings" />
+    <BundleResource Include="no.lproj\Localizable.strings" />
+    <BundleResource Include="Resources\mystamp.png" />
+    <BundleResource Include="Resources\mystamp%402x.png" />
+    <BundleResource Include="Resources\mybox.png" />
+    <BundleResource Include="Resources\mybox%402x.png" />
+    <BundleResource Include="Resources\mytable.png" />
+    <BundleResource Include="Resources\mytable%402x.png" />
+    <BundleResource Include="Resources\page.png" />
+    <BundleResource Include="Resources\placeholder.png" />
+    <BundleResource Include="Resources\wand.png" />
+    <BundleResource Include="Resources\wand%402x.png" />
+    <BundleResource Include="Resources\startree.png" />
+    <BundleResource Include="Resources\startree%402x.png" />
+    <BundleResource Include="Resources\gallery.png" />
+    <BundleResource Include="..\..\..\Dropbox\paintcode\gallery%402x.png">
+      <Link>Resources\gallery%402x.png</Link>
+    </BundleResource>
+    <BundleResource Include="Resources\starframe.png" />
+    <BundleResource Include="Resources\starframe%402x.png" />
+    <BundleResource Include="Resources\frames.png" />
+    <BundleResource Include="Resources\frames%402x.png" />
+    <BundleResource Include="Resources\frames50.png" />
+    <BundleResource Include="Resources\frames50%402x.png" />
+    <BundleResource Include="Resources\frames4832.png" />
+    <BundleResource Include="Resources\frames4832%402x.png" />
+    <BundleResource Include="Resources\container4832.png" />
+    <BundleResource Include="Resources\container4832%402x.png" />
+    <BundleResource Include="Resources\table4832.png" />
+    <BundleResource Include="Resources\table4832%402x.png" />
+    <BundleResource Include="Resources\uchi4832.png" />
+    <BundleResource Include="Resources\uchi4832%402x.png" />
+    <BundleResource Include="Resources\preferences4832.png" />
+    <BundleResource Include="Resources\preferences4832%402x.png" />
+    <BundleResource Include="Resources\scanner4832.png" />
+    <BundleResource Include="Resources\scanner4832%402x.png" />
+    <BundleResource Include="Resources\statistics4832.png" />
+    <BundleResource Include="Resources\statistics4832%402x.png" />
+    <BundleResource Include="Resources\Icon-76%402x.png" />
+    <BundleResource Include="Resources\Icon.png" />
+    <BundleResource Include="Resources\Icon%402x.png" />
+    <BundleResource Include="Resources\Icon-Small-50%402x.png" />
+    <BundleResource Include="Resources\Icon-60%402x.png" />
+    <BundleResource Include="Resources\Icon-72.png" />
+    <BundleResource Include="Resources\Icon-72%402x.png" />
+    <BundleResource Include="Resources\Icon-76.png" />
+    <BundleResource Include="Resources\Icon-Small.png" />
+    <BundleResource Include="Resources\Icon-Small%402x.png" />
+    <BundleResource Include="Resources\Icon-Small-50.png" />
+    <BundleResource Include="Resources\Icon-Small-40.png" />
+    <BundleResource Include="Resources\Icon-Small-40%402x.png" />
+    <BundleResource Include="Resources\background.png" />
+    <BundleResource Include="Resources\background%402x.png" />
+    <BundleResource Include="Resources\flosshat4832.png" />
+    <BundleResource Include="Resources\flosshat4832%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ITunesArtwork Include="iTunesArtwork" />
+    <ITunesArtwork Include="iTunesArtwork%402x" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Entitlements.plist" />
+    <None Include="RELEASE-NOTES.txt" />
+  </ItemGroup>
+</Project>

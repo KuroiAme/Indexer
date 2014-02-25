@@ -234,6 +234,8 @@ namespace GarageIndex
 			this.AddTagList ();
 		}
 
+		TagListController tlc;
+
 		void AddTagList ()
 		{
 			RectangleF frame;
@@ -256,8 +258,8 @@ namespace GarageIndex
 				AppDelegate.dao.SaveLagerObject (boks);
 			}
 
-			TagListController tlc = new TagListController (tag, frame);
-			this.View.AddSubview (tlc.View);
+			tlc = new TagListController (tag, frame);
+			this.Add (tlc.View);
 		}
 
 		public override void ViewDidLoad ()
