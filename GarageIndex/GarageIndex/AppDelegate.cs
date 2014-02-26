@@ -61,6 +61,7 @@ namespace GarageIndex
 			Tracker = GAI.SharedInstance.GetTracker (TrackingId);
 
 
+
 			//Initialize Global Frameworks...instead of having Dependency Injection
 			dao = new LagerDAO ();
 			bl = new GarageindexBL ();
