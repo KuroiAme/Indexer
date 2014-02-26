@@ -9,7 +9,7 @@ namespace no.dctapps.Garageindex.model
 		public int ID { get; set; }
 		public string Name{get; set;}
 		public string DescriptionFileName{get;set;}
-		public string LagerImage{get;set;}
+		public string ImageFileName{ get; set;}
 		public string address{ get; set;}
 		public string telephone{ get; set;}
 
@@ -31,7 +31,7 @@ namespace no.dctapps.Garageindex.model
 			output += ",";
 			output += DescriptionFileName;
 			output += ",";
-			output += LagerImage;
+			output += ImageFileName;
 			output += ",";
 			output += address;
 			output += ",";
