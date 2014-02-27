@@ -23,12 +23,18 @@ namespace GarageIndex
 		public UIPopoverController Pc;
 
 		private event EventHandler<GotPictureEventArgs> GotPicture;
-		public event EventHandler<DerezLargeObjectEventArgs> Derezzy;
 		public event EventHandler<SavedImageStringsEventArgs> ImageSaved;
 		public event EventHandler ImageDeleted;
 
 		readonly RectangleF myFrame;
 		string current_imagefilename;
+		UINavigationController nc;
+
+		public ImagePanel (RectangleF myFrame, UINavigationController nc)
+		{
+			this.myFrame = myFrame;
+			this.nc = nc;
+		}
 
 		public ImagePanel (RectangleF myFrame)
 		{
@@ -57,17 +63,6 @@ namespace GarageIndex
 			imagePicker = null;
 		}
 
-//		public void SetImageViewImage (UIImageView imageholder)
-//		{
-//			Console.WriteLine ("setImageViewImage");
-//			if (imageholder != null) {
-//
-//				Console.WriteLine ("Not null");
-//				this.imageView = imageholder;
-//				Add (imageholder);
-//			}
-//		}
-
 		public override void LoadView ()
 		{
 			base.LoadView ();
@@ -81,10 +76,17 @@ namespace GarageIndex
 
 			this.GotPicture += (object sender, GotPictureEventArgs e) => {
 				MySavePicture (e.image); //local event
-				this.imageView.Image = e.image;
+				//TODO Do this async
+				UIImage display = e.image.Scale(View.Bounds.Size);
+				this.imageView.Image = display;
+				this.imageView.Frame = View.Bounds;
 				this.imageView.SetNeedsDisplay ();
 			};
 		}
+
+		UITapGestureRecognizer doubletap;
+
+		UILongPressGestureRecognizer longpress;
 
 		private void InitializeEmptyImage ()
 		{
@@ -95,16 +97,17 @@ namespace GarageIndex
 			};
 			this.View.BackgroundColor = UIColor.Clear;
 
+			this.imageView.UserInteractionEnabled = true;
 
-			var doubletap = new UITapGestureRecognizer (AddImage);
+			doubletap = new UITapGestureRecognizer (AddImage);
 			doubletap.NumberOfTapsRequired = 2;
 			imageView.AddGestureRecognizer (doubletap);
 
-			var longpress = new UILongPressGestureRecognizer(RemoveImage);
+			longpress = new UILongPressGestureRecognizer (RemoveImage);
 			imageView.AddGestureRecognizer(longpress);
 
-			Add (imageView);
-			View.BringSubviewToFront (imageView);
+			View.AddSubview (imageView);
+			makeCornersRound ();
 		}
 
 		private void AddImage (UIGestureRecognizer recognizer){
@@ -168,13 +171,13 @@ namespace GarageIndex
 			}
 		}
 
-		void RaiseDerez ()
-		{
-			var handler = this.Derezzy;
-			if (handler != null) {
-				handler (this, new DerezLargeObjectEventArgs ());
-			}
-		}
+//		void RaiseDerez ()
+//		{
+//			var handler = this.Derezzy;
+//			if (handler != null) {
+//				handler (this, new DerezLargeObjectEventArgs ());
+//			}
+//		}
 
 		public void SelectSource ()
 		{
@@ -197,7 +200,7 @@ namespace GarageIndex
 					PickFromLibrary ();
 				}
 			};
-			actionSheet.ShowInView (View);
+			actionSheet.ShowInView (imageView);
 		}
 
 		public void PickFromCamera ()
@@ -207,13 +210,15 @@ namespace GarageIndex
 			// set our source to the photo library
 			imagePicker = new UIImagePickerController ();
 			imagePicker.SourceType = UIImagePickerControllerSourceType.Camera;
+			imagePicker.AllowsEditing = true;
 			// set what media types
 			imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes (UIImagePickerControllerSourceType.Camera);
 			imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
 			imagePicker.Canceled += Handle_Canceled;
 			// show the picker
 //			if (UserInterfaceIdiomIsPhone) {
-			PresentViewController (imagePicker, true, null);
+			this.PresentViewController (imagePicker, false, null);
+			//PresentViewController (imagePicker, true, null);
 				//nc.PresentViewController (imagePicker, true, delegate {});
 //			} else {
 //				Console.WriteLine ("Popover");
@@ -275,7 +280,8 @@ namespace GarageIndex
 			imagePicker.Canceled += Handle_Canceled;
 			// show the picker
 //			if (UserInterfaceIdiomIsPhone) {
-			PresentViewController (imagePicker, true, null);
+			//PresentViewController (imagePicker, true, null);
+			nc.PushViewController (imagePicker, true);
 				//nc.PresentViewController (imagePicker, true, delegate{});
 //			} else {
 //				Console.WriteLine ("Popover");
@@ -299,16 +305,16 @@ namespace GarageIndex
 					Console.WriteLine ("deleting picture!");
 					//DELETE IMAGE FROM APP.
 					DeletePic (this.current_imagefilename);
-					//POP this view to refresh.
-					if (UserInterfaceIdiomIsPhone) {
-						DismissViewController (true, null);
-						//nc.PopViewControllerAnimated(true);
-					} else {
-						RaiseDerez ();
-					}
+//					//POP this view to refresh.
+//					if (UserInterfaceIdiomIsPhone) {
+//						DismissViewController (true, null);
+//						//nc.PopViewControllerAnimated(true);
+//					} else {
+//						RaiseDerez ();
+//					}
 				}
 			};
-			actionSheet.ShowInView (this.View);
+			actionSheet.ShowInView (imageView);
 		}
 
 		void Handle_Canceled (object sender, EventArgs e)
@@ -321,8 +327,9 @@ namespace GarageIndex
 		public void DeletePic (string imagefilename)
 		{
 			DeleteImage (imagefilename);
-			this.imageView = new UIImageView (View.Bounds);
 			this.imageView.Image = EmptyImageCanvas.MakeEmptyCanvas ();
+			this.imageView.SetNeedsDisplay ();
+
 			var handler = this.ImageDeleted;
 			if (handler != null) {
 				handler (this, new EventArgs ());

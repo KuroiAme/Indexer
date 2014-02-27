@@ -49,6 +49,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			innerview.AddSubview (bidc.View);
 			innerview.BackgroundColor = UIColor.White;
 			bidc.ShowDetails (myObject);
+
 			this.View = innerview;
 
 //			bidc.GotPicture += (object sender, GotPictureEventArgs e) => {

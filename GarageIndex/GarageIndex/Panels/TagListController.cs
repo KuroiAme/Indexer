@@ -25,7 +25,38 @@ namespace GarageIndex
 				taglist = new string[]{ };
 			}
 
-			entertag = new UITextField(new RectangleF(55.0f, 105.0f, 140, 22));
+
+		}
+
+		public TagListView tlv;
+		public UITextField entertag;
+
+		public override void LoadView ()
+		{
+			base.LoadView ();
+			RectangleF myFrame = new RectangleF (area.X, area.Y, area.Width, area.Height + 30);
+			this.View.Frame = myFrame;
+			this.View.BackgroundColor = UIColor.Magenta;
+		}
+
+		public override void ViewDidLoad ()
+		{
+			Console.WriteLine ("taglist():viewDidLoad()");
+			base.ViewDidLoad ();
+			//float y = 50f; //TODO get dynamic value, this is a hack.
+//			RectangleF frame = new RectangleF (0, y, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height * 0.75f);
+			//this.NavigationController.Title = "edit tag";
+			tlv = new TagListView (area, taglist);
+			View.AddSubview (tlv);
+			//this.View.BackgroundColor = UIColor.White;
+			tlv.TagStringClicked += (object sender, TagStringClickedEventArgs e) => EditTagString (e.tagstring, e.pos);
+
+//			var doubletap = new UITapGestureRecognizer (AddTag);
+//			doubletap.NumberOfTapsRequired = 2;
+//			tlv.AddGestureRecognizer (doubletap);
+//			tlv.SetNeedsDisplay ();
+
+			entertag = new UITextField(new RectangleF(area.X, area.Height, area.Width, 22));
 			var def = entertag.Text;
 			var enter = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Enter tag text", "Enter tag text");
 			entertag.Placeholder = enter;
@@ -40,29 +71,6 @@ namespace GarageIndex
 				textField.ResignFirstResponder();
 				return true;
 			};
-		}
-
-		public TagListView tlv;
-		public UITextField entertag;
-
-		public override void ViewDidLoad ()
-		{
-			Console.WriteLine ("taglist():viewDidLoad()");
-			base.ViewDidLoad ();
-			//float y = 50f; //TODO get dynamic value, this is a hack.
-//			RectangleF frame = new RectangleF (0, y, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height * 0.75f);
-			//this.NavigationController.Title = "edit tag";
-			tlv = new TagListView (area, taglist);
-			this.View = tlv;
-			//this.View.BackgroundColor = UIColor.White;
-			tlv.TagStringClicked += (object sender, TagStringClickedEventArgs e) => EditTagString (e.tagstring, e.pos);
-
-//			var doubletap = new UITapGestureRecognizer (AddTag);
-//			doubletap.NumberOfTapsRequired = 2;
-//			tlv.AddGestureRecognizer (doubletap);
-//			tlv.SetNeedsDisplay ();
-
-
 
 
 			Add (entertag);

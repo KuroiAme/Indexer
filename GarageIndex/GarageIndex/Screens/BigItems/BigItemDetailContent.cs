@@ -203,7 +203,8 @@ namespace GarageIndex
 			showReceipts.SetTitle (MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Show Receipts", "Show Receipts"), UIControlState.Normal);
 			showReceipts.TouchUpInside += (object sender, EventArgs e) => {
 				InsurancePhotoController ipc = new InsurancePhotoController(myobj);
-				PresentViewController(ipc,true, null);
+				nc.PushViewController(ipc, true);
+				//PresentViewController(ipc,true, null);
 				//nc.PushViewController(ipc,false);
 			};
 
@@ -220,7 +221,8 @@ namespace GarageIndex
 				Console.WriteLine("touchupinside");
 				if(UserInterfaceIdiomIsPhone){
 					Console.WriteLine("iphone??");
-					PresentViewController(sl,true, null);
+					nc.PushViewController(sl, true);
+					//PresentViewController(sl,true, null);
 					//PresentViewController(sl,true);
 					//nc.PushViewController(sl, true);
 				}else{
@@ -281,8 +283,8 @@ namespace GarageIndex
 			const float imgY = 305;
 			RectangleF imageRect = new RectangleF (10, imgY, UIScreen.MainScreen.Bounds.Width - 20, 300);
 
-			imp = new ImagePanel (imageRect);
-			View.Add (imp.View);
+			imp = new ImagePanel (imageRect, this.nc);
+			View.AddSubview (imp.View);
 			imp.ImageSaved += (object sender, SavedImageStringsEventArgs e) => {
 				MyCurrentObject.imageFileName = e.imageFilename;
 				MyCurrentObject.thumbFileName = e.Thumbfilename;
@@ -295,7 +297,6 @@ namespace GarageIndex
 				AppDelegate.dao.SaveLagerObject(MyCurrentObject);
 			};
 
-			View.BringSubviewToFront (imp.View);
 
 
 
@@ -338,7 +339,7 @@ namespace GarageIndex
 			}
 
 			TagListController tlc = new TagListController (tag, frame);
-			this.Add (tlc.View);
+			View.AddSubview (tlc.View);
 			tlc.entertag.EditingDidBegin += (object sender, EventArgs e) => {
 				tlc.entertag.Placeholder = "";
 			};

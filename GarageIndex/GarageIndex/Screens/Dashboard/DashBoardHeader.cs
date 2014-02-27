@@ -10,7 +10,7 @@ namespace GarageIndex
 		UIView parentView;
 		public DashBoardHeader (RectangleF myFrame)
 		{
-			this.parentView = parentView;
+//			this.parentView = parentView;
 			this.myFrame = myFrame;
 		}
 
@@ -27,7 +27,7 @@ namespace GarageIndex
 			AddHeadingLabels ();
 		}
 
-		UILabel nameBox;
+//		UILabel nameBox;
 
 		void AddHeadingLabels ()
 		{

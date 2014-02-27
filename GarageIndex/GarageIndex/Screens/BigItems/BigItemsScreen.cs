@@ -76,26 +76,6 @@ namespace no.dctapps.Garageindex.screens
 
 			Initialize ();
 			PopulateTable ();
-
-//DO NOT DELETE
-//			UIBarButtonItem it = new UIBarButtonItem();
-//			it.Title = "info"; //IS really info
-//
-//			it.Clicked += (object sender, EventArgs e) => {
-//			BigItemListInfo li = new BigItemListInfo();
-////					UIViewController li = new BigItemListInfo();
-//
-//			if(UserInterfaceIdiomIsPhone){
-////					NavigationController.PresentViewController (li, true, delegate {});
-//			NavigationController.PushViewController(li,true);
-//			}else{
-//				Console.WriteLine("test");
-//				Pc = new UIPopoverController(li);
-//				Pc.PresentFromBarButtonItem(it,UIPopoverArrowDirection.Down, true);
-//				}
-//			};
-//
-//			this.NavigationItem.SetLeftBarButtonItem(it, true);
 		}
 
 		public void Refresh ()
@@ -119,7 +99,7 @@ namespace no.dctapps.Garageindex.screens
 		{
 			if(UserInterfaceIdiomIsPhone){
 				BigItemDetailScreen neo = new BigItemDetailScreen (item);
-				PresentViewControllerAsync (neo, true);
+				this.NavigationController.PushViewController (neo, true);
 				//this.NavigationController.PushViewController(neo, true);
 			}else{
 				RaiseLagerObjectClicked(item);

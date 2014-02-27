@@ -79,7 +79,9 @@ namespace GarageIndex
 				if(args.MenuItem.Name == "Big Items"){
 					if(UserInterfaceIdiomIsPhone){
 						BigItemsScreen biggies = new BigItemsScreen();
-						PresentViewControllerAsync(biggies, true);
+						UINavigationController bigNav = new UINavigationController();
+						bigNav.PushViewController(biggies,false);
+						PresentViewController(bigNav, true, null);
 					}else{
 						BigItemMasterView bigMaster = new BigItemMasterView();
 						PresentViewControllerAsync(bigMaster, true);
