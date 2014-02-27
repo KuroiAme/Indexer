@@ -12,7 +12,7 @@ namespace GarageIndex
 	public class BigItemDetailContent : UtilityViewController
 	{
 
-		LagerObject myObject;
+		LagerObject MyCurrentObject;
 
 		SelectLager sl;
 		public UIPopoverController Ic;
@@ -28,15 +28,14 @@ namespace GarageIndex
 		public BigItemDetailContent (LagerObject myObject,UINavigationController nc)
 		{
 			this.nc = nc;
-			this.myObject = myObject;
+			this.MyCurrentObject = myObject;
 		}
 
 		public override void LoadView ()
 		{
 			base.LoadView ();
 			InitView ();
-			InitLegacyNib ();
-			InitInsuranceInfo ();
+
 		}
 
 		private void InitView(){
@@ -156,7 +155,7 @@ namespace GarageIndex
 		{
 
 			//TODO remember to deselect left table after showing details
-			myObject = myobj;
+			MyCurrentObject = myobj;
 
 			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Big Items Details", "Big Items Details");
 			this.fieldBigName.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Name", "Name");
@@ -170,30 +169,33 @@ namespace GarageIndex
 				this.fieldBigDescription.Text = myobj.Description;
 				this.fieldBigDescription.Font = UIFont.FromName ("AmericanTypewriter", 12f);
 
-				antall.Text = count + myObject.antall.ToString ();
+				antall.Text = count + MyCurrentObject.antall.ToString ();
 			}
 			AddTagList ();
 			releaseKeyboard ();
 
-			if (myObject != null) {
-				this.antallStepper.Value = myObject.antall;
+			if (MyCurrentObject != null) {
+				this.antallStepper.Value = MyCurrentObject.antall;
 				this.antallStepper.ValueChanged += (object sender, EventArgs e) => {
 					double ant = this.antallStepper.Value;
 					antall.Text = count + ant;
-					myObject.antall = ant;
-					AppDelegate.dao.SaveLagerObject (myObject);
+					MyCurrentObject.antall = ant;
+					AppDelegate.dao.SaveLagerObject (MyCurrentObject);
 				};
-				cashValue.Text = myObject.cashValue.ToString ();
+				cashValue.Text = MyCurrentObject.cashValue.ToString ();
 				cashValue.ValueChanged += (object sender, EventArgs e) => {
 					try {
 						double newvalue = double.Parse (cashValue.Text);
-						myObject.cashValue = newvalue;
-						AppDelegate.dao.SaveLagerObject (myObject);
+						MyCurrentObject.cashValue = newvalue;
+						AppDelegate.dao.SaveLagerObject (MyCurrentObject);
 					} catch (Exception ex) {
 						Console.WriteLine ("coudlnt parse;" + cashValue.Text + "ex:" + ex.ToString ());
-						cashValue.Text = myObject.cashValue.ToString ();
+						cashValue.Text = MyCurrentObject.cashValue.ToString ();
 					}
 				};
+				if (MyCurrentObject.imageFileName != null) {
+					imp.SetNewImageName (MyCurrentObject.imageFileName);
+				}
 			}
 
 			currency.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Currency", "Currency");
@@ -201,24 +203,24 @@ namespace GarageIndex
 			showReceipts.SetTitle (MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Show Receipts", "Show Receipts"), UIControlState.Normal);
 			showReceipts.TouchUpInside += (object sender, EventArgs e) => {
 				InsurancePhotoController ipc = new InsurancePhotoController(myobj);
-				PresentViewControllerAsync(ipc,true);
+				PresentViewController(ipc,true, null);
 				//nc.PushViewController(ipc,false);
 			};
-
-
 
 		}
 
 		void initializeMoveLager ()
 		{
 			Console.WriteLine("initializemovelager");
+
 			sl = new SelectLager ();
 
 			this.btnIn.TouchUpInside += (object sender, EventArgs e) =>  {
+
 				Console.WriteLine("touchupinside");
 				if(UserInterfaceIdiomIsPhone){
 					Console.WriteLine("iphone??");
-					PresentViewControllerAsync(sl,true);
+					PresentViewController(sl,true, null);
 					//PresentViewController(sl,true);
 					//nc.PushViewController(sl, true);
 				}else{
@@ -230,15 +232,15 @@ namespace GarageIndex
 			sl.DismissEvent += (object sender, LagerClickedEventArgs e) =>  {
 				Console.WriteLine("dismiss?");
 				if(UserInterfaceIdiomIsPhone){
-					DismissViewControllerAsync(true);
+					DismissViewController(true, null);
 					//nc.PopViewControllerAnimated(true);
 				}else{
 					Ic.Dismiss (true);
 				}
-				if(myObject != null){
-					this.myObject.LagerID = e.Lager.ID;
-					SetLagerButtonLabel (this.myObject);
-					AppDelegate.dao.SaveLagerObject(this.myObject);
+				if(MyCurrentObject != null){
+					this.MyCurrentObject.LagerID = e.Lager.ID;
+					SetLagerButtonLabel (this.MyCurrentObject);
+					AppDelegate.dao.SaveLagerObject(this.MyCurrentObject);
 					RaiseSavedEvent();
 				}
 			};
@@ -262,20 +264,50 @@ namespace GarageIndex
 			this.btnIn.SetTitle (sb.ToString (), UIControlState.Normal);
 		}
 
+		ImageController imp;
 
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 			Background back = new Background ();
+			back.View.Frame = View.Bounds;
 			View.Add (back.View);
+			View.SendSubviewToBack (back.View);
 
-			ShowDetails (this.myObject);
+			InitLegacyNib ();
+			InitInsuranceInfo ();
+
+			const float imgY = 305;
+			RectangleF imageRect = new RectangleF (10, imgY, UIScreen.MainScreen.Bounds.Width - 20, 300);
+
+			imp = new ImageController (imageRect);
+			View.Add (imp.View);
+			imp.ImageSaved += (object sender, SavedImageStringsEventArgs e) => {
+				MyCurrentObject.imageFileName = e.imageFilename;
+				MyCurrentObject.thumbFileName = e.Thumbfilename;
+				AppDelegate.dao.SaveLagerObject(MyCurrentObject);
+			};
+
+			imp.ImageDeleted += (object sender, EventArgs e) => {
+				MyCurrentObject.imageFileName = null;
+				MyCurrentObject.thumbFileName = null;
+				AppDelegate.dao.SaveLagerObject(MyCurrentObject);
+			};
+
+			View.BringSubviewToFront (imp.View);
 
 
 
-			SetLagerButtonLabel (this.myObject);
+			ShowDetails (this.MyCurrentObject);
+
+
+
+			SetLagerButtonLabel (this.MyCurrentObject);
 			initializeMoveLager ();
+
+
+
 
 		}
 
@@ -291,17 +323,17 @@ namespace GarageIndex
 			}
 
 			Console.WriteLine("frame:"+frame);
-			if (myObject != null) {
-				tag = AppDelegate.dao.GetImageTagById (this.myObject.ImageTagId);
+			if (MyCurrentObject != null) {
+				tag = AppDelegate.dao.GetImageTagById (this.MyCurrentObject.ImageTagId);
 			}
 			if (tag == null) {
 				Console.WriteLine ("Tag er null");
 				tag = new ImageTag ();
 				int key = AppDelegate.dao.SaveTag (tag);
 				tag.ID = key;
-				if (myObject != null) {
-					this.myObject.ImageTagId = key;
-					AppDelegate.dao.SaveLagerObject (myObject);
+				if (MyCurrentObject != null) {
+					this.MyCurrentObject.ImageTagId = key;
+					AppDelegate.dao.SaveLagerObject (MyCurrentObject);
 				}
 			}
 
@@ -333,12 +365,11 @@ namespace GarageIndex
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
-			ShowDetails (this.myObject);
+			ShowDetails (this.MyCurrentObject);
 
 			this.fieldBigName.Ended += (object sender, EventArgs e) => this.SaveIt ();
 
 			this.fieldBigDescription.Ended += (object sender, EventArgs e) => this.SaveIt ();
-
 
 		}
 
@@ -352,10 +383,10 @@ namespace GarageIndex
 		}
 
 		public void SaveIt(){
-			if(myObject != null){
-				myObject.Name = this.fieldBigName.Text;
-				myObject.Description = this.fieldBigDescription.Text;
-				AppDelegate.dao.SaveLagerObject (myObject);
+			if(MyCurrentObject != null){
+				MyCurrentObject.Name = this.fieldBigName.Text;
+				MyCurrentObject.Description = this.fieldBigDescription.Text;
+				AppDelegate.dao.SaveLagerObject (MyCurrentObject);
 				RaiseSavedEvent();
 			}
 		}

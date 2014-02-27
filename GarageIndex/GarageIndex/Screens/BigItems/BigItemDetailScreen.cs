@@ -51,12 +51,12 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			bidc.ShowDetails (myObject);
 			this.View = innerview;
 
-			bidc.GotPicture += (object sender, GotPictureEventArgs e) => {
-				var handler = this.GotPicture;
-				if(handler != null){
-					handler(this,e);
-				}
-			};
+//			bidc.GotPicture += (object sender, GotPictureEventArgs e) => {
+//				var handler = this.GotPicture;
+//				if(handler != null){
+//					handler(this,e);
+//				}
+//			};
 
 			bidc.BigItemSaved += (object sender, BigItemSavedEventArgs e) => {
 				var handler = this.BigItemSaved;
@@ -65,12 +65,12 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 				}
 			};
 
-			bidc.Derezzy += (object sender, DerezLargeObjectEventArgs e) => {
-				var handler = this.Derezzy;
-				if(handler != null){
-					handler(sender,e);
-				}
-			};
+//			bidc.Derezzy += (object sender, DerezLargeObjectEventArgs e) => {
+//				var handler = this.Derezzy;
+//				if(handler != null){
+//					handler(sender,e);
+//				}
+//			};
 
 
 

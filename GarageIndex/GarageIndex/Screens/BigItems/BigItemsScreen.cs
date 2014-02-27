@@ -7,11 +7,12 @@ using GarageIndex;
 using no.dctapps.Garageindex.events;
 using No.Dctapps.Garageindex.Ios.Screens;
 using GoogleAnalytics.iOS;
+using System.Drawing;
 
 
 namespace no.dctapps.Garageindex.screens
 {
-	public partial class BigItemsScreen : UITableViewController
+	public partial class BigItemsScreen : UIViewController
 	{
 //		public UITableView Table{get; set;}
 		public TableSourceLagerObjects TableSource {get; set;}
@@ -21,6 +22,8 @@ namespace no.dctapps.Garageindex.screens
 		public event EventHandler<BigItemDetailClickedEventArgs> ActivateDetail;
 
 		public UIPopoverController Pc;
+
+		UITableView table;
 
         public static bool UserInterfaceIdiomIsPhone {
             get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
@@ -59,7 +62,17 @@ namespace no.dctapps.Garageindex.screens
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Large Objects", "Large Objects");
+			//Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Large Objects", "Large Objects");
+			//this.View.BackgroundColor = UIColor.Clear;
+
+			Background back = new Background ();
+			Add (back.View);
+			View.SendSubviewToBack (back.View);
+
+			table = new UITableView (new RectangleF (0, 75, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - 75), UITableViewStyle.Plain);
+			table.BackgroundColor = UIColor.Clear;
+			this.View.BackgroundColor = UIColor.Clear;
+			Add (table);
 
 			Initialize ();
 			PopulateTable ();
@@ -162,7 +175,7 @@ namespace no.dctapps.Garageindex.screens
 			TableSource = new TableSourceLagerObjects(tableItems);
 			this.TableSource.LagerObjectDeleted += (object sender, LagerObjectClickedEventArgs e) => this.DeleteLagerObjectRow (e.LagerObject.ID);
 			this.TableSource.LagerObjectClicked += (object sender, LagerObjectClickedEventArgs e) => this.ShowBigItemDetails (e.LagerObject);
-			TableView.Source = this.TableSource;
+			table.Source = this.TableSource;
 //			this.TabBarItem.BadgeValue = dao.getAntallStore();
 		}
 

@@ -125,14 +125,10 @@ namespace no.dctapps.garageindex
 		{
 			base.ViewDidLoad ();
 
-			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
-				ContentMode = UIViewContentMode.ScaleToFill,
-				AutoresizingMask = UIViewAutoresizing.All,
-				Frame = UIScreen.MainScreen.Bounds
-			};
+			Background back = new Background ();
 
-			View.AddSubview (imgView);
-			View.SendSubviewToBack (imgView);
+			View.AddSubview (back.View);
+			View.SendSubviewToBack (back.View);
 
 			table = new UITableView (new RectangleF (0, 75, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - 75), UITableViewStyle.Plain);
 			table.BackgroundColor = UIColor.Clear;

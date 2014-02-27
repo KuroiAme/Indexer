@@ -44,7 +44,7 @@ namespace GarageIndex
 			InitGallery ();
 			InitItemScreen();
 			InitBoxesScreen();
-			InitBigItemScreen ( );
+//			InitBigItemScreen ( );
 			InitPreferencesScreen();
 			InitScanner();
 			//InitLagerCatalogueScreen();
@@ -163,24 +163,24 @@ namespace GarageIndex
 //			}
 		}
 
-		public void InitBigItemScreen ()
-		{
-			var lbtext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Large Objects", "Large Objects");
-
-			if(UserInterfaceIdiomIsPhone){
-				bigitemscreen = new BigItemsScreen();
-				bigNav = new UINavigationController();
-				bigNav.TabBarItem = new UITabBarItem ();
-				bigNav.TabBarItem.Title = lbtext;
-				bigNav.TabBarItem.Image = UIImage.FromBundle("table4832.png");
-				bigNav.PushViewController(bigitemscreen, false);
-			}else{
-				bigMaster = new BigItemMasterView();
-				bigMaster.TabBarItem = new UITabBarItem ();
-				bigMaster.TabBarItem.Title = lbtext;
-				bigMaster.TabBarItem.Image = UIImage.FromBundle("table4832.png");
-			}
-		}
+//		public void InitBigItemScreen ()
+//		{
+//			var lbtext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Large Objects", "Large Objects");
+//
+//			if(UserInterfaceIdiomIsPhone){
+//				bigitemscreen = new BigItemsScreen();
+//				bigNav = new UINavigationController();
+//				bigNav.TabBarItem = new UITabBarItem ();
+//				bigNav.TabBarItem.Title = lbtext;
+//				bigNav.TabBarItem.Image = UIImage.FromBundle("table4832.png");
+//				bigNav.PushViewController(bigitemscreen, false);
+//			}else{
+//				bigMaster = new BigItemMasterView();
+//				bigMaster.TabBarItem = new UITabBarItem ();
+//				bigMaster.TabBarItem.Title = lbtext;
+//				bigMaster.TabBarItem.Image = UIImage.FromBundle("table4832.png");
+//			}
+//		}
 
 		public void InitBoxesScreen ()
 		{

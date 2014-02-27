@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace no.dctapps.Garageindex.screens
 {
-	public partial class TheStorageScreen : UtilityViewController
+	public partial class TheStorageScreen : UIViewController
 	{
 		Lager lm;
 //		LagerDAO dao;
@@ -30,8 +30,12 @@ namespace no.dctapps.Garageindex.screens
 //			lm = bl.GetActiveActiveLager ();
 //		}
 
+		public static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+		}
+
 		public TheStorageScreen (Lager lager)
-			: base (UserInterfaceIdiomIsPhone ? "TheStorageScreen_iPhone" : "TheStorageScreen_iPad")
+			: base (UserInterfaceIdiomIsPhone ? "TheStorageScreen_iPhone" : "TheStorageScreen_iPad", null)
 		{
 //			dao = new LagerDAO();
 //			bl = new GarageindexBL();
@@ -39,7 +43,7 @@ namespace no.dctapps.Garageindex.screens
 		}
 
 		public TheStorageScreen ()
-			: base (UserInterfaceIdiomIsPhone ? "TheStorageScreen_iPhone" : "TheStorageScreen_iPad")
+			: base (UserInterfaceIdiomIsPhone ? "TheStorageScreen_iPhone" : "TheStorageScreen_iPad", null)
 		{
 //			dao = new LagerDAO();
 			//			bl = new GarageindexBL();

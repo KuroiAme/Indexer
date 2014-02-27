@@ -56,6 +56,10 @@ namespace GarageIndex
 
 		SizeF contentSize;
 
+		public static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+		}
+
 		private void InitView(){
 			this.View.BackgroundColor = UIColor.White;
 //			this.View.Frame = 
