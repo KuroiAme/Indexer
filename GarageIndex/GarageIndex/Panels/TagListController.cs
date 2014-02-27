@@ -45,14 +45,6 @@ namespace GarageIndex
 		public TagListView tlv;
 		public UITextField entertag;
 
-		public override void LoadView ()
-		{
-			base.LoadView ();
-
-
-
-		}
-
 		public override void ViewDidLoad ()
 		{
 			Console.WriteLine ("taglist():viewDidLoad()");

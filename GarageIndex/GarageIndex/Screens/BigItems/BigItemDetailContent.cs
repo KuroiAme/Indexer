@@ -264,7 +264,7 @@ namespace GarageIndex
 			this.btnIn.SetTitle (sb.ToString (), UIControlState.Normal);
 		}
 
-		ImageController imp;
+		ImagePanel imp;
 
 
 		public override void ViewDidLoad ()
@@ -281,7 +281,7 @@ namespace GarageIndex
 			const float imgY = 305;
 			RectangleF imageRect = new RectangleF (10, imgY, UIScreen.MainScreen.Bounds.Width - 20, 300);
 
-			imp = new ImageController (imageRect);
+			imp = new ImagePanel (imageRect);
 			View.Add (imp.View);
 			imp.ImageSaved += (object sender, SavedImageStringsEventArgs e) => {
 				MyCurrentObject.imageFileName = e.imageFilename;

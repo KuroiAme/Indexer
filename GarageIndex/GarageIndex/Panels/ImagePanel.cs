@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace GarageIndex
 {
-	public class ImageController : UIViewController
+	public class ImagePanel : UIViewController
 	{
 		UIImagePickerController imagePicker;
 		UIImageView imageView;
@@ -30,7 +30,7 @@ namespace GarageIndex
 		readonly RectangleF myFrame;
 		string current_imagefilename;
 
-		public ImageController (RectangleF myFrame)
+		public ImagePanel (RectangleF myFrame)
 		{
 			this.myFrame = myFrame;
 		}
@@ -57,16 +57,16 @@ namespace GarageIndex
 			imagePicker = null;
 		}
 
-		public void SetImageViewImage (UIImageView imageholder)
-		{
-			Console.WriteLine ("setImageViewImage");
-			if (imageholder != null) {
-
-				Console.WriteLine ("Not null");
-				this.imageView = imageholder;
-				Add (imageholder);
-			}
-		}
+//		public void SetImageViewImage (UIImageView imageholder)
+//		{
+//			Console.WriteLine ("setImageViewImage");
+//			if (imageholder != null) {
+//
+//				Console.WriteLine ("Not null");
+//				this.imageView = imageholder;
+//				Add (imageholder);
+//			}
+//		}
 
 		public override void LoadView ()
 		{
@@ -94,7 +94,7 @@ namespace GarageIndex
 				Frame = View.Bounds
 			};
 			this.View.BackgroundColor = UIColor.Clear;
-			View.AddSubview (this.imageView);
+
 
 			var doubletap = new UITapGestureRecognizer (AddImage);
 			doubletap.NumberOfTapsRequired = 2;
@@ -102,6 +102,9 @@ namespace GarageIndex
 
 			var longpress = new UILongPressGestureRecognizer(RemoveImage);
 			imageView.AddGestureRecognizer(longpress);
+
+			Add (imageView);
+			View.BringSubviewToFront (imageView);
 		}
 
 		private void AddImage (UIGestureRecognizer recognizer){
@@ -405,12 +408,14 @@ namespace GarageIndex
 			Console.WriteLine ("loadImage():" + filename);
 			if (!string.IsNullOrEmpty (filename)) {
 				var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
-				string ffilename = System.IO.Path.Combine (documentsDirectory, filename);
-				UIImage image = UIImage.FromFile (filename);
+				string path = System.IO.Path.Combine (documentsDirectory, filename);
+				UIImage image = UIImage.FromFile (path);
 				if (image != null) {
 					image = image.Scale (image.Size);
 					return image;
 				}
+			} else {
+				Console.WriteLine ("buggery");
 			}
 			return null;
 		}
