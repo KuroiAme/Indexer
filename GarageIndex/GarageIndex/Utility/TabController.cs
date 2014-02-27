@@ -17,7 +17,7 @@ namespace GarageIndex
 		public UITableViewController ItemCatalogue = null;
 		public UIViewController preferences = null;
 		public UITableViewController LagerList = null;
-		PiePlot piescreen = null;
+		//PiePlot piescreen = null;
 		public Scanner scanner;
 
 
@@ -48,7 +48,7 @@ namespace GarageIndex
 			InitPreferencesScreen();
 			InitScanner();
 			InitLagerCatalogueScreen();
-			InitStatisticsScreen();
+			//InitStatisticsScreen();
 
 
 			initTabArray ();
@@ -66,7 +66,7 @@ namespace GarageIndex
 					lagerNav,
 					prefNav,
 					scanNav,
-					StatNav
+					//StatNav
 				};
 			}
 			else {
@@ -79,7 +79,7 @@ namespace GarageIndex
 					LagerMaster,
 					prefNav,
 					scanNav,
-					StatNav
+					//StatNav
 				};
 			}
 
@@ -227,17 +227,17 @@ namespace GarageIndex
 
 		}
 
-		void InitStatisticsScreen(){
-			var stats = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Statistics", "Statistics");
-
-			piescreen = new PiePlot();
-			StatNav = new UINavigationController();
-			StatNav.TabBarItem = new UITabBarItem();
-			StatNav.TabBarItem.Title = stats;
-			StatNav.TabBarItem.Image = UIImage.FromBundle("statistics4832.png");
-			StatNav.PushViewController(piescreen, true);
-
-		}
+//		void InitStatisticsScreen(){
+//			var stats = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Statistics", "Statistics");
+//
+//			//piescreen = new PiePlot();
+//			StatNav = new UINavigationController();
+//			StatNav.TabBarItem = new UITabBarItem();
+//			StatNav.TabBarItem.Title = stats;
+//			StatNav.TabBarItem.Image = UIImage.FromBundle("statistics4832.png");
+//			StatNav.PushViewController(piescreen, true);
+//
+//		}
 
 		void InitLagerCatalogueScreen ()
 		{

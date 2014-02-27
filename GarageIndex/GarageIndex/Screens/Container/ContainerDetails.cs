@@ -65,7 +65,7 @@ namespace no.dctapps.Garageindex.screens
 					handler(this,e);
 				}
 			};
-			this.CreateEmailBarButton ();
+			CreateEmailBarButton ();
 		}
 
 		MFMailComposeViewController mailContr;
@@ -77,7 +77,7 @@ namespace no.dctapps.Garageindex.screens
 			mailContr = new MFMailComposeViewController();
 			mailContr.SetSubject(AppDelegate.bl.GenerateContainerSubject(this.boks));
 			mailContr.SetMessageBody(AppDelegate.bl.GenerateContainerManifest(this.boks),false);
-			AppDelegate.bl.AddQRPictureAttachment(mailContr, this.boks);
+			AppDelegate.key.AddQRPictureAttachment(mailContr, this.boks);
 			//			bl.AddPictureAttachment(mailContr, this.boks);
 			it.Title = "email";
 			//IS really info

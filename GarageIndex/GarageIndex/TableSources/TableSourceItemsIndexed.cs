@@ -8,13 +8,13 @@ using no.dctapps.Garageindex.events;
 using no.dctapps.Garageindex.model;
 using No.Dctapps.GarageIndex;
 using no.dctapps.Garageindex.dao;
+using GarageIndex;
 
 namespace no.dctapps.Garageindex.tables
 {
 	public class TableSourceItemsIndexed : UITableViewSource {
 
 		string cellIdentifier = "TableCell";
-		LagerDAO dao;
 		Dictionary<string, List<string>> indexedTableItems;
 		string[] keys;
 
@@ -23,7 +23,7 @@ namespace no.dctapps.Garageindex.tables
 
 		public TableSourceItemsIndexed (string[] items)
 		{
-			dao = new LagerDAO();
+
 			indexedTableItems = new Dictionary<string, List<string>>();
 			foreach (var t in items) {
 				if (!string.IsNullOrEmpty (t)) {
@@ -83,7 +83,7 @@ namespace no.dctapps.Garageindex.tables
 
 			string input = indexedTableItems[keys[indexPath.Section]][indexPath.Row];
 
-			IList<Item> R = dao.GetItemsWithName(input);
+			IList<Item> R = AppDelegate.dao.GetItemsWithName(input);
 			foreach(Item X in R){
 				Console.WriteLine(X.toString());
 			}

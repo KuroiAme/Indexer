@@ -119,22 +119,22 @@ namespace no.dctapps.Garageindex.screens
 		{
 			base.ViewDidLoad ();
 
-			this.switchLO.On = AppDelegate.bl.GetContainersAsLarge();
-			this.switchQR.On = AppDelegate.bl.IncludeQr();
-			this.switchGAI.On = AppDelegate.bl.StatsEnabled ();
+			this.switchLO.On = AppDelegate.key.GetContainersAsLarge();
+			this.switchQR.On = AppDelegate.key.IncludeQr();
+			this.switchGAI.On = AppDelegate.key.StatsEnabled ();
 
 			this.switchLO.ValueChanged += (object sender, EventArgs e) => {
 				Console.WriteLine("Value changed:"+switchLO.On.ToString());
-				AppDelegate.bl.SaveContainersAsLarge(switchLO.On);
+				AppDelegate.key.SaveContainersAsLarge(switchLO.On);
 			};
 
 			this.switchQR.ValueChanged += (object sender, EventArgs e) => {
 				Console.WriteLine("Value changed:"+switchQR.On.ToString());
-				AppDelegate.bl.SaveIncludeQR(switchQR.On);
+				AppDelegate.key.SaveIncludeQR(switchQR.On);
             };
 
 			this.switchGAI.ValueChanged += (object sender, EventArgs e) => {
-				AppDelegate.bl.SaveStatsEnabled(switchGAI.On);
+				AppDelegate.key.SaveStatsEnabled(switchGAI.On);
 				if(switchGAI.On == true){
 					GAI.SharedInstance.Logger.LogLevel = GAILogLevel.Verbose;
 				}else{

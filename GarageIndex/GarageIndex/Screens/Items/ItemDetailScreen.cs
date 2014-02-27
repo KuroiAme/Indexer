@@ -107,7 +107,7 @@ namespace no.dctapps.Garageindex.screens
 				mailContr = new MFMailComposeViewController();
 				mailContr.SetSubject(AppDelegate.bl.GenerateSubject(this.item));
 				mailContr.SetMessageBody(AppDelegate.bl.GenerateManifest(this.item),false);
-				AppDelegate.bl.AddPictureAttachment(mailContr, this.item);
+				AppDelegate.key.AddPictureAttachment(mailContr, this.item);
 				this.PresentViewController(mailContr, true, delegate{});
 				mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => mailContr.DismissViewController (true, delegate{});
 			};

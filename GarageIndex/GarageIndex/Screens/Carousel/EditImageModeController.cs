@@ -130,7 +130,8 @@ namespace GarageIndex
 				List<RectangleF> Rects = new List<RectangleF> ();
 				IList<ImageTag> Tags = AppDelegate.dao.GetTagsByGalleryObjectID (go.ID);
 				for (int i = 0; i < Tags.Count; i++) {
-					Rects.Add (Tags [i].FetchAsRectangleF ());
+					TagUtility tu = new TagUtility (Tags [i]);
+					Rects.Add (tu.FetchAsRectangleF ());
 				}
 				for (int j = 0; j < Rects.Count; j++) {
 					if (Rects [j].Contains (point)) {
@@ -282,10 +283,11 @@ namespace GarageIndex
 					//contentFrame.Y = contentFrame.Y + this.NavigationController.View.Bounds.Y;
 					//contentFrame.X = contentFrame.X + this.NavigationController.View.Bounds.Bottom;
 					contentFrame.Y = contentFrame.Y + 90;
-					tag.StoreRectangleF(contentFrame);
+					TagUtility tu = new TagUtility(tag);
+					tu.StoreRectangleF(contentFrame);
 					AppDelegate.dao.SaveTag(tag);
 					Console.WriteLine("tagtext:"+tag.TagString);
-					Console.WriteLine("spot:"+tag.FetchAsRectangleF());
+					Console.WriteLine("spot:"+tu.FetchAsRectangleF());
 					tgv.SetNeedsDisplay();
 					ExtractNewThumbnail ();
 				}
