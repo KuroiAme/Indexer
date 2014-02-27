@@ -128,19 +128,19 @@ namespace no.dctapps.Garageindex.screens
 				Console.WriteLine ("catastrophe avoided:"+e.ToString());
 			}
 
-			if (tableItems.Count == 0) {
-				//POPULATE WITH DEFAULT ITEMS
-				LagerObject boks1 = new LagerObject ();
-				LagerObject boks2 = new LagerObject ();
-				boks1.Description = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Comic Books", "Comic Books");
-				boks2.Description = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Drawing material", "Drawing material");
-				boks1.Name = "DCT01";
-				boks2.Name = "DCT02";
-				tableItems.Add (boks1);
-				tableItems.Add (boks2);
-//				this.NavigationController.TabBarItem.BadgeValue = "2";
-			}
-
+//			if (tableItems.Count == 0) {
+//				//POPULATE WITH DEFAULT ITEMS
+//				LagerObject boks1 = new LagerObject ();
+//				LagerObject boks2 = new LagerObject ();
+//				boks1.Description = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Comic Books", "Comic Books");
+//				boks2.Description = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Drawing material", "Drawing material");
+//				boks1.Name = "DCT01";
+//				boks2.Name = "DCT02";
+//				tableItems.Add (boks1);
+//				tableItems.Add (boks2);
+////				this.NavigationController.TabBarItem.BadgeValue = "2";
+//			}
+//
 
 //			Add (table);
 

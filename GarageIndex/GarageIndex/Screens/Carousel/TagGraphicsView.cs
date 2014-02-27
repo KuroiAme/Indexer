@@ -50,7 +50,8 @@ namespace GarageIndex
 			List<String> tagStrings = new List<string>();
 			foreach(ImageTag tag in tags){
 				Console.WriteLine("RenderTags():"+tag.ToString());
-				rects.Add (tag.FetchAsRectangleF ());
+				TagUtility tu = new TagUtility (tag);
+				rects.Add (tu.FetchAsRectangleF ());
 				tagStrings.Add(tag.TagString);
 			}
 			PaintBoxes(rects);
@@ -59,7 +60,8 @@ namespace GarageIndex
 
 		private void RenderTags2(IList<ImageTag> tags){
 			foreach (ImageTag tag in tags) {
-				PaintTaggedBox (tag.FetchAsRectangleF(), tag.TagString);
+				TagUtility tu = new TagUtility (tag);
+				PaintTaggedBox (tu.FetchAsRectangleF(), tag.TagString);
 			}
 		}
 			

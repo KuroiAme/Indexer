@@ -56,6 +56,7 @@ namespace no.dctapps.garageindex
 
 		public void Refresh ()
 		{
+			this.TableView.ReloadData ();
 			PopulateTable();
 		}
 

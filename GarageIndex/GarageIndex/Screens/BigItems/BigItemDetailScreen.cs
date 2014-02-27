@@ -98,8 +98,8 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 				mailContr = new MFMailComposeViewController();
 					mailContr.SetSubject(AppDelegate.bl.GenerateSubject(myobby));
 					mailContr.SetMessageBody(AppDelegate.bl.GenerateContainerManifest(myobby),false);
-					AppDelegate.bl.AddPictureAttachment(mailContr, myobby);
-					AppDelegate.bl.AddQRPictureAttachment(mailContr, myobby);
+					AppDelegate.key.AddPictureAttachment(mailContr, myobby);
+					AppDelegate.key.AddQRPictureAttachment(mailContr, myobby);
 				this.PresentViewController(mailContr, true, delegate{});
 				
 				mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => mailContr.DismissViewController (true, delegate {});

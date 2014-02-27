@@ -1,13 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using no.dctapps.Garageindex.businesslogic;
-using TipOfTheDay;
 using no.dctapps.Garageindex.dao;
 using GoogleAnalytics.iOS;
 using MTiRate;
+using System.IO;
+using Tasky.DL.SQLiteBase;
+using Tasky.DL.SQLite;
 
 namespace GarageIndex
 {
@@ -42,9 +42,10 @@ namespace GarageIndex
 
 		// class-level declarations
 		UIWindow window;
-		UITabBarController tabs;
+		//UITabBarController tabs;
 		public static LagerDAO dao;
-		public static GarageindexBL bl;
+		public static IndexerBuisnessService bl;
+		public static KeyStorageServiceIos key;
 		//public static CouchDB db;
 
 		//
@@ -60,38 +61,32 @@ namespace GarageIndex
 			GAI.SharedInstance.TrackUncaughtExceptions = true;
 			Tracker = GAI.SharedInstance.GetTracker (TrackingId);
 
+			key = new KeyStorageServiceIos ();
 
 
-			//Initialize Global Frameworks...instead of having Dependency Injection
-			dao = new LagerDAO ();
-			bl = new GarageindexBL ();
-			//db = new CouchDB ();
+			var documents = Environment.GetFolderPath (Environment.SpecialFolder.LocalApplicationData);
+			var pathToDatabase = Path.Combine(documents, "db_sqlite-net.db");
 
-//			if (!bl.StatsEnabled && !bl.firstT) {
-//				GAI.SharedInstance.Logger.LogLevel = GAILogLevel.None;
-//			}
+			Connection conn = new Connection (pathToDatabase);
+
+			dao = new LagerDAO (conn);
+			bl = new IndexerBuisnessService (dao, new TranslationServiceIos());
 
 			// create a new window instance based on the screen size
-			window = new UIWindow (UIScreen.MainScreen.Bounds);
 
-			//tabs = new TabController ();
 			DashBoardViewController dashboard = new DashBoardViewController ();
 
+			//DashBoardViewController dashboard = new DashBoardViewController ();
+			TabController tabs = new TabController ();
+
 //			if(MonoTouch.Foundation.isi
-			this.window.TintColor = UIColor.White;
+			this.window.TintColor = UIColor.Purple;
 			
 			// If you have defined a root view controller, set it here:
 			this.window.RootViewController = dashboard; 
 			
 			// make the window visible
 			window.MakeKeyAndVisible ();
-//			if (UserInterfaceIdiomIsPhone) {
-//				if (CurrentSystemVersion >= iOS7) {
-//					TipOfTheDayControl<GarageIndexTipsProvider, DefaultTipsSettings>.Show (window);
-//				}
-//			}
-
-
 
 			return true;
 		}

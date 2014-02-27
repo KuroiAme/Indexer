@@ -37,21 +37,36 @@ namespace GarageIndex
 		public event EventHandler InLocationTouched;
 
 		public Item currentItem;
+<<<<<<< HEAD
 		//UINavigationController nc;
 		UIViewController parent;
 
 		public ItemDetailsController (UIViewController parent)
 		{
 			this.parent = parent;
+=======
+		UINavigationController nc;
+		UIViewController parent;
+
+		public ItemDetailsController (UINavigationController nc, UIViewController parent)
+		{
+			this.parent = parent;
+			this.nc = nc;
+>>>>>>> PCL
 			initRectangles ();
 
 		}
 
+<<<<<<< HEAD
 		public ItemDetailsController (Item item, UIViewController parent)
+=======
+		public ItemDetailsController (Item item, UINavigationController nc, UIViewController parent)
+>>>>>>> PCL
 		{
 			this.parent = parent;
 			currentItem = item;
 			initRectangles ();
+			this.parent = parent;
 		}
 
 		SizeF contentSize;
@@ -317,16 +332,19 @@ namespace GarageIndex
 			var really = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("really delete this item?", "really delete this item?");
 			deleteBtn.TouchUpInside += (object sender, EventArgs e) =>  {
 				ass = new UIActionSheet (really, null, "Cancel", "Yes", null);
-				ass.Clicked += (object sender2, UIButtonEventArgs e2) =>  {
-					if (e2.ButtonIndex == 0) {
-						if (myItem != null) {
-							int c = ass.CancelButtonIndex;
-							ass.DismissWithClickedButtonIndex(c,true);
+				ass.Clicked += delegate (object a, UIButtonEventArgs c){
+						if (c.ButtonIndex == 0) {
 							AppDelegate.dao.DeleteItem (myItem.ID);
 							RaiseItemDeleted ();
+<<<<<<< HEAD
 							DismissViewControllerAsync(true);
 						}
+=======
+							nc.PopViewControllerAnimated (false);
+>>>>>>> PCL
 					}
+//					ass.DismissWithClickedButtonIndex(0,true);
+//					ass.DismissWithClickedButtonIndex(1,true);
 				};
 				ass.ShowInView (parent.View);
 			};
@@ -407,7 +425,7 @@ namespace GarageIndex
 			};
 			makeCornersRound ();
 
-			AddDeleteButton (myItem);
+
 			//AddShadowToImageView ();
 		}
 
@@ -567,10 +585,15 @@ namespace GarageIndex
 			InitializeUnpickImage();
 			initializePlaceObject();
 
+<<<<<<< HEAD
 			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
 			backbutton.SetImage (backarrow.MakeBackArrow(), UIControlState.Normal);
 			backbutton.TouchUpInside += (object sender, EventArgs e) => parent.DismissViewControllerAsync (true);
 			Add (backbutton);
+=======
+			AddDeleteButton (this.currentItem);
+			//Initia
+>>>>>>> PCL
 
 			//DO NOT DELETE
 			//			UIBarButtonItem it = new UIBarButtonItem();
@@ -909,11 +932,6 @@ namespace GarageIndex
 			};
 		}
 
-		public override void ViewWillDisappear (bool animated)
-		{
-			base.ViewWillDisappear (animated);
-			this.SaveIt();
-		}
 	}
 }
 

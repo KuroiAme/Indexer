@@ -140,7 +140,7 @@ namespace no.dctapps.Garageindex.screens
 		{
 //			dao = new LagerDAO ();
 //			this.view = new UITableView (GetDyn()); 
-			if(AppDelegate.bl.GetContainersAsLarge()){
+			if(AppDelegate.key.GetContainersAsLarge()){
 				Console.WriteLine ("loadbigitems");
 				tableItems = AppDelegate.dao.GetAllLagerObjects();
 			}else{
@@ -148,7 +148,7 @@ namespace no.dctapps.Garageindex.screens
 				tableItems = AppDelegate.dao.GetAllLargeItems();
 			}
 
-			PopulateWithDummyData ();
+			//PopulateWithDummyData ();
 
 //			BlackLeatherTheme.Apply (this);
 //			Add (Table);

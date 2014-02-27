@@ -126,7 +126,8 @@ namespace GarageIndex
 
 		void ShowDetails (ImageTag mytag)
 		{
-			fetcher = mytag.FetchAsRectangleF ();
+			TagUtility tu = new TagUtility (mytag);
+			fetcher = tu.FetchAsRectangleF ();
 			string tagText = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Tag", "Tag");
 			this.tagIdLabel.Text = tagText + ":"+mytag.ID;
 
@@ -141,7 +142,7 @@ namespace GarageIndex
 				try{
 					float height = float.Parse(this.TextField_height.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 					fetcher.Height = height;
-					mytag.StoreRectangleF(fetcher);
+					tu.StoreRectangleF(fetcher);
 					AppDelegate.dao.SaveTag(mytag);
 				}catch(Exception ex){
 					Console.WriteLine("exception happend, defaulting value:"+ex.ToString());
@@ -153,7 +154,7 @@ namespace GarageIndex
 				try{
 					float width = float.Parse(this.WidthTextField.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 					fetcher.Width = width;
-					mytag.StoreRectangleF(fetcher);
+					tu.StoreRectangleF(fetcher);
 					AppDelegate.dao.SaveTag(mytag);
 				}catch(Exception ex){
 					Console.WriteLine("exception happend, defaulting value:"+ex.ToString());
@@ -165,7 +166,7 @@ namespace GarageIndex
 				try{
 					float x = float.Parse(this.xTextField.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 					fetcher.X = x;
-					mytag.StoreRectangleF(fetcher);
+					tu.StoreRectangleF(fetcher);
 					AppDelegate.dao.SaveTag(mytag);
 				}catch(Exception ex){
 					Console.WriteLine("exception happend, defaulting value:"+ex.ToString());
@@ -177,7 +178,7 @@ namespace GarageIndex
 				try{
 					float y = float.Parse(this.yTextField.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 					fetcher.Y = y;
-					mytag.StoreRectangleF(fetcher);
+					tu.StoreRectangleF(fetcher);
 					AppDelegate.dao.SaveTag(mytag);
 				}catch(Exception ex){
 					Console.WriteLine("exception happend, defaulting value:"+ex.ToString());
@@ -232,7 +233,8 @@ namespace GarageIndex
 			UIImage MasterImage = UIImage.FromFile (path);
 
 			CGImage cg = MasterImage.CGImage;
-			CGImage neo = cg.WithImageInRect (tag.FetchAsRectangleF());
+			TagUtility tu = new TagUtility (tag);
+			CGImage neo = cg.WithImageInRect (tu.FetchAsRectangleF());
 
 			UIImage cutout = UIImage.FromImage (neo);
 			//UIImage thumbnail = cutout.Scale (new SizeF(50, 50));
