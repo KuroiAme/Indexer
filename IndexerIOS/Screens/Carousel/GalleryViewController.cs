@@ -1,6 +1,6 @@
 ﻿using System;
 using MonoTouch.UIKit;
-using iCarouselSDK;
+using Alliance.Carousel;
 using System.Drawing;
 using System.Collections.Generic;
 using no.dctapps.Garageindex.events;
@@ -18,9 +18,9 @@ using no.dctapps.Garageindex;
 
 namespace GarageIndex
 {
-	public class TaggedImageViewController : UIViewController
+	public class GalleryViewController : UIViewController
 	{
-		public iCarousel carousel;
+		CarouselView carousel;
 		UIImagePickerController imagePicker;
 		public UIPopoverController Pc;
 		LoadingOverlay loadingOverlay;
@@ -28,7 +28,7 @@ namespace GarageIndex
 		public event EventHandler<GotPictureEventArgs> GotPicture;
 		public event EventHandler Clear;
 
-		public TaggedImageViewController ()
+		public GalleryViewController ()
 		{
 		}
 
@@ -37,22 +37,34 @@ namespace GarageIndex
 			RaiseClear ();
 		}
 
+		public IList<GalleryObject> items;
+
+		IList<GalleryObject> GetActiveGalleryItems ()
+		{
+			string type = AppDelegate.key.GetActiveGalleryType ();
+			int id = AppDelegate.key.GetActiveGalleryID ();
+			return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (type, id);
+		}
+
 		public override void ViewDidLoad(){
 			base.ViewDidLoad ();
 
-			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
+			items = GetActiveGalleryItems();
+
+			var imgView = new UIImageView(BlueSea.MakeBlueSea())
+			{
 				ContentMode = UIViewContentMode.ScaleToFill,
 				AutoresizingMask = UIViewAutoresizing.All,
 				Frame = View.Bounds
 			};
+			View.AddSubview(imgView);
 
-			View.AddSubview (imgView);
-
-			carousel = new iCarousel (View.Bounds) {
-				CarouselType = iCarouselType.CoverFlow2,
-				DataSource = new TaggedImageDataSource(),
-				Delegate = new TaggedImageDelegate(this)
-			};
+			carousel = new CarouselView(View.Bounds);
+			carousel.DataSource = new LinearDataSource(this);
+			carousel.Delegate = new GalleryDelegate(this);
+			carousel.CarouselType = CarouselType.CoverFlow;
+			carousel.ConfigureView();
+			View.AddSubview(carousel);
 
 
 			var tap = new UITapGestureRecognizer (Tapped);
@@ -492,12 +504,6 @@ namespace GarageIndex
 			mySavePicture(image); //local event
 			loadingOverlay.Hide ();
 
-//			this.imageView.Image = null;
-
-//			var handler = this.GotPicture;
-//			if (handler != null && image != null) {
-//				handler(this, new GotPictureEventArgs(image));
-//			}
 		}
 
 
@@ -582,63 +588,70 @@ namespace GarageIndex
 		}
 	}
 
+	public class LinearDataSource : CarouselViewDataSource
+	{
+		GalleryViewController vc;
 
-
-	public class TaggedImageDataSource : iCarouselDataSource{
-
-		public override uint NumberOfItems(iCarousel carousel){
-			return (uint) AppDelegate.dao.GetNumberOfItemsInGallery ();
+		public LinearDataSource(GalleryViewController vc)
+		{
+			this.vc = vc;
 		}
 
-		public override UIView ViewForItem(iCarousel carousel, uint index, UIView reusingView){
+		public override uint NumberOfItems(CarouselView carousel)
+		{
+			return (uint)vc.items.Count;
+		}
 
-//			List<UILabel> tags;
+		public override UIView ViewForItem(CarouselView carousel, uint index, UIView reusingView)
+		{
 
-			var imgView = reusingView as UIImageView;
+						var imgView = reusingView as UIImageView;
 
+						var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+						var gallerydirectory = Path.Combine (documentsDirectory, "gallery");
+			
+						string thumbfilename = vc.items [index].thumbFileName;
+						string path = Path.Combine (gallerydirectory, thumbfilename);
+						Console.WriteLine ("path:" + path);
+						UIImage currentImage = UIImage.FromFile (path);
+						SizeF dim = currentImage.Size;
+			
+						//create new view if none is availble fr recycling
+						if (imgView == null) {
+							imgView = new UIImageView(new RectangleF(0,0, dim.Width,dim.Height)){
+								ContentMode = UIViewContentMode.ScaleAspectFit
+							};
+						}
 
-
-			var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
-			var gallerydirectory = Path.Combine (documentsDirectory, "gallery");
-
-			string thumbfilename = AppDelegate.dao.GetThumbfilenameForIndex (index);
-			string path = Path.Combine (gallerydirectory, thumbfilename);
-			Console.WriteLine ("path:" + path);
-			UIImage currentImage = UIImage.FromFile (path);
-			SizeF dim = currentImage.Size;
-
-			//create new view if none is availble fr recycling
-			if (imgView == null) {
-				imgView = new UIImageView(new RectangleF(0,0, dim.Width,dim.Height)){
-					ContentMode = UIViewContentMode.ScaleAspectFit
-				};
-			}
-
-			if (currentImage == null) {
-				Console.WriteLine ("Fubar image");
-			}
-
-
-
-			//imgView.CancelCurrentImageLoad (); //?????
-			imgView.Image = currentImage;
-
-			reusingView = imgView;
-
-			return reusingView;
+						imgView.Image = currentImage;
+			
+						reusingView = imgView;
+			
+						return reusingView;
 		}
 	}
 
-	public class TaggedImageDelegate : iCarouselDelegate{
-		TaggedImageViewController tivc;
+	public class GalleryDelegate : CarouselViewDelegate
+	{
+		GalleryViewController vc;
 
-		public TaggedImageDelegate (TaggedImageViewController tivc)
+		public GalleryDelegate(GalleryViewController vc)
 		{
-			this.tivc = tivc;
+			this.vc = vc;
 		}
 
-		public override void DidSelectItem (iCarousel carousel, int index)
+		public override float ValueForOption(CarouselView carousel, CarouselOption option, float aValue)
 		{
+			if (option == CarouselOption.Spacing)
+			{
+				return aValue * 1.1f;
+			}
+			return aValue;
+		}
+
+		public override void DidSelectItem(CarouselView carousel, int index)
+		{
+			Console.WriteLine("Selected: " + ++index);
 			Console.WriteLine ("Selected: " + ++index);
 			GalleryObject go = AppDelegate.dao.GetGalleryObjectByIndex (--index);
 			var eimc = new EditImageModeController (go);
@@ -646,7 +659,7 @@ namespace GarageIndex
 				Console.WriteLine("reloading data");
 				carousel.ReloadData ();
 			};
-			tivc.PresentViewControllerAsync (eimc, true);
+			vc.PresentViewController (eimc, true, null);
 		}
 	}
 }

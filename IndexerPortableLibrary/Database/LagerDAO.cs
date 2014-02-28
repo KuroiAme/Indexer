@@ -3,6 +3,7 @@ using no.dctapps.Garageindex.model;
 using No.Dctapps.GarageIndex;
 using GarageIndex;
 using Tasky.DL.SQLiteBase;
+using System;
 
 namespace no.dctapps.Garageindex.dao
 {
@@ -164,6 +165,7 @@ namespace no.dctapps.Garageindex.dao
 			return myList;
 		}
 
+		[Obsolete]
 		public  GalleryObject GetGalleryObjectByIndex (int index)
 		{
 			IList<GalleryObject> myList = new List<GalleryObject>();
@@ -171,6 +173,15 @@ namespace no.dctapps.Garageindex.dao
 				myList =  conn.Query<GalleryObject> ("select * from GalleryObject");
 
 			return myList[index];
+		}
+
+		public IList<GalleryObject> GetAllGalleryObjectsByTypeAndID (string type, int id)
+		{
+			IList<GalleryObject> myList = new List<GalleryObject>();
+
+			myList =  conn.Query<GalleryObject> ("select * from GalleryObject where LocationType= ? and LocationID = ?", type,id);
+
+			return myList;
 		}
 
 		public  void DeleteGalleryObjectByIndex (int currentindex)

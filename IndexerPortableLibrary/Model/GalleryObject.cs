@@ -15,6 +15,9 @@ namespace GarageIndex
 			get;
 			set;
 		}
+
+		public string LocationType{get; set;}
+		public string LocationID{get; set;}
 	}
 }
 

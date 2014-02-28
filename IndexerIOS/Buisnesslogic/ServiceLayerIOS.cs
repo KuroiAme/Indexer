@@ -166,10 +166,24 @@ namespace GarageIndex
 			return null;
 		}
 
+		public int GetActiveGalleryID ()
+		{
+			var store = NSUbiquitousKeyValueStore.DefaultStore;
+			int id = (int)store.GetLong ("activeLocation");
+		}
+
 		public void StoreActiveGallery(LagerObject lo){
 			var store = NSUbiquitousKeyValueStore.DefaultStore;
 			store.SetLong ("activeLocation", (long)lo.ID);
+			store.SetString ("activeGalleryType", "LagerObject");
 			store.Synchronize ();
+		}
+
+		public string GetActiveGalleryType ()
+		{
+			var store = NSUbiquitousKeyValueStore.DefaultStore;
+			var type = store.GetString ("activeGalleryType");
+			return type;
 		}
 	}
 }

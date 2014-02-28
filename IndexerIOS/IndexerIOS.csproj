@@ -232,7 +232,6 @@
     <Compile Include="Screens\Carousel\TagDetailScreen.cs" />
     <Compile Include="Screens\Carousel\TagDetailScreen.designer.cs" />
     <Compile Include="Screens\Carousel\TagGraphicsView.cs" />
-    <Compile Include="Screens\Carousel\TaggedImageViewController.cs" />
     <Compile Include="Screens\Container\BoxContent.cs" />
     <Compile Include="Screens\Container\BoxContent.designer.cs" />
     <Compile Include="Screens\Container\ContainerContent.cs" />
@@ -304,6 +303,7 @@
       <Link>Database\SQLite.Implementation.cs</Link>
     </Compile>
     <Compile Include="Main.cs" />
+    <Compile Include="Screens\Carousel\GalleryViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
@@ -351,37 +351,30 @@
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="googleadmob">
-      <InstallationInProgress>False</InstallationInProgress>
       <Version>6.8.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="googleanalytics">
-      <InstallationInProgress>False</InstallationInProgress>
       <Version>3.0.3</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="irate">
-      <InstallationInProgress>False</InstallationInProgress>
       <Version>1.8.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="satellite-menu">
-      <InstallationInProgress>False</InstallationInProgress>
       <Version>1.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="slide-down-menu">
-      <InstallationInProgress>False</InstallationInProgress>
       <Version>1.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="zxing.net.mobile">
-      <InstallationInProgress>False</InstallationInProgress>
       <Version>1.4.2</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="Alliance.Carousel">
-      <InstallationInProgress>True</InstallationInProgress>
       <Version>1.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>

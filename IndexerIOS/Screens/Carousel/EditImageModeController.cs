@@ -115,7 +115,7 @@ namespace GarageIndex
 
 			CreateEditBarButton ();
 
-			ExtractNewThumbnail ();
+			ExtractNewThumbnail();
 
 			CreateSlideDownMenu ();
 
@@ -208,7 +208,7 @@ namespace GarageIndex
 			}
 		}
 
-		void ExtractNewThumbnail ()
+		async void ExtractNewThumbnail ()
 		{
 			Console.WriteLine ("extracting thumbnail");
 			//UIView snapshotview = blend.SnapshotView (true);
@@ -273,6 +273,14 @@ namespace GarageIndex
 			return img;
 		}
 
+//		public UIImage ImageWithViewAsync (UIView view){
+//			UIGraphics.BeginImageContextWithOptions (view.Bounds.Size, view.Opaque, 0.0f);
+//			view.Layer.RenderInContext (UIGraphics.GetCurrentContext ());
+//			UIImage img = UIGraphics.GetImageFromCurrentImageContext ();
+//			UIGraphics.EndImageContext ();
+//			return img;
+//		}
+
 		UIBarButtonItem it;
 //		UIPopoverController uipc;
 
@@ -335,7 +343,7 @@ namespace GarageIndex
 //					Console.WriteLine ("tagtext:" + tag.TagString);
 //					Console.WriteLine ("spot:" + tag.FetchAsRectangleF ());
 					tgv.SetNeedsDisplay ();
-					ExtractNewThumbnail();
+
 				}
 			};
 			av.Show ();
@@ -344,7 +352,7 @@ namespace GarageIndex
 		void AddTag (UITapGestureRecognizer gestureRecognizer){
 			Console.WriteLine ("ADDTAG");
 			AddTagInner ();
-
+			ExtractNewThumbnail ();
 
 		}
 

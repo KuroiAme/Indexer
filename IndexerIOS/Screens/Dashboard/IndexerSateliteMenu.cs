@@ -102,7 +102,7 @@ namespace GarageIndex
 				}
 
 				if(args.MenuItem.Name == "Gallery"){
-					TaggedImageViewController tagGallery = new TaggedImageViewController();
+					GalleryViewController tagGallery = new GalleryViewController();
 					PresentViewControllerAsync(tagGallery, true);
 				}
 
