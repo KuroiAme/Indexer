@@ -111,6 +111,7 @@ namespace no.dctapps.Garageindex.dao
 			return myList[(int)index];
 		}
 
+		[Obsolete]
 		public  InsurancePhoto getInsurancePhotoItemByIdAndIndex (int iD, uint index)
 		{
 			IList<InsurancePhoto> myList = new List<InsurancePhoto>();
@@ -120,11 +121,21 @@ namespace no.dctapps.Garageindex.dao
 			return myList[(int) index];
 		}
 
+		[Obsolete]
 		public  IList<InsurancePhoto> GetItemInsurancePhotosByID (int iD)
 		{
 			IList<InsurancePhoto> myList = new List<InsurancePhoto>();
 
 				myList =  conn.Query<InsurancePhoto> ("select * from InsurancePhoto where ObjectReferenceID = ? and IsLargeObject = ? ORDER BY ID", iD, "false");
+
+			return myList;
+		}
+
+		public IList<InsurancePhoto> GetInsurancePhotosByTypeAndID (bool isLargeObject, int currentID)
+		{
+			IList<InsurancePhoto> myList;
+
+			myList =  conn.Query<InsurancePhoto> ("select * from InsurancePhoto where ObjectReferenceID = ? and IsLargeObject = ?", currentID, isLargeObject.ToString());
 
 			return myList;
 		}

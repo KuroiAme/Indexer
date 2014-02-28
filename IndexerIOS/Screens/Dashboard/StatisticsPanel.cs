@@ -32,7 +32,7 @@ namespace GarageIndex
 
 		void CreateStatistics ()
 		{
-			AddOneStatistic (AppDelegate.its.getTranslatedText("Total cash"),AppDelegate.its.getTranslatedText("value"), AppDelegate.bl.GetTotalValue());
+			AddOneStatistic (AppDelegate.its.getTranslatedText("Total cash"),AppDelegate.its.getTranslatedText("value"), AppDelegate.bl.GetTotalValue().ToString());
 			AddOneStatistic (AppDelegate.its.getTranslatedText("number of"),AppDelegate.its.getTranslatedText("storages"), AppDelegate.dao.GetAntallLagre());
 			AddOneStatistic (AppDelegate.its.getTranslatedText("number of"),AppDelegate.its.getTranslatedText("Items"), AppDelegate.dao.GetAntallTing());
 			AddOneStatistic (AppDelegate.its.getTranslatedText("number of"),AppDelegate.its.getTranslatedText("Containers"), AppDelegate.dao.GetAntallBeholdere());
@@ -42,11 +42,11 @@ namespace GarageIndex
 		const float margin = 10;
 		const float x = 0;
 		float y = margin;
-		float textheight = 22;
+		const float textheight = 22;
 		float textwidth;
 
 
-		void AddOneStatistic (string str, string str2, object getAntallLagre)
+		void AddOneStatistic (string str, string str2, string number)
 		{
 			UILabel lineone = new UILabel (new RectangleF (x, y, textwidth, textheight));
 			lineone.Text = str;
@@ -59,9 +59,9 @@ namespace GarageIndex
 			this.View.AddSubview (linetwo);
 
 			UILabel linethree = new UILabel (new RectangleF (x, y, textwidth, textheight));
-			linetwo.Text = str2;
+			linethree.Text = number;
 			y += textheight + margin;
-			this.View.AddSubview (linetwo);
+			this.View.AddSubview (linethree);
 		}
 	}
 }

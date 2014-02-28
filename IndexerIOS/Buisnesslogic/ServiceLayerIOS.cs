@@ -153,6 +153,7 @@ namespace GarageIndex
 			}
 		}
 
+		[Obsolete]
 		public LagerObject GetActiveGallery ()
 		{
 			var store = NSUbiquitousKeyValueStore.DefaultStore;
@@ -170,6 +171,7 @@ namespace GarageIndex
 		{
 			var store = NSUbiquitousKeyValueStore.DefaultStore;
 			int id = (int)store.GetLong ("activeLocation");
+			return id;
 		}
 
 		public void StoreActiveGallery(LagerObject lo){

@@ -1,6 +1,5 @@
 using System;
 using MonoTouch.UIKit;
-using iCarouselSDK;
 using System.Drawing;
 using System.Collections.Generic;
 using no.dctapps.Garageindex.events;

@@ -75,6 +75,7 @@ namespace GarageIndex
 			its = new TranslationServiceIos ();
 
 			// create a new window instance based on the screen size
+			window = new UIWindow (UIScreen.MainScreen.Bounds);
 
 			DashBoardViewController dashboard = new DashBoardViewController ();
 

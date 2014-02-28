@@ -1,7 +1,6 @@
 ﻿using System;
 using No.Dctapps.GarageIndex;
 using no.dctapps.Garageindex.model;
-using iCarouselSDK;
 using MonoTouch.UIKit;
 using no.dctapps.Garageindex.events;
 using GoogleAnalytics.iOS;
@@ -9,6 +8,8 @@ using System.Drawing;
 using System.IO;
 using MonoTouch.Foundation;
 using System.Linq;
+using Alliance.Carousel;
+using System.Collections.Generic;
 
 namespace GarageIndex
 {
@@ -18,20 +19,26 @@ namespace GarageIndex
 		public Boolean isLargeObject;
 		LagerObject lagerobject;
 
-		public iCarousel carousel;
+		public CarouselView carousel;
 		UIImagePickerController imagePicker;
 		public UIPopoverController Pc;
 		LoadingOverlay loadingOverlay;
 
 		public event EventHandler<GotPictureEventArgs> GotPicture;
 
+		int currentID;
+
+		public IList<InsurancePhoto> photos;
+
 		public InsurancePhotoController (Item item)
 		{
+			this.currentID = item.ID;
 			this.item = item;
 			isLargeObject = false;
 		}
 
 		public InsurancePhotoController(LagerObject lagerobject){
+			this.currentID = lagerobject.ID;
 			this.lagerobject = lagerobject;
 			isLargeObject = true;
 		}
@@ -40,26 +47,20 @@ namespace GarageIndex
 		public override void ViewDidLoad(){
 			base.ViewDidLoad ();
 
-			var imgView = new UIImageView(UIImage.FromBundle("background")){
+			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
 				ContentMode = UIViewContentMode.ScaleToFill,
 				AutoresizingMask = UIViewAutoresizing.All,
 				Frame = View.Bounds
 			};
 
-			View.AddSubview (imgView);
-			if (isLargeObject) {
-				carousel = new iCarousel (View.Bounds) {
-					CarouselType = iCarouselType.CoverFlow2,
-					DataSource = new InsurancePhotoDataSource(lagerobject),
-					Delegate = new InsurancePhotoDelegate (this,lagerobject)
-				};
-			} else {
-				carousel = new iCarousel (View.Bounds) {
-					CarouselType = iCarouselType.CoverFlow2,
-					DataSource = new InsurancePhotoDataSource(item),
-					Delegate = new InsurancePhotoDelegate (this,item)
-				};
-			}
+			IList<InsurancePhoto> photos = AppDelegate.dao.GetInsurancePhotosByTypeAndID (isLargeObject, currentID);
+
+			carousel = new CarouselView(View.Bounds);
+			carousel.DataSource = new InsurancePhotoDataSource(this);
+			carousel.Delegate = new InsurancePhotoDelegate(this);
+			carousel.CarouselType = CarouselType.CoverFlow;
+			carousel.ConfigureView();
+			View.AddSubview(carousel);
 
 			View.AddSubview (carousel);
 			CreateAddBarButton ();
@@ -407,39 +408,22 @@ namespace GarageIndex
 
 	}
 
-	public class InsurancePhotoDataSource : iCarouselDataSource{
+	public class InsurancePhotoDataSource : CarouselViewDataSource
+	{
+		InsurancePhotoController vc;
 
-		Boolean isLarge;
-		Item item;
-		LagerObject obj;
-
-		public InsurancePhotoDataSource (Item item)
+		public InsurancePhotoDataSource(InsurancePhotoController vc)
 		{
-			this.item = item;
-			isLarge = false;	
+			this.vc = vc;
 		}
 
-		public InsurancePhotoDataSource (LagerObject obj)
+		public override uint NumberOfItems(CarouselView carousel)
 		{
-			this.obj = obj;
-			isLarge = true;
+			return (uint)vc.photos.Count;
 		}
 
-
-		public override uint NumberOfItems(iCarousel carousel){
-			int x = 0;
-			if (isLarge) {
-				x = AppDelegate.dao.GetNumberofInsurancePhotosForLargeID (obj.ID);
-			} else {
-				x = AppDelegate.dao.GetNumberOfInsurancePhotosForItemId (item.ID);
-			}
-			Console.WriteLine ("x:" + x);
-			return (uint) x;
-		}
-
-		public override UIView ViewForItem(iCarousel carousel, uint index, UIView reusingView){
-
-			//			List<UILabel> tags;
+		public override UIView ViewForItem(CarouselView carousel, uint index, UIView reusingView)
+		{
 
 			var imgView = reusingView as UIImageView;
 
@@ -448,12 +432,7 @@ namespace GarageIndex
 			var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
 			var gallerydirectory = Path.Combine (documentsDirectory, "insurancePhotos");
 
-			InsurancePhoto photo = null;
-			if (isLarge) {
-				photo = AppDelegate.dao.getInsurancePhotoLargeByIdandIndex (obj.ID, index++);
-			} else {
-				photo = AppDelegate.dao.getInsurancePhotoItemByIdAndIndex (item.ID, index++);
-			}
+			InsurancePhoto photo = vc.photos[(int)index];
 			string thumbfilename = photo.ThumbFileName;
 			string path = Path.Combine (gallerydirectory, thumbfilename);
 			Console.WriteLine ("path:" + path);
@@ -482,41 +461,33 @@ namespace GarageIndex
 		}
 	}
 
-	public class InsurancePhotoDelegate : iCarouselDelegate{
-		InsurancePhotoController ipc;
-		LagerObject lagerobject;
-		Item item;
 
-		public InsurancePhotoDelegate (InsurancePhotoController ipc, LagerObject lagerobject)
+
+	public class InsurancePhotoDelegate : CarouselViewDelegate
+	{
+		InsurancePhotoController vc;
+
+		public InsurancePhotoDelegate(InsurancePhotoController vc)
 		{
-			this.ipc = ipc;
-			this.lagerobject = lagerobject;
+			this.vc = vc;
 		}
 
-		public InsurancePhotoDelegate (InsurancePhotoController ipc, Item item)
+		public override float ValueForOption(CarouselView carousel, CarouselOption option, float aValue)
 		{
-			this.ipc = ipc;
-			this.item = item;
+			if (option == CarouselOption.Spacing)
+			{
+				return aValue * 1.1f;
+			}
+			return aValue;
 		}
 
-		public override void DidSelectItem (iCarousel carousel, int index)
+		public override void DidSelectItem(CarouselView carousel, int index)
 		{
 			Console.WriteLine ("Selected: " + ++index);
-			InsurancePhoto photo;
-			if (ipc.isLargeObject) {
-				photo = AppDelegate.dao.getInsurancePhotoLargeByIdandIndex (lagerobject.ID,(uint) --index);
-			} else {
-				photo = AppDelegate.dao.getInsurancePhotoItemByIdAndIndex (item.ID,(uint) --index);
-			}
+			InsurancePhoto photo = vc.photos [index];
+
 			ViewInsurancePhoto vip = new ViewInsurancePhoto (photo);
-			ipc.NavigationController.PushViewController (vip, false);
-//			GalleryObject go = AppDelegate.dao.GetGalleryObjectByIndex (--index);
-//			var eimc = new EditImageModeController (go);
-//			eimc.ThumbChanged += (object sender, ThumbChangedEventArgs e) => {
-//				Console.WriteLine("reloading data");
-//				carousel.ReloadData ();
-//			};
-//			tivc.NavigationController.PushViewController (eimc, true);
+			vc.NavigationController.PushViewController (vip, false);
 		}
 	}
 

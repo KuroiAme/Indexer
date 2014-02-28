@@ -60,7 +60,7 @@ namespace GarageIndex
 			View.AddSubview(imgView);
 
 			carousel = new CarouselView(View.Bounds);
-			carousel.DataSource = new LinearDataSource(this);
+			carousel.DataSource = new GalleryDataSource(this);
 			carousel.Delegate = new GalleryDelegate(this);
 			carousel.CarouselType = CarouselType.CoverFlow;
 			carousel.ConfigureView();
@@ -588,11 +588,11 @@ namespace GarageIndex
 		}
 	}
 
-	public class LinearDataSource : CarouselViewDataSource
+	public class GalleryDataSource : CarouselViewDataSource
 	{
 		GalleryViewController vc;
 
-		public LinearDataSource(GalleryViewController vc)
+		public GalleryDataSource(GalleryViewController vc)
 		{
 			this.vc = vc;
 		}
@@ -610,7 +610,7 @@ namespace GarageIndex
 						var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
 						var gallerydirectory = Path.Combine (documentsDirectory, "gallery");
 			
-						string thumbfilename = vc.items [index].thumbFileName;
+						string thumbfilename = vc.items [(int) index].thumbFileName;
 						string path = Path.Combine (gallerydirectory, thumbfilename);
 						Console.WriteLine ("path:" + path);
 						UIImage currentImage = UIImage.FromFile (path);
