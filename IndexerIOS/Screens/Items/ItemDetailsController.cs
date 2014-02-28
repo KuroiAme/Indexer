@@ -37,31 +37,27 @@ namespace GarageIndex
 		public event EventHandler InLocationTouched;
 
 		public Item currentItem;
-<<<<<<< HEAD
+
 		//UINavigationController nc;
 		UIViewController parent;
 
 		public ItemDetailsController (UIViewController parent)
 		{
 			this.parent = parent;
-=======
-		UINavigationController nc;
-		UIViewController parent;
-
-		public ItemDetailsController (UINavigationController nc, UIViewController parent)
-		{
-			this.parent = parent;
-			this.nc = nc;
->>>>>>> PCL
-			initRectangles ();
-
 		}
 
-<<<<<<< HEAD
+
+//		public ItemDetailsController (UINavigationController nc, UIViewController parent)
+//		{
+//			this.parent = parent;
+//			this.nc = nc;
+//
+//			initRectangles ();
+//
+//		}
+
+
 		public ItemDetailsController (Item item, UIViewController parent)
-=======
-		public ItemDetailsController (Item item, UINavigationController nc, UIViewController parent)
->>>>>>> PCL
 		{
 			this.parent = parent;
 			currentItem = item;
@@ -330,21 +326,13 @@ namespace GarageIndex
 		{
 			deleteBtn.SetTitle (MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Delete this item", "Delete this item"), UIControlState.Normal);
 			var really = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("really delete this item?", "really delete this item?");
-			deleteBtn.TouchUpInside += (object sender, EventArgs e) =>  {
+			deleteBtn.TouchUpInside += (object sender, EventArgs e) => {
 				ass = new UIActionSheet (really, null, "Cancel", "Yes", null);
-				ass.Clicked += delegate (object a, UIButtonEventArgs c){
-						if (c.ButtonIndex == 0) {
-							AppDelegate.dao.DeleteItem (myItem.ID);
-							RaiseItemDeleted ();
-<<<<<<< HEAD
-							DismissViewControllerAsync(true);
-						}
-=======
-							nc.PopViewControllerAnimated (false);
->>>>>>> PCL
+				ass.Clicked += delegate (object a, UIButtonEventArgs c) {
+					if (c.ButtonIndex == 0) {
+						AppDelegate.dao.DeleteItem (myItem.ID);
+						RaiseItemDeleted ();
 					}
-//					ass.DismissWithClickedButtonIndex(0,true);
-//					ass.DismissWithClickedButtonIndex(1,true);
 				};
 				ass.ShowInView (parent.View);
 			};
@@ -353,8 +341,6 @@ namespace GarageIndex
 
 		public void ShowDetails (Item myItem)
 		{
-			this.ResetImageView();
-
 			if (myItem == null) {
 				myItem = new Item ();
 			} else {
@@ -585,42 +571,13 @@ namespace GarageIndex
 			InitializeUnpickImage();
 			initializePlaceObject();
 
-<<<<<<< HEAD
+
 			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
 			backbutton.SetImage (backarrow.MakeBackArrow(), UIControlState.Normal);
 			backbutton.TouchUpInside += (object sender, EventArgs e) => parent.DismissViewControllerAsync (true);
 			Add (backbutton);
-=======
+
 			AddDeleteButton (this.currentItem);
-			//Initia
->>>>>>> PCL
-
-			//DO NOT DELETE
-			//			UIBarButtonItem it = new UIBarButtonItem();
-			//			
-			//			it.Title = "more"; 
-			//			ItemInfo li = new ItemInfo(this.item);
-			//			if(!UserInterfaceIdiomIsPhone){
-			//				Pc = new UIPopoverController(li);
-			//			}
-			//			
-			//
-			//			it.Clicked += (object sender, EventArgs e) => {
-			//
-			//				
-			//			if(UserInterfaceIdiomIsPhone){
-			//				NavigationController.PresentViewController (li, true, delegate {});
-			//					NavigationController.PushViewController(li,true);
-			//				}else{
-			//					Pc.PresentFromBarButtonItem(it,UIPopoverArrowDirection.Up, true);
-			//					}
-			//			};
-
-			//			li.DismissInfo += (object sender, ItemSavedEventArgs e) => {
-			//				Pc.Dismiss(true);
-			//			};
-
-			//			this.NavigationItem.SetRightBarButtonItem(it, true);
 		}
 
 		void RaiseImageGotten (UIImage image)

@@ -65,11 +65,8 @@ namespace no.dctapps.Garageindex.screens
 					handler(this,e);
 				}
 			};
-<<<<<<< HEAD
+
 			//this.CreateEmailBarButton ();
-=======
-			CreateEmailBarButton ();
->>>>>>> PCL
 		}
 
 		MFMailComposeViewController mailContr;

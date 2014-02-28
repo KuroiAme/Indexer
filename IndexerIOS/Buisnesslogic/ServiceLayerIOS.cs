@@ -152,6 +152,25 @@ namespace GarageIndex
 				mailContr.AddAttachmentData (imagedata, "image/jpeg", jpg);
 			}
 		}
+
+		public LagerObject GetActiveGallery ()
+		{
+			var store = NSUbiquitousKeyValueStore.DefaultStore;
+			int id = (int)store.GetLong ("activeLocation");
+			IList<LagerObject> xs;
+			xs = AppDelegate.dao.GetLagerObjectByID (id);
+			if (xs.Count > 0) {
+				return xs [0];
+			}
+			
+			return null;
+		}
+
+		public void StoreActiveGallery(LagerObject lo){
+			var store = NSUbiquitousKeyValueStore.DefaultStore;
+			store.SetLong ("activeLocation", (long)lo.ID);
+			store.Synchronize ();
+		}
 	}
 }
 

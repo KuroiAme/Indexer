@@ -119,7 +119,6 @@ namespace no.dctapps.Garageindex.screens
 		{
 			base.ViewDidLoad ();
 
-<<<<<<< HEAD
 			Background back = new Background ();
 			View.AddSubview (back.View);
 			View.SendSubviewToBack (back.View);
@@ -129,14 +128,9 @@ namespace no.dctapps.Garageindex.screens
 			backbutton.TouchUpInside += (object sender, EventArgs e) => DismissViewControllerAsync (true);
 			Add (backbutton);
 
-			this.switchLO.On = AppDelegate.bl.GetContainersAsLarge();
-			this.switchQR.On = AppDelegate.bl.IncludeQr();
-			this.switchGAI.On = AppDelegate.bl.StatsEnabled ();
-=======
 			this.switchLO.On = AppDelegate.key.GetContainersAsLarge();
 			this.switchQR.On = AppDelegate.key.IncludeQr();
 			this.switchGAI.On = AppDelegate.key.StatsEnabled ();
->>>>>>> PCL
 
 			this.switchLO.ValueChanged += (object sender, EventArgs e) => {
 				Console.WriteLine("Value changed:"+switchLO.On.ToString());

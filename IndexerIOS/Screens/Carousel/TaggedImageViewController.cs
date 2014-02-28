@@ -82,7 +82,7 @@ namespace GarageIndex
 			active.ShadowColor = UIColor.Gray;
 			active.ShadowOffset = new SizeF(1.0f,0.2f);
 			active.TextColor = UIColor.White;
-			LagerObject myLocation = AppDelegate.bl.GetActiveGallery ();
+			LagerObject myLocation = AppDelegate.key.GetActiveGallery ();
 			if(myLocation != null){
 				active.Text = myLocation.Name;
 			}
@@ -139,7 +139,7 @@ namespace GarageIndex
 						sc.DismissEvent += (object sender2, ContainerClickedEventArgs e2) => {
 							//active.BackgroundColor = UIColor.White;
 							active.Text = e2.container.Name;
-							AppDelegate.bl.StoreActiveGallery(e2.container);
+							AppDelegate.key.StoreActiveGallery(e2.container);
 						};
 					}
 					if(e.ButtonIndex == 2){

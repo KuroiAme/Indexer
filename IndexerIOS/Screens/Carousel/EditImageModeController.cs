@@ -329,21 +329,13 @@ namespace GarageIndex
 					//contentFrame.Y = contentFrame.Y + this.NavigationController.View.Bounds.Y;
 					//contentFrame.X = contentFrame.X + this.NavigationController.View.Bounds.Bottom;
 					contentFrame.Y = contentFrame.Y + 90;
-<<<<<<< HEAD
-					tag.StoreRectangleF (contentFrame);
-					AppDelegate.dao.SaveTag (tag);
-					Console.WriteLine ("tagtext:" + tag.TagString);
-					Console.WriteLine ("spot:" + tag.FetchAsRectangleF ());
-					tgv.SetNeedsDisplay ();
-=======
 					TagUtility tu = new TagUtility(tag);
-					tu.StoreRectangleF(contentFrame);
-					AppDelegate.dao.SaveTag(tag);
-					Console.WriteLine("tagtext:"+tag.TagString);
-					Console.WriteLine("spot:"+tu.FetchAsRectangleF());
-					tgv.SetNeedsDisplay();
->>>>>>> PCL
-					ExtractNewThumbnail ();
+					tu.StoreRectangleF (contentFrame);
+					AppDelegate.dao.SaveTag (tag);
+//					Console.WriteLine ("tagtext:" + tag.TagString);
+//					Console.WriteLine ("spot:" + tag.FetchAsRectangleF ());
+					tgv.SetNeedsDisplay ();
+					ExtractNewThumbnail();
 				}
 			};
 			av.Show ();

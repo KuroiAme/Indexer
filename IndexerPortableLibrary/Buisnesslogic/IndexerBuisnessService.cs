@@ -19,6 +19,26 @@ namespace no.dctapps.Garageindex.businesslogic
 			this.translate = translate;
 		}
 
+		public double GetTotalValue ()
+		{
+			double cashvalue = 0;
+			IList<Item> allItems = dao.GetAllItems ();
+			IList<LagerObject> allLarge = dao.GetAllLargeItems ();
+			foreach (Item x in allItems) {
+				if (x.cashValue != null) {
+					cashvalue += x.cashValue;
+				}
+			}
+
+			foreach (LagerObject y in allLarge) {
+				if (y.cashValue != null) {
+					cashvalue += y.cashValue;
+				}
+			}
+
+			return cashvalue;
+		}
+
 		private string getHeaderTextLagerObject(){
 			var name = translate.getTranslatedText ("Name");
 			var desc = translate.getTranslatedText ("Description");

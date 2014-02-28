@@ -53,7 +53,7 @@ namespace GarageIndex
 
 			search = new UISearchBar (new RectangleF (0, 42, UIScreen.MainScreen.Bounds.Width, 40));
 			search.SearchButtonClicked += (object sender, EventArgs e) => {
-				var find = AppDelegate.bl.GetBestLocationForSearchTerm(search.Text);
+				//var find = AppDelegate.key.GetBestLocationForSearchTerm(search.Text);
 				search.ResignFirstResponder();
 			};
 //			search.AutosizesSubviews = false;

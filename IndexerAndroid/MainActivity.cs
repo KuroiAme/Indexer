@@ -27,6 +27,8 @@ namespace IndexerAndroid
 			button.Click += delegate {
 				button.Text = string.Format ("{0} clicks!", count++);
 			};
+
+//						AutoCompleteTextView searchText = FindViewById<AutoCompleteTextView> (Resource.Id.);
 		}
 	}
 }

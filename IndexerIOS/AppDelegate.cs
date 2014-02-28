@@ -46,6 +46,7 @@ namespace GarageIndex
 		public static LagerDAO dao;
 		public static IndexerBuisnessService bl;
 		public static KeyStorageServiceIos key;
+		public static ITranslationService its;
 		//public static CouchDB db;
 
 		//
@@ -71,13 +72,11 @@ namespace GarageIndex
 
 			dao = new LagerDAO (conn);
 			bl = new IndexerBuisnessService (dao, new TranslationServiceIos());
+			its = new TranslationServiceIos ();
 
 			// create a new window instance based on the screen size
 
 			DashBoardViewController dashboard = new DashBoardViewController ();
-
-			//DashBoardViewController dashboard = new DashBoardViewController ();
-			TabController tabs = new TabController ();
 
 //			if(MonoTouch.Foundation.isi
 			this.window.TintColor = UIColor.Purple;
