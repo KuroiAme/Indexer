@@ -115,7 +115,9 @@ namespace GarageIndex
 
 			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Dashboard");
 			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
-			rightPanel.mainMap.ReloadData ();
+			if (rightPanel != null && rightPanel.MainMap != null) {
+				rightPanel.MainMap.ReloadData ();
+			}
 		}
 	}
 }

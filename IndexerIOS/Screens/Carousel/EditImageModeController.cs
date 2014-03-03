@@ -9,7 +9,6 @@ using System.Linq;
 using MonoTouch.CoreGraphics;
 using MonoTouch.ObjCRuntime;
 using GoogleAnalytics.iOS;
-using SlideDownMenu;
 
 namespace GarageIndex
 {
@@ -130,44 +129,43 @@ namespace GarageIndex
 
 			ExtractNewThumbnail();
 
-			CreateSlideDownMenu ();
+//			CreateSlideDownMenu ();
 
-			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
-			backbutton.SetImage (backarrow.MakeBackArrow(), UIControlState.Normal);
-			backbutton.TouchUpInside += (object sender, EventArgs e) => DismissViewControllerAsync (true);
-			Add (backbutton);
+//			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
+//			backbutton.SetImage (backarrow.MakeBackArrow(), UIControlState.Normal);
+//			backbutton.TouchUpInside += (object sender, EventArgs e) => DismissViewControllerAsync (true);
+//			Add (backbutton);
+
+			CreateMenuOptions ();
 
 		}
 
-		void CreateSlideDownMenu ()
+		public event EventHandler TagListPressed;
+		public event EventHandler zoomTagging;
+
+		EditTags tags;
+
+		UIBarButtonItem taglistButton;
+
+		void CreateMenuOptions ()
 		{
-			var item0 = new MenuItem ("Options", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-			});
-			item0.Tag = 0;
-			var extract = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Add tag at zoomed object", "Add tag at zoomed object");
-			var item1 = new MenuItem (extract, UIImage.FromBundle ("startree.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-				AddTagInner();
+			List<UIBarButtonItem> buttons = new List<UIBarButtonItem> ();
 
-			});
-			item1.Tag = 1;
-			var item2 = new MenuItem ("List of tags", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-				EditTags tags = new EditTags(this.go);
-				PresentViewControllerAsync(tags,true);
-			});
-			item2.Tag = 2;
+			taglistButton = new UIBarButtonItem (UIImage.FromBundle ("frames4832.png"), UIBarButtonItemStyle.Bordered, this.TagListPressed);
+			taglistButton.Clicked += (object sender, EventArgs e) => {
+				tags = new EditTags (this.go);
+				this.NavigationController.PushViewController(tags,true);
+			};
+
+			buttons.Add (taglistButton);
+
+			UIBarButtonItem tagMyZoomedObject = new UIBarButtonItem (UIImage.FromBundle ("startree.png"), UIBarButtonItemStyle.Bordered, this.zoomTagging);
+			tagMyZoomedObject.Clicked += (object sender, EventArgs e) => AddTagInner ();
+			buttons.Add (tagMyZoomedObject);
 
 
-			//item0.tag = 0;
-
-			var slideMenu = new SlideMenu (new List<MenuItem> { item0, item1, item2});
-			slideMenu.Center = new PointF (slideMenu.Center.X, slideMenu.Center.Y + 25);
-			this.View.AddSubview (slideMenu);
+			this.NavigationItem.SetRightBarButtonItems (buttons.ToArray(), true);
 		}
-
-
 
 		void EditTagFrame (UIGestureRecognizer gestureRecognizer){
 			Console.WriteLine ("edittagframe triggered");
@@ -203,7 +201,7 @@ namespace GarageIndex
 							Console.WriteLine("mutex released");
 							mylock = false;
 						};
-						this.PresentViewControllerAsync (tds, true);
+						this.NavigationController.PushViewController(tds, true);
 						//this.NavigationController.PushViewController (tds, false);
 						break;
 //						} else {

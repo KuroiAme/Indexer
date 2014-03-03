@@ -2,7 +2,6 @@ using System;
 using MonoTouch.UIKit;
 using System.Drawing;
 using no.dctapps.Garageindex.model;
-using SlideDownMenu;
 using MonoTouch.MessageUI;
 using MonoTouch.Foundation;
 using MonoTouch.MapKit;

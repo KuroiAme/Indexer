@@ -8,7 +8,6 @@ using no.dctapps.Garageindex.model;
 using no.dctapps.Garageindex.events;
 using no.dctapps.Garageindex.screens;
 using GoogleAnalytics.iOS;
-using SlideDownMenu;
 
 namespace GarageIndex
 {
@@ -79,41 +78,42 @@ namespace GarageIndex
 			InitTable ();
 			this.PopulateTable();
 			//this.Initialize ();
+			this.InitializeRightButton ();
 
 
 //			
 			//this.TableView.Frame = 
 			
 			// Perform any additional setup after loading the view, typically from a nib.
-			CreateSlideDownMenu ();
+//			CreateSlideDownMenu ();
 		}
 
-		void CreateSlideDownMenu ()
-		{
-			var item0 = new MenuItem ("Options", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-			});
-			item0.Tag = 0;
-			var extract = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Add location", "Add location");
-			var item1 = new MenuItem (extract, UIImage.FromBundle ("startree.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-				ShowItemDetails (new Lager ());
-
-			});
-			item1.Tag = 1;
-			var item2 = new MenuItem ("Dismiss", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-				this.DismissViewControllerAsync(true);
-			});
-			item2.Tag = 2;
-
-
-			//item0.tag = 0;
-
-			var slideMenu = new SlideMenu (new List<MenuItem> { item0, item1, item2});
-			slideMenu.Center = new PointF (slideMenu.Center.X, slideMenu.Center.Y + 25);
-			this.View.AddSubview (slideMenu);
-		}
+//		void CreateSlideDownMenu ()
+//		{
+//			var item0 = new MenuItem ("Options", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
+//				Console.WriteLine("Item: {0}", menuItem);
+//			});
+//			item0.Tag = 0;
+//			var extract = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Add location", "Add location");
+//			var item1 = new MenuItem (extract, UIImage.FromBundle ("startree.png"), (menuItem) => {
+//				Console.WriteLine("Item: {0}", menuItem);
+//				ShowItemDetails (new Lager ());
+//
+//			});
+//			item1.Tag = 1;
+//			var item2 = new MenuItem ("Dismiss", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
+//				Console.WriteLine("Item: {0}", menuItem);
+//				this.DismissViewControllerAsync(true);
+//			});
+//			item2.Tag = 2;
+//
+//
+//			//item0.tag = 0;
+//
+//			var slideMenu = new SlideMenu (new List<MenuItem> { item0, item1, item2});
+//			slideMenu.Center = new PointF (slideMenu.Center.X, slideMenu.Center.Y + 25);
+//			this.View.AddSubview (slideMenu);
+//		}
 
 		public override void ViewDidAppear (bool animated)
 		{
@@ -167,11 +167,11 @@ namespace GarageIndex
 		}
 
 
-//		void Initialize ()
-//		{
-//			this.NavigationItem.SetRightBarButtonItem (new UIBarButtonItem (UIBarButtonSystemItem.Add), false);
-//			this.NavigationItem.RightBarButtonItem.Clicked += (sender, e) => ShowItemDetails (new Lager ());
-//		}
+		void InitializeRightButton ()
+		{
+			this.NavigationItem.SetRightBarButtonItem (new UIBarButtonItem (UIBarButtonSystemItem.Add), false);
+			this.NavigationItem.RightBarButtonItem.Clicked += (sender, e) => ShowItemDetails (new Lager ());
+		}
 
 		void ShowItemDetails (Lager lager)
 		{

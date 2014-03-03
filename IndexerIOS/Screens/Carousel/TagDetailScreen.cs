@@ -10,7 +10,6 @@ using System.Linq;
 using no.dctapps.Garageindex.model;
 using No.Dctapps.Garageindex.Ios.Screens;
 using GoogleAnalytics.iOS;
-using SlideDownMenu;
 using System.Collections.Generic;
 
 namespace GarageIndex
@@ -81,52 +80,51 @@ namespace GarageIndex
 
 
 			this.ShowDetails (tag);
+			CreateMenuOptions ();
 
-			CreateSlideDownMenu ();
+//			CreateSlideDownMenu ();
 
-			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
-			backbutton.SetImage (backarrow.MakeBackArrow(), UIControlState.Normal);
-			backbutton.TouchUpInside += (object sender, EventArgs e) => {
-				var handler = this.backpush;
-				if (handler != null) {
-					handler (this, new BackClickedEventArgs ());
-				}
-				DismissViewControllerAsync (true);
-			}; 
-			Add (backbutton);
+//			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
+//			backbutton.SetImage (backarrow.MakeBackArrow(), UIControlState.Normal);
+//			backbutton.TouchUpInside += (object sender, EventArgs e) => {
+//				var handler = this.backpush;
+//				if (handler != null) {
+//					handler (this, new BackClickedEventArgs ());
+//				}
+//				DismissViewControllerAsync (true);
+//			}; 
+//			Add (backbutton);
 
 
 		}
 
-		void CreateSlideDownMenu ()
+		UIBarButtonItem extractButton;
+
+		public event EventHandler ExtractPressed;
+
+		EditTags tags;
+
+		void CreateMenuOptions ()
 		{
-			var item0 = new MenuItem ("Options", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-			});
-			item0.Tag = 0;
-			var extract = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Extract", "Extract");
-			var item1 = new MenuItem (extract, UIImage.FromBundle ("startree.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
+			List<UIBarButtonItem> buttons = new List<UIBarButtonItem> ();
+
+			extractButton = new UIBarButtonItem (UIImage.FromBundle ("frames4832.png"), UIBarButtonItemStyle.Bordered, this.ExtractPressed);
+
+			ExtractPressed += (object sender, EventArgs e) => {
+				Console.WriteLine("trying to extract");
 				Extract ();
-			});
-			item1.Tag = 1;
-//			var item2 = new MenuItem ("Edit Tags", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
-//				Console.WriteLine("Item: {0}", menuItem);
-//				EditTags tags = new EditTags(this
-//			});
-//			item2.Tag = 2;
+			};
 
+			buttons.Add (extractButton);
 
-			//item0.tag = 0;
-
-			var slideMenu = new SlideMenu (new List<MenuItem> { item0, item1});
-			slideMenu.Center = new PointF (slideMenu.Center.X, slideMenu.Center.Y + 25);
-			this.View.AddSubview (slideMenu);
+			this.NavigationItem.SetRightBarButtonItems (buttons.ToArray(), true);
 		}
+			
 
 		void ShowDetails (ImageTag mytag)
 		{
-			TagUtility tu = new TagUtility (mytag);
+			this.tag = mytag;
+			TagUtility tu = new TagUtility (tag);
 			fetcher = tu.FetchAsRectangleF ();
 			string tagText = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Tag", "Tag");
 			this.tagIdLabel.Text = tagText + ":"+mytag.ID;

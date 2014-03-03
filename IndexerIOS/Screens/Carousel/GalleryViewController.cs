@@ -10,7 +10,6 @@ using System.Linq;
 using GoogleAnalytics.iOS;
 using SatelliteMenu;
 using No.DCTapps.GarageIndex;
-using SlideDownMenu;
 using no.dctapps.Garageindex.screens;
 using no.dctapps.Garageindex.model;
 using no.dctapps.garageindex;
@@ -32,7 +31,8 @@ namespace GarageIndex
 		{
 		}
 
-		void Tapped (UITapGestureRecognizer gestureRecognizer){
+		void Tapped (UITapGestureRecognizer gestureRecognizer)
+		{
 			Console.WriteLine ("tapped");
 			RaiseClear ();
 		}
@@ -49,7 +49,7 @@ namespace GarageIndex
 			string type = AppDelegate.key.GetActiveGalleryType ();
 			int id = AppDelegate.key.GetActiveGalleryID ();
 			Console.WriteLine ("type:" + type + ",id:" + id);
-			if(string.IsNullOrEmpty(type)){
+			if (string.IsNullOrEmpty (type)) {
 				type = "ALL";
 			}
 			if (type != "ALL") {
@@ -59,29 +59,29 @@ namespace GarageIndex
 			}
 		}
 
-		public override void ViewDidLoad(){
+		public override void ViewDidLoad ()
+		{
 			base.ViewDidLoad ();
 
-			items = GetActiveGalleryItems();
+			items = GetActiveGalleryItems ();
 			Console.WriteLine (items.Count);
 
-			var imgView = new UIImageView(BlueSea.MakeBlueSea())
-			{
+			var imgView = new UIImageView (BlueSea.MakeBlueSea ()) {
 				ContentMode = UIViewContentMode.ScaleToFill,
 				AutoresizingMask = UIViewAutoresizing.All,
 				Frame = View.Bounds
 			};
-			View.AddSubview(imgView);
+			View.AddSubview (imgView);
 			View.SendSubviewToBack (imgView);
 
-			carousel = new CarouselView(UIScreen.MainScreen.Bounds);
+			carousel = new CarouselView (UIScreen.MainScreen.Bounds);
 			//carousel. = images.Count;
-			carousel.DataSource = new GalleryDataSource(this);
+			carousel.DataSource = new GalleryDataSource (this);
 			GalleryDelegate gd = new GalleryDelegate (this);
 			carousel.Delegate = gd;
 			carousel.CarouselType = CarouselType.CoverFlow;
-			carousel.ConfigureView();
-			View.AddSubview(carousel);
+			carousel.ConfigureView ();
+			View.AddSubview (carousel);
 
 
 			var tap = new UITapGestureRecognizer (Tapped);
@@ -96,10 +96,11 @@ namespace GarageIndex
 
 			//InitSateliteMenu ();
 			InitActiveField ();
-			InitSateliteMenu ();
-			InitSlideDownMenu ();
 
+			IndexerSateliteMenu menu = new IndexerSateliteMenu ("Gallery", this);
+			View.Add (menu.View);
 
+			CreateOptions ();
 
 
 
@@ -108,15 +109,13 @@ namespace GarageIndex
 		public void Open (int index)
 		{
 			GalleryObject go = items [index];
-			EditImageModeController eimc = new EditImageModeController (go,this);
-			PresentViewController (eimc, false, null);
+			EditImageModeController eimc = new EditImageModeController (go, this);
+			this.NavigationController.PushViewController (eimc, true);
 		}
 
 		UILabel active;
-
 		LagerObject activeContainer;
 		Lager activeLager;
-
 		int activeID;
 		string activeType;
 
@@ -126,24 +125,24 @@ namespace GarageIndex
 			active = new UILabel (activeRect);
 			active.AdjustsFontSizeToFitWidth = true;
 			active.ShadowColor = UIColor.Gray;
-			active.ShadowOffset = new SizeF(1.0f,0.2f);
+			active.ShadowOffset = new SizeF (1.0f, 0.2f);
 			active.TextColor = UIColor.White;
 			activeID = AppDelegate.key.GetActiveGalleryID ();
 			activeType = AppDelegate.key.GetActiveGalleryType ();
 
-				if (activeType == null) {
-					activeType = "ALL";
-				}
+			if (activeType == null) {
+				activeType = "ALL";
+			}
 
-				if (activeType.Equals ("Lager")) {
-					activeContainer = null;
-					activeLager = AppDelegate.dao.GetLagerById (activeID);
+			if (activeType.Equals ("Lager")) {
+				activeContainer = null;
+				activeLager = AppDelegate.dao.GetLagerById (activeID);
 					
-				}
-				if (activeType.Equals ("Container")) {
-					activeLager = null;
-					activeContainer = AppDelegate.dao.GetContainerById (activeID);
-				}
+			}
+			if (activeType.Equals ("Container")) {
+				activeLager = null;
+				activeContainer = AppDelegate.dao.GetContainerById (activeID);
+			}
 
 			if (activeType == "ALL") {
 				activeLager = null;
@@ -158,102 +157,76 @@ namespace GarageIndex
 
 		}
 
-//		private void ChangeButtonBackground(int buttonNumber)
-//		{
-//			UIView.Animate(0.2, () => {
-//				this.MainButton.SetBackgroundImage(UIImage.FromBundle (images[String.Format("{0}", buttonNumber)]), UIControlState.Normal);
-//			});
-//		}
+		private event EventHandler AddImagePressed;
 
-		string[] images = {"frames4832.png", "math.png", "startree.png", "house.png"};
-		LagerList locations;
+		UIBarButtonItem addImageButton;
+		UIBarButtonItem delImageButton;
 
-		void InitSlideDownMenu ()
+		private event EventHandler DelImagePressed;
+
+		private event EventHandler SetActivePressed;
+
+		UIBarButtonItem setActiveButton;
+
+		private void CreateOptions ()
 		{
+			List<UIBarButtonItem> buttons = new List<UIBarButtonItem> ();
+			addImageButton = new UIBarButtonItem (UIImage.FromBundle ("frames4832.png"), UIBarButtonItemStyle.Bordered, this.AddImagePressed);
+			addImageButton.Clicked += (object sender, EventArgs e) => SelectSource();
+			//AddImagePressed += (object sender, EventArgs e) => SelectSource ();
+			buttons.Add (addImageButton);
 
-			var item0 = new MenuItem ("Options", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-				RaiseClear();
+			delImageButton = new UIBarButtonItem (UIImage.FromBundle ("startree.png"), UIBarButtonItemStyle.Bordered, this.DelImagePressed);
+			//DelImagePressed += (object sender, EventArgs e) => ReallyDelete ();
+			delImageButton.Clicked += (object sender, EventArgs e) => ReallyDelete ();
+			buttons.Add (delImageButton);
 
-			});
-			var item1 = new MenuItem ("Add Image", UIImage.FromBundle ("math.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-				SelectSource();
-				RaiseClear();
-			});
-			var item2 = new MenuItem ("Delete image", UIImage.FromBundle ("startree.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-				ReallyDelete();
-				RaiseClear();
-			});
-			var item3 = new MenuItem ("Set active", UIImage.FromBundle ("house.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-				UIActionSheet activeSheet = new UIActionSheet();
-				activeSheet.AddButton("Cancel");
-				activeSheet.AddButton("Container");
-				activeSheet.AddButton("Location");
-				activeSheet.AddButton("All");
-				activeSheet.Clicked += (object sender, UIButtonEventArgs e) => {
-					if(e.ButtonIndex == 0){
-						Console.WriteLine("Cancel");
-					}
-					if(e.ButtonIndex == 1){
-						//select container
-						Console.WriteLine("container");
-						SelectContainer sc = new SelectContainer();
-						PresentViewControllerAsync(sc,true);
-						sc.DismissEvent += (object sender2, ContainerClickedEventArgs e2) => {
-							//active.BackgroundColor = UIColor.White;
-							active.Text = e2.container.Name;
-							AppDelegate.key.StoreActiveGallery(e2.container);
-						};
-					}
-					if(e.ButtonIndex == 2){
-						//select Lager
-						Console.WriteLine("location");
-					}
-					if(e.ButtonIndex == 3){
-						Console.WriteLine("ALL");
-						this.items = AppDelegate.dao.GetAllGalleryObjects();
-						carousel.ReloadData();
+			setActiveButton = new UIBarButtonItem (UIImage.FromBundle ("house.png"), UIBarButtonItemStyle.Bordered, this.SetActivePressed);
+			setActiveButton.Clicked += (object sender, EventArgs e) => SetActive ();
+			//SetActivePressed += (object sender, EventArgs e) => SetActive ();
+			buttons.Add (setActiveButton);
 
-					}
+			this.NavigationItem.SetRightBarButtonItems (buttons.ToArray(), true);
 
-				};
-				activeSheet.ShowInView(this.View);
-				RaiseClear();
-			});
-			var item4 = new MenuItem ("Edit Locations", UIImage.FromBundle ("uchi4832.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-				locations = new LagerList();
-				PresentViewControllerAsync(locations, true);
-				RaiseClear();
-			});
-
-
-
-
-
-			item0.Tag = 0;
-			item1.Tag = 1;
-			item2.Tag = 2;
-			item3.Tag = 3;
-
-
-			var slideMenu = new SlideMenu (new List<MenuItem> { item0, item1, item2, item3, item4 });
-			slideMenu.Center = new PointF (slideMenu.Center.X, slideMenu.Center.Y + 25);
-			this.MainButton.TouchUpInside += (object sender, EventArgs e) => {
-				slideMenu.ToggleMenu();
-			}; 
-			this.Clear += (object sender, EventArgs e) => {
-				slideMenu.OpenIconMenu();
-//				slideMenu.MenuState = MenuStateEnum.MainMenu;
-//				//slideMenu.SetupLayout ();
-//				slideMenu.ToggleMenu();
-//				MainButton.Collapse();
-			};
-			this.View.AddSubview (slideMenu);
 		}
+
+		public void SetActive ()
+		{
+			UIActionSheet activeSheet = new UIActionSheet ();
+			activeSheet.AddButton ("Cancel");
+			activeSheet.AddButton ("Container");
+			activeSheet.AddButton ("Location");
+			activeSheet.AddButton ("All");
+			activeSheet.Clicked += (object sender, UIButtonEventArgs e) => {
+				if (e.ButtonIndex == 0) {
+					Console.WriteLine ("Cancel");
+				}
+				if (e.ButtonIndex == 1) {
+					//select container
+					Console.WriteLine ("container");
+					SelectContainer sc = new SelectContainer ();
+					this.NavigationController.PushViewController(sc,true);
+					sc.DismissEvent += (object sender2, ContainerClickedEventArgs e2) => {
+						//active.BackgroundColor = UIColor.White;
+						active.Text = e2.container.Name;
+						AppDelegate.key.StoreActiveGallery (e2.container);
+					};
+				}
+				if (e.ButtonIndex == 2) {
+					//select Lager
+					Console.WriteLine ("location");
+				}
+				if (e.ButtonIndex == 3) {
+					Console.WriteLine ("ALL");
+					this.items = AppDelegate.dao.GetAllGalleryObjects ();
+					carousel.ReloadData ();
+			
+				}
+			
+			};
+			activeSheet.ShowInView (this.View);
+		}
+
 
 		void RaiseClear ()
 		{
@@ -263,75 +236,70 @@ namespace GarageIndex
 			}
 		}
 
-		public override void ViewWillAppear (bool animated)
-		{
-			base.ViewWillAppear (animated);
 
-		}
+//		SatelliteMenuButton MainButton;
 
-		SatelliteMenuButton MainButton;
-
-		public void InitSateliteMenu(){
-
-			var image = UIImage.FromFile ("menu.png");
-			var yPos = View.Frame.Height - image.Size.Height - 10;
-			var frame = new RectangleF (10, yPos, image.Size.Width, image.Size.Height);
-
-			var SateliteItems = new [] { 
-				new SatelliteMenuButtonItem (UIImage.FromBundle ("scanner4832.png"), 1, "Scanner"),
-				new SatelliteMenuButtonItem (Flosshatt.MakeFlosshatt(), 2, "Items"),
-				new SatelliteMenuButtonItem (UIImage.FromFile ("table4832.png"), 3, "Big Items"),
-				new SatelliteMenuButtonItem (UIImage.FromFile ("container4832.png"), 4, "Containers"),
-				new SatelliteMenuButtonItem (UIImage.FromFile ("preferences4832.png"), 5, "Preferences"),
-			};
-
-			MainButton = new SatelliteMenuButton (View, image, SateliteItems, frame);
-
-			MainButton.MenuItemClick += (_, args) => {
-				Console.WriteLine ("{0} was clicked!", args.MenuItem.Name);
-
-				if(args.MenuItem.Name == "Scanner"){
-					Scanner scanner = new Scanner(this);
-					scanner.Scannit();
-				}
-				if(args.MenuItem.Name == "Items"){
-					if(UserInterfaceIdiomIsPhone){
-						ItemCatalogue cat = new ItemCatalogue();
-						PresentViewControllerAsync(cat, true);
-					}else{
-						ItemMasterView itemMaster = new ItemMasterView();
-						PresentViewControllerAsync(itemMaster, true);
-					}
-				}
-				if(args.MenuItem.Name == "Big Items"){
-					if(UserInterfaceIdiomIsPhone){
-						BigItemsScreen biggies = new BigItemsScreen();
-						PresentViewControllerAsync(biggies, true);
-					}else{
-						BigItemMasterView bigMaster = new BigItemMasterView();
-						PresentViewControllerAsync(bigMaster, true);
-					}
-				}
-				if(args.MenuItem.Name == "Containers"){
-					if(UserInterfaceIdiomIsPhone){
-					ContainerScreen containers = new ContainerScreen();
-					PresentViewControllerAsync(containers,true);
-					}else{
-						ContainerMasterView containerMaster = new ContainerMasterView();
-						PresentViewControllerAsync(containerMaster,true);
-					}
-				}
-				if(args.MenuItem.Name == "Preferences"){
-					Preferences pref = new Preferences();
-					PresentViewControllerAsync(pref, true);
-				}
-
-
-			};
-
-			View.AddSubview (MainButton);
-		}
-
+//		public void InitSateliteMenu ()
+//		{
+//
+//			var image = UIImage.FromFile ("menu.png");
+//			var yPos = View.Frame.Height - image.Size.Height - 10;
+//			var frame = new RectangleF (10, yPos, image.Size.Width, image.Size.Height);
+//
+//			var SateliteItems = new [] { 
+//				new SatelliteMenuButtonItem (UIImage.FromBundle ("scanner4832.png"), 1, "Scanner"),
+//				new SatelliteMenuButtonItem (Flosshatt.MakeFlosshatt (), 2, "Items"),
+//				new SatelliteMenuButtonItem (UIImage.FromFile ("table4832.png"), 3, "Big Items"),
+//				new SatelliteMenuButtonItem (UIImage.FromFile ("container4832.png"), 4, "Containers"),
+//				new SatelliteMenuButtonItem (UIImage.FromFile ("preferences4832.png"), 5, "Preferences"),
+//			};
+//
+//			MainButton = new SatelliteMenuButton (View, image, SateliteItems, frame);
+//
+//			MainButton.MenuItemClick += (_, args) => {
+//				Console.WriteLine ("{0} was clicked!", args.MenuItem.Name);
+//
+//				if (args.MenuItem.Name == "Scanner") {
+//					Scanner scanner = new Scanner (this);
+//					scanner.Scannit ();
+//				}
+//				if (args.MenuItem.Name == "Items") {
+//					if (UserInterfaceIdiomIsPhone) {
+//						ItemCatalogue cat = new ItemCatalogue ();
+//						PresentViewControllerAsync (cat, true);
+//					} else {
+//						ItemMasterView itemMaster = new ItemMasterView ();
+//						PresentViewControllerAsync (itemMaster, true);
+//					}
+//				}
+//				if (args.MenuItem.Name == "Big Items") {
+//					if (UserInterfaceIdiomIsPhone) {
+//						BigItemsScreen biggies = new BigItemsScreen ();
+//						PresentViewControllerAsync (biggies, true);
+//					} else {
+//						BigItemMasterView bigMaster = new BigItemMasterView ();
+//						PresentViewControllerAsync (bigMaster, true);
+//					}
+//				}
+//				if (args.MenuItem.Name == "Containers") {
+//					if (UserInterfaceIdiomIsPhone) {
+//						ContainerScreen containers = new ContainerScreen ();
+//						PresentViewControllerAsync (containers, true);
+//					} else {
+//						ContainerMasterView containerMaster = new ContainerMasterView ();
+//						PresentViewControllerAsync (containerMaster, true);
+//					}
+//				}
+//				if (args.MenuItem.Name == "Preferences") {
+//					Preferences pref = new Preferences ();
+//					PresentViewControllerAsync (pref, true);
+//				}
+//
+//
+//			};
+//
+//			View.AddSubview (MainButton);
+//		}
 
 		public override void ViewDidAppear (bool animated)
 		{
@@ -346,10 +314,10 @@ namespace GarageIndex
 		{
 
 			it = new UIBarButtonItem ();
-			var addtext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Add", "Add");
+			var addtext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Add", "Add");
 			it.Title = addtext;
-				it.Clicked += (object sender, EventArgs e) => SelectSource ();
-				this.NavigationItem.SetRightBarButtonItem (it, true);
+			it.Clicked += (object sender, EventArgs e) => SelectSource ();
+			this.NavigationItem.SetRightBarButtonItem (it, true);
 			
 		}
 
@@ -359,30 +327,32 @@ namespace GarageIndex
 		{
 
 			it2 = new UIBarButtonItem ();
-			var deltext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Delete", "Delete");
+			var deltext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Delete", "Delete");
 			it2.Title = deltext;
 			it2.Clicked += (object sender, EventArgs e) => ReallyDelete ();
 			this.NavigationItem.SetLeftBarButtonItem (it2, true);
 
 		}
+
 		UIActionSheet delsheet;
 
-		private void ReallyDelete(){
-			var really = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Really Delete current image?", "Really Delete current image?");
-			var myCancel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Cancel", "Cancel");
-			var OK = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("OK", "OK");
-			delsheet = new UIActionSheet(really);
+		private void ReallyDelete ()
+		{
+			var really = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Really Delete current image?", "Really Delete current image?");
+			var myCancel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Cancel", "Cancel");
+			var OK = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("OK", "OK");
+			delsheet = new UIActionSheet (really);
 			delsheet.AddButton (myCancel);
 			delsheet.AddButton (OK);
 
 			delsheet.Clicked += delegate(object sender, UIButtonEventArgs e2) {
-				if(e2.ButtonIndex == 0){
-					Console.WriteLine("deletion canceled");
-				}else if(e2.ButtonIndex == 1){
-					Console.WriteLine("Deletion OK");
-					DeleteCurrentPic();
-				}else{
-					Console.WriteLine("Unknown button");
+				if (e2.ButtonIndex == 0) {
+					Console.WriteLine ("deletion canceled");
+				} else if (e2.ButtonIndex == 1) {
+					Console.WriteLine ("Deletion OK");
+					DeleteCurrentPic ();
+				} else {
+					Console.WriteLine ("Unknown button");
 				}
 			};
 			delsheet.ShowInView (View);
@@ -395,35 +365,37 @@ namespace GarageIndex
 			GalleryObject del = items [currentindex];
 			items.RemoveAt (currentindex);
 			AppDelegate.dao.DeleteGalleryObject (del);
-			carousel.ReloadData();
+			carousel.ReloadData ();
 		}
 
 		UIActionSheet actionSheet;
 
-		public void SelectSource(){
-			var source = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("add image from where?", "add image from where?");
-			var myCancel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Cancel", "Cancel");
-			var myCamera = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Camera", "Camera");
-			var myLibrary = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Photo Library", "Photo Library");
-			actionSheet = new UIActionSheet(source);
-			actionSheet.AddButton(myCancel);
-			actionSheet.AddButton(myCamera);
-			actionSheet.AddButton(myLibrary);
+		public void SelectSource ()
+		{
+			var source = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("add image from where?", "add image from where?");
+			var myCancel = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Cancel", "Cancel");
+			var myCamera = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Camera", "Camera");
+			var myLibrary = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Photo Library", "Photo Library");
+			actionSheet = new UIActionSheet (source);
+			actionSheet.AddButton (myCancel);
+			actionSheet.AddButton (myCamera);
+			actionSheet.AddButton (myLibrary);
 			//			actionSheet.CancelButtonIndex = 0;
 
 			actionSheet.Clicked += delegate(object sender, UIButtonEventArgs e2) {
-				if(e2.ButtonIndex == 0){
+				if (e2.ButtonIndex == 0) {
 					//DO nothing
-				}else if(e2.ButtonIndex == 1){
-					PickFromCamera();
-				}else{
-					PickFromLibrary();
+				} else if (e2.ButtonIndex == 1) {
+					PickFromCamera ();
+				} else {
+					PickFromLibrary ();
 				}
 			};
 			actionSheet.ShowInView (View);
 		}
 
-		public void PickFromCamera(){
+		public void PickFromCamera ()
+		{
 			// create a new picker controller
 
 			// set our source to the photo library
@@ -444,7 +416,8 @@ namespace GarageIndex
 //			}
 		}
 
-		public void PickFromLibrary(){
+		public void PickFromLibrary ()
+		{
 			imagePicker = new UIImagePickerController ();
 			imagePicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
 			// set what media types
@@ -467,28 +440,26 @@ namespace GarageIndex
 //				Pc.PresentFromBarButtonItem (it, UIPopoverArrowDirection.Up, true);
 //			}
 		}
-
-		// Do something when the 
-		void Handle_Canceled (object sender, EventArgs e) {
+		// Do something when the
+		void Handle_Canceled (object sender, EventArgs e)
+		{
 			Console.WriteLine ("picker cancelled");
-			imagePicker.DismissViewController(true, delegate {});
+			imagePicker.DismissViewController (true, delegate {
+			});
 		}
-
-
 		// This is a sample method that handles the FinishedPickingMediaEvent
 		protected void HandleFinishedPickingMedia (object sender, UIImagePickerMediaPickedEventArgs e)
 		{
 			// determine what was selected, video or image
 			bool isImage = false;
-			switch(e.Info[UIImagePickerController.MediaType].ToString())
-			{
+			switch (e.Info [UIImagePickerController.MediaType].ToString ()) {
 			case "public.image":
-				Console.WriteLine("Image selected");
+				Console.WriteLine ("Image selected");
 				isImage = true;
 				break;
 
 			case "public.video":
-				Console.WriteLine("Video selected");
+				Console.WriteLine ("Video selected");
 				break;
 			}
 
@@ -500,35 +471,35 @@ namespace GarageIndex
 			//				Console.WriteLine(referenceURL.ToString ());
 
 			// if it was an image, get the other image info
-			if(isImage) {
+			if (isImage) {
 
-			// get the original image
-			UIImage originalImage = e.Info[UIImagePickerController.OriginalImage] as UIImage;
-			if (originalImage != null) {
-				// do something with the image
-				//					Console.WriteLine ("got the original image");
-				//					imageView.Image = originalImage;
-				//					OutputImage = originalImage;
-				RaiseImageGotten (originalImage);
-			} else {
-
-				// get the edited image
-				UIImage editedImage = e.Info [UIImagePickerController.EditedImage] as UIImage;
-				if (editedImage != null) {
+				// get the original image
+				UIImage originalImage = e.Info [UIImagePickerController.OriginalImage] as UIImage;
+				if (originalImage != null) {
 					// do something with the image
-					//						Console.WriteLine ("got the edited image");
-					//						imageView.Image = editedImage;
-					//					OutputImage = editedImage;
-					RaiseImageGotten (editedImage);
-				}
-			}
+					//					Console.WriteLine ("got the original image");
+					//					imageView.Image = originalImage;
+					//					OutputImage = originalImage;
+					RaiseImageGotten (originalImage);
+				} else {
 
-			//				//- get the image metadata
-			//				NSDictionary imageMetadata = e.Info[UIImagePickerController.MediaMetadata] as NSDictionary;
-			//				if(imageMetadata != null) {
-			//					// do something with the metadata
-			//					Console.WriteLine ("got image metadata");
-			//				}
+					// get the edited image
+					UIImage editedImage = e.Info [UIImagePickerController.EditedImage] as UIImage;
+					if (editedImage != null) {
+						// do something with the image
+						//						Console.WriteLine ("got the edited image");
+						//						imageView.Image = editedImage;
+						//					OutputImage = editedImage;
+						RaiseImageGotten (editedImage);
+					}
+				}
+
+				//				//- get the image metadata
+				//				NSDictionary imageMetadata = e.Info[UIImagePickerController.MediaMetadata] as NSDictionary;
+				//				if(imageMetadata != null) {
+				//					// do something with the metadata
+				//					Console.WriteLine ("got image metadata");
+				//				}
 
 			}
 			// if it's a video
@@ -543,10 +514,11 @@ namespace GarageIndex
 			//			
 
 
-			if(UserInterfaceIdiomIsPhone){
-				imagePicker.DismissViewController (true, delegate{});
-			}else{
-				Pc.Dismiss(false);
+			if (UserInterfaceIdiomIsPhone) {
+				imagePicker.DismissViewController (true, delegate {
+				});
+			} else {
+				Pc.Dismiss (false);
 			}
 		}
 
@@ -559,14 +531,13 @@ namespace GarageIndex
 			loadingOverlay = new LoadingOverlay (UIScreen.MainScreen.Bounds);
 			View.Add (loadingOverlay);
 			View.BringSubviewToFront (loadingOverlay);
-			mySavePicture(image); //local event
+			mySavePicture (image); //local event
 			loadingOverlay.Hide ();
 
 		}
 
-
-
-		private void mySavePicture(UIImage image){
+		private void mySavePicture (UIImage image)
+		{
 
 
 			Console.WriteLine ("mySavePicture()");
@@ -578,12 +549,12 @@ namespace GarageIndex
 			go.thumbFileName = names [1];
 
 			if (activeLager != null) {
-				go.LocationID = activeLager.ID.ToString();
+				go.LocationID = activeLager.ID.ToString ();
 				go.LocationType = "Lager";
 			}
 
 			if (activeContainer != null) {
-				go.LocationID = activeContainer.ID.ToString();
+				go.LocationID = activeContainer.ID.ToString ();
 				go.LocationType = "Container";
 			}
 
@@ -596,8 +567,8 @@ namespace GarageIndex
 
 		public static string[] SaveGalleryImage (string name, UIImage ourpic)
 		{
-			if(ourpic == null)
-				return new string[2]{"",""};
+			if (ourpic == null)
+				return new string[2]{ "", "" };
 			Console.WriteLine ("Save");
 			float aspectRatio = ourpic.Size.Width / ourpic.Size.Height;
 			Console.WriteLine ("ratio:" + aspectRatio);
@@ -621,7 +592,7 @@ namespace GarageIndex
 				string pngfileName = System.IO.Path.Combine (gallerydirectory, picname);
 				string thumbpngfileName = System.IO.Path.Combine (gallerydirectory, thumbpicname);
 				NSData imgData = resImage.AsPNG ();
-				NSData img2Data = thumbPic.AsPNG();
+				NSData img2Data = thumbPic.AsPNG ();
 
 				NSError err = null;
 				if (imgData.Save (pngfileName, false, out err)) {
@@ -633,7 +604,7 @@ namespace GarageIndex
 				err = null;
 				if (img2Data.Save (thumbpngfileName, false, out err)) {
 					Console.WriteLine ("saved as " + thumbpngfileName);
-					string[] result = new string[2] {picname,thumbpicname};
+					string[] result = new string[2] { picname, thumbpicname };
 					return result;
 
 				} else {
@@ -641,18 +612,17 @@ namespace GarageIndex
 					return null;
 				}
 			}
-			return new string[2]{"",""};
+			return new string[2]{ "", "" };
 		}
-	
 
 		static string RandomGeneratedName ()
 		{
 			var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-			var random = new Random();
-			var result = new string(
-				Enumerable.Repeat(chars, 8)
-				.Select(s => s[random.Next(s.Length)])
-				.ToArray());
+			var random = new Random ();
+			var result = new string (
+				             Enumerable.Repeat (chars, 8)
+				.Select (s => s [random.Next (s.Length)])
+				.ToArray ());
 			return result;
 		}
 	}
@@ -662,12 +632,12 @@ namespace GarageIndex
 		GalleryViewController vc;
 		public Boolean Empty;
 
-		public GalleryDataSource(GalleryViewController vc)
+		public GalleryDataSource (GalleryViewController vc)
 		{
 			this.vc = vc;
 		}
 
-		public override uint NumberOfItems(CarouselView carousel)
+		public override uint NumberOfItems (CarouselView carousel)
 		{
 //			Empty = false;
 			int x = vc.items.Count;
@@ -688,42 +658,40 @@ namespace GarageIndex
 //			}
 //			return x;
 		}
-
-//		private UInt16 counter(IList<GalleryObject> list){
-//			UInt16 x = 0;
-//			foreach (GalleryObject o in list) {
-//				x++;
-//			}
-//			return x;
-//		}
-
-		public override UIView ViewForItem(CarouselView carousel, uint index, UIView reusingView)
+		//		private UInt16 counter(IList<GalleryObject> list){
+		//			UInt16 x = 0;
+		//			foreach (GalleryObject o in list) {
+		//				x++;
+		//			}
+		//			return x;
+		//		}
+		public override UIView ViewForItem (CarouselView carousel, uint index, UIView reusingView)
 		{
 //			if (!Empty) {
-			Console.WriteLine ("viewForItem()index:"+index);
-				var imgView = reusingView as UIImageView;
+			Console.WriteLine ("viewForItem()index:" + index);
+			var imgView = reusingView as UIImageView;
 
-				var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
-				var gallerydirectory = Path.Combine (documentsDirectory, "gallery");
+			var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+			var gallerydirectory = Path.Combine (documentsDirectory, "gallery");
 			
-				string thumbfilename = vc.items [(int)index].thumbFileName;
-				string path = Path.Combine (gallerydirectory, thumbfilename);
-				Console.WriteLine ("path:" + path);
-				UIImage currentImage = UIImage.FromFile (path);
-				SizeF dim = currentImage.Size;
+			string thumbfilename = vc.items [(int)index].thumbFileName;
+			string path = Path.Combine (gallerydirectory, thumbfilename);
+			Console.WriteLine ("path:" + path);
+			UIImage currentImage = UIImage.FromFile (path);
+			SizeF dim = currentImage.Size;
 			
-				//create new view if none is availble fr recycling
-				if (imgView == null) {
-					imgView = new UIImageView (new RectangleF (0, 0, dim.Width, dim.Height)) {
-						ContentMode = UIViewContentMode.ScaleAspectFit
-					};
-				}
+			//create new view if none is availble fr recycling
+			if (imgView == null) {
+				imgView = new UIImageView (new RectangleF (0, 0, dim.Width, dim.Height)) {
+					ContentMode = UIViewContentMode.ScaleAspectFit
+				};
+			}
 
-				imgView.Image = currentImage;
+			imgView.Image = currentImage;
 			
-				reusingView = imgView;
+			reusingView = imgView;
 			
-				return reusingView;
+			return reusingView;
 //			} else {
 //				if (reusingView == null) {
 //					reusingView = new UIImageView (new RectangleF(0, 0, 10, 10));
@@ -738,14 +706,12 @@ namespace GarageIndex
 	{
 		GalleryViewController vc;
 
-		public GalleryDelegate(GalleryViewController vc)
+		public GalleryDelegate (GalleryViewController vc)
 		{
 			this.vc = vc;
 		}
 
-	
-
-		public override float ValueForOption(CarouselView carousel, CarouselOption option, float aValue)
+		public override float ValueForOption (CarouselView carousel, CarouselOption option, float aValue)
 		{
 //			if (option == CarouselOption.Spacing)
 //			{
@@ -760,7 +726,7 @@ namespace GarageIndex
 			return aValue;
 		}
 
-		public override void DidSelectItem(CarouselView carousel, int index)
+		public override void DidSelectItem (CarouselView carousel, int index)
 		{
 			vc.Open (index);
 		}

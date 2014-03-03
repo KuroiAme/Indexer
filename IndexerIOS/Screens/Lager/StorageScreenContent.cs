@@ -2,7 +2,6 @@
 using MonoTouch.UIKit;
 using System.Drawing;
 using no.dctapps.Garageindex.model;
-using SlideDownMenu;
 using MonoTouch.MessageUI;
 using MonoTouch.Foundation;
 using MonoTouch.MapKit;
@@ -54,9 +53,6 @@ namespace IndexerIOS
 			UIBarButtonItem email = CreateEmailButton ();
 			ancestor.NavigationItem.SetRightBarButtonItem (email, true);
 
-
-
-			//CreateSlideDownMenu ();
 		}
 
 		UIBarButtonItem CreateEmailButton ()

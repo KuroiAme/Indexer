@@ -43,7 +43,7 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 
 		public void ShowDetails (LagerObject myObject){
 			this.myObject = myObject;
-			bidc = new BigItemDetailContent (myObject, this.NavigationController);
+			bidc = new BigItemDetailContent (myObject, this);
 			innerview = new UIScrollView (UIScreen.MainScreen.Bounds);
 			innerview.ContentSize = bidc.GetContentsize ();
 			innerview.AddSubview (bidc.View);

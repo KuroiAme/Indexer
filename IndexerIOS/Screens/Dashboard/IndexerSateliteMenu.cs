@@ -6,6 +6,7 @@ using System.Drawing;
 using no.dctapps.garageindex;
 using no.dctapps.Garageindex.screens;
 using no.dctapps.Garageindex;
+using System.Collections.Generic;
 
 namespace GarageIndex
 {
@@ -46,21 +47,48 @@ namespace GarageIndex
 
 		}
 
+		private SatelliteMenuButtonItem[] GetMenuItems ()
+		{
+			int counter = 1;
+
+			List<SatelliteMenuButtonItem> myList = new List<SatelliteMenuButtonItem> ();
+
+			if (excludeItem != "Gallery") {
+				myList.Add (new SatelliteMenuButtonItem (UIImage.FromBundle ("frames4832.png"), counter, "Gallery"));
+				counter++;
+			}
+
+			if (excludeItem != "Dashboard") {
+				myList.Add (new SatelliteMenuButtonItem (UIImage.FromBundle ("math.png"), counter, "Dashboard"));
+				counter++;
+			}
+
+
+
+
+			myList.Add (new SatelliteMenuButtonItem (UIImage.FromBundle ("scanner4832.png"), counter, "Scanner"));
+			counter++;
+			myList.Add (new SatelliteMenuButtonItem (Flosshatt.MakeFlosshatt (), counter, "Items"));
+			counter++;
+			myList.Add (new SatelliteMenuButtonItem (UIImage.FromFile ("table4832.png"), counter, "Big Items"));
+			counter++;
+			myList.Add (new SatelliteMenuButtonItem (UIImage.FromFile ("container4832.png"), counter, "Containers"));
+			counter++;
+			myList.Add (new SatelliteMenuButtonItem (UIImage.FromFile ("preferences4832.png"), counter, "Preferences"));
+			counter++;
+			myList.Add (new SatelliteMenuButtonItem (UIImage.FromBundle ("uchi4832.png"), counter, "Locations"));
+			
+			return myList.ToArray ();
+		}
+
 		public void InitSateliteMenu(){
 
 			var image = UIImage.FromFile ("menu.png");
 			var yPos = View.Frame.Height - image.Size.Height - 10;
 			var frame = new RectangleF (10, yPos, image.Size.Width, image.Size.Height);
 
-			var items = new [] { 
-				new SatelliteMenuButtonItem (UIImage.FromBundle ("scanner4832.png"), 1, "Scanner"),
-				new SatelliteMenuButtonItem (Flosshatt.MakeFlosshatt(), 2, "Items"),
-				new SatelliteMenuButtonItem (UIImage.FromFile ("table4832.png"), 3, "Big Items"),
-				new SatelliteMenuButtonItem (UIImage.FromFile ("container4832.png"), 4, "Containers"),
-				new SatelliteMenuButtonItem (UIImage.FromFile ("preferences4832.png"), 5, "Preferences"),
-				new SatelliteMenuButtonItem (UIImage.FromBundle("frames4832.png"), 6, "Gallery"),
-				new SatelliteMenuButtonItem (UIImage.FromBundle("uchi4832.png"), 7, "Locations")
-			};
+			var items = GetMenuItems ();
+
 
 			SateliteButton = new SatelliteMenuButton (View, image, items, frame);
 
@@ -112,6 +140,11 @@ namespace GarageIndex
 				if(args.MenuItem.Name == "Locations"){
 					StorageCatalogue sc = new StorageCatalogue();
 					ancestor.NavigationController.PushViewController(sc,true);
+				}
+
+				if(args.MenuItem.Name == "Dashboard"){
+					DashBoardViewController dash = new DashBoardViewController();
+					ancestor.NavigationController.PushViewController(dash,true);
 				}
 
 

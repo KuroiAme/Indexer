@@ -11,7 +11,6 @@ using No.Dctapps.GarageIndex;
 using no.dctapps.Garageindex.tables;
 using no.dctapps.Garageindex.screens;
 using GoogleAnalytics.iOS;
-using SlideDownMenu;
 using System.Drawing;
 
 namespace no.dctapps.garageindex

@@ -23,11 +23,11 @@ namespace GarageIndex
 		}
 			
 		public event EventHandler<BigItemSavedEventArgs> BigItemSaved;
-		UIViewController parent;
+		UIViewController ancestor;
 
-		public BigItemDetailContent (LagerObject myObject,UIViewController parent)
+		public BigItemDetailContent (LagerObject myObject,UIViewController ancestor)
 		{
-			this.parent = parent;
+			this.ancestor = ancestor;
 			this.MyCurrentObject = myObject;
 		}
 
@@ -203,7 +203,7 @@ namespace GarageIndex
 			showReceipts.SetTitle (MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Show Receipts", "Show Receipts"), UIControlState.Normal);
 			showReceipts.TouchUpInside += (object sender, EventArgs e) => {
 				InsurancePhotoController ipc = new InsurancePhotoController(myobj);
-				parent.PresentViewController(ipc,true,null);
+				ancestor.PresentViewController(ipc,true,null);
 				//PresentViewController(ipc,true, null);
 				//nc.PushViewController(ipc,false);
 			};
@@ -221,7 +221,7 @@ namespace GarageIndex
 				Console.WriteLine("touchupinside");
 				if(UserInterfaceIdiomIsPhone){
 					Console.WriteLine("iphone??");
-					parent.PresentViewController(sl,true,null);
+					ancestor.PresentViewController(sl,true,null);
 					//PresentViewController(sl,true, null);
 					//PresentViewController(sl,true);
 					//nc.PushViewController(sl, true);
@@ -283,7 +283,7 @@ namespace GarageIndex
 			const float imgY = 305;
 			RectangleF imageRect = new RectangleF (10, imgY, UIScreen.MainScreen.Bounds.Width - 20, 300);
 
-			imp = new ImagePanel (imageRect, this.parent);
+			imp = new ImagePanel (imageRect, this.ancestor);
 			View.AddSubview (imp.View);
 			imp.ImageSaved += (object sender, SavedImageStringsEventArgs e) => {
 				MyCurrentObject.imageFileName = e.imageFilename;

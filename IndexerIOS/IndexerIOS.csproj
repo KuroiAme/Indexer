@@ -92,9 +92,6 @@
     <Reference Include="SatelliteMenu">
       <HintPath>..\Indexer\Components\satellite-menu-1.1\lib\ios\SatelliteMenu.dll</HintPath>
     </Reference>
-    <Reference Include="Blounty.SlideDownMenu">
-      <HintPath>..\Indexer\Components\slide-down-menu-1.1\lib\ios\Blounty.SlideDownMenu.dll</HintPath>
-    </Reference>
     <Reference Include="ZXing.Net.Mobile">
       <HintPath>..\Indexer\Components\zxing.net.mobile-1.4.2\lib\ios\ZXing.Net.Mobile.dll</HintPath>
     </Reference>
@@ -375,10 +372,6 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="satellite-menu">
-      <Version>1.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-    <XamarinComponentReference Include="slide-down-menu">
       <Version>1.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>

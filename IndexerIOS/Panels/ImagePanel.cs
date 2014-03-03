@@ -31,10 +31,10 @@ namespace GarageIndex
 		string current_imagefilename;
 		UIViewController ancestor;
 
-		public ImagePanel (RectangleF myFrame, UIViewController parent)
+		public ImagePanel (RectangleF myFrame, UIViewController ancestor)
 		{
 			this.myFrame = myFrame;
-			this.ancestor = parent;
+			this.ancestor = ancestor;
 		}
 		//		public ImagePanel (RectangleF myFrame)
 		//		{

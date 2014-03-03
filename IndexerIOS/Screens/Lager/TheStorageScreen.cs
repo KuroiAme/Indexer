@@ -7,7 +7,6 @@ using MonoTouch.MessageUI;
 using no.dctapps.Garageindex.businesslogic;
 using GarageIndex;
 using GoogleAnalytics.iOS;
-using SlideDownMenu;
 using System.Drawing;
 using System.Collections.Generic;
 using IndexerIOS;
@@ -117,59 +116,27 @@ namespace no.dctapps.Garageindex.screens
 
 
 
+		void cleanup ()
+		{
 
+		}
 
+		void Unclean ()
+		{
 
-//			View.AddSubview (SaveButton);
+		}
 
-//			if(!InSimulator()){
-//				BlackLeatherTheme.Apply (SaveButton, "");
-//				BlackLeatherTheme.Apply(this.storageName, "");
-//			}
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
 
-//		}
-
-//		public override void ViewWillDisappear (bool animated)
-//		{
-//			base.ViewWillDisappear (animated);
-//			//TODO change this class to use this.fieldname.valuechanged instead of viewWilldissapear.
-//			this.SaveAll();
-//		}
-
-//		void HandleTouchUpInside (object sender, EventArgs e)
-//		{
-//			SaveAll();
-//		}
-
-//		void cleanup ()
-//		{
-////			lm = null;
-////			dao = null;
-//		}
-
-//		void Unclean ()
-//		{
-//			if(dao == null)
-//			{
-//				dao = new LagerDAO();
-//			}
-//
-////			if(lm == null){
-////				lm = bl.GetActiveActiveLager();
-////			}
-//		}
-
-//		public override void DidReceiveMemoryWarning ()
-//		{
-//			// Releases the view if it doesn't have a superview.
-//			base.DidReceiveMemoryWarning ();
-//
-//			if(this.IsViewLoaded && this.View.Window == null){
-//				cleanup ();
-//			}
-//			
-//			// Release any cached data, images, etc that aren't in use.
-//		}
+			if(this.IsViewLoaded && this.View.Window == null){
+				cleanup ();
+			}
+			
+			// Release any cached data, images, etc that aren't in use.
+		}
 //
 //		public void SetPlaceholders ()
 //		{
@@ -363,69 +330,9 @@ namespace no.dctapps.Garageindex.screens
 //			}
 //		}
 
-//		partial void save (NSObject sender, MonoTouch.UIKit.UIEvent @event)
-//		{
-//
-//			ReleaseKeyboard ();
-//
-//			lm.Name = storageName.Text;
-//			Console.WriteLine("write Name to memory;"+lm.Name);
-//			lm.telephone = this.keyContact.Text;
-//			Console.WriteLine("write Telephone# to memory;"+lm.telephone);
-//			lm.address = this.address.Text;
-//			Console.WriteLine("write add to mem:"+lm.address);
-//			lm.height = -1;
-//			lm.width = -1;
-//			lm.depth = -1; 
-//			try{
-//				lm.height = Convert.ToInt32(this.x.Text);
-//				lm.width = Convert.ToInt32(this.y.Text);
-//				lm.depth = Convert.ToInt32 (this.z.Text);
-//			}catch(Exception e){
-//				Console.WriteLine("err:"+e.ToString());
-//				this.textDimensions.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Dimensions must be in numbers only", "Dimensions must be in numbers only");
-//			}
-//
-//			lm.postnr = this.zipField.Text;
-//			lm.poststed = this.poststedField.Text;
-//
-//
-//			dao.updateLager(lm);
-//
-//		}
 
-//		public void SaveAll(){
-//
-//
-//			ReleaseKeyboard ();
-//
-//			if(lm != null){
-//			lm.Name = storageName.Text;
-//			Console.WriteLine("write Name to memory;"+lm.Name);
-//			lm.telephone = this.keyContact.Text;
-//			Console.WriteLine("write Telephone# to memory;"+lm.telephone);
-//			lm.address = this.address.Text;
-//			Console.WriteLine("write add to mem:"+lm.address);
-//			lm.height = -1;
-//			lm.width = -1;
-//			lm.depth = -1; 
-//			try{
-//				lm.height = Convert.ToInt32(this.x.Text);
-//				lm.width = Convert.ToInt32(this.y.Text);
-//				lm.depth = Convert.ToInt32 (this.z.Text);
-//			}catch(Exception e){
-//				Console.WriteLine("err:"+e.ToString());
-//				this.textDimensions.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Dimensions must be in numbers only", "Dimensions must be in numbers only");
-//			}
-//			
-//			lm.postnr = this.zipField.Text;
-//			lm.poststed = this.poststedField.Text;
-//
-//			AppDelegate.dao.SaveLager(lm);
-//			raiseLagerSaved (lm);
-////			dao.updateLager(lm);
-//			}
-//		}
+
+
 //
 //		void raiseLagerSaved (Lager lager)
 //		{
