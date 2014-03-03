@@ -13,9 +13,12 @@ namespace GarageIndex
 	{
 		String excludeItem;
 
-		public IndexerSateliteMenu (string item)
+		UIViewController ancestor;
+
+		public IndexerSateliteMenu (string item, UIViewController ancestor)
 		{
 			this.excludeItem = item;
+			this.ancestor = ancestor;
 		}
 
 		public IndexerSateliteMenu ()
@@ -39,7 +42,7 @@ namespace GarageIndex
 		{
 			float cube = 190;
 			base.LoadView ();
-			this.View.Frame = new RectangleF (0, UIScreen.MainScreen.Bounds.Height - cube, cube, cube);
+			this.View.Frame = new RectangleF (0, ancestor.View.Bounds.Height - cube, cube, cube);
 
 		}
 
@@ -55,7 +58,8 @@ namespace GarageIndex
 				new SatelliteMenuButtonItem (UIImage.FromFile ("table4832.png"), 3, "Big Items"),
 				new SatelliteMenuButtonItem (UIImage.FromFile ("container4832.png"), 4, "Containers"),
 				new SatelliteMenuButtonItem (UIImage.FromFile ("preferences4832.png"), 5, "Preferences"),
-				new SatelliteMenuButtonItem (UIImage.FromBundle("frames4832.png"), 6, "Gallery")
+				new SatelliteMenuButtonItem (UIImage.FromBundle("frames4832.png"), 6, "Gallery"),
+				new SatelliteMenuButtonItem (UIImage.FromBundle("uchi4832.png"), 7, "Locations")
 			};
 
 			SateliteButton = new SatelliteMenuButton (View, image, items, frame);
@@ -70,40 +74,44 @@ namespace GarageIndex
 				if(args.MenuItem.Name == "Items"){
 					if(UserInterfaceIdiomIsPhone){
 						ItemCatalogue cat = new ItemCatalogue();
-						PresentViewControllerAsync(cat, true);
+						//PresentViewControllerAsync(cat, true);
+						ancestor.NavigationController.PushViewController(cat,true);
 					}else{
 						ItemMasterView itemMaster = new ItemMasterView();
-						PresentViewControllerAsync(itemMaster, true);
+						ancestor.NavigationController.PushViewController(itemMaster,true);
 					}
 				}
 				if(args.MenuItem.Name == "Big Items"){
 					if(UserInterfaceIdiomIsPhone){
 						BigItemsScreen biggies = new BigItemsScreen();
-						UINavigationController bigNav = new UINavigationController();
-						bigNav.PushViewController(biggies,false);
-						PresentViewController(bigNav, true, null);
+						ancestor.NavigationController.PushViewController(biggies, true);
 					}else{
 						BigItemMasterView bigMaster = new BigItemMasterView();
-						PresentViewControllerAsync(bigMaster, true);
+						ancestor.NavigationController.PushViewController(bigMaster, true);
 					}
 				}
 				if(args.MenuItem.Name == "Containers"){
 					if(UserInterfaceIdiomIsPhone){
 						ContainerScreen containers = new ContainerScreen();
-						PresentViewControllerAsync(containers,true);
+						ancestor.NavigationController.PushViewController(containers,true);
 					}else{
 						ContainerMasterView containerMaster = new ContainerMasterView();
-						PresentViewControllerAsync(containerMaster,true);
+						ancestor.NavigationController.PushViewController(containerMaster, true);
 					}
 				}
 				if(args.MenuItem.Name == "Preferences"){
 					Preferences pref = new Preferences();
-					PresentViewControllerAsync(pref, true);
+					ancestor.NavigationController.PushViewController(pref,true);
 				}
 
 				if(args.MenuItem.Name == "Gallery"){
 					GalleryViewController tagGallery = new GalleryViewController();
-					PresentViewControllerAsync(tagGallery, true);
+					ancestor.NavigationController.PushViewController(tagGallery,true);
+				}
+
+				if(args.MenuItem.Name == "Locations"){
+					StorageCatalogue sc = new StorageCatalogue();
+					ancestor.NavigationController.PushViewController(sc,true);
 				}
 
 

@@ -39,17 +39,31 @@ namespace GarageIndex
 
 		public IList<GalleryObject> items;
 
+		public void ChangeThumb ()
+		{
+			carousel.ReloadData ();
+		}
+
 		IList<GalleryObject> GetActiveGalleryItems ()
 		{
 			string type = AppDelegate.key.GetActiveGalleryType ();
 			int id = AppDelegate.key.GetActiveGalleryID ();
-			return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (type, id);
+			Console.WriteLine ("type:" + type + ",id:" + id);
+			if(string.IsNullOrEmpty(type)){
+				type = "ALL";
+			}
+			if (type != "ALL") {
+				return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (type, id);
+			} else {
+				return AppDelegate.dao.GetAllGalleryObjects ();
+			}
 		}
 
 		public override void ViewDidLoad(){
 			base.ViewDidLoad ();
 
 			items = GetActiveGalleryItems();
+			Console.WriteLine (items.Count);
 
 			var imgView = new UIImageView(BlueSea.MakeBlueSea())
 			{
@@ -58,10 +72,13 @@ namespace GarageIndex
 				Frame = View.Bounds
 			};
 			View.AddSubview(imgView);
+			View.SendSubviewToBack (imgView);
 
-			carousel = new CarouselView(View.Bounds);
+			carousel = new CarouselView(UIScreen.MainScreen.Bounds);
+			//carousel. = images.Count;
 			carousel.DataSource = new GalleryDataSource(this);
-			carousel.Delegate = new GalleryDelegate(this);
+			GalleryDelegate gd = new GalleryDelegate (this);
+			carousel.Delegate = gd;
 			carousel.CarouselType = CarouselType.CoverFlow;
 			carousel.ConfigureView();
 			View.AddSubview(carousel);
@@ -83,8 +100,25 @@ namespace GarageIndex
 			InitSlideDownMenu ();
 
 
+
+
+
 		}
+
+		public void Open (int index)
+		{
+			GalleryObject go = items [index];
+			EditImageModeController eimc = new EditImageModeController (go,this);
+			PresentViewController (eimc, false, null);
+		}
+
 		UILabel active;
+
+		LagerObject activeContainer;
+		Lager activeLager;
+
+		int activeID;
+		string activeType;
 
 		void InitActiveField ()
 		{
@@ -94,10 +128,30 @@ namespace GarageIndex
 			active.ShadowColor = UIColor.Gray;
 			active.ShadowOffset = new SizeF(1.0f,0.2f);
 			active.TextColor = UIColor.White;
-			LagerObject myLocation = AppDelegate.key.GetActiveGallery ();
-			if(myLocation != null){
-				active.Text = myLocation.Name;
+			activeID = AppDelegate.key.GetActiveGalleryID ();
+			activeType = AppDelegate.key.GetActiveGalleryType ();
+
+				if (activeType == null) {
+					activeType = "ALL";
+				}
+
+				if (activeType.Equals ("Lager")) {
+					activeContainer = null;
+					activeLager = AppDelegate.dao.GetLagerById (activeID);
+					
+				}
+				if (activeType.Equals ("Container")) {
+					activeLager = null;
+					activeContainer = AppDelegate.dao.GetContainerById (activeID);
+				}
+
+			if (activeType == "ALL") {
+				activeLager = null;
+				activeContainer = null;
 			}
+
+				
+			
 			Add (active);
 			View.BringSubviewToFront (active);
 
@@ -160,6 +214,8 @@ namespace GarageIndex
 					}
 					if(e.ButtonIndex == 3){
 						Console.WriteLine("ALL");
+						this.items = AppDelegate.dao.GetAllGalleryObjects();
+						carousel.ReloadData();
 
 					}
 
@@ -221,7 +277,7 @@ namespace GarageIndex
 			var yPos = View.Frame.Height - image.Size.Height - 10;
 			var frame = new RectangleF (10, yPos, image.Size.Width, image.Size.Height);
 
-			var items = new [] { 
+			var SateliteItems = new [] { 
 				new SatelliteMenuButtonItem (UIImage.FromBundle ("scanner4832.png"), 1, "Scanner"),
 				new SatelliteMenuButtonItem (Flosshatt.MakeFlosshatt(), 2, "Items"),
 				new SatelliteMenuButtonItem (UIImage.FromFile ("table4832.png"), 3, "Big Items"),
@@ -229,7 +285,7 @@ namespace GarageIndex
 				new SatelliteMenuButtonItem (UIImage.FromFile ("preferences4832.png"), 5, "Preferences"),
 			};
 
-			MainButton = new SatelliteMenuButton (View, image, items, frame);
+			MainButton = new SatelliteMenuButton (View, image, SateliteItems, frame);
 
 			MainButton.MenuItemClick += (_, args) => {
 				Console.WriteLine ("{0} was clicked!", args.MenuItem.Name);
@@ -336,8 +392,10 @@ namespace GarageIndex
 		{
 			int currentindex = carousel.CurrentItemIndex;
 			Console.WriteLine ("currentindex:" + currentindex);
-			AppDelegate.dao.DeleteGalleryObjectByIndex (currentindex);
-			carousel.ReloadData ();
+			GalleryObject del = items [currentindex];
+			items.RemoveAt (currentindex);
+			AppDelegate.dao.DeleteGalleryObject (del);
+			carousel.ReloadData();
 		}
 
 		UIActionSheet actionSheet;
@@ -519,6 +577,17 @@ namespace GarageIndex
 			go.imageFileName = names [0];
 			go.thumbFileName = names [1];
 
+			if (activeLager != null) {
+				go.LocationID = activeLager.ID.ToString();
+				go.LocationType = "Lager";
+			}
+
+			if (activeContainer != null) {
+				go.LocationID = activeContainer.ID.ToString();
+				go.LocationType = "Container";
+			}
+
+			items.Add (go);
 			AppDelegate.dao.SaveGalleryObject (go);
 
 			carousel.ReloadData ();
@@ -591,6 +660,7 @@ namespace GarageIndex
 	public class GalleryDataSource : CarouselViewDataSource
 	{
 		GalleryViewController vc;
+		public Boolean Empty;
 
 		public GalleryDataSource(GalleryViewController vc)
 		{
@@ -599,35 +669,68 @@ namespace GarageIndex
 
 		public override uint NumberOfItems(CarouselView carousel)
 		{
-			return (uint)vc.items.Count;
+//			Empty = false;
+			int x = vc.items.Count;
+//			if (x == 0) {
+//				x = 2;
+//				Empty = true;
+//			}
+			return (uint)x;
+
+//			Console.WriteLine ("x=" + x);
+//			if (x == 0) {
+//				Empty = true;
+//				x = 2;
+//				Console.WriteLine ("x override: " + x);
+//				return 0;
+//			} else {
+//				Empty = false;
+//			}
+//			return x;
 		}
+
+//		private UInt16 counter(IList<GalleryObject> list){
+//			UInt16 x = 0;
+//			foreach (GalleryObject o in list) {
+//				x++;
+//			}
+//			return x;
+//		}
 
 		public override UIView ViewForItem(CarouselView carousel, uint index, UIView reusingView)
 		{
+//			if (!Empty) {
+			Console.WriteLine ("viewForItem()index:"+index);
+				var imgView = reusingView as UIImageView;
 
-						var imgView = reusingView as UIImageView;
+				var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+				var gallerydirectory = Path.Combine (documentsDirectory, "gallery");
+			
+				string thumbfilename = vc.items [(int)index].thumbFileName;
+				string path = Path.Combine (gallerydirectory, thumbfilename);
+				Console.WriteLine ("path:" + path);
+				UIImage currentImage = UIImage.FromFile (path);
+				SizeF dim = currentImage.Size;
+			
+				//create new view if none is availble fr recycling
+				if (imgView == null) {
+					imgView = new UIImageView (new RectangleF (0, 0, dim.Width, dim.Height)) {
+						ContentMode = UIViewContentMode.ScaleAspectFit
+					};
+				}
 
-						var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
-						var gallerydirectory = Path.Combine (documentsDirectory, "gallery");
+				imgView.Image = currentImage;
 			
-						string thumbfilename = vc.items [(int) index].thumbFileName;
-						string path = Path.Combine (gallerydirectory, thumbfilename);
-						Console.WriteLine ("path:" + path);
-						UIImage currentImage = UIImage.FromFile (path);
-						SizeF dim = currentImage.Size;
+				reusingView = imgView;
 			
-						//create new view if none is availble fr recycling
-						if (imgView == null) {
-							imgView = new UIImageView(new RectangleF(0,0, dim.Width,dim.Height)){
-								ContentMode = UIViewContentMode.ScaleAspectFit
-							};
-						}
-
-						imgView.Image = currentImage;
-			
-						reusingView = imgView;
-			
-						return reusingView;
+				return reusingView;
+//			} else {
+//				if (reusingView == null) {
+//					reusingView = new UIImageView (new RectangleF(0, 0, 10, 10));
+//				}
+//
+//				return reusingView;
+//			}
 		}
 	}
 
@@ -640,26 +743,26 @@ namespace GarageIndex
 			this.vc = vc;
 		}
 
+	
+
 		public override float ValueForOption(CarouselView carousel, CarouselOption option, float aValue)
 		{
-			if (option == CarouselOption.Spacing)
-			{
-				return aValue * 1.1f;
-			}
+//			if (option == CarouselOption.Spacing)
+//			{
+//				return aValue * 1.1f;
+//			}
+//
+//
+//			if (option == CarouselOption.Count) {
+//				return vc.items.Count;
+//			}
+//
 			return aValue;
 		}
 
 		public override void DidSelectItem(CarouselView carousel, int index)
 		{
-			Console.WriteLine("Selected: " + ++index);
-			Console.WriteLine ("Selected: " + ++index);
-			GalleryObject go = AppDelegate.dao.GetGalleryObjectByIndex (--index);
-			var eimc = new EditImageModeController (go);
-			eimc.ThumbChanged += (object sender, ThumbChangedEventArgs e) => {
-				Console.WriteLine("reloading data");
-				carousel.ReloadData ();
-			};
-			vc.PresentViewController (eimc, true, null);
+			vc.Open (index);
 		}
 	}
 }

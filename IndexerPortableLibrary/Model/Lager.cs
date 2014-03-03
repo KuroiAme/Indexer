@@ -17,6 +17,9 @@ namespace no.dctapps.Garageindex.model
 		public int width{ get; set;}
 		public int depth{ get; set;}
 
+		public double latitude{ get; set;}
+		public double longitude{ get; set;}
+
 		public string postnr{ get; set;}
 		public string poststed{ get; set;}
 

@@ -5,6 +5,7 @@ using System.Text;
 using No.Dctapps.GarageIndex;
 using GarageIndex;
 using no.dctapps.Garageindex.dao;
+using IndexerIOS;
 
 namespace no.dctapps.Garageindex.businesslogic
 {
@@ -25,15 +26,15 @@ namespace no.dctapps.Garageindex.businesslogic
 			IList<Item> allItems = dao.GetAllItems ();
 			IList<LagerObject> allLarge = dao.GetAllLargeItems ();
 			foreach (Item x in allItems) {
-				if (x.cashValue != null) {
+//				if (x.cashValue != double.NaN) {
 					cashvalue += x.cashValue;
-				}
+//				}
 			}
 
 			foreach (LagerObject y in allLarge) {
-				if (y.cashValue != null) {
+//				if (y.cashValue != double.NaN) {
 					cashvalue += y.cashValue;
-				}
+//				}
 			}
 
 			return cashvalue;
@@ -168,24 +169,212 @@ namespace no.dctapps.Garageindex.businesslogic
 			return sb.ToString();
 		}
 
+		char[] sep = { ',', ' ' };
 
-
-		public List<Item> SearchItems (string text)
+		void FetchWordsForLargeObjects (List<IndexerDictionaryItem> Dictionary)
 		{
+			IList<LagerObject> lagerobjects = dao.GetAllLargeItems ();
+			foreach (LagerObject ox in lagerobjects) {
+				IndexerDictionaryItem x = new IndexerDictionaryItem ();
+				x.id = ox.ID;
+				x.type = "LargeObject";
+				x.value = ox.Name;
+				if (x.Name != null) {
+					x.Name = x.Name;
+				}
+				Dictionary.Add (x);
+				if (ox.Description != null) {
+					string[] descwords = ox.Description.Split (sep);
+					foreach (string descword in descwords) {
+						IndexerDictionaryItem y = new IndexerDictionaryItem ();
+						y.id = ox.ID;
+						y.type = "LargeObject";
+						y.value = descword;
+						if (ox.Name != null) {
+							y.Name = ox.Name;
+						}
+						Dictionary.Add (y);
+					}
+				}
+				ImageTag tag = dao.GetImageTagById (ox.ImageTagId);
+				if (tag != null && tag.TagString != null) {
+					string[] tags = tag.TagString.Split (sep);
+					foreach (string word in tags) {
+						IndexerDictionaryItem z = new IndexerDictionaryItem ();
+						z.id = ox.ID;
+						z.type = "LargeObject";
+						z.value = word;
+						if (ox.Name != null) {
+							z.Name = z.Name;
+						}
+						Dictionary.Add (z);
+					}
+				}
+			}
+		}
 
-			//TODO implement async here when async (mono 3.0) gets out of BETA
-			List<Item> res = new List<Item>();
+		void FetchWordsForContainers (List<IndexerDictionaryItem> Dictionary)
+		{
+			IList<LagerObject> lagerobjects = dao.GetAllContainers ();
+			foreach (LagerObject ox in lagerobjects) {
+				IndexerDictionaryItem x = new IndexerDictionaryItem ();
+				x.id = ox.ID;
+				x.type = "Container";
+				x.value = ox.Name;
+				if (x.Name != null) {
+					x.Name = x.Name;
+				}
+				Dictionary.Add (x);
+				if (ox.Description != null) {
+					string[] descwords = ox.Description.Split (sep);
+					foreach (string descword in descwords) {
+						IndexerDictionaryItem y = new IndexerDictionaryItem ();
+						y.id = ox.ID;
+						y.type = "Container";
+						y.value = descword;
+						if (ox.Name != null) {
+							y.Name = ox.Name;
+						}
+						Dictionary.Add (y);
+					}
+				}
+				ImageTag tag = dao.GetImageTagById (ox.ImageTagId);
+				if (tag != null && tag.TagString != null) {
+					string[] tags = tag.TagString.Split (sep);
+					foreach (string word in tags) {
+						IndexerDictionaryItem z = new IndexerDictionaryItem ();
+						z.id = ox.ID;
+						z.type = "Container";
+						z.value = word;
+						if (ox.Name != null) {
+							z.Name = z.Name;
+						}
+						Dictionary.Add (z);
+					}
+				}
+			}
+		}
 
-			res.AddRange(dao.GetItemsWithName(text));
-			res.AddRange(dao.GetItemsWithDesc(text));
+		void FetchWordsForGalleryObjects (List<IndexerDictionaryItem> Dictionary)
+		{
+			IList<GalleryObject> gals = dao.GetAllGalleryObjects ();
+			foreach (GalleryObject go in gals) {
+				IList<ImageTag> tags = dao.GetTagsByGalleryObjectID (go.ID);
+				foreach (ImageTag tag in tags) {
+					string[] words = tag.TagString.Split (sep);
+					foreach (string word in words) {
+						IndexerDictionaryItem x = new IndexerDictionaryItem ();
+						x.id = go.ID;
+						x.type = "GalleryObject";
+						x.value = word;
+						if (go.Name != null) {
+							x.Name = go.Name;
+						}
+						Dictionary.Add (x);
+					}
+				}
+			}
+		}
 
-			//Console.WriteLine("Found "+res.Count + " items "); 
-			return res;
+		void FetchWordsForItems (List<IndexerDictionaryItem> Dictionary)
+		{
+			IList<Item> items = dao.GetAllItems ();
+			foreach (Item i in items) {
+				IndexerDictionaryItem x = new IndexerDictionaryItem ();
+				x.id = i.ID;
+				x.type = "Item";
+				x.value = i.Name;
+				if (x.Name != null) {
+					x.Name = i.Name;
+				}
+				Dictionary.Add (x);
+				if (i.Description != null) {
+					string[] descwords = i.Description.Split (sep);
+					foreach (string descword in descwords) {
+						IndexerDictionaryItem y = new IndexerDictionaryItem ();
+						y.id = i.ID;
+						y.type = "Item";
+						y.value = descword;
+						if (i.Name != null) {
+							y.Name = i.Name;
+						}
+						Dictionary.Add (y);
+					}
+				}
+				ImageTag tag = dao.GetImageTagById (i.ImageTagId);
+				if (tag != null && tag.TagString != null) {
+					string[] tags = tag.TagString.Split (sep);
+					foreach (string word in tags) {
+						IndexerDictionaryItem z = new IndexerDictionaryItem ();
+						z.id = i.ID;
+						z.type = "Item";
+						z.value = word;
+						if (i.Name != null) {
+							z.Name = i.Name;
+						}
+						Dictionary.Add (z);
+					}
+				}
+			}
+		}
+
+		public List<IndexerDictionaryItem> GetAllSearchableWordsDictionary ()
+		{
+			List<IndexerDictionaryItem> Dictionary = new List<IndexerDictionaryItem> ();
+
+			FetchWordsForGalleryObjects (Dictionary);
+
+			FetchWordsForItems (Dictionary);
+
+			FetchWordsForLargeObjects (Dictionary);
+
+			FetchWordsForContainers (Dictionary);
+
+			return Dictionary;
+
 		}
 
 
+//		public List<Item> SearchItems (string text)
+//		{
+//
+//			//TODO implement async here when async (mono 3.0) gets out of BETA
+//			List<Item> res = new List<Item>();
+//
+//			res.AddRange(dao.GetItemsWithName(text));
+//			res.AddRange(dao.GetItemsWithDesc(text));
+//
+//			//Console.WriteLine("Found "+res.Count + " items "); 
+//			return res;
+//		}
 
 
+
+
+		public List<WordCloudItem> GetWordCloudDictionary ()
+		{
+			List<WordCloudItem> dictionary = new List<WordCloudItem> ();
+			List<IndexerDictionaryItem> origin = GetAllSearchableWordsDictionary ();
+			foreach(IndexerDictionaryItem item in origin){
+				WordCloudItem it = new WordCloudItem ();
+				it.word = item.value;
+				Boolean found = false;
+				foreach (WordCloudItem cloudItem in dictionary) {
+					if (cloudItem != null && it != null) {
+						if (cloudItem.Equals (it)) {
+							cloudItem.weight++;
+							found = true;
+						}
+					}
+				}
+				if (!found) {
+					it.weight = 1;
+					dictionary.Add (it);
+				}
+			}
+
+			return dictionary;
+		}
 	}
 }
 

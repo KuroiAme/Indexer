@@ -1,6 +1,7 @@
 ﻿using System;
 using MonoTouch.UIKit;
 using System.Drawing;
+using IndexerIOS;
 
 namespace GarageIndex
 {
@@ -14,10 +15,12 @@ namespace GarageIndex
 		const float textHeight = 30;
 		float currentheight = 0;
 		float rightPanelWidth;
+		UIViewController ancestor;
 
-		public DashboardRIghtPanel (float rightPanelWidth)
+		public DashboardRIghtPanel (float rightPanelWidth, UIViewController ancestor)
 		{
 			this.rightPanelWidth = rightPanelWidth;
+			this.ancestor = ancestor;
 		}
 
 		public DashboardRIghtPanel ()
@@ -47,18 +50,25 @@ namespace GarageIndex
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			OverSightMap mainMap = new OverSightMap (new RectangleF (0,currentheight, rightPanelWidth, elementHeight));
+			OverSightMap mainMap = new OverSightMap (new RectangleF (0,currentheight, rightPanelWidth, elementHeight),ancestor);
 			View.AddSubview (mainMap.View);
 			currentheight += elementHeight + buffer;
 
-			UILabel bestPlace = new UILabel (new RectangleF (0, currentheight, rightPanelWidth, textHeight));
-			bestPlace.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Chosen location or best search result :", "Chosen location or best search result :");
-			bestPlace.AdjustsFontSizeToFitWidth = true;
-			View.AddSubview (bestPlace);
-			currentheight += textHeight + buffer;
+//			UILabel bestPlace = new UILabel (new RectangleF (0, currentheight, rightPanelWidth, textHeight));
+//			bestPlace.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Chosen location or best search result :", "Chosen location or best search result :");
+//			bestPlace.AdjustsFontSizeToFitWidth = true;
+//			View.AddSubview (bestPlace);
+//			currentheight += textHeight + buffer;
 
-			mini = new BestLocationMiniViewController (new RectangleF (0,currentheight,rightPanelWidth, elementHeight));
-			View.AddSubview (mini.View);
+//			mini = new BestLocationMiniViewController (new RectangleF (0,currentheight,rightPanelWidth, elementHeight));
+//			View.AddSubview (mini.View);
+			var clouds = AppDelegate.bl.GetWordCloudDictionary ();
+			Console.WriteLine ("dict count at init:"+clouds.Count);
+			foreach (WordCloudItem cloud in clouds) {
+				Console.WriteLine (cloud);
+			}
+			WordCloudIOS wordCloud = new WordCloudIOS(ancestor,clouds,new RectangleF(0,currentheight,rightPanelWidth,elementHeight *2));
+			View.AddSubview (wordCloud.View);
 
 
 		}

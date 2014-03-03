@@ -24,6 +24,19 @@ namespace no.dctapps.Garageindex.dao
 			
 		}
 
+		public Lager getLagerByName (string name)
+		{
+			IList<Lager> myList = new List<Lager>();
+
+			myList = conn.Query<Lager>("select * from Lager where Name = ?", name);
+			if (myList.Count > 0) {
+				return myList [0];
+			} else {
+				return null;
+			}
+
+		}
+
 		public void DeleteLager (int id)
 		{
 				Lager deleteme = new Lager ();
@@ -186,6 +199,15 @@ namespace no.dctapps.Garageindex.dao
 			return myList[index];
 		}
 
+		public IList<GalleryObject> GetAllGalleryObjects ()
+		{
+			IList<GalleryObject> myList = new List<GalleryObject>();
+
+			myList =  conn.Query<GalleryObject> ("select * from GalleryObject");
+
+			return myList;
+		}
+
 		public IList<GalleryObject> GetAllGalleryObjectsByTypeAndID (string type, int id)
 		{
 			IList<GalleryObject> myList = new List<GalleryObject>();
@@ -195,6 +217,7 @@ namespace no.dctapps.Garageindex.dao
 			return myList;
 		}
 
+		[Obsolete]
 		public  void DeleteGalleryObjectByIndex (int currentindex)
 		{
 			IList<GalleryObject> myList;
@@ -203,6 +226,11 @@ namespace no.dctapps.Garageindex.dao
 				GalleryObject deleteme = myList [currentindex];
 				conn.Delete (deleteme);
 
+		}
+
+		public void DeleteGalleryObject (GalleryObject del)
+		{
+			conn.Delete (del);
 		}
 
 		public  string GetThumbfilenameForIndex (uint index)

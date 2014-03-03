@@ -20,6 +20,10 @@ namespace GarageIndex
 		public IGAITracker Tracker;
 		public static readonly string TrackingId = "UA-47719330-1";
 
+		public static string Variant {
+			get{return "PRO";}
+		}
+
 		static AppDelegate()
 		{
 			CurrentSystemVersion = new Version (UIDevice.CurrentDevice.SystemVersion);
@@ -47,6 +51,7 @@ namespace GarageIndex
 		public static IndexerBuisnessService bl;
 		public static KeyStorageServiceIos key;
 		public static ITranslationService its;
+		UINavigationController navController;
 		//public static CouchDB db;
 
 		//
@@ -78,12 +83,16 @@ namespace GarageIndex
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 
 			DashBoardViewController dashboard = new DashBoardViewController ();
+			navController = new UINavigationController (dashboard);
+			//navController.NavigationBar.BackgroundColor = UIColor.Clear;
+
 
 //			if(MonoTouch.Foundation.isi
 			this.window.TintColor = UIColor.Purple;
-			
+
+			window.RootViewController = navController;
 			// If you have defined a root view controller, set it here:
-			this.window.RootViewController = dashboard; 
+			//this.window.RootViewController = dashboard; 
 			
 			// make the window visible
 			window.MakeKeyAndVisible ();

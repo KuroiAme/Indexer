@@ -10,6 +10,7 @@ using GoogleAnalytics.iOS;
 using SlideDownMenu;
 using System.Drawing;
 using System.Collections.Generic;
+using IndexerIOS;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -19,34 +20,22 @@ namespace no.dctapps.Garageindex.screens
 //		LagerDAO dao;
 //		GarageindexBL bl;
 
+		StorageScreenContent innerViewController;
+
 		public event EventHandler<LagerClickedEventArgs> LagerSaved;
 
-
-//		public TheStorageScreen ()
-//			: base (UserInterfaceIdiomIsPhone ? "TheStorageScreen_iPhone" : "TheStorageScreen_iPad")
-//		{
-//			dao = new LagerDAO();
-//			bl = new GarageindexBL();
-//			lm = bl.GetActiveActiveLager ();
-//		}
 
 		public static bool UserInterfaceIdiomIsPhone {
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 
 		public TheStorageScreen (Lager lager)
-			: base (UserInterfaceIdiomIsPhone ? "TheStorageScreen_iPhone" : "TheStorageScreen_iPad", null)
 		{
-//			dao = new LagerDAO();
-//			bl = new GarageindexBL();
 			lm = lager;
 		}
 
 		public TheStorageScreen ()
-			: base (UserInterfaceIdiomIsPhone ? "TheStorageScreen_iPhone" : "TheStorageScreen_iPad", null)
 		{
-//			dao = new LagerDAO();
-			//			bl = new GarageindexBL();
 		}
 
 		public override void ViewDidAppear (bool animated)
@@ -56,30 +45,26 @@ namespace no.dctapps.Garageindex.screens
 			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 
-		MFMailComposeViewController mailContr;
-
-		void MakeEmail ()
+		public void ShowDetails (Lager lm)
 		{
-			mailContr = new MFMailComposeViewController ();
-			mailContr.SetSubject (AppDelegate.bl.GenerateSubject (lm));
-			mailContr.SetMessageBody (AppDelegate.bl.GenerateManifest (lm), false);
-			this.PresentViewController (mailContr, true, delegate {
-			});
-			mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => mailContr.DismissViewController (true, delegate {
-			});
+			this.lm = lm;
+			this.innerViewController.ShowDetails (lm);
 		}
 
-		private void CreateEmailBarButton ()
-		{
-			//DO NOT DELETE
-			UIBarButtonItem it = new UIBarButtonItem ();
-			it.Title = "email";
-			//IS really info
-			it.Clicked += (object sender, EventArgs e) =>  {
-                MakeEmail ();
-			};
-			this.NavigationItem.SetRightBarButtonItem (it, true);
-		}
+
+
+
+//		private void CreateEmailBarButton ()
+//		{
+//			//DO NOT DELETE
+//			UIBarButtonItem it = new UIBarButtonItem ();
+//			it.Title = "email";
+//			//IS really info
+//			it.Clicked += (object sender, EventArgs e) =>  {
+//                MakeEmail ();
+//			};
+//			this.NavigationItem.SetRightBarButtonItem (it, true);
+//		}
 
 
 //		mailContr = new MFMailComposeViewController();
@@ -107,9 +92,9 @@ namespace no.dctapps.Garageindex.screens
 //		RectangleF mail;
 //		RectangleF rec;
 
-		public override void LoadView ()
-		{
-			base.LoadView ();
+//		public override void LoadView ()
+//		{
+//			base.LoadView ();
 
 //			rec = new RectangleF (10, 10, 10, 10);
 //			mail = new RectangleF (10, 10, 10, 10);
@@ -142,25 +127,25 @@ namespace no.dctapps.Garageindex.screens
 //				BlackLeatherTheme.Apply(this.storageName, "");
 //			}
 
-		}
+//		}
 
-		public override void ViewWillDisappear (bool animated)
-		{
-			base.ViewWillDisappear (animated);
-			//TODO change this class to use this.fieldname.valuechanged instead of viewWilldissapear.
-			this.SaveAll();
-		}
+//		public override void ViewWillDisappear (bool animated)
+//		{
+//			base.ViewWillDisappear (animated);
+//			//TODO change this class to use this.fieldname.valuechanged instead of viewWilldissapear.
+//			this.SaveAll();
+//		}
 
-		void HandleTouchUpInside (object sender, EventArgs e)
-		{
-			SaveAll();
-		}
+//		void HandleTouchUpInside (object sender, EventArgs e)
+//		{
+//			SaveAll();
+//		}
 
-		void cleanup ()
-		{
-//			lm = null;
-//			dao = null;
-		}
+//		void cleanup ()
+//		{
+////			lm = null;
+////			dao = null;
+//		}
 
 //		void Unclean ()
 //		{
@@ -174,34 +159,32 @@ namespace no.dctapps.Garageindex.screens
 ////			}
 //		}
 
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-
-			if(this.IsViewLoaded && this.View.Window == null){
-				cleanup ();
-			}
-			
-			// Release any cached data, images, etc that aren't in use.
-		}
-
-		public void SetPlaceholders ()
-		{
-			var name = NSBundle.MainBundle.LocalizedString ("Name of the storage unit", "Name of the storage unit");
-			var addresse = NSBundle.MainBundle.LocalizedString ("Address", "Address");
-			var key = NSBundle.MainBundle.LocalizedString ("Key contact", "Key contact");
-			var zip = NSBundle.MainBundle.LocalizedString ("Zip Code", "Zip Code");
-			var city = NSBundle.MainBundle.LocalizedString ("City", "City");
-
-			storageName.Placeholder = name;
-			address.Placeholder = addresse;
-			keyContact.Placeholder = key;
-			poststedField.Placeholder = city;
-			zipField.Placeholder = zip;
-			textDimensions.Text = NSBundle.MainBundle.LocalizedString ("Dimensions height,width,depth e.g. meters/yards", "Dimensions height,width,depth e.g. meters/yards");
-			textEstimate.Text = NSBundle.MainBundle.LocalizedString ("Your storage fill degree estimate", "Your storage fill degree estimate");
-			textSpaceAvailable.Text = NSBundle.MainBundle.LocalizedString ("Space available", "Space available");
+//		public override void DidReceiveMemoryWarning ()
+//		{
+//			// Releases the view if it doesn't have a superview.
+//			base.DidReceiveMemoryWarning ();
+//
+//			if(this.IsViewLoaded && this.View.Window == null){
+//				cleanup ();
+//			}
+//			
+//			// Release any cached data, images, etc that aren't in use.
+//		}
+//
+//		public void SetPlaceholders ()
+//		{
+//			var addresse = NSBundle.MainBundle.LocalizedString ("Address", "Address");
+//			var key = NSBundle.MainBundle.LocalizedString ("Key contact", "Key contact");
+//			var zip = NSBundle.MainBundle.LocalizedString ("Zip Code", "Zip Code");
+//			var city = NSBundle.MainBundle.LocalizedString ("City", "City");
+//
+//			address.Placeholder = addresse;
+//			keyContact.Placeholder = key;
+//			poststedField.Placeholder = city;
+//			zipField.Placeholder = zip;
+//			textDimensions.Text = NSBundle.MainBundle.LocalizedString ("Dimensions height,width,depth e.g. meters/yards", "Dimensions height,width,depth e.g. meters/yards");
+//			textEstimate.Text = NSBundle.MainBundle.LocalizedString ("Your storage fill degree estimate", "Your storage fill degree estimate");
+//			textSpaceAvailable.Text = NSBundle.MainBundle.LocalizedString ("Space available", "Space available");
 
 //			BlackLeatherTheme.Apply(this.storageName, "");
 //			BlackLeatherTheme.Apply(this.address, "");
@@ -219,7 +202,7 @@ namespace no.dctapps.Garageindex.screens
 //			BlackLeatherTheme.Apply(this.remaining, "");
 //			BlackLeatherTheme.Apply(this.M3, "");
 //			BlackLeatherTheme.Apply(this.M3_2, "");
-		}
+//		}
 
 //		void AddContactKeyButtons ()
 //		{
@@ -243,54 +226,51 @@ namespace no.dctapps.Garageindex.screens
 //			};
 //		}
 
-		void CreateSlideDownMenu ()
+		public override void LoadView ()
 		{
-			var item0 = new MenuItem ("Options", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-			});
-			item0.Tag = 0;
-			var email = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Email", "Email");
-			var item1 = new MenuItem (email, UIImage.FromBundle ("startree.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-				MakeEmail();
-
-			});
-			item1.Tag = 1;
-			var item2 = new MenuItem ("Dismiss", UIImage.FromBundle ("frames4832.png"), (menuItem) => {
-				Console.WriteLine("Item: {0}", menuItem);
-				this.DismissViewControllerAsync(true);
-			});
-			item2.Tag = 2;
-
-
-			//item0.tag = 0;
-
-			var slideMenu = new SlideMenu (new List<MenuItem> { item0, item1, item2});
-			slideMenu.Center = new PointF (slideMenu.Center.X, slideMenu.Center.Y + 25);
-			this.View.AddSubview (slideMenu);
+			base.LoadView ();
+			this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height);
 		}
+
 		
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-//			bl = new GarageindexBL ();
+			this.NavigationController.NavigationBar.BackgroundColor = UIColor.Clear;
+
+			RectangleF neo = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
 
 			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
 				ContentMode = UIViewContentMode.ScaleToFill,
 				AutoresizingMask = UIViewAutoresizing.All,
-				Frame = View.Bounds
+				Frame = neo
 			};
 
-			View.AddSubview (imgView);
-			View.SendSubviewToBack (imgView);
+
+			UIScrollView scrollview = new UIScrollView (View.Bounds);
+			innerViewController = new StorageScreenContent (View.Bounds, lm, scrollview, this);
+
+			scrollview.UserInteractionEnabled = true;
+			scrollview.ContentSize = neo.Size;
+			scrollview.AddSubview (innerViewController.View);
+			scrollview.AddSubview (imgView);
+			scrollview.SendSubviewToBack (imgView);
+			scrollview.BackgroundColor = UIColor.Clear;
+			Add (scrollview);
+
+//			innerview.ContentSize = cdc.GetContentsize ();
+//			innerview.AddSubview (cdc.View);
+//			innerview.BackgroundColor = UIColor.Clear;
+
+		
 
 
 //			UIView mymy = this.View;
 //
 //			BlackLeatherTheme.Apply (this.View);
 
-			SetPlaceholders ();
-			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Storage Data", "Storage Data");
+//			SetPlaceholders ();
+//			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Storage Data", "Storage Data");
 
 //			fillEst.MinValue = 0f;
 //			fillEst.MaxValue = 1f;
@@ -305,10 +285,7 @@ namespace no.dctapps.Garageindex.screens
 //			AddContactKeyButtons ();
 
 
-			ReleaseKeyboard ();
-
-			//TODO fix the slider event here
-			fillEst.ValueChanged += HandleValueChanged;
+	
 
 //			storageName.CommitEditing +=(sender, e) => {
 //				lm.Name = storageName.Text;
@@ -320,85 +297,70 @@ namespace no.dctapps.Garageindex.screens
 //			};
 
 			// Perform any additional setup after loading the view, typically from a nib.
-			CreateSlideDownMenu ();
+
 		}
 
-		public void ShowDetails (Lager myLager)
-		{
-			lm = myLager;
 
-			if (myLager != null) {
-				storageName.Text = myLager.Name;
-				address.Text = myLager.address;
-				keyContact.Text = myLager.telephone;
-				x.Text = myLager.height.ToString ();
-				y.Text = myLager.width.ToString ();
-				z.Text = myLager.depth.ToString ();
-				this.poststedField.Text = myLager.poststed;
-				this.zipField.Text = myLager.postnr;
-                CreateEmailBarButton ();
-			}
-		}
 
-		void HandleValueChanged (object sender, EventArgs e)
-		{   // display the value in a label
-			//			label.Text = slider.Value.ToString ();
-			Calculate ();
-		}
+//		void HandleValueChanged (object sender, EventArgs e)
+//		{   // display the value in a label
+//			//			label.Text = slider.Value.ToString ();
+//			Calculate ();
+//		}
+//
+//		public override void ViewWillAppear (bool animated){
+//			base.ViewWillAppear (animated);
+//			Calculate ();
+////			Unclean();
+//			
+//		}
 
-		public override void ViewWillAppear (bool animated){
-			base.ViewWillAppear (animated);
-			Calculate ();
-//			Unclean();
-			
-		}
+//		void ReleaseKeyboard ()
+//		{
+//			this.storageName.ShouldReturn += textField =>  {
+//				textField.ResignFirstResponder ();
+//				return true;
+//			};
+//			this.keyContact.ShouldReturn += textField =>  {
+//				textField.ResignFirstResponder ();
+//				return true;
+//			};
+//			this.address.ShouldReturn += (textField) => { 
+//				textField.ResignFirstResponder();
+//				return true; 
+//			};
+//			this.x.ShouldReturn += (textField) => { 
+//				textField.ResignFirstResponder();
+//				return true; 
+//			};
+//			this.y.ShouldReturn += (textField) => { 
+//				textField.ResignFirstResponder();
+//				return true; 
+//			};
+//			this.z.ShouldReturn += (textField) => { 
+//				textField.ResignFirstResponder();
+//				return true; 
+//			};
+//		}
 
-		void ReleaseKeyboard ()
-		{
-			this.storageName.ShouldReturn += textField =>  {
-				textField.ResignFirstResponder ();
-				return true;
-			};
-			this.keyContact.ShouldReturn += textField =>  {
-				textField.ResignFirstResponder ();
-				return true;
-			};
-			this.address.ShouldReturn += (textField) => { 
-				textField.ResignFirstResponder();
-				return true; 
-			};
-			this.x.ShouldReturn += (textField) => { 
-				textField.ResignFirstResponder();
-				return true; 
-			};
-			this.y.ShouldReturn += (textField) => { 
-				textField.ResignFirstResponder();
-				return true; 
-			};
-			this.z.ShouldReturn += (textField) => { 
-				textField.ResignFirstResponder();
-				return true; 
-			};
-		}
-
-		void Calculate ()
-		{
-			try{
-				lm.height = Convert.ToInt32(this.x.Text);
-				lm.width = Convert.ToInt32(this.y.Text);
-				lm.depth = Convert.ToInt32 (this.z.Text);
-			}catch(Exception e){
-				Console.WriteLine("disaster avoided:"+e.ToString());
-			}
-
-			if (lm != null) {
-				int dm3 = lm.height * lm.depth * lm.width;
-				this.prod.Text = "" + dm3;
-				double percentile = (double)fillEst.Value / 100;
-				int estRemaining = (int)(dm3 - (percentile * dm3));
-				this.remaining.Text = "" + estRemaining;
-			}
-		}
+//		void Calculate ()
+//		{
+//			try{
+//				lm.height = Convert.ToInt32(this.x.Text);
+//				lm.width = Convert.ToInt32(this.y.Text);
+//				lm.depth = Convert.ToInt32 (this.z.Text);
+//			}catch(Exception e){
+//				Console.WriteLine("disaster avoided:"+e.ToString());
+//			}
+//
+//			if (lm != null) {
+//				int dm3 = lm.height * lm.depth * lm.width;
+//				this.prod.Text = "" + dm3;
+//				double percentile = (double)fillEst.Value / 100;
+//				int estRemaining = (int)(dm3 - (percentile * dm3));
+//				this.remaining.Text = "" + estRemaining;
+//			}
+//		}
 
 //		partial void save (NSObject sender, MonoTouch.UIKit.UIEvent @event)
 //		{
@@ -431,46 +393,46 @@ namespace no.dctapps.Garageindex.screens
 //
 //		}
 
-		public void SaveAll(){
-
-
-			ReleaseKeyboard ();
-
-			if(lm != null){
-			lm.Name = storageName.Text;
-			Console.WriteLine("write Name to memory;"+lm.Name);
-			lm.telephone = this.keyContact.Text;
-			Console.WriteLine("write Telephone# to memory;"+lm.telephone);
-			lm.address = this.address.Text;
-			Console.WriteLine("write add to mem:"+lm.address);
-			lm.height = -1;
-			lm.width = -1;
-			lm.depth = -1; 
-			try{
-				lm.height = Convert.ToInt32(this.x.Text);
-				lm.width = Convert.ToInt32(this.y.Text);
-				lm.depth = Convert.ToInt32 (this.z.Text);
-			}catch(Exception e){
-				Console.WriteLine("err:"+e.ToString());
-				this.textDimensions.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Dimensions must be in numbers only", "Dimensions must be in numbers only");
-			}
-			
-			lm.postnr = this.zipField.Text;
-			lm.poststed = this.poststedField.Text;
-
-			AppDelegate.dao.SaveLager(lm);
-			raiseLagerSaved (lm);
-//			dao.updateLager(lm);
-			}
-		}
-
-		void raiseLagerSaved (Lager lager)
-		{
-			var handler = this.LagerSaved;
-			if (handler != null) {
-				handler(this, new LagerClickedEventArgs(lager));
-			}
-		}
+//		public void SaveAll(){
+//
+//
+//			ReleaseKeyboard ();
+//
+//			if(lm != null){
+//			lm.Name = storageName.Text;
+//			Console.WriteLine("write Name to memory;"+lm.Name);
+//			lm.telephone = this.keyContact.Text;
+//			Console.WriteLine("write Telephone# to memory;"+lm.telephone);
+//			lm.address = this.address.Text;
+//			Console.WriteLine("write add to mem:"+lm.address);
+//			lm.height = -1;
+//			lm.width = -1;
+//			lm.depth = -1; 
+//			try{
+//				lm.height = Convert.ToInt32(this.x.Text);
+//				lm.width = Convert.ToInt32(this.y.Text);
+//				lm.depth = Convert.ToInt32 (this.z.Text);
+//			}catch(Exception e){
+//				Console.WriteLine("err:"+e.ToString());
+//				this.textDimensions.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Dimensions must be in numbers only", "Dimensions must be in numbers only");
+//			}
+//			
+//			lm.postnr = this.zipField.Text;
+//			lm.poststed = this.poststedField.Text;
+//
+//			AppDelegate.dao.SaveLager(lm);
+//			raiseLagerSaved (lm);
+////			dao.updateLager(lm);
+//			}
+//		}
+//
+//		void raiseLagerSaved (Lager lager)
+//		{
+//			var handler = this.LagerSaved;
+//			if (handler != null) {
+//				handler(this, new LagerClickedEventArgs(lager));
+//			}
+//		}
 	}
 }
 

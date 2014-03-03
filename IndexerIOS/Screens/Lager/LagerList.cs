@@ -43,6 +43,9 @@ namespace GarageIndex
 			//tablectrl.View.Frame = new RectangleF (0, 75, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - 75);
 			table = new UITableView (new RectangleF (0, 75, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - 75), UITableViewStyle.Plain);
 			table.BackgroundColor = UIColor.Clear;
+			table.RowHeight = 100f;
+			table.SeparatorColor = UIColor.Clear;
+			//self.tableView.rowHeight = 79.f;
 			//table.Frame = ;
 			//tablectrl.TableView = table;
 			//table.

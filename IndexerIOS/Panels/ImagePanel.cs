@@ -28,12 +28,12 @@ namespace GarageIndex
 
 		readonly RectangleF myFrame;
 		string current_imagefilename;
-		UINavigationController nc;
+		UIViewController parent;
 
-		public ImagePanel (RectangleF myFrame, UINavigationController nc)
+		public ImagePanel (RectangleF myFrame, UIViewController parent)
 		{
 			this.myFrame = myFrame;
-			this.nc = nc;
+			this.parent = parent;
 		}
 
 		public ImagePanel (RectangleF myFrame)
@@ -258,8 +258,7 @@ namespace GarageIndex
 			}
 
 			if (UserInterfaceIdiomIsPhone) {
-				imagePicker.DismissViewController (true, delegate {
-				});
+				this.DismissViewController (true, null);
 			} else {
 				Pc.Dismiss (false);
 			}
@@ -281,7 +280,7 @@ namespace GarageIndex
 			// show the picker
 //			if (UserInterfaceIdiomIsPhone) {
 			//PresentViewController (imagePicker, true, null);
-			nc.PushViewController (imagePicker, true);
+			this.PresentViewController (imagePicker, true, null);
 				//nc.PresentViewController (imagePicker, true, delegate{});
 //			} else {
 //				Console.WriteLine ("Popover");
@@ -320,7 +319,7 @@ namespace GarageIndex
 		void Handle_Canceled (object sender, EventArgs e)
 		{
 			Console.WriteLine ("picker cancelled");
-			imagePicker.DismissViewController (true, delegate {
+			this.DismissViewController (true, delegate {
 			});
 		}
 

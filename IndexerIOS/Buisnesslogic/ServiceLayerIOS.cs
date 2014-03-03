@@ -181,6 +181,13 @@ namespace GarageIndex
 			store.Synchronize ();
 		}
 
+		public void StoreActiveGallery(Lager lo){
+			var store = NSUbiquitousKeyValueStore.DefaultStore;
+			store.SetLong ("activeLocation", (long)lo.ID);
+			store.SetString ("activeGalleryType", "Lager");
+			store.Synchronize ();
+		}
+
 		public string GetActiveGalleryType ()
 		{
 			var store = NSUbiquitousKeyValueStore.DefaultStore;

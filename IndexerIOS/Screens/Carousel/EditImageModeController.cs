@@ -28,6 +28,16 @@ namespace GarageIndex
 		bool found;
 
 		public event EventHandler<ThumbChangedEventArgs> ThumbChanged;
+		GalleryViewController gvc;
+
+		public EditImageModeController (GalleryObject go, GalleryViewController galleryViewController)
+		{
+			this.go = go;
+			//finds = new List<ImageTag> ();
+			mylock = false;
+			found = false;
+			this.gvc = galleryViewController;
+		}
 
 		public EditImageModeController (GalleryObject go)
 		{
@@ -54,6 +64,10 @@ namespace GarageIndex
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+
+			if (gvc != null) {
+				this.ThumbChanged += (object sender, ThumbChangedEventArgs e) => gvc.ChangeThumb ();
+			}
 
 			RectangleF myBounds = UIScreen.MainScreen.Bounds;
 

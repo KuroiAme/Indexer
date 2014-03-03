@@ -4,6 +4,7 @@ using GoogleAnalytics.iOS;
 using SatelliteMenu;
 using System.Drawing;
 using no.dctapps.Garageindex.model;
+using IndexerIOS;
 
 namespace GarageIndex
 {
@@ -20,7 +21,7 @@ namespace GarageIndex
 
 		DashboardRIghtPanel rightPanel;
 
-		public UISearchBar search;
+		public UISearchBar Search;
 
 		public override void LoadView ()
 		{
@@ -32,6 +33,10 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 
+			Title = AppDelegate.its.getTranslatedText ("Indexer Dashboard");
+			this.NavigationController.NavigationBar.Translucent = true;
+
+
 
 			Background back = new Background ();
 			Add (back.View);
@@ -39,34 +44,35 @@ namespace GarageIndex
 
 			float statpanelwidth = UIScreen.MainScreen.Bounds.Width / 3;
 			float rightPanelWidth = UIScreen.MainScreen.Bounds.Width - statpanelwidth - 3*buffer;
-			const float headerheight = 74;
+			const float headerheight = 100;
 			float panelsHeight = UIScreen.MainScreen.Bounds.Height - 125;
 			const float panelY = headerheight + buffer;
 			StatisticsPanel statpanel = new StatisticsPanel (new RectangleF(buffer, panelY, statpanelwidth , panelsHeight));
 			Add (statpanel.View);
 
 			rightPanelRect = new RectangleF (statpanelwidth + buffer, panelY, rightPanelWidth, panelsHeight);
-			rightPanel = new DashboardRIghtPanel (rightPanelWidth);
+			rightPanel = new DashboardRIghtPanel (rightPanelWidth, this);
 
-			DashBoardHeader header = new DashBoardHeader (new RectangleF(0, 20 ,UIScreen.MainScreen.Bounds.Width, 22));
-			View.AddSubview (header.View);
+//			DashBoardHeader header = new DashBoardHeader (new RectangleF(0, 20 ,UIScreen.MainScreen.Bounds.Width, 22));
+//			View.AddSubview (header.View);
 
-			search = new UISearchBar (new RectangleF (0, 42, UIScreen.MainScreen.Bounds.Width, 40));
-			search.SearchButtonClicked += (object sender, EventArgs e) => {
-				//var find = AppDelegate.key.GetBestLocationForSearchTerm(search.Text);
-				search.ResignFirstResponder();
+			Search = new UISearchBar (new RectangleF (0, 65, UIScreen.MainScreen.Bounds.Width, 40));
+			Search.SearchButtonClicked += (object sender, EventArgs e) => {
+				Search.ResignFirstResponder();
+				SearchScreen ss = new SearchScreen(Search.Text);
+				this.NavigationController.PushViewController(ss,true);
 			};
 //			search.AutosizesSubviews = false;
 //			search.SizeToFit ();
 
-			View.AddSubview (search);
+			View.AddSubview (Search);
 
 			UIScrollView rightPanelScroll = new UIScrollView (rightPanelRect);
 			rightPanelScroll.ContentSize = rightPanel.getSize ();
 			rightPanelScroll.AddSubview (rightPanel.View);
 			View.AddSubview (rightPanelScroll);
 
-			IndexerSateliteMenu menu = new IndexerSateliteMenu ("Dashboard");
+			IndexerSateliteMenu menu = new IndexerSateliteMenu ("Dashboard",this);
 			View.AddSubview (menu.View);
 
 		}

@@ -1,4 +1,3 @@
-
 using System;
 
 using no.dctapps.Garageindex.model;

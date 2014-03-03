@@ -55,7 +55,7 @@ namespace no.dctapps.Garageindex.screens
 			innerview = new UIScrollView (UIScreen.MainScreen.Bounds);
 			innerview.ContentSize = cdc.GetContentsize ();
 			innerview.AddSubview (cdc.View);
-			innerview.BackgroundColor = UIColor.White;
+			innerview.BackgroundColor = UIColor.Clear;
 			cdc.ShowDetails (boks);
 			this.View = innerview;
 

@@ -145,8 +145,12 @@ namespace no.dctapps.Garageindex.screens
 			this.switchGAI.ValueChanged += (object sender, EventArgs e) => {
 				AppDelegate.key.SaveStatsEnabled(switchGAI.On);
 				if(switchGAI.On == true){
+					GAI.SharedInstance.DefaultTracker.Set (GAIConstants.Event, "preferenceSet");
+					GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("logging", "Verbose", AppDelegate.Variant, 1).Build ());
 					GAI.SharedInstance.Logger.LogLevel = GAILogLevel.Verbose;
 				}else{
+					GAI.SharedInstance.DefaultTracker.Set (GAIConstants.Event, "preferenceSet");
+					GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("logging", "None", AppDelegate.Variant, 1).Build ());
 					GAI.SharedInstance.Logger.LogLevel = GAILogLevel.None;
 				}
 			};
