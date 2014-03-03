@@ -35,21 +35,49 @@ namespace IndexerIOS
 		{
 			Console.WriteLine ("drawing word:"+word);
 			RectangleF myRect = IndexerUtils.GetRectangleF (word);
-			UIFont myFont = UIFont.FromName("Helvetica-BoldOblique", word.weight + 10);
+			UIFont myFont = UIFont.FromName("Helvetica-BoldOblique", IndexerUtils.GetWordWeight(word));
 			string myText = word.word;
 
 			//BEGIN PAINTCODE;
-			//// Color Declarations
+			// Color Declarations
 			UIColor color = UIColor.FromRGBA(0.000f, 0.429f, 0.143f, 1.000f);
+			UIColor color3 = UIColor.FromRGBA(0.819f, 0.069f, 0.069f, 1.000f);
+			UIColor color2 = UIColor.FromRGBA(0.035f, 0.018f, 0.343f, 1.000f);
+			UIColor color4 = UIColor.FromRGBA(0.925f, 0.040f, 0.704f, 1.000f);
 
-			//// Abstracted Attributes
+			Random rnd = new Random ();
+			int index = rnd.Next (1,4);
+
+			//NON PAINTCODE SECTION
+
+			if (index == 1) {
+				color.SetFill();
+			}
+
+			if (index == 2) {
+				color2.SetFill();
+			}
+
+			if (index == 3) {
+				color3.SetFill();
+			}
+
+			if (index == 4) {
+				color4.SetFill();
+			}
+
+
+			//END NON PAINTCODE SECTION
+
+
+			// Abstracted Attributes
 //			var hello1Content = "Hello, World!";
 //			var hello2Content = "Hello, World!";
 
 
-			//// Hello1 Drawing
+			// Hello1 Drawing
 			//var hello1Rect = new RectangleF(34, 31, 110, 16);
-			color.SetFill();
+
 			new NSString(myText).DrawString(myRect, myFont, UILineBreakMode.WordWrap, UITextAlignment.Center);
 
 
@@ -59,7 +87,7 @@ namespace IndexerIOS
 //			new NSString(hello2Content).DrawString(hello2Rect, UIFont.FromName("Helvetica-BoldOblique", 12), UILineBreakMode.WordWrap, UITextAlignment.Center);
 
 
-			//// Rectangle Drawing
+			// Rectangle Drawing
 //			var rectangleRect = new RectangleF(143.5f, 15.5f, 42, 79);
 //			var rectanglePath = UIBezierPath.FromRoundedRect(rectangleRect, 20);
 //			UIColor.White.SetFill();

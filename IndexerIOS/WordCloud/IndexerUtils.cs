@@ -8,17 +8,18 @@ namespace IndexerIOS
 {
 	public static class IndexerUtils
 	{
-		const int MAX_NUMBER_OF_WORDS = 250;
+		const int MAX_NUMBER_OF_WORDS = 25;
 
 		public static List<WordCloudItem> CalculateBoxes (List<WordCloudItem> words, RectangleF outer)
 		{
+			List<WordCloudItem> foo = (from t in words
+				orderby t.weight descending select t).Take(MAX_NUMBER_OF_WORDS).ToList();
 
-			List<WordCloudItem> sizedwords = CalculateSizes (words, outer);
-			sizedwords.Sort ();
-			//fetch the top 50 most significant words
-			List<WordCloudItem> limitedWords = sizedwords.Take (MAX_NUMBER_OF_WORDS).ToList();
+			List<WordCloudItem> sizedwords = CalculateSizes (foo, outer);
+			//sizedwords.Sort ();
+			//List<WordCloudItem> limitedWords = sizedwords.First(MAX_NUMBER_OF_WORDS).ToList();
 
-			List<WordCloudItem> placedWords = PositionWords (limitedWords, outer);
+			List<WordCloudItem> placedWords = PositionWords (sizedwords, outer);
 			return placedWords;
 		}
 
@@ -28,7 +29,7 @@ namespace IndexerIOS
 			foreach (WordCloudItem word in words) {
 				if (!string.IsNullOrEmpty(word.word)) {
 					UILabel test = new UILabel ();
-					test.Font = UIFont.FromName ("Helvetica-BoldOblique", word.weight + 10);
+					test.Font = UIFont.FromName ("Helvetica-BoldOblique", GetWordWeight(word));
 					test.LineBreakMode = UILineBreakMode.WordWrap;
 					test.TextAlignment = UITextAlignment.Center;
 					test.Lines = 0;
@@ -42,6 +43,15 @@ namespace IndexerIOS
 			return calculatedWords;
 		}
 
+		public static float GetWordWeight (WordCloudItem word)
+		{
+			float weight = word.weight * 10;
+			if (weight > 50) {
+				weight = 40;
+			}
+			return weight;
+		}
+
 		static List<WordCloudItem> PositionWords (List<WordCloudItem> words, RectangleF outer)
 		{
 			List<WordCloudItem> positionedWords = new List<WordCloudItem> ();
@@ -52,9 +62,10 @@ namespace IndexerIOS
 				float width = word.width;
 				float height = word.height;
 				RectangleF currentRect = new RectangleF (x, y, width, height);
-
+				//int iterationCount = 0;
 				do {
-					currentRect = FindNewPosition (currentRect, outer);
+					currentRect = FindNewPositionOptimized(currentRect,outer);
+					//iterationCount++;
 				}
 				while (checkForCollisions (positionedWords, currentRect));
 
@@ -108,12 +119,123 @@ namespace IndexerIOS
 
 		}
 
+		static RectangleF FindNewPosition3 (RectangleF currentRect, RectangleF outer)
+		{
+			Random rnd = new Random ();
+			PointF center = findcenter (currentRect);
+			int direction = rnd.Next (0,3);
+			float deltaX = rnd.Next(10, (int) outer.Width / 2);
+			float deltaY = rnd.Next (10, (int) outer.Height / 2);
+
+			if (direction == 0) { // NEGATIVE NEGATIVE
+				currentRect = new RectangleF (center.X - deltaX, center.Y - deltaY, currentRect.Width, currentRect.Height);
+				if(outer.Contains(currentRect)){
+					return currentRect;
+				}
+			}
+
+			if (direction == 1) { // POSITIVE POSITIVE
+				currentRect = new RectangleF (center.X + deltaX, center.X + deltaY, currentRect.Width, currentRect.Height);
+				if(outer.Contains(currentRect)){
+					return currentRect;
+				}
+			}
+
+			if (direction == 2) { // POSITIVE NEGATIVE
+				currentRect = new RectangleF (center.X + deltaX, center.X - deltaY, currentRect.Width, currentRect.Height);
+				if(outer.Contains(currentRect)){
+					return currentRect;
+				}
+			}
+
+			if (direction == 3) { // NEGATIVE POSTIVE
+				currentRect = new RectangleF (center.X - deltaX, center.X + deltaY, currentRect.Width, currentRect.Height);
+				if(outer.Contains(currentRect)){
+					return currentRect;
+				}
+			}
+
+			Console.WriteLine ("recursive call FindNewPosition");
+			return FindNewPosition (currentRect, outer);
+
+		}
+
+		static RectangleF FindNewPositionOptimized (RectangleF currentRect, RectangleF outer)
+		{
+			Random rnd = new Random ();
+			float myx = rnd.Next(0, (int) (outer.Width - currentRect.Width));
+			float myy = rnd.Next (0, (int) (outer.Height - currentRect.Height));
+			currentRect = new RectangleF (myx, myy, currentRect.Width, currentRect.Height);
+			return  currentRect;
+
+		}
+
+		static RectangleF FindNewPosition2 (RectangleF currentRect, RectangleF outer, int counter)
+		{
+			counter += 10;
+
+			if (counter > outer.Width / 2) {
+				counter = 10;
+			}
+
+			if (counter > outer.Height / 2) {
+				counter = 10;
+			}
+
+			Random rnd = new Random ();
+			PointF center = findcenter (outer);
+			int direction = rnd.Next (0,3);
+			float deltaX = counter;
+			float deltaY = counter;
+
+			if (direction == 0) { // NEGATIVE NEGATIVE
+				currentRect = new RectangleF (center.X - deltaX, center.Y - deltaY, currentRect.Width, currentRect.Height);
+				if(outer.Contains(currentRect)){
+					return currentRect;
+				}
+			}
+
+			if (direction == 1) { // POSITIVE POSITIVE
+				currentRect = new RectangleF (center.X + deltaX, center.X + deltaY, currentRect.Width, currentRect.Height);
+				if(outer.Contains(currentRect)){
+					return currentRect;
+				}
+			}
+
+			if (direction == 2) { // POSITIVE NEGATIVE
+				currentRect = new RectangleF (center.X + deltaX, center.X - deltaY, currentRect.Width, currentRect.Height);
+				if(outer.Contains(currentRect)){
+					return currentRect;
+				}
+			}
+
+			if (direction == 3) { // NEGATIVE POSTIVE
+				currentRect = new RectangleF (center.X - deltaX, center.X + deltaY, currentRect.Width, currentRect.Height);
+				if(outer.Contains(currentRect)){
+					return currentRect;
+				}
+			}
+
+			Console.WriteLine ("recursive call FindNewPosition");
+			return FindNewPosition2 (currentRect, outer, counter);
+
+		}
+
+//		private static RectangleF FindNewPositionSpiral(SizeF currentRectSize, RectangleF outer, int iterationCount){
+//			PointF Center = findcenter (outer);
+//			PointF currentPos = spiralPath (iterationCount, Center,outer.Size);
+//			return new RectangleF (currentPos, currentRectSize);	
+//		}
+
+//		static PointF spiralPath (int iterationCount, PointF Center, SizeF frameSize)
+//		{
+//			Spiral sp = new Spiral ();
+//			return sp.GetModuloRect(
+//			return sp.GetModuloRect(
+//		}
+
 		static bool checkForCollisions (List<WordCloudItem> positionedWords, RectangleF rect)
 		{
-//			if (positionedWords.Count == 0) {
-//				return false;
-//			}
-
 			int x = positionedWords.Count;
 
 			for (int i = 0; i < x; i++) {
@@ -133,7 +255,7 @@ namespace IndexerIOS
 			return new RectangleF (item.x, item.y, item.width, item.height);
 		}
 
-		static PointF findcenter (RectangleF outer)
+		public static PointF findcenter (RectangleF outer)
 		{
 			PointF Center = new PointF (outer.Width / 2, outer.Height / 2);
 			return Center;

@@ -67,7 +67,7 @@ namespace GarageIndex
 			foreach (WordCloudItem cloud in clouds) {
 				Console.WriteLine (cloud);
 			}
-			WordCloudIOS wordCloud = new WordCloudIOS(ancestor,clouds,new RectangleF(0,currentheight,rightPanelWidth,elementHeight *2));
+			WordCloudIOS wordCloud = new WordCloudIOS(ancestor,clouds,new RectangleF(0,currentheight,rightPanelWidth,elementHeight *1.5f));
 			View.AddSubview (wordCloud.View);
 
 

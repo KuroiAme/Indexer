@@ -315,6 +315,7 @@
     <Compile Include="WordCloud\WordCloudIOS.cs" />
     <Compile Include="WordCloud\WordCloudView.cs" />
     <Compile Include="WordCloud\IndexerUtils.cs" />
+    <Compile Include="WordCloud\Spiral.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
