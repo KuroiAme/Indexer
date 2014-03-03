@@ -249,8 +249,9 @@ namespace no.dctapps.Garageindex.screens
 
 			UIScrollView scrollview = new UIScrollView (View.Bounds);
 			innerViewController = new StorageScreenContent (View.Bounds, lm, scrollview, this);
-
+			innerViewController.View.UserInteractionEnabled = true;
 			scrollview.UserInteractionEnabled = true;
+			this.View.UserInteractionEnabled = true;
 			scrollview.ContentSize = neo.Size;
 			scrollview.AddSubview (innerViewController.View);
 			scrollview.AddSubview (imgView);

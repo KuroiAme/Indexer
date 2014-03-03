@@ -23,18 +23,13 @@ namespace GarageIndex
 			this.ancestor = ancestor;
 		}
 
-		public DashboardRIghtPanel ()
+		static float GetPanelHeight ()
 		{
-			//this.myFrame = myFrame;
-			//this.parentView = parentView;
+			return elementHeight * 2.5f + buffer;
 		}
 
-		BestLocationMiniViewController mini;
-
-
-
 		public SizeF getSize(){
-			return new SizeF (this.View.Frame.Width, this.View.Frame.Height);
+			return new SizeF (rightPanelWidth, GetPanelHeight ());
 		}
 
 		public override void LoadView ()
@@ -42,16 +37,22 @@ namespace GarageIndex
 			base.LoadView ();
 
 			this.View.BackgroundColor = UIColor.Clear;
-			this.View.Frame = new RectangleF (0, 0, rightPanelWidth, elementHeight*5);
+			this.View.Frame = new RectangleF (0, 0, rightPanelWidth, GetPanelHeight());
 			// init done, now for panel elements;
 
 		}
 
+		public OverSightMap MainMap;
+
+		WordCloudIOS wordCloud;
+
+		System.Collections.Generic.List<WordCloudItem> clouds;
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			OverSightMap mainMap = new OverSightMap (new RectangleF (0,currentheight, rightPanelWidth, elementHeight),ancestor);
-			View.AddSubview (mainMap.View);
+			MainMap = new OverSightMap (new RectangleF (0, currentheight, rightPanelWidth, elementHeight), ancestor);
+			View.AddSubview (MainMap.View);
 			currentheight += elementHeight + buffer;
 
 //			UILabel bestPlace = new UILabel (new RectangleF (0, currentheight, rightPanelWidth, textHeight));
@@ -62,16 +63,59 @@ namespace GarageIndex
 
 //			mini = new BestLocationMiniViewController (new RectangleF (0,currentheight,rightPanelWidth, elementHeight));
 //			View.AddSubview (mini.View);
-			var clouds = AppDelegate.bl.GetWordCloudDictionary ();
-			Console.WriteLine ("dict count at init:"+clouds.Count);
-			foreach (WordCloudItem cloud in clouds) {
-				Console.WriteLine (cloud);
-			}
-			WordCloudIOS wordCloud = new WordCloudIOS(ancestor,clouds,new RectangleF(0,currentheight,rightPanelWidth,elementHeight *1.5f));
+			clouds = AppDelegate.bl.GetWordCloudDictionary ();
+//			Console.WriteLine ("dict count at init:"+clouds.Count);
+//			foreach (WordCloudItem cloud in clouds) {
+//				Console.WriteLine (cloud);
+//			}
+			wordCloud = new WordCloudIOS (ancestor, clouds, new RectangleF (0, currentheight, rightPanelWidth, elementHeight * 1.5f));
 			View.AddSubview (wordCloud.View);
 
 
 		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+
+			currentheight = 0;
+
+			if (MainMap == null) {
+				MainMap = new OverSightMap (new RectangleF (0, currentheight, rightPanelWidth, elementHeight), ancestor);
+
+			}
+
+			currentheight += elementHeight;
+
+			if (clouds == null) {
+				clouds = AppDelegate.bl.GetWordCloudDictionary ();
+			}
+
+			if (wordCloud == null) {
+				wordCloud = new WordCloudIOS (ancestor, clouds, new RectangleF (0, currentheight, rightPanelWidth, elementHeight * 1.5f));
+				View.AddSubview (wordCloud.View);
+			}
+		}
+
+		void cleanup ()
+		{
+			MainMap = null;
+			clouds = null;
+			wordCloud = null;
+		}
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			if(this.IsViewLoaded && this.View.Window == null){
+				cleanup ();
+
+			}
+			// Release any cached data, images, etc that aren't in use.
+		}
+
 
 		void RaiseSearchResult (no.dctapps.Garageindex.model.Lager find)
 		{

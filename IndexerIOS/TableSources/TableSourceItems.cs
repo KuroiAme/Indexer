@@ -60,7 +60,16 @@ namespace no.dctapps.Garageindex.tables
 			} else {
 				cell.UpdateCell(item.Name, item.Description);
 			}
-				return cell;
+
+
+			cell.Layer.CornerRadius = 7.0f;
+			cell.Layer.MasksToBounds = true;
+			cell.Layer.BorderWidth = 2.0f;
+			cell.Layer.BorderColor = UIColor.FromRGBA (34f,139f,34f, 0.9f).CGColor;
+			cell.TintColor = UIColor.Orange;
+			cell.BackgroundColor = UIColor.FromRGBA (34f,139f,34f, 0.5f);
+
+			return cell;
 
 		}
 

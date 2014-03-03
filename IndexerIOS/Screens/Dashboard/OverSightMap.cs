@@ -34,6 +34,21 @@ namespace GarageIndex
 
 		MapDelegate mappy;
 
+		public void ReloadData ()
+		{
+			if (annotationList != null) {
+				mapView.RemoveAnnotations (annotationList.ToArray());
+			}
+
+			GetMinsAndMaxes ();
+			SetMapViewOversight ();
+			AnnotateMap ();
+		}
+
+		TheStorageScreen tss;
+
+		Lager selected;
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -42,9 +57,9 @@ namespace GarageIndex
 			mapView.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
 			mappy = new MapDelegate ();
 			mappy.LagerAnnotationClicked += (object sender, LagerAnnotationClicked e) => {
-				Lager selected = AppDelegate.dao.getLagerByName(e.name);
+				selected = AppDelegate.dao.getLagerByName (e.name);
 				if(selected != null){
-					TheStorageScreen tss = new TheStorageScreen(selected);
+					tss = new TheStorageScreen (selected);
 //					UINavigationController nc = new UINavigationController();
 //					nc.PushViewController(tss,false);
 //					ancestor.PresentViewController(nc,true,null);
@@ -66,6 +81,8 @@ namespace GarageIndex
 
 		}
 
+		List<BasicMapAnnotation> annotationList;
+
 		public void AnnotateSingleLocation (Lager myLager)
 		{
 //			MKPointAnnotation LagerAnnotation;
@@ -79,11 +96,13 @@ namespace GarageIndex
 //			}
 			var annotation = new BasicMapAnnotation (myLager);
 			mapView.AddAnnotation (annotation);
+			annotationList.Add (annotation);
 
 		}
 
 		public void AnnotateMap ()
 		{
+			annotationList = new List<BasicMapAnnotation> ();
 			foreach (Lager thisLager in lagers) {
 				AnnotateSingleLocation (thisLager);
 			}

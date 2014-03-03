@@ -30,11 +30,14 @@ namespace IndexerIOS
 			base.ViewDidLoad ();
 			this.View.BackgroundColor = UIColor.Clear;
 
-			this.words = IndexerUtils.CalculateBoxes (words,View.Bounds);
+			if (words != null) {
 
-			WordCloudView cloud = new WordCloudView (View.Bounds, words);
-			cloud.BackgroundColor = UIColor.Clear;
-			this.View.AddSubview (cloud);
+				this.words = IndexerUtils.CalculateBoxes (words, View.Bounds);
+
+				WordCloudView cloud = new WordCloudView (View.Bounds, words);
+				cloud.BackgroundColor = UIColor.Clear;
+				this.View.AddSubview (cloud);
+			}
 		}
 
 	}

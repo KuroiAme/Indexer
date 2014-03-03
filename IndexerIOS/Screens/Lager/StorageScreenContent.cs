@@ -19,14 +19,14 @@ namespace IndexerIOS
 		MKMapView mapView;
 		MFMailComposeViewController mailContr;
 		UIScrollView outerScroll;
-		UIViewController outer;
+		UIViewController ancestor;
 
 		public StorageScreenContent (RectangleF myRect, Lager myLager, UIScrollView outerScroll, UIViewController outer)
 		{
 			this.outerScroll = outerScroll;
 			this.myRect = myRect;
 			this.myLager = myLager;
-			this.outer = outer;
+			this.ancestor = outer;
 		}
 
 		public override void LoadView ()
@@ -52,7 +52,7 @@ namespace IndexerIOS
 			AddPicture ();
 
 			UIBarButtonItem email = CreateEmailButton ();
-			outer.NavigationItem.SetRightBarButtonItem (email, true);
+			ancestor.NavigationItem.SetRightBarButtonItem (email, true);
 
 
 
@@ -80,6 +80,11 @@ namespace IndexerIOS
 			this.NameField.ShouldReturn += textField =>  {
 				textField.ResignFirstResponder ();
 				return true;
+			};
+
+			NameField.EditingDidEnd += (object sender, EventArgs e) => {
+				myLager.Name = NameField.Text;
+				AppDelegate.dao.SaveLager(myLager);
 			};
 		}
 
@@ -139,9 +144,11 @@ namespace IndexerIOS
 			}
 		}
 
+		ImagePanel image;
+
 		void AddPicture ()
 		{
-			ImagePanel image = new ImagePanel (new RectangleF (x, y, cube, cube),this.outer);
+			image = new ImagePanel (new RectangleF (x, y, cube, cube),this.ancestor);
 
 			image.ImageSaved += (object sender, SavedImageStringsEventArgs e) => {
 				myLager.thumbFileName = e.Thumbfilename;
@@ -190,12 +197,12 @@ namespace IndexerIOS
 				if(e.ButtonIndex == 2){
 					Console.WriteLine("Address:"+e.ButtonIndex);
 					AddressLocationFinder arfl = new AddressLocationFinder (this);
-					outer.PresentViewController (arfl, true, null);
+					ancestor.PresentViewController (arfl, true, null);
 				}
 
 			};
 
-			inquire.ShowInView (outer.View);
+			inquire.ShowInView (ancestor.View);
 
 		}
 
@@ -223,7 +230,9 @@ namespace IndexerIOS
 			AppDelegate.dao.SaveLager(myLager);
 			MKCoordinateSpan span = new MKCoordinateSpan (KilometresToLatitudeDegrees (10), KilometresToLongitudeDegrees (10, coord.Latitude));
 			mapView.Region = new MKCoordinateRegion (coord, span);
-			mapView.RemoveAnnotation(LagerAnnotation); 
+			if (LagerAnnotation != null) {
+				mapView.RemoveAnnotation (LagerAnnotation); 
+			}
 			AnnotateMapWithLagerName(this.myLager,latitude,longitude);
 			mapView.ReloadInputViews ();
 		}			
@@ -286,7 +295,9 @@ namespace IndexerIOS
 					SetLocationFromLager (myLager);
 				}
 
-
+				if (myLager.LagerImage != null) {
+					image.SetNewImageName (myLager.LagerImage);
+				}
 
 
 
@@ -297,7 +308,7 @@ namespace IndexerIOS
 //				z.Text = myLager.depth.ToString ();
 //				this.poststedField.Text = myLager.poststed;
 //				this.zipField.Text = myLager.postnr;
-				//CreateEmailBarButton ();
+				this.CreateEmailButton ();
 			}
 		}
 
@@ -333,7 +344,7 @@ namespace IndexerIOS
 			mailContr = new MFMailComposeViewController ();
 			mailContr.SetSubject (AppDelegate.bl.GenerateSubject (myLager));
 			mailContr.SetMessageBody (AppDelegate.bl.GenerateManifest (myLager), false);
-			outer.NavigationController.PushViewController (mailContr, true);
+			ancestor.NavigationController.PresentViewController (mailContr, true, null);
 			mailContr.Finished += (object sender2, MFComposeResultEventArgs e2) => mailContr.DismissViewController (true, delegate {
 			});
 		}

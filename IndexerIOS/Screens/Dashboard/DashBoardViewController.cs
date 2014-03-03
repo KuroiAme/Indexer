@@ -23,10 +23,37 @@ namespace GarageIndex
 
 		public UISearchBar Search;
 
+		void cleanup ()
+		{
+			Search = null;
+		}
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			if(this.IsViewLoaded && this.View.Window == null){
+				cleanup ();
+
+			}
+			// Release any cached data, images, etc that aren't in use.
+		}
+
 		public override void LoadView ()
 		{
 			base.LoadView ();
 			this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height);
+		}
+
+		void AddSearchBar ()
+		{
+			Search = new UISearchBar (new RectangleF (0, 65, UIScreen.MainScreen.Bounds.Width, 40));
+			Search.SearchButtonClicked += (object sender, EventArgs e) =>  {
+				Search.ResignFirstResponder ();
+				SearchScreen ss = new SearchScreen (Search.Text);
+				this.NavigationController.PushViewController (ss, true);
+			};
 		}
 
 		public override void ViewDidLoad ()
@@ -56,12 +83,7 @@ namespace GarageIndex
 //			DashBoardHeader header = new DashBoardHeader (new RectangleF(0, 20 ,UIScreen.MainScreen.Bounds.Width, 22));
 //			View.AddSubview (header.View);
 
-			Search = new UISearchBar (new RectangleF (0, 65, UIScreen.MainScreen.Bounds.Width, 40));
-			Search.SearchButtonClicked += (object sender, EventArgs e) => {
-				Search.ResignFirstResponder();
-				SearchScreen ss = new SearchScreen(Search.Text);
-				this.NavigationController.PushViewController(ss,true);
-			};
+			AddSearchBar ();
 //			search.AutosizesSubviews = false;
 //			search.SizeToFit ();
 
@@ -81,16 +103,19 @@ namespace GarageIndex
 		{
 			base.ViewWillAppear (animated);
 			this.View.BackgroundColor = UIColor.Clear;
-
-
-
 		}
 
 		public override void ViewDidAppear (bool animated)
 		{
 			base.ViewDidAppear (animated);
+
+			if (Search == null) {
+				AddSearchBar ();
+			}
+
 			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Dashboard");
 			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
+			rightPanel.mainMap.ReloadData ();
 		}
 	}
 }

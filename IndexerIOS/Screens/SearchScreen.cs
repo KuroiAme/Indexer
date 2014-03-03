@@ -39,8 +39,13 @@ namespace IndexerIOS
 
 			LoadWords ();
 
-			RectangleF resultsRect = new RectangleF (0, 40, View.Bounds.Width, View.Bounds.Height - 40);
+			Background back = new Background();
+			View.Add(back.View);
+			View.SendSubviewToBack (back.View);
+
+			RectangleF resultsRect = new RectangleF (0, 75, View.Bounds.Width, View.Bounds.Height - 40);
 			resultsTable = new UITableView (resultsRect);
+			resultsTable.BackgroundColor = UIColor.Clear;
 			Add (resultsTable);
 			searchBar = new UISearchBar (new RectangleF(0, 0, View.Bounds.Width, 40));
 			searchBar.Text = this.initialSearch;
@@ -164,7 +169,13 @@ namespace IndexerIOS
 				}
 
 				// set the item text
-				
+
+				cell.Layer.CornerRadius = 7.0f;
+				cell.Layer.MasksToBounds = true;
+				cell.Layer.BorderWidth = 2.0f;
+				cell.Layer.BorderColor = UIColor.FromRGBA (34f,139f,34f, 0.9f).CGColor;
+				cell.TintColor = UIColor.Orange;
+				cell.BackgroundColor = UIColor.FromRGBA (34f,139f,34f, 0.5f);
 
 				return cell;
 			}

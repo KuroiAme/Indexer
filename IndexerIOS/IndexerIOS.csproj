@@ -278,7 +278,6 @@
     <Compile Include="Screens\Scanner\Scanner.cs" />
     <Compile Include="Screens\Scanner\Scanner.designer.cs" />
     <Compile Include="Screens\Statistics\PiePlot.cs" />
-    <Compile Include="TableSources\TableSourceBoxes.cs" />
     <Compile Include="TableSources\TableSourceItems.cs" />
     <Compile Include="TableSources\TableSourceItemsIndexed.cs" />
     <Compile Include="TableSources\TableSourceLager.cs" />
@@ -316,6 +315,7 @@
     <Compile Include="WordCloud\WordCloudView.cs" />
     <Compile Include="WordCloud\IndexerUtils.cs" />
     <Compile Include="WordCloud\Spiral.cs" />
+    <Compile Include="Panels\SwipeDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
