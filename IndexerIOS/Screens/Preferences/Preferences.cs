@@ -5,6 +5,7 @@ using GarageIndex;
 using GoogleAnalytics.iOS;
 using MonoTouch.UIKit;
 using System.Drawing;
+using MTiRate;
 
 namespace no.dctapps.Garageindex.screens
 {
@@ -99,7 +100,9 @@ namespace no.dctapps.Garageindex.screens
 			Title = NSBundle.MainBundle.LocalizedString ("Preferences","Preferences");
 			textLargeObjects.Text = NSBundle.MainBundle.LocalizedString ("List containers in the large object list","List containers in the large object list");
 			textQR.Text = NSBundle.MainBundle.LocalizedString ("Include QRcode in emails where applicable", "Include QRcode in emails where applicable"); 
-			textGAI.Text = NSBundle.MainBundle.LocalizedString ("allow anonymous statistics", "allow anonymous statistics");
+			textGAI.Text = NSBundle.MainBundle.LocalizedString ("help me improve the app: allow anonymous statistics", "help me improve the app: allow anonymous statistics");
+			textGAI.Lines = 2;
+			textGAI.LineBreakMode = UILineBreakMode.WordWrap;
 
 
 			switchLO = new UISwitch (rect_lo);
@@ -123,10 +126,10 @@ namespace no.dctapps.Garageindex.screens
 			View.AddSubview (back.View);
 			View.SendSubviewToBack (back.View);
 
-			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
-			backbutton.SetImage (UIImage.FromBundle ("backarrow.png"), UIControlState.Normal);
-			backbutton.TouchUpInside += (object sender, EventArgs e) => DismissViewControllerAsync (true);
-			Add (backbutton);
+//			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
+//			backbutton.SetImage (UIImage.FromBundle ("backarrow.png"), UIControlState.Normal);
+//			backbutton.TouchUpInside += (object sender, EventArgs e) => DismissViewControllerAsync (true);
+//			Add (backbutton);
 
 			this.switchLO.On = AppDelegate.key.GetContainersAsLarge();
 			this.switchQR.On = AppDelegate.key.IncludeQr();
@@ -135,23 +138,23 @@ namespace no.dctapps.Garageindex.screens
 			this.switchLO.ValueChanged += (object sender, EventArgs e) => {
 				Console.WriteLine("Value changed:"+switchLO.On.ToString());
 				AppDelegate.key.SaveContainersAsLarge(switchLO.On);
+				GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("setting", "ContainersAsLarge", switchLO.On.ToString(), 1).Build ());
 			};
 
 			this.switchQR.ValueChanged += (object sender, EventArgs e) => {
 				Console.WriteLine("Value changed:"+switchQR.On.ToString());
 				AppDelegate.key.SaveIncludeQR(switchQR.On);
+				GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("setting", "QR", switchLO.On.ToString(), 1).Build ());
             };
 
 			this.switchGAI.ValueChanged += (object sender, EventArgs e) => {
 				AppDelegate.key.SaveStatsEnabled(switchGAI.On);
 				if(switchGAI.On == true){
-					GAI.SharedInstance.DefaultTracker.Set (GAIConstants.Event, "preferenceSet");
 					GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("logging", "Verbose", AppDelegate.Variant, 1).Build ());
 					GAI.SharedInstance.Logger.LogLevel = GAILogLevel.Verbose;
 				}else{
-					GAI.SharedInstance.DefaultTracker.Set (GAIConstants.Event, "preferenceSet");
 					GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("logging", "None", AppDelegate.Variant, 1).Build ());
-					GAI.SharedInstance.Logger.LogLevel = GAILogLevel.None;
+					GAI.SharedInstance.Logger.LogLevel = GAILogLevel.Error;
 				}
 			};
 		}

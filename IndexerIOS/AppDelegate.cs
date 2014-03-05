@@ -30,13 +30,8 @@ namespace GarageIndex
 			iOS7 = new Version (7, 0);
 
 			iRate.SharedInstance.DaysUntilPrompt = 5;
-			iRate.SharedInstance.UsesUntilPrompt = 15;
+			iRate.SharedInstance.UsesUntilPrompt = 3;
 
-			iRate.SharedInstance.UserDidAttemptToRateApp += (sender, e) => Console.WriteLine ("User is rating app now!");
-
-			iRate.SharedInstance.UserDidDeclineToRateApp += (sender, e) => Console.WriteLine ("User does not want to rate app");
-
-			iRate.SharedInstance.UserDidRequestReminderToRateApp += (sender, e) => Console.WriteLine ("User will rate app later");
 		}
 
 
@@ -66,6 +61,21 @@ namespace GarageIndex
 			GAI.SharedInstance.DispatchInterval = 20;
 			GAI.SharedInstance.TrackUncaughtExceptions = true;
 			Tracker = GAI.SharedInstance.GetTracker (TrackingId);
+
+			iRate.SharedInstance.UserDidAttemptToRateApp += (sender, e) => {
+				GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("UserRating", "User is rating app now!","UsesCount", iRate.SharedInstance.UsesCount).Build ());
+				Console.WriteLine ("User is rating app now!");
+			};
+
+			iRate.SharedInstance.UserDidDeclineToRateApp += (sender, e) => { 
+				GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("UserRating", "User does not want to rate app","UsesCount", iRate.SharedInstance.UsesCount).Build ());
+				Console.WriteLine ("User does not want to rate app");
+			};
+
+			iRate.SharedInstance.UserDidRequestReminderToRateApp += (sender, e) => {
+				GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("UserRating", "User will rate app later","UsesCount", iRate.SharedInstance.UsesCount).Build ());
+				Console.WriteLine ("User will rate app later");
+			};
 
 			key = new KeyStorageServiceIos ();
 
