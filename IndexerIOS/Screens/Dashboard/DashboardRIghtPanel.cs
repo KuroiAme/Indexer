@@ -58,19 +58,8 @@ namespace GarageIndex
 			View.AddSubview (MainMap.View);
 			currentheight += elementHeight + buffer;
 
-//			UILabel bestPlace = new UILabel (new RectangleF (0, currentheight, rightPanelWidth, textHeight));
-//			bestPlace.Text = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Chosen location or best search result :", "Chosen location or best search result :");
-//			bestPlace.AdjustsFontSizeToFitWidth = true;
-//			View.AddSubview (bestPlace);
-//			currentheight += textHeight + buffer;
-
-//			mini = new BestLocationMiniViewController (new RectangleF (0,currentheight,rightPanelWidth, elementHeight));
-//			View.AddSubview (mini.View);
 			clouds = AppDelegate.bl.GetWordCloudDictionary ();
-//			Console.WriteLine ("dict count at init:"+clouds.Count);
-//			foreach (WordCloudItem cloud in clouds) {
-//				Console.WriteLine (cloud);
-//			}
+
 			wordCloud = new WordCloudIOS (ancestor, clouds, new RectangleF (0, currentheight, rightPanelWidth, elementHeight * 1.5f));
 			View.AddSubview (wordCloud.View);
 
