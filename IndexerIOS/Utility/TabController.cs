@@ -123,13 +123,7 @@
 //			galleryNav.PushViewController(galleryscreen, true);
 //		}
 //
-//		UIImage ImageWithView (UIView view){
-//			UIGraphics.BeginImageContextWithOptions (new SizeF(96,64), view.Opaque, 1.0f);
-//			view.Layer.RenderInContext (UIGraphics.GetCurrentContext ());
-//			UIImage img = UIGraphics.GetImageFromCurrentImageContext ();
-//			UIGraphics.EndImageContext ();
-//			return img;
-//		}
+
 //
 //		public void InitScanner ()
 //		{

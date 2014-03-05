@@ -73,6 +73,11 @@ namespace No.Dctapps.GarageIndex
 //			sb.Append ("\t");
 			return sb.ToString();
 		}
+
+		public Item ()
+		{
+			cashValue = 0;
+		}
 	}
 }
 

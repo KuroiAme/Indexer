@@ -30,13 +30,37 @@ namespace GarageIndex
 			CreateStatistics ();
 		}
 
+		UILabel value;
+
+		UILabel store;
+
+		UILabel lagre;
+
+		UILabel ting;
+
+		UILabel beholdere;
+
 		void CreateStatistics ()
 		{
-			AddOneStatistic (AppDelegate.its.getTranslatedText("Total cash"),AppDelegate.its.getTranslatedText("value"), AppDelegate.bl.GetTotalValue().ToString());
-			AddOneStatistic (AppDelegate.its.getTranslatedText("number of"),AppDelegate.its.getTranslatedText("storages"), AppDelegate.dao.GetAntallLagre());
-			AddOneStatistic (AppDelegate.its.getTranslatedText("number of"),AppDelegate.its.getTranslatedText("Items"), AppDelegate.dao.GetAntallTing());
-			AddOneStatistic (AppDelegate.its.getTranslatedText("number of"),AppDelegate.its.getTranslatedText("Containers"), AppDelegate.dao.GetAntallBeholdere());
-			AddOneStatistic (AppDelegate.its.getTranslatedText("number of"),AppDelegate.its.getTranslatedText("Large Objects"), AppDelegate.dao.GetAntallStore());
+			value = AddOneStatistic (AppDelegate.its.getTranslatedText ("Total cash"), AppDelegate.its.getTranslatedText ("value"), AppDelegate.bl.GetTotalValue ().ToString ());
+			lagre = AddOneStatistic (AppDelegate.its.getTranslatedText ("number of"), AppDelegate.its.getTranslatedText ("storages"), AppDelegate.dao.GetAntallLagre ());
+			ting = AddOneStatistic (AppDelegate.its.getTranslatedText ("number of"), AppDelegate.its.getTranslatedText ("Items"), AppDelegate.dao.GetAntallTing ());
+			beholdere = AddOneStatistic (AppDelegate.its.getTranslatedText ("number of"), AppDelegate.its.getTranslatedText ("Containers"), AppDelegate.dao.GetAntallBeholdere ());
+			store = AddOneStatistic (AppDelegate.its.getTranslatedText ("number of"), AppDelegate.its.getTranslatedText ("Large Objects"), AppDelegate.dao.GetAntallStore ());
+		}
+
+//		public static void ReloadData ()
+//		{
+//			UpdateStatistics ();
+//		}
+
+		public void UpdateStatistics ()
+		{
+			value.Text = AppDelegate.bl.GetTotalValue ().ToString ();
+			lagre.Text = AppDelegate.dao.GetAntallLagre ();
+			ting.Text =  AppDelegate.dao.GetAntallTing ();
+			beholdere.Text = AppDelegate.dao.GetAntallBeholdere ();
+			store.Text = AppDelegate.dao.GetAntallStore ();
 		}
 
 		const float margin = 10;
@@ -46,7 +70,7 @@ namespace GarageIndex
 		float textwidth;
 
 
-		void AddOneStatistic (string str, string str2, string number)
+		UILabel AddOneStatistic (string str, string str2, string number)
 		{
 			UILabel lineone = new UILabel (new RectangleF (x, y, textwidth, textheight));
 			lineone.Text = str;
@@ -62,7 +86,15 @@ namespace GarageIndex
 			linethree.Text = number;
 			y += textheight + margin;
 			this.View.AddSubview (linethree);
+			return linethree;
 		}
+
+//		public override void ViewDidAppear (bool animated)
+//		{
+//			base.ViewDidAppear (animated);
+//			UpdateStatistics ();
+//
+//		}
 	}
 }
 

@@ -25,7 +25,6 @@ namespace no.dctapps.Garageindex.screens
 		public ContainerDetails (LagerObject boks)
 		{
 			this.boks = boks;
-			cdc = new ContainerDetailsContent (boks);
 		}
 		
 		public ContainerDetails () 
@@ -51,7 +50,7 @@ namespace no.dctapps.Garageindex.screens
 		public void ShowDetails (LagerObject boks)
 		{
 			this.boks = boks;
-			cdc = new ContainerDetailsContent (boks, NavigationController);
+			cdc = new ContainerDetailsContent (boks, this);
 			innerview = new UIScrollView (UIScreen.MainScreen.Bounds);
 			innerview.ContentSize = cdc.GetContentsize ();
 			innerview.AddSubview (cdc.View);

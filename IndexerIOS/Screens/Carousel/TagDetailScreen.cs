@@ -309,6 +309,7 @@ namespace GarageIndex
 			lo.thumbFileName = res [1];
 			lo.imageFileName = res [0];
 			lo.isContainer = "true";
+			lo.isLargeObject = "false";
 			ContainerDetails cd = new ContainerDetails (lo);
 			this.NavigationController.PushViewController (cd, true);
 		}

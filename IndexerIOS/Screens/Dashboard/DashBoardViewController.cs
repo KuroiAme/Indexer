@@ -19,7 +19,7 @@ namespace GarageIndex
 
 		RectangleF rightPanelRect;
 
-		DashboardRIghtPanel rightPanel;
+		DashboardRightPanel rightPanel;
 
 		public UISearchBar Search;
 
@@ -56,6 +56,8 @@ namespace GarageIndex
 			};
 		}
 
+		StatisticsPanel statpanel;
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -74,11 +76,11 @@ namespace GarageIndex
 			const float headerheight = 100;
 			float panelsHeight = UIScreen.MainScreen.Bounds.Height - 125;
 			const float panelY = headerheight + buffer;
-			StatisticsPanel statpanel = new StatisticsPanel (new RectangleF(buffer, panelY, statpanelwidth , panelsHeight));
+			statpanel = new StatisticsPanel (new RectangleF (buffer, panelY, statpanelwidth, panelsHeight));
 			Add (statpanel.View);
 
 			rightPanelRect = new RectangleF (statpanelwidth + buffer, panelY, rightPanelWidth, panelsHeight);
-			rightPanel = new DashboardRIghtPanel (rightPanelWidth, this);
+			rightPanel = new DashboardRightPanel (rightPanelWidth, this);
 
 //			DashBoardHeader header = new DashBoardHeader (new RectangleF(0, 20 ,UIScreen.MainScreen.Bounds.Width, 22));
 //			View.AddSubview (header.View);
@@ -111,6 +113,10 @@ namespace GarageIndex
 
 			if (Search == null) {
 				AddSearchBar ();
+			}
+
+			if (statpanel != null) {
+				statpanel.UpdateStatistics ();
 			}
 
 			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Dashboard");

@@ -222,7 +222,7 @@ namespace GarageIndex
 		async void ExtractNewThumbnail ()
 		{
 			Console.WriteLine ("extracting thumbnail");
-			//UIView snapshotview = blend.SnapshotView (true);
+
 			UIImage render = ImageWithView (blend);
 			string res = SaveGalleryThumbnail (go.Name, render);
 			go.thumbFileName = res;

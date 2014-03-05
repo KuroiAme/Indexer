@@ -1,3 +1,1 @@
-Indexer 2.1 ALPHA1
-
-Nytt experimentalt grunnleggende interface
+GEOLOKASJONSBUG FIKSET

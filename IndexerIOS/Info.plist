@@ -43,8 +43,8 @@
 	<key>CFBundleDisplayName</key>
 	<string>Indexer</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1 ALPHA</string>
-	<key>CFBundleVersion</key>
 	<string>2.1 BETA</string>
+	<key>CFBundleVersion</key>
+	<string>2</string>
 </dict>
 </plist>

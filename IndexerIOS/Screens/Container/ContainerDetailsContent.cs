@@ -15,19 +15,20 @@ namespace GarageIndex
 		public UIPopoverController popme;
 		SelectLager lagerselect;
 		const bool test = true;
-		UINavigationController nc;
+
+		UIViewController ancestor;
 
 		public event EventHandler<LagerObjectSavedEventArgs> LagerObjectSaved;
 
-		public ContainerDetailsContent (LagerObject boks)
+//		public ContainerDetailsContent (LagerObject boks)
+//		{
+//			this.boks = boks;
+//		}
+//
+		public ContainerDetailsContent (LagerObject boks, UIViewController ancestor)
 		{
 			this.boks = boks;
-		}
-
-		public ContainerDetailsContent (LagerObject boks, UINavigationController navigationController)
-		{
-			this.boks = boks;
-			this.nc = navigationController;
+			this.ancestor = ancestor;
 		}
 
 		public SizeF GetContentsize ()
@@ -35,10 +36,10 @@ namespace GarageIndex
 			return this.View.Bounds.Size;
 		}
 
-		public ContainerDetailsContent (UINavigationController nc)
-		{
-			this.nc = nc;
-		}
+//		public ContainerDetailsContent (UIViewController ancestor)
+//		{
+//			this.nc = nc;
+//		}
 
 		public override void LoadView ()
 		{
@@ -168,7 +169,7 @@ namespace GarageIndex
 
 			this.inStorage.TouchUpInside += (object sender, EventArgs e) =>  {
 				if(UserInterfaceIdiomIsPhone){
-					nc.PushViewController(lagerselect, true);
+					ancestor.NavigationController.PushViewController(lagerselect,true);
 				}else{
 					popme = new UIPopoverController (lagerselect);
 					popme.PresentFromRect (this.inStorage.Bounds, this.View, UIPopoverArrowDirection.Up, true);
@@ -176,7 +177,7 @@ namespace GarageIndex
 			};
 			lagerselect.DismissEvent += (object sender, LagerClickedEventArgs e) =>  {
 				if(UserInterfaceIdiomIsPhone){
-					nc.PopViewControllerAnimated(true);
+					ancestor.NavigationController.PopViewControllerAnimated(true);
 				}else{
 					popme.Dismiss (true);
 				}
@@ -219,6 +220,7 @@ namespace GarageIndex
 			if(myBox == null){
 				myBox = new LagerObject();
 				myBox.isContainer = "true";
+				myBox.isLargeObject = "false";
 			}
 
 			boks = myBox;
@@ -241,9 +243,9 @@ namespace GarageIndex
 			RectangleF frame;
 
 			if (UserInterfaceIdiomIsPhone) {
-				frame = new RectangleF (30, 185, 300, 125);
+				frame = new RectangleF (10, 185, UIScreen.MainScreen.Bounds.Width -20, 125);
 			} else {
-				frame = new RectangleF (30, 200, 300, 125);
+				frame = new RectangleF (10, 200, UIScreen.MainScreen.Bounds.Width -20, 125);
 			}
 
 			Console.WriteLine("frame:"+frame);
@@ -262,6 +264,8 @@ namespace GarageIndex
 			this.Add (tlc.View);
 		}
 
+		ContainerContent cc;
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -273,48 +277,37 @@ namespace GarageIndex
 			this.fieldDescription.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Description", "Description");
 			this.fieldType.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Type","Type");
 
-			//			var title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("save", "save");
-			//			this.save.SetTitle(title, UIControlState.Normal);
-
-			//			this.save.TouchUpInside += HandleTouchUpInside;
-
 			this.btnShowContent.SetTitle(MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Show Content", "Show content"),UIControlState.Normal);
 
 			this.btnShowContent.TouchUpInside += (object sender, EventArgs e) => {
-				ContainerContent cc = new ContainerContent(boks);
-				nc.PushViewController(cc, true);
+				cc = new ContainerContent (boks);
+				ancestor.NavigationController.PushViewController(cc,true);
 			};
 
-			if(!UserInterfaceIdiomIsPhone){
-				this.fieldContainerName.Ended += (object sender, EventArgs e) => SaveIt ();
+//			if(!UserInterfaceIdiomIsPhone){
+				this.fieldContainerName.EditingDidEnd += (object sender, EventArgs e) => SaveIt ();
 
-				this.fieldDescription.Ended += (object sender, EventArgs e) => SaveIt ();
-				this.fieldType.Ended += (object sender, EventArgs e) => SaveIt();
-			}
+				this.fieldDescription.EditingDidEnd += (object sender, EventArgs e) => SaveIt ();
+				this.fieldType.EditingDidEnd += (object sender, EventArgs e) => SaveIt();
+//			}
 
 
 			ReleaseKeyboard ();
 			SetLagerButtonLabel (this.boks);
 			initializeMoveLager ();
 		}
-
-		public override void ViewWillDisappear (bool animated)
-		{
-			base.ViewWillDisappear (animated);
-			if(UserInterfaceIdiomIsPhone){
-				SaveIt();
-			}
-		}
+			
 
 		void SaveIt ()
 		{
 			this.boks.Name = this.fieldContainerName.Text;
 			this.boks.Description = this.fieldDescription.Text;
 			this.boks.type = this.fieldType.Text;
+			this.boks.isContainer = "true";
+			this.boks.isLargeObject = "false";
 
 			AppDelegate.dao.SaveLagerObject (boks);
 			RaiseSavedEvent();
-
 		}
 	}
 

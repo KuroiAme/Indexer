@@ -11,7 +11,7 @@ namespace no.dctapps.Garageindex.businesslogic
 {
 	public class IndexerBuisnessService
 	{
-		LagerDAO dao;
+		readonly LagerDAO dao;
 		readonly ITranslationService translate;
 
 		public IndexerBuisnessService (LagerDAO dao, ITranslationService translate)
@@ -25,16 +25,12 @@ namespace no.dctapps.Garageindex.businesslogic
 			double cashvalue = 0;
 			IList<Item> allItems = dao.GetAllItems ();
 			IList<LagerObject> allLarge = dao.GetAllLargeItems ();
-			foreach (Item x in allItems) {
-//				if (x.cashValue != double.NaN) {
-					cashvalue += x.cashValue;
-//				}
+			foreach (Item it in allItems) {
+					cashvalue += it.cashValue;
 			}
 
-			foreach (LagerObject y in allLarge) {
-//				if (y.cashValue != double.NaN) {
-					cashvalue += y.cashValue;
-//				}
+			foreach (LagerObject myobj in allLarge) {
+				cashvalue += myobj.cashValue;
 			}
 
 			return cashvalue;

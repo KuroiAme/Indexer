@@ -53,6 +53,9 @@ namespace GarageIndex
 				Frame = View.Bounds
 			};
 
+			View.Add (imgView);
+			View.SendSubviewToBack (imgView);
+
 			IList<InsurancePhoto> photos = AppDelegate.dao.GetInsurancePhotosByTypeAndID (isLargeObject, currentID);
 
 			carousel = new CarouselView(View.Bounds);
@@ -419,7 +422,11 @@ namespace GarageIndex
 
 		public override uint NumberOfItems(CarouselView carousel)
 		{
-			return (uint)vc.photos.Count;
+			if (vc.photos != null) {
+				return (uint)vc.photos.Count;
+			} else {
+				return 0;
+			}
 		}
 
 		public override UIView ViewForItem(CarouselView carousel, uint index, UIView reusingView)

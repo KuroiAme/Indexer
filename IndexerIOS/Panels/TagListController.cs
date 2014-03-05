@@ -36,7 +36,7 @@ namespace GarageIndex
 			base.LoadView ();
 			RectangleF myFrame = new RectangleF (area.X, area.Y, area.Width, area.Height + 30);
 			this.View.Frame = myFrame;
-			this.View.BackgroundColor = UIColor.Magenta;
+			this.View.BackgroundColor = UIColor.Clear;
 		}
 
 		public override void ViewDidLoad ()
@@ -46,7 +46,7 @@ namespace GarageIndex
 			//float y = 50f; //TODO get dynamic value, this is a hack.
 //			RectangleF frame = new RectangleF (0, y, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height * 0.75f);
 			//this.NavigationController.Title = "edit tag";
-			tlv = new TagListView (area, taglist);
+			tlv = new TagListView (this.View.Bounds, taglist);
 			View.AddSubview (tlv);
 			//this.View.BackgroundColor = UIColor.White;
 			tlv.TagStringClicked += (object sender, TagStringClickedEventArgs e) => EditTagString (e.tagstring, e.pos);
@@ -59,6 +59,7 @@ namespace GarageIndex
 			entertag = new UITextField(new RectangleF(area.X, area.Height, area.Width, 22));
 			var def = entertag.Text;
 			var enter = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Enter tag text", "Enter tag text");
+			entertag.TextAlignment = UITextAlignment.Center;
 			entertag.Placeholder = enter;
 			entertag.Ended += (object sender, EventArgs e) => {
 				var text = entertag.Text;

@@ -50,5 +50,10 @@ namespace  no.dctapps.Garageindex.model
 
 			return sb.ToString();
 		}
+
+		public LagerObject ()
+		{
+			cashValue = 0;
+		}
 	}
 }

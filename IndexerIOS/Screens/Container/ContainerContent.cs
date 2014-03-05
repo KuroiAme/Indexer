@@ -117,7 +117,7 @@ namespace GarageIndex
 			Console.WriteLine ("call itemdetailscreen");
 			item.boxID = boks.ID;
 			ItemDetailScreen itemdetail = new ItemDetailScreen (item);
-			PresentViewControllerAsync (itemdetail, true);
+			this.NavigationController.PushViewController (itemdetail, true);
 			//this.NavigationController.PushViewController(itemdetail, true);
 		}
 	}

@@ -25,6 +25,8 @@ namespace IndexerIOS
 			this.View.BackgroundColor = UIColor.Clear;
 		}
 
+		WordCloudView cloud;
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -34,12 +36,16 @@ namespace IndexerIOS
 
 				this.words = IndexerUtils.CalculateBoxes (words, View.Bounds);
 
-				WordCloudView cloud = new WordCloudView (View.Bounds, words);
+				cloud = new WordCloudView (View.Bounds, words);
 				cloud.BackgroundColor = UIColor.Clear;
 				this.View.AddSubview (cloud);
 			}
 		}
 
+		public UIImage GetCloudAsImage ()
+		{
+			return cloud.RerenderAsUIImage ();
+		}
 	}
 }
 

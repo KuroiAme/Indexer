@@ -21,14 +21,28 @@ namespace IndexerIOS
 
 		}
 
+		void PaintWords ()
+		{
+			foreach (WordCloudItem word in words) {
+				DrawWord (word);
+			}
+		}
+
 		public override void Draw (RectangleF rect)
 		{
 			base.Draw (rect);
 			this.BackgroundColor = UIColor.Clear;
-			foreach (WordCloudItem word in words) {
-				DrawWord (word);
-			}
+			PaintWords ();
 
+		}
+
+		public UIImage RerenderAsUIImage ()
+		{
+			UIGraphics.BeginImageContext (Bounds.Size);
+			PaintWords ();
+			var converted = UIGraphics.GetImageFromCurrentImageContext ();
+			UIGraphics.EndImageContext ();
+			return converted;
 		}
 
 		void DrawWord (WordCloudItem word)

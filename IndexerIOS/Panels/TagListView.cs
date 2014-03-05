@@ -189,6 +189,13 @@ namespace GarageIndex
 
 
 		private void DrawContainer3(){
+			float margin = 0f;
+			float width = Bounds.Width - margin*2;
+			float height = Bounds.Height - margin*2;
+			float curvature = 10;
+
+			//BEGIN PAINTCODE
+
 			// General Declarations
 			var context = UIGraphics.GetCurrentContext();
 
@@ -204,7 +211,7 @@ namespace GarageIndex
 			var shadowBlurRadius = 2.5f;
 
 			//// Rectangle Drawing
-			var rectanglePath = UIBezierPath.FromRoundedRect(new RectangleF(18.5f, 15.5f, 202, 87), 10);
+			var rectanglePath = UIBezierPath.FromRoundedRect(new RectangleF(margin, margin, width, height), curvature);
 			context.SaveState();
 			context.SetShadowWithColor(shadowOffset, shadowBlurRadius, shadow);
 			UIColor.White.SetFill();
@@ -245,87 +252,14 @@ namespace GarageIndex
 			rectanglePath.Stroke();
 		}
 
-		float nullconst = 30f;
-		float ynullconst = 20.0f;
-		float charSize = 7.55f;
+		float nullconst = 10f;
+		float ynullconst = 10.0f;
+		//float charSize = 7.55f;
 		float lineSize = 20f;
 		int lineNumber = 0;
 		int charNumber = 0;
 
-//		private void DrawShadedTag (String paintstring){
-//			Console.WriteLine("DrawShadedTag():"+paintstring);
-//			CGContext context = UIGraphics.GetCurrentContext ();
-//
-//
-//			int maxAntallCharacters = (int) Math.Round((myframe.Width - 42 * 4) / charSize);
-//			if (paintstring.Length > maxAntallCharacters) {
-//				int pos = (int) Math.Floor(paintstring.Length / 2.00);
-//				string a = paintstring.Substring (0, pos);
-//				string b = paintstring.Substring (pos, paintstring.Length);
-//				DrawShadedTag (a);
-//				DrawShadedTag (b);
-//			}
-//
-//			if (paintstring.Length + charNumber > maxAntallCharacters) {
-//				//Ny linje
-//				lineNumber++;
-//				charNumber = 0;
-//			}
-//
-//			//TODO Implement maxantall linjer for tags.
-//
-//			float x = nullconst + (charNumber * charSize);
-//			float y = ynullconst + (lineNumber * lineSize);
-//			float width = charSize * paintstring.Length+1;
-//			// nine Drawing
-//			var nineRect = new RectangleF(x,y, width, 13);
-//			tagframes.Add (nineRect);
-//			var ninePath = UIBezierPath.FromRoundedRect(nineRect, 6.5f);
-//			context.SaveState();
-//			context.SetShadowWithColor(shadowOffset, shadowBlurRadius, shadow);
-//			color2.SetFill();
-//			ninePath.Fill();
-//
-//			////// nine Inner Shadow
-//			var nineBorderRect = ninePath.Bounds;
-//			nineBorderRect.Inflate(shadowBlurRadius, shadowBlurRadius);
-//			nineBorderRect.Offset(-shadowOffset.Width, -shadowOffset.Height);
-//			nineBorderRect = RectangleF.Union(nineBorderRect, ninePath.Bounds);
-//			nineBorderRect.Inflate(1, 1);
-//
-//			var nineNegativePath = UIBezierPath.FromRect(nineBorderRect);
-//			nineNegativePath.AppendPath(ninePath);
-//			nineNegativePath.UsesEvenOddFillRule = true;
-//
-//			context.SaveState();
-//			{
-//				var xOffset = shadowOffset.Width + (float)Math.Round(nineBorderRect.Width);
-//				var yOffset = shadowOffset.Height;
-//				context.SetShadowWithColor(
-//					new SizeF(xOffset + (xOffset >= 0 ? 0.1f : -0.1f), yOffset + (yOffset >= 0 ? 0.1f : -0.1f)),
-//					shadowBlurRadius,
-//					shadow);
-//
-//				ninePath.AddClip();
-//				var transform = CGAffineTransform.MakeTranslation(-(float)Math.Round(nineBorderRect.Width), 0);
-//				nineNegativePath.ApplyTransform(transform);
-//				UIColor.Gray.SetFill();
-//				nineNegativePath.Fill();
-//			}
-//			context.RestoreState();
-//
-//			context.RestoreState();
-//
-//			UIColor.Black.SetStroke();
-//			ninePath.LineWidth = 1;
-//			ninePath.Stroke();
-//			UIColor.Black.SetFill();
-//			new NSString(paintstring).DrawString(nineRect, UIFont.FromName("Helvetica", 12), UILineBreakMode.WordWrap, UITextAlignment.Center);
-//
-//			charNumber += paintstring.Length+ 1; // +1 is for space 
-//		}
-
-		float height = 16;
+		//float height = 16;
 
 		void RaiseMaxSizeReached ()
 		{
@@ -335,12 +269,21 @@ namespace GarageIndex
 			}
 		}
 
+		float padding = 5;
+
 		private void DrawShadedTag2(string paintstring){
 			Console.WriteLine("DrawShadedTag():"+paintstring);
+
+			UILabel testX = new UILabel ();
+			testX.Font = UIFont.FromName ("Helvetica-BoldOblique", 12);
+			testX.LineBreakMode = UILineBreakMode.WordWrap;
+			testX.TextAlignment = UITextAlignment.Center;
+			testX.Lines = 0;
+			testX.Text = "X";
+			SizeF sizeX = testX.StringSize (testX.Text, testX.Font, new SizeF (Bounds.Width, Bounds.Height));
+
 			CGContext context = UIGraphics.GetCurrentContext ();
-
-
-			int maxAntallCharacters = (int) Math.Round((200) / charSize);
+			int maxAntallCharacters = (int) Math.Round((Bounds.Width) / sizeX.Width);
 			if (paintstring.Length > maxAntallCharacters) {
 				int pos = (int) Math.Floor(paintstring.Length / 2.00);
 				string a = paintstring.Substring (0, pos);
@@ -355,13 +298,13 @@ namespace GarageIndex
 				charNumber = 0;
 			}
 
-			if (lineNumber != 4) {
+			if (lineNumber != 6) {
 
-				//TODO Implement maxantall linjer for tags.
 
-				float x = nullconst + (charNumber * charSize);
+
+				float x = nullconst + (charNumber * sizeX.Width + padding);
 				float y = ynullconst + (lineNumber * lineSize);
-				float width = charSize * paintstring.Length + 3;
+//				float width = charSize * paintstring.Length + 3;
 
 				UIColor color3 = UIColor.FromRGBA (0.667f, 0.667f, 0.667f, 0.449f);
 				UIColor color6 = UIColor.FromRGBA (1.000f, 1.000f, 1.000f, 1.000f);
@@ -371,8 +314,16 @@ namespace GarageIndex
 				var shadowOffset = new SizeF (1.1f, 1.1f);
 				const float shadowBlurRadius = 2.5f;
 
+				UILabel test = new UILabel ();
+				test.Font = UIFont.FromName ("Helvetica-BoldOblique", 12);
+				test.LineBreakMode = UILineBreakMode.WordWrap;
+				test.TextAlignment = UITextAlignment.Center;
+				test.Lines = 0;
+				test.Text = paintstring;
+				SizeF size = test.StringSize (test.Text, test.Font, new SizeF (Bounds.Width, Bounds.Height));
+
 				// nine Drawing
-				var nineRect = new RectangleF (x, y, width, height);
+				var nineRect = new RectangleF (x, y, size.Width + padding, size.Height + padding);
 				tagframes.Add (nineRect);
 				var ninePath = UIBezierPath.FromRoundedRect (nineRect, 6.5f);
 				context.SaveState ();
@@ -414,7 +365,7 @@ namespace GarageIndex
 				ninePath.LineWidth = 1;
 				ninePath.Stroke ();
 				color5.SetFill ();
-				new NSString (paintstring).DrawString (nineRect, UIFont.FromName ("Helvetica", 12), UILineBreakMode.WordWrap, UITextAlignment.Center);
+				new NSString (paintstring).DrawString (nineRect, UIFont.FromName ("Helvetica-BoldOblique", 12), UILineBreakMode.WordWrap, UITextAlignment.Center);
 
 				charNumber += paintstring.Length + 1; // +1 is for space 
 			} else {

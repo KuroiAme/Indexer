@@ -48,6 +48,7 @@ namespace no.dctapps.Garageindex.screens
 			base.ViewDidAppear (animated);
 			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Container overview Screen");
 			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
+			this.PopulateTable ();
 		}
 		
 		public override void DidReceiveMemoryWarning ()
@@ -64,36 +65,44 @@ namespace no.dctapps.Garageindex.screens
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-//			BlackLeatherTheme.Apply (this.View);
+			Background back = new Background ();
+			View.AddSubview (back.View);
+			View.SendSubviewToBack (back.View);
 
-			//Title = NSBundle.MainBundle.LocalizedString ("Containers", "Containers");
+			Title = NSBundle.MainBundle.LocalizedString ("Containers", "Containers");
 
 			//this.NavigationController.Title = NSBundle.MainBundle.LocalizedString ("Containers", "Containers");
 
-			//Initialize ();
+			InitializeAddBox ();
 			PopulateTable ();
 
 		}
 
-		void Initialize ()
+		void InitializeAddBox ()
 		{
 			this.NavigationItem.SetRightBarButtonItem (new UIBarButtonItem (UIBarButtonSystemItem.Add), false);
 			this.NavigationItem.RightBarButtonItem.Clicked += (sender, e) =>  {
 				LagerObject x = new LagerObject();
 				x.isContainer = "true";
+				x.isLargeObject = "false";
 				ShowBoxItemDetails (x);
 			};
 		}
+
+		ContainerDetails boxdetail;
 
 		public void ShowBoxItemDetails (LagerObject box)
 		{
 			if(UserInterfaceIdiomIsPhone){
 				Console.WriteLine ("showBoxItemDetails()");
-				ContainerDetails boxdetail = new ContainerDetails (box);
-				PresentViewControllerAsync (boxdetail, true);
-				//this.NavigationController.PushViewController (boxdetail, true);
+				boxdetail = new ContainerDetails (box);
+				this.NavigationController.PushViewController (boxdetail, true);
 			}else{
 				RaiseContainerClicked(box);
+			}
+
+			if (boxdetail != null) {
+				boxdetail.LagerObjectSaved += (object sender, LagerObjectSavedEventArgs e) => PopulateTable ();
 			}
 		}
 
@@ -106,11 +115,7 @@ namespace no.dctapps.Garageindex.screens
 			}
 		}
 
-		public override void ViewWillAppear (bool animated)
-		{
-			base.ViewWillAppear (animated);
-			this.PopulateTable ();
-		}
+
 
 		void PopulateTable ()
 		{
@@ -123,7 +128,7 @@ namespace no.dctapps.Garageindex.screens
 //			}
 			IList<LagerObject> tableItems = new List<LagerObject> ();
 			try {
-				tableItems = (List<LagerObject>) AppDelegate.dao.GetAllContainers ();
+				tableItems = AppDelegate.dao.GetAllContainers ();
 			} catch (Exception e) {
 				Console.WriteLine ("catastrophe avoided:"+e.ToString());
 			}

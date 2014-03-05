@@ -3,7 +3,6 @@ using no.dctapps.Garageindex.model;
 using MonoTouch.UIKit;
 using no.dctapps.Garageindex.screens;
 using no.dctapps.Garageindex.events;
-using No.Dctapps.Garageindex.Ios.Screens;
 using System.Drawing;
 using System.Text;
 
@@ -18,9 +17,9 @@ namespace GarageIndex
 		public UIPopoverController Ic;
 	
 
-		public static bool UserInterfaceIdiomIsPhone {
-			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
-		}
+//		public static bool UserInterfaceIdiomIsPhone {
+//			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+//		}
 			
 		public event EventHandler<BigItemSavedEventArgs> BigItemSaved;
 		UIViewController ancestor;
@@ -83,7 +82,7 @@ namespace GarageIndex
 			counter++;
 			fieldBIgDescriptionRect = new RectangleF(x, y + lineheight * counter + linebuffer * counter, broad, lineheight);
 			counter++;
-			btnInRect = new RectangleF(x, y + lineheight * counter + linebuffer * counter +tagsheight, broad, lineheight);
+			btnInRect = new RectangleF(x, y + lineheight * counter + linebuffer * counter +tagsheight + linebuffer, broad, lineheight);
 			counter++;
 
 
@@ -183,11 +182,12 @@ namespace GarageIndex
 					AppDelegate.dao.SaveLagerObject (MyCurrentObject);
 				};
 				cashValue.Text = MyCurrentObject.cashValue.ToString ();
-				cashValue.ValueChanged += (object sender, EventArgs e) => {
+				cashValue.EditingDidEnd += (object sender, EventArgs e) => {
 					try {
 						double newvalue = double.Parse (cashValue.Text);
 						MyCurrentObject.cashValue = newvalue;
 						AppDelegate.dao.SaveLagerObject (MyCurrentObject);
+						Console.WriteLine("saved cashvalue:"+MyCurrentObject.cashValue);
 					} catch (Exception ex) {
 						Console.WriteLine ("coudlnt parse;" + cashValue.Text + "ex:" + ex.ToString ());
 						cashValue.Text = MyCurrentObject.cashValue.ToString ();
@@ -221,10 +221,7 @@ namespace GarageIndex
 				Console.WriteLine("touchupinside");
 				if(UserInterfaceIdiomIsPhone){
 					Console.WriteLine("iphone??");
-					ancestor.PresentViewController(sl,true,null);
-					//PresentViewController(sl,true, null);
-					//PresentViewController(sl,true);
-					//nc.PushViewController(sl, true);
+					ancestor.NavigationController.PushViewController(sl,true);
 				}else{
 					Console.WriteLine("ipad??");
 					Ic = new UIPopoverController (sl);
@@ -234,7 +231,8 @@ namespace GarageIndex
 			sl.DismissEvent += (object sender, LagerClickedEventArgs e) =>  {
 				Console.WriteLine("dismiss?");
 				if(UserInterfaceIdiomIsPhone){
-					DismissViewController(true, null);
+					sl.NavigationController.DismissViewController(true,null);
+
 					//nc.PopViewControllerAnimated(true);
 				}else{
 					Ic.Dismiss (true);
@@ -280,7 +278,7 @@ namespace GarageIndex
 			InitLegacyNib ();
 			InitInsuranceInfo ();
 
-			const float imgY = 305;
+			const float imgY = 325;
 			RectangleF imageRect = new RectangleF (10, imgY, UIScreen.MainScreen.Bounds.Width - 20, 300);
 
 			imp = new ImagePanel (imageRect, this.ancestor);
@@ -307,6 +305,9 @@ namespace GarageIndex
 			SetLagerButtonLabel (this.MyCurrentObject);
 			initializeMoveLager ();
 
+			this.fieldBigName.EditingDidEnd += (object sender, EventArgs e) => this.SaveIt ();
+
+			this.fieldBigDescription.EditingDidEnd += (object sender, EventArgs e) => this.SaveIt ();
 
 
 
@@ -318,9 +319,9 @@ namespace GarageIndex
 			ImageTag tag = null;
 
 			if (UserInterfaceIdiomIsPhone) {
-				frame = new RectangleF (30, 150, 300, 125);
+				frame = new RectangleF (10, 130, 300, 125);
 			} else {
-				frame = new RectangleF (30, 170, 300, 125);
+				frame = new RectangleF (10, 140, 300, 125);
 			}
 
 			Console.WriteLine("frame:"+frame);
@@ -340,9 +341,7 @@ namespace GarageIndex
 
 			TagListController tlc = new TagListController (tag, frame);
 			View.AddSubview (tlc.View);
-			tlc.entertag.EditingDidBegin += (object sender, EventArgs e) => {
-				tlc.entertag.Placeholder = "";
-			};
+			tlc.entertag.EditingDidBegin += (object sender, EventArgs e) => tlc.entertag.Placeholder = "";
 
 		}
 
@@ -368,9 +367,13 @@ namespace GarageIndex
 			base.ViewWillAppear (animated);
 			ShowDetails (this.MyCurrentObject);
 
-			this.fieldBigName.Ended += (object sender, EventArgs e) => this.SaveIt ();
 
-			this.fieldBigDescription.Ended += (object sender, EventArgs e) => this.SaveIt ();
+
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
 
 		}
 

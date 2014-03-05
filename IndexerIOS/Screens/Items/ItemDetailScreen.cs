@@ -69,12 +69,12 @@ namespace no.dctapps.Garageindex.screens
 			idc.ShowDetails (item);
 			this.View = innerview;
 
-			idc.GotPicture += (object sender, GotPictureEventArgs e) => {
-				var handler = this.GotPicture;
-				if(handler != null){
-					handler(this,e);
-				}
-			};
+//			idc.GotPicture += (object sender, GotPictureEventArgs e) => {
+//				var handler = this.GotPicture;
+//				if(handler != null){
+//					handler(this,e);
+//				}
+//			};
 
 			idc.ItemSaved += (object sender, ItemSavedEventArgs e) => {
 				var handler = this.ItemSaved;
@@ -83,12 +83,12 @@ namespace no.dctapps.Garageindex.screens
 				}
 			};
 
-			idc.Derez += (object sender, DerezEventArgs e) => {
-				var handler = this.Derez;
-				if(handler != null){
-					handler(sender,e);
-				}
-			};
+//			idc.Derez += (object sender, DerezEventArgs e) => {
+//				var handler = this.Derez;
+//				if(handler != null){
+//					handler(sender,e);
+//				}
+//			};
 
 			idc.ItemDeleted += (object sender, EventArgs e) => {
 				var handler = this.ItemDeleted;

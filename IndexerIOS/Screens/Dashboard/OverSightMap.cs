@@ -132,55 +132,62 @@ namespace GarageIndex
 		double MinLongitude = 999999999999;
 		double MaxLongitude = 0;
 		IList<Lager> lagers;
+		private Boolean empty = false;
 
 		public void GetMinsAndMaxes ()
 		{
 			lagers = AppDelegate.dao.GetAllLagers ();
-			foreach (Lager myLager in lagers) {
+			if (lagers.Count == 0) {
+				empty = true;
+			} else {
+				foreach (Lager myLager in lagers) {
 
-				double latitude = myLager.latitude;
-				double longitude = myLager.longitude;
+					double latitude = myLager.latitude;
+					double longitude = myLager.longitude;
 
-				if (latitude < MinLatitude) {
-					MinLatitude = latitude;
-				}
+					if (latitude < MinLatitude) {
+						MinLatitude = latitude;
+					}
 
-				if (latitude > MaxLatitude) {
-					MaxLatitude = latitude;
-				}
+					if (latitude > MaxLatitude) {
+						MaxLatitude = latitude;
+					}
 
-				if (longitude < MinLongitude) {
-					MinLongitude = longitude;
-				}
+					if (longitude < MinLongitude) {
+						MinLongitude = longitude;
+					}
 
-				if (longitude > MaxLongitude) {
-					MaxLongitude = longitude;
+					if (longitude > MaxLongitude) {
+						MaxLongitude = longitude;
+					}
 				}
 			}
 		}
 
 		public void SetMapViewOversight ()
 		{
+			if (!empty) {
 //		// pad our map by 10% around the farthest annotations
 //		#define MAP_PADDING 1.1
-			const float MAP_PADDING = 1.6f;
+				const float MAP_PADDING = 1.6f;
 //
 //		// we'll make sure that our minimum vertical span is about a kilometer
 //		// there are ~111km to a degree of latitude. regionThatFits will take care of
 //		// longitude, which is more complicated, anyway. 
 //		#define MINIMUM_VISIBLE_LATITUDE 0.01
-			const float MINIMUM_VISIBLE_LATITUDE = 0.01f;
-			MKCoordinateRegion region = new MKCoordinateRegion ();
-			double LatitudeCenter = (this.MinLatitude + this.MaxLatitude) / 2;
-			double LongitudeCenter = (this.MinLongitude + this.MaxLongitude) / 2;
-			region.Center = new CLLocationCoordinate2D (LatitudeCenter, LongitudeCenter);
-			region.Span.LatitudeDelta = (MaxLatitude - MinLatitude) * MAP_PADDING;
-			if (region.Span.LatitudeDelta < MINIMUM_VISIBLE_LATITUDE) {
-				region.Span.LatitudeDelta = MINIMUM_VISIBLE_LATITUDE;
+				const float MINIMUM_VISIBLE_LATITUDE = 0.01f;
+				MKCoordinateRegion region = new MKCoordinateRegion ();
+				double LatitudeCenter = (this.MinLatitude + this.MaxLatitude) / 2;
+				double LongitudeCenter = (this.MinLongitude + this.MaxLongitude) / 2;
+				region.Center = new CLLocationCoordinate2D (LatitudeCenter, LongitudeCenter);
+				region.Span.LatitudeDelta = (MaxLatitude - MinLatitude) * MAP_PADDING;
+				if (region.Span.LatitudeDelta < MINIMUM_VISIBLE_LATITUDE) {
+					region.Span.LatitudeDelta = MINIMUM_VISIBLE_LATITUDE;
+				}
+				region.Span.LongitudeDelta = (MaxLongitude - MinLongitude) * MAP_PADDING;
+				MKCoordinateRegion scaledRegion = mapView.RegionThatFits (region);
+				mapView.SetRegion (scaledRegion, true);
 			}
-			region.Span.LongitudeDelta = (MaxLongitude - MinLongitude) * MAP_PADDING;
-			MKCoordinateRegion scaledRegion = mapView.RegionThatFits (region);
-			mapView.SetRegion (scaledRegion, true);
 		}
 	}
 

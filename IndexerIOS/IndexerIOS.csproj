@@ -44,6 +44,7 @@
     <MtouchDebug>true</MtouchDebug>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
+    <BuildIpa>true</BuildIpa>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
@@ -83,9 +84,6 @@
     <Reference Include="GoogleAdMobAds">
       <HintPath>..\Indexer\Components\googleadmob-6.8.0\lib\ios\GoogleAdMobAds.dll</HintPath>
     </Reference>
-    <Reference Include="GoogleAnalytics.iOS">
-      <HintPath>..\Indexer\Components\googleanalytics-3.0.3\lib\ios\GoogleAnalytics.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="MTiRate">
       <HintPath>..\Indexer\Components\irate-1.8.0\lib\ios\MTiRate.dll</HintPath>
     </Reference>
@@ -100,6 +98,15 @@
     </Reference>
     <Reference Include="Alliance.Carousel">
       <HintPath>..\..\..\Dropbox\DLL\Alliance.Carousel.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Auth.iOS">
+      <HintPath>..\Indexer\Components\xamarin.social-1.1.1\lib\ios\Xamarin.Auth.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Social.iOS">
+      <HintPath>..\Indexer\Components\xamarin.social-1.1.1\lib\ios\Xamarin.Social.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="GoogleAnalytics.iOS">
+      <HintPath>..\Indexer\Components\googleanalytics-3.0.3.1\lib\ios\GoogleAnalytics.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +323,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
+    <None Include="RELEASE-NOTES.txt" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork" />
@@ -363,10 +371,6 @@
       <Version>6.8.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
-    <XamarinComponentReference Include="googleanalytics">
-      <Version>3.0.3</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="irate">
       <Version>1.8.0</Version>
       <Visible>False</Visible>
@@ -377,6 +381,16 @@
     </XamarinComponentReference>
     <XamarinComponentReference Include="zxing.net.mobile">
       <Version>1.4.2</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="xamarin.social">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>1.1.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="googleanalytics">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>3.0.3.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
