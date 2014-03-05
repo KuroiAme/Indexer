@@ -320,6 +320,8 @@
     <Compile Include="WordCloud\IndexerUtils.cs" />
     <Compile Include="WordCloud\Spiral.cs" />
     <Compile Include="Panels\SwipeDelegate.cs" />
+    <Compile Include="Screens\Dashboard\HelpScreen.cs" />
+    <Compile Include="Screens\Dashboard\HelpScreenInner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />

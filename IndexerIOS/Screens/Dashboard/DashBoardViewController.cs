@@ -99,6 +99,18 @@ namespace GarageIndex
 			IndexerSateliteMenu menu = new IndexerSateliteMenu ("Dashboard",this);
 			View.AddSubview (menu.View);
 
+			AddHelpButton ();
+
+		}
+
+		void AddHelpButton ()
+		{
+			UIBarButtonItem help = new UIBarButtonItem (AppDelegate.its.getTranslatedText ("Help"), UIBarButtonItemStyle.Bordered, null);
+			help.Clicked += (object sender, EventArgs e) => {
+				HelpScreen hs = new HelpScreen();
+				this.NavigationController.PushViewController(hs,true);
+			};
+			this.NavigationItem.SetRightBarButtonItem (help, true);
 		}
 
 		public override void ViewWillAppear (bool animated)

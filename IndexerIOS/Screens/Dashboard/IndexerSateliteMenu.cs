@@ -54,7 +54,7 @@ namespace GarageIndex
 			List<SatelliteMenuButtonItem> myList = new List<SatelliteMenuButtonItem> ();
 
 			if (excludeItem != "Gallery") {
-				myList.Add (new SatelliteMenuButtonItem (UIImage.FromBundle ("frames4832.png"), counter, "Gallery"));
+				myList.Add (new SatelliteMenuButtonItem (GalleryIcon.MakeGallery(), counter, "Gallery"));
 				counter++;
 			}
 
