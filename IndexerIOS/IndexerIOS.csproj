@@ -322,6 +322,11 @@
     <Compile Include="Panels\SwipeDelegate.cs" />
     <Compile Include="Screens\Dashboard\HelpScreen.cs" />
     <Compile Include="Screens\Dashboard\HelpScreenInner.cs" />
+    <Compile Include="paintcode\QRIcon.cs" />
+    <Compile Include="paintcode\Eye.cs" />
+    <Compile Include="paintcode\PreferencesIcon.cs" />
+    <Compile Include="paintcode\TableIcon.cs" />
+    <Compile Include="paintcode\ContainerIcon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
@@ -386,12 +391,10 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="xamarin.social">
-      <InstallationInProgress>True</InstallationInProgress>
       <Version>1.1.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="googleanalytics">
-      <InstallationInProgress>True</InstallationInProgress>
       <Version>3.0.3.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>

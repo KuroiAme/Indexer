@@ -14,10 +14,10 @@ namespace GarageIndex
 		public static UIImage MakeGallery (){
 			bool retina = (UIScreen.MainScreen.Scale > 1.0);
 			if (retina) {
-				UIGraphics.BeginImageContext (new System.Drawing.SizeF (96, 64));
+				UIGraphics.BeginImageContext (new SizeF (96, 64));
 				PaintCodeDrawGalleryIconRetina ();
 			}else{
-				UIGraphics.BeginImageContext (new System.Drawing.SizeF (48, 32));
+				UIGraphics.BeginImageContext (new SizeF (48, 32));
 				PaintCodeDrawGalleryIconNonRetina ();
 			}
 

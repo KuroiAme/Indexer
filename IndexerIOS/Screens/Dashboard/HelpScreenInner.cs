@@ -1,6 +1,7 @@
 using MonoTouch.UIKit;
 using System.Collections.Generic;
 using System.Drawing;
+using IndexerIOS;
 
 namespace GarageIndex
 {
@@ -41,7 +42,7 @@ namespace GarageIndex
 		public override void LoadView ()
 		{
 			base.LoadView ();
-			this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
+			this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1600);
 		}
 
 		public override void ViewDidLoad ()
@@ -57,8 +58,12 @@ namespace GarageIndex
 			currentheight = 100;
 
 			AddHeaders ();
-			AddIkonAndDescription (Flosshatt.MakeFlosshatt(),AppDelegate.its.getTranslatedText("top hat, small things that fit into a container"));
-			AddIkonAndDescription (GalleryIcon.MakeGallery (), AppDelegate.its.getTranslatedText ("two pictureframes, Gallery of your stuff"));
+			AddIconAndDescription (Flosshatt.MakeFlosshatt(),AppDelegate.its.getTranslatedText("top hat, small things that fit into a container"));
+			AddIconAndDescription (GalleryIcon.MakeGallery (), AppDelegate.its.getTranslatedText ("two pictureframes, Gallery of your stuff"));
+			AddIconAndDescription (Eye.MakeImage (), AppDelegate.its.getTranslatedText ("An Eye, the QR code scanner for codes you make"));
+			AddIconAndDescription (PreferencesIcon.MakeImage(),AppDelegate.its.getTranslatedText ("a cog, settings in this app"));
+			AddIconAndDescription (TableIcon.MakeImage(),AppDelegate.its.getTranslatedText("a table, large items that dont fit into a container"));
+			AddIconAndDescription (ContainerIcon.MakeImage (), AppDelegate.its.getTranslatedText ("a box, a container to fit your items in, collections?"));
 
 
 			AddWhatToDo ();
@@ -76,13 +81,13 @@ namespace GarageIndex
 
 			UILabel subheading = new UILabel (new RectangleF (10, currentheight, UIScreen.MainScreen.Bounds.Width / 2, 22));
 			currentheight += 22 +margin;
-			hlap.Text = AppDelegate.its.getTranslatedText ("Ikons used in indexer");
+			hlap.Text = AppDelegate.its.getTranslatedText ("Icons used in indexer");
 			hlap.TextAlignment = UITextAlignment.Center;
 			hlap.AdjustsFontSizeToFitWidth = true;
 			View.AddSubview (subheading);
 		}
 
-		void AddIkonAndDescription (UIImage image, string str)
+		void AddIconAndDescription (UIImage image, string str)
 		{
 			UIImageView ikon = new UIImageView(new RectangleF(10,currentheight,96, 64));
 			ikon.Image = image;

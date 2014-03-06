@@ -5,6 +5,7 @@ using SatelliteMenu;
 using System.Drawing;
 using no.dctapps.Garageindex.model;
 using IndexerIOS;
+using no.dctapps.Garageindex.screens;
 
 namespace GarageIndex
 {
@@ -100,17 +101,28 @@ namespace GarageIndex
 			View.AddSubview (menu.View);
 
 			AddHelpButton ();
+			AddSettingsButton ();
 
 		}
 
 		void AddHelpButton ()
 		{
-			UIBarButtonItem help = new UIBarButtonItem (AppDelegate.its.getTranslatedText ("Help"), UIBarButtonItemStyle.Bordered, null);
+			UIBarButtonItem help = new UIBarButtonItem (AppDelegate.its.getTranslatedText ("Help"), UIBarButtonItemStyle.Plain, null);
 			help.Clicked += (object sender, EventArgs e) => {
 				HelpScreen hs = new HelpScreen();
 				this.NavigationController.PushViewController(hs,true);
 			};
 			this.NavigationItem.SetRightBarButtonItem (help, true);
+		}
+
+		void AddSettingsButton ()
+		{
+			UIBarButtonItem prefbutton = new UIBarButtonItem (PreferencesIcon.MakeImage (), UIBarButtonItemStyle.Plain, null);
+			prefbutton.Clicked += (object sender, EventArgs e) => {
+				Preferences pref = new Preferences();
+				this.NavigationController.PushViewController(pref,true);
+			};
+			this.NavigationItem.SetLeftBarButtonItem (prefbutton, true);
 		}
 
 		public override void ViewWillAppear (bool animated)

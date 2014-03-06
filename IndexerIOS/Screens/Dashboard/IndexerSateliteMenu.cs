@@ -7,6 +7,7 @@ using no.dctapps.garageindex;
 using no.dctapps.Garageindex.screens;
 using no.dctapps.Garageindex;
 using System.Collections.Generic;
+using IndexerIOS;
 
 namespace GarageIndex
 {
@@ -66,15 +67,13 @@ namespace GarageIndex
 
 
 
-			myList.Add (new SatelliteMenuButtonItem (UIImage.FromBundle ("scanner4832.png"), counter, "Scanner"));
+			myList.Add (new SatelliteMenuButtonItem (Eye.MakeImage(), counter, "Scanner"));
 			counter++;
 			myList.Add (new SatelliteMenuButtonItem (Flosshatt.MakeFlosshatt (), counter, "Items"));
 			counter++;
-			myList.Add (new SatelliteMenuButtonItem (UIImage.FromFile ("table4832.png"), counter, "Big Items"));
+			myList.Add (new SatelliteMenuButtonItem (TableIcon.MakeImage(), counter, "Big Items"));
 			counter++;
-			myList.Add (new SatelliteMenuButtonItem (UIImage.FromFile ("container4832.png"), counter, "Containers"));
-			counter++;
-			myList.Add (new SatelliteMenuButtonItem (UIImage.FromFile ("preferences4832.png"), counter, "Preferences"));
+			myList.Add (new SatelliteMenuButtonItem (ContainerIcon.MakeImage(), counter, "Containers"));
 			counter++;
 			myList.Add (new SatelliteMenuButtonItem (UIImage.FromBundle ("uchi4832.png"), counter, "Locations"));
 			
@@ -126,10 +125,6 @@ namespace GarageIndex
 						ContainerMasterView containerMaster = new ContainerMasterView();
 						ancestor.NavigationController.PushViewController(containerMaster, true);
 					}
-				}
-				if(args.MenuItem.Name == "Preferences"){
-					Preferences pref = new Preferences();
-					ancestor.NavigationController.PushViewController(pref,true);
 				}
 
 				if(args.MenuItem.Name == "Gallery"){
