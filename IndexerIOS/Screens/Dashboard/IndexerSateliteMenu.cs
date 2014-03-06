@@ -75,7 +75,7 @@ namespace GarageIndex
 			counter++;
 			myList.Add (new SatelliteMenuButtonItem (ContainerIcon.MakeImage(), counter, "Containers"));
 			counter++;
-			myList.Add (new SatelliteMenuButtonItem (UIImage.FromBundle ("uchi4832.png"), counter, "Locations"));
+			myList.Add (new SatelliteMenuButtonItem (MansionIcon.MakeImage(), counter, "Locations"));
 			
 			return myList.ToArray ();
 		}

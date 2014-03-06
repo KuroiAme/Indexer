@@ -36,7 +36,7 @@ namespace GarageIndex
 
 		public SizeF GetContentSize ()
 		{
-			return new SizeF (UIScreen.MainScreen.Bounds.Width, 1000);
+			return new SizeF (UIScreen.MainScreen.Bounds.Width, 1600);
 		}
 
 		public override void LoadView ()
@@ -64,6 +64,7 @@ namespace GarageIndex
 			AddIconAndDescription (PreferencesIcon.MakeImage(),AppDelegate.its.getTranslatedText ("a cog, settings in this app"));
 			AddIconAndDescription (TableIcon.MakeImage(),AppDelegate.its.getTranslatedText("a table, large items that dont fit into a container"));
 			AddIconAndDescription (ContainerIcon.MakeImage (), AppDelegate.its.getTranslatedText ("a box, a container to fit your items in, collections?"));
+			AddIconAndDescription (MansionIcon.MakeImage (), AppDelegate.its.getTranslatedText ("A mansion, a house  locations, this is where your stuff is"));
 
 
 			AddWhatToDo ();

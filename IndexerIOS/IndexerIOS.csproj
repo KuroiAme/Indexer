@@ -327,6 +327,7 @@
     <Compile Include="paintcode\PreferencesIcon.cs" />
     <Compile Include="paintcode\TableIcon.cs" />
     <Compile Include="paintcode\ContainerIcon.cs" />
+    <Compile Include="paintcode\MansionIcon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
