@@ -11,7 +11,6 @@
     <RootNamespace>IndexerPortableLibrary</RootNamespace>
     <AssemblyName>IndexerPortableLibrary</AssemblyName>
     <TargetFrameworkProfile>Profile136</TargetFrameworkProfile>
-    <ReleaseVersion>1.3</ReleaseVersion>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -40,7 +39,6 @@
     <Compile Include="Model\Item.cs" />
     <Compile Include="Model\Lager.cs" />
     <Compile Include="Model\LagerObject.cs" />
-    <Compile Include="Database\LagerDAO.cs" />
     <Compile Include="Buisnesslogic\TranslationService.cs" />
     <Compile Include="Buisnesslogic\IndexerBuisnessService.cs" />
     <Compile Include="EventArgs\BackClickedEventArgs.cs" />
@@ -62,6 +60,7 @@
     </Compile>
     <Compile Include="EventArgs\ThumbChangedEventArgs.cs" />
     <Compile Include="SQLite.cs" />
+    <Compile Include="Database\LagerDAO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

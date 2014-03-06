@@ -1,12 +1,11 @@
 ﻿using System;
 using MonoTouch.Foundation;
-using no.dctapps.Garageindex.model;
 using MonoTouch.MessageUI;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.businesslogic;
 using System.Collections.Generic;
-using No.Dctapps.GarageIndex;
 using ZXing;
+using no.dctapps.Garageindex.model;
+using No.Dctapps.GarageIndex;
 
 namespace GarageIndex
 {
