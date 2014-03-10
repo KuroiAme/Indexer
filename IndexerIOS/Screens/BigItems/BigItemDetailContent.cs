@@ -37,6 +37,7 @@ namespace GarageIndex
 			sl = null;
 			Ic.Dispose ();
 			ancestor = null;
+			tlc.Dispose ();
 			base.Dispose (disposing);
 		}
 
@@ -70,12 +71,12 @@ namespace GarageIndex
 		}
 
 		private void InitView(){
-			this.View.BackgroundColor = UIColor.White;
+//			this.View.BackgroundColor = UIColor.White;
 			//			this.View.Frame = 
 			if (UserInterfaceIdiomIsPhone) {
-				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 800);
+				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1200);
 			} else {
-				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
+				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1200);
 			}
 		}
 
@@ -99,10 +100,10 @@ namespace GarageIndex
 			float y;
 			if (UserInterfaceIdiomIsPhone) {
 				x = 10;
-				y = 50; 
+				y = 100; 
 			} else {
 				x = 30;
-				y = 80;
+				y = 100;
 			}
 			const float margin = 0;
 			const float broad = 250;
@@ -150,7 +151,7 @@ namespace GarageIndex
 			if (UserInterfaceIdiomIsPhone) {
 				//x and y under the representative image;
 				x = 30;
-				y = 650;
+				y = 750;
 			} else {
 				//on the right in a second collumn on iPad
 				x = 500;
@@ -235,7 +236,7 @@ namespace GarageIndex
 			showReceipts.SetTitle (MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Show Receipts", "Show Receipts"), UIControlState.Normal);
 			showReceipts.TouchUpInside += (object sender, EventArgs e) => {
 				InsurancePhotoController ipc = new InsurancePhotoController(myobj);
-				ancestor.PresentViewController(ipc,true,null);
+				ancestor.NavigationController.PushViewController(ipc,true);
 				//PresentViewController(ipc,true, null);
 				//nc.PushViewController(ipc,false);
 			};
@@ -310,7 +311,7 @@ namespace GarageIndex
 			InitLegacyNib ();
 			InitInsuranceInfo ();
 
-			const float imgY = 325;
+			const float imgY = 400;
 			RectangleF imageRect = new RectangleF (10, imgY, UIScreen.MainScreen.Bounds.Width - 20, 300);
 
 			imp = new ImagePanel (imageRect, this.ancestor);
@@ -345,18 +346,20 @@ namespace GarageIndex
 
 		}
 
+		TagListController tlc;
+
 		void AddTagList ()
 		{
 			RectangleF frame;
 			ImageTag tag = null;
 
 			if (UserInterfaceIdiomIsPhone) {
-				frame = new RectangleF (10, 130, 300, 125);
+				frame = new RectangleF (10, 180, View.Bounds.Width -20, 125);
 			} else {
-				frame = new RectangleF (10, 140, 300, 125);
+				frame = new RectangleF (10, 190, View.Bounds.Width -20, 125);
 			}
 
-			Console.WriteLine("frame:"+frame);
+//			Console.WriteLine("frame:"+frame);
 			if (MyCurrentObject != null) {
 				tag = AppDelegate.dao.GetImageTagById (this.MyCurrentObject.ImageTagId);
 			}
@@ -371,7 +374,7 @@ namespace GarageIndex
 				}
 			}
 
-			TagListController tlc = new TagListController (tag, frame);
+			tlc = new TagListController (tag, frame);
 			View.AddSubview (tlc.View);
 			tlc.entertag.EditingDidBegin += (object sender, EventArgs e) => tlc.entertag.Placeholder = "";
 

@@ -1,1 +1,1 @@
-Fiks for delegater og gestureRecognizers som ikke ble lagret som felter i objektene sine.
+Noen skjønnhetsoperasjoner, noen bugfixes.

@@ -65,7 +65,10 @@ namespace no.dctapps.Garageindex.screens
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			//Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Container details", "Container details");
+			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Container details", "Container details");
+			Background back = new Background();
+			View.Add(back.View);
+			View.SendSubviewToBack(back.View);
 			ShowDetails (boks);
 		}
 
@@ -78,9 +81,9 @@ namespace no.dctapps.Garageindex.screens
 			innerview = new UIScrollView (UIScreen.MainScreen.Bounds);
 			innerview.ContentSize = cdc.GetContentsize ();
 			innerview.AddSubview (cdc.View);
-			innerview.BackgroundColor = UIColor.Clear;
+			innerview.UserInteractionEnabled = true;
 			cdc.ShowDetails (boks);
-			this.View = innerview;
+			this.View.AddSubview (innerview);
 
 			cdc.LagerObjectSaved += (object sender, LagerObjectSavedEventArgs e) => {
 				var handler = this.LagerObjectSaved;

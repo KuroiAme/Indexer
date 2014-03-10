@@ -26,9 +26,7 @@ namespace GarageIndex
 
 		public event EventHandler<GotPictureEventArgs> GotPicture;
 
-		int currentID;
-
-		public IList<InsurancePhoto> photos;
+		readonly int currentID;
 
 		public InsurancePhotoController (Item item)
 		{
@@ -49,7 +47,7 @@ namespace GarageIndex
 			imagePicker.Dispose ();
 			Pc.Dispose ();
 			//loadingOverlay.Dispose ();
-			photos = null;
+			Photos = null;
 			GotPicture = null;
 		}
 
@@ -74,6 +72,7 @@ namespace GarageIndex
 			// Release any cached data, images, etc that aren't in use.
 		}
 
+		public IList<InsurancePhoto> Photos;
 
 		public override void ViewDidLoad(){
 			base.ViewDidLoad ();
@@ -87,7 +86,7 @@ namespace GarageIndex
 			View.Add (imgView);
 			View.SendSubviewToBack (imgView);
 
-			IList<InsurancePhoto> photos = AppDelegate.dao.GetInsurancePhotosByTypeAndID (isLargeObject, currentID);
+			Photos = AppDelegate.dao.GetInsurancePhotosByTypeAndID (isLargeObject, currentID);
 
 			carousel = new CarouselView(View.Bounds);
 			carousel.DataSource = new InsurancePhotoDataSource(this);
@@ -180,6 +179,7 @@ namespace GarageIndex
 			} else {
 				AppDelegate.dao.DeleteInsurancePhotoByIndexAndObjectId(currentindex, item.ID);
 			}
+			Photos.RemoveAt (carousel.CurrentItemIndex);
 			carousel.ReloadData ();
 		}
 
@@ -372,7 +372,7 @@ namespace GarageIndex
 				photo.ObjectReferenceID = item.ID;
 			}
 			AppDelegate.dao.SaveInsurancePhoto (photo);
-
+			Photos.Add (photo);
 			carousel.ReloadData ();
 
 		}
@@ -453,8 +453,8 @@ namespace GarageIndex
 
 		public override uint NumberOfItems(CarouselView carousel)
 		{
-			if (vc.photos != null) {
-				return (uint)vc.photos.Count;
+			if (vc.Photos != null) {
+				return (uint)vc.Photos.Count;
 			} else {
 				return 0;
 			}
@@ -470,7 +470,7 @@ namespace GarageIndex
 			var documentsDirectory = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
 			var gallerydirectory = Path.Combine (documentsDirectory, "insurancePhotos");
 
-			InsurancePhoto photo = vc.photos[(int)index];
+			InsurancePhoto photo = vc.Photos[(int)index];
 			string thumbfilename = photo.ThumbFileName;
 			string path = Path.Combine (gallerydirectory, thumbfilename);
 			Console.WriteLine ("path:" + path);
@@ -505,6 +505,14 @@ namespace GarageIndex
 	{
 		InsurancePhotoController vc;
 
+		ViewInsurancePhoto vip;
+
+		protected override void Dispose (bool disposing)
+		{
+			vip.Dispose ();
+			base.Dispose (disposing);
+		}
+
 		public InsurancePhotoDelegate(InsurancePhotoController vc)
 		{
 			this.vc = vc;
@@ -522,9 +530,9 @@ namespace GarageIndex
 		public override void DidSelectItem(CarouselView carousel, int index)
 		{
 			Console.WriteLine ("Selected: " + ++index);
-			InsurancePhoto photo = vc.photos [index];
+			InsurancePhoto photo = vc.Photos [index];
 
-			ViewInsurancePhoto vip = new ViewInsurancePhoto (photo);
+			vip = new ViewInsurancePhoto (photo);
 			vc.NavigationController.PushViewController (vip, false);
 		}
 	}

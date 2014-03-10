@@ -147,7 +147,7 @@ namespace no.dctapps.Garageindex.screens
 //				boks2.Name = "DCT02";
 //				tableItems.Add (boks1);
 //				tableItems.Add (boks2);
-////				this.NavigationController.TabBarItem.BadgeValue = "2";
+//				this.NavigationController.TabBarItem.BadgeValue = "2";
 //			}
 //
 

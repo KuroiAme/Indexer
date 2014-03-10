@@ -59,7 +59,6 @@ namespace GarageIndex
 		}
 
 		private void InitView(){
-			this.View.BackgroundColor = UIColor.White;
 			if (UserInterfaceIdiomIsPhone) {
 				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 800);
 			} else {

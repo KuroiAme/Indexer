@@ -38,6 +38,8 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			myObject = null;
 			GotPicture = null;
 			BigItemSaved = null;
+			bidc.Dispose ();
+			innerScroll.Dispose ();
 			base.Dispose (disposing);
 		}
 
@@ -65,29 +67,24 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+			Background back = new Background ();
+			View.AddSubview (back.View);
+			View.SendSubviewToBack (back.View);
 			ShowDetails (myObject);
 		}
 
 		BigItemDetailContent bidc;
-		UIScrollView innerview;
+		UIScrollView innerScroll;
 
 		public void ShowDetails (LagerObject myObject){
 			this.myObject = myObject;
 			bidc = new BigItemDetailContent (myObject, this);
-			innerview = new UIScrollView (UIScreen.MainScreen.Bounds);
-			innerview.ContentSize = bidc.GetContentsize ();
-			innerview.AddSubview (bidc.View);
-			innerview.BackgroundColor = UIColor.White;
+			innerScroll = new UIScrollView (UIScreen.MainScreen.Bounds);
+			innerScroll.ContentSize = bidc.GetContentsize ();
+			innerScroll.AddSubview (bidc.View);
+			innerScroll.UserInteractionEnabled = true;
 			bidc.ShowDetails (myObject);
-
-			this.View = innerview;
-
-//			bidc.GotPicture += (object sender, GotPictureEventArgs e) => {
-//				var handler = this.GotPicture;
-//				if(handler != null){
-//					handler(this,e);
-//				}
-//			};
+			View.AddSubview (innerScroll);
 
 			bidc.BigItemSaved += (object sender, BigItemSavedEventArgs e) => {
 				var handler = this.BigItemSaved;
@@ -95,16 +92,6 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 					handler(sender, e);
 				}
 			};
-
-//			bidc.Derezzy += (object sender, DerezLargeObjectEventArgs e) => {
-//				var handler = this.Derezzy;
-//				if(handler != null){
-//					handler(sender,e);
-//				}
-//			};
-
-
-
 		}
 
 		public override void ViewWillAppear (bool animated)
