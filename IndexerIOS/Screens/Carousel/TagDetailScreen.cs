@@ -37,6 +37,35 @@ namespace GarageIndex
 			Console.WriteLine ("nib:"+this.NibName);
 		}
 
+		protected override void Dispose (bool disposing)
+		{
+			tag = null;
+			tlc = null;
+			backpush = null;
+			base.Dispose (disposing);
+		}
+
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			//Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
+		}
+
 		public override void ViewDidAppear (bool animated)
 		{
 			base.ViewDidAppear (animated);

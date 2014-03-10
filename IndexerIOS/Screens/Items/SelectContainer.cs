@@ -20,6 +20,8 @@ namespace no.dctapps.Garageindex.screens
 
 		public event EventHandler<ContainerClickedEventArgs> DismissEvent;
 
+		IList<LagerObject> tableItems;
+
 		public static bool UserInterfaceIdiomIsPhone {
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
@@ -28,12 +30,34 @@ namespace no.dctapps.Garageindex.screens
 			: base ()
 		{
 		}
+
+		protected override void Dispose (bool disposing)
+		{
+			boxtableSource.Dispose ();
+			DismissEvent = null;
+			tableItems = null;
+			base.Dispose (disposing);
+
+		}
 		
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			Dispose ();
+		}
+
+
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
 			base.DidReceiveMemoryWarning ();
-			
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
 			// Release any cached data, images, etc that aren't in use.
 		}
 		
@@ -61,6 +85,8 @@ namespace no.dctapps.Garageindex.screens
 			this.PopulateTable();
 		}
 
+
+
 		public void PopulateTable(){
 //			dao = new LagerDAO ();
 //            SizeF sf = new SizeF();
@@ -70,7 +96,7 @@ namespace no.dctapps.Garageindex.screens
 //			else {
 //				table = new UITableView (new RectangleF (0, 0, 300, 800)); //TODO FIx this with space for iAds
 //			}
-			IList<LagerObject> tableItems = new List<LagerObject> ();
+			tableItems = new List<LagerObject> ();
 			try {
 				tableItems = (List<LagerObject>) AppDelegate.dao.GetAllContainers ();
 			} catch (Exception e) {

@@ -18,7 +18,40 @@ namespace IndexerIOS
 		MKMapView mapView;
 		MFMailComposeViewController mailContr;
 		UIScrollView outerScroll;
+		
 		UIViewController ancestor;
+
+
+		protected override void Dispose (bool disposing)
+		{
+			this.ancestor = null;
+			outerScroll.Dispose ();
+			mailContr.Dispose ();
+			mapView.Dispose ();
+			myLager = null;
+			base.Dispose (disposing);
+		}
+
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
+		}
 
 		public StorageScreenContent (RectangleF myRect, Lager myLager, UIScrollView outerScroll, UIViewController outer)
 		{
@@ -115,6 +148,8 @@ namespace IndexerIOS
 
 		SwipeDelegate dtdelegate;
 
+		UITapGestureRecognizer doubletap;
+
 		void AddLocationBox (){
 			MapViewBoxRect = new RectangleF (x, y, mywidth, cube);
 			mapView = new MKMapView (MapViewBoxRect);
@@ -122,7 +157,7 @@ namespace IndexerIOS
 			mapView.ShowsUserLocation = true;
 			View.AddSubview(mapView);
 
-			var doubletap = new UITapGestureRecognizer (AddLocation);
+			doubletap = new UITapGestureRecognizer (AddLocation);
 			doubletap.NumberOfTapsRequired = 2;
 			this.dtdelegate = new SwipeDelegate ();
 			doubletap.Delegate = dtdelegate;

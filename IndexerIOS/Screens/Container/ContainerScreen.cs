@@ -15,9 +15,7 @@ namespace no.dctapps.Garageindex.screens
 {
 	public partial class ContainerScreen : UITableViewController
 	{
-//		UITableView table;
 		TableSourceLagerObjects boxtableSource;
-//		LagerDAO dao;
 
 		public event EventHandler<ContainerClickedEventArgs> ActivateDetail;
 
@@ -31,11 +29,17 @@ namespace no.dctapps.Garageindex.screens
 		{
 		}
 
+		protected override void Dispose (bool disposing)
+		{
+			boxtableSource = null;
+			ActivateDetail = null;
+			//tables = null;
+			base.Dispose (disposing);
+		}
+
 		void cleanup ()
 		{
-//			dao = null;
 			boxtableSource = null;
-//			table = null;
 		}
 
 		public void Refresh ()
@@ -57,7 +61,7 @@ namespace no.dctapps.Garageindex.screens
 			base.DidReceiveMemoryWarning ();
 
 			if(this.IsViewLoaded && this.View.Window == null){
-				cleanup ();
+				//cleanup ();
 			}
 			// Release any cached data, images, etc that aren't in use.
 		}

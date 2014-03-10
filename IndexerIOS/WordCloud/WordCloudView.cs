@@ -21,6 +21,12 @@ namespace IndexerIOS
 
 		}
 
+		protected override void Dispose (bool disposing)
+		{
+			this.words = null;
+			base.Dispose (disposing);
+		}
+
 		void PaintWords ()
 		{
 			foreach (WordCloudItem word in words) {

@@ -29,6 +29,7 @@ namespace GarageIndex
 
 		readonly RectangleF myFrame;
 		string current_imagefilename;
+
 		UIViewController ancestor;
 
 		public ImagePanel (RectangleF myFrame, UIViewController ancestor)
@@ -46,6 +47,21 @@ namespace GarageIndex
 			InitializeEmptyImage ();
 		}
 
+		protected override void Dispose (bool disposing)
+		{
+			imagePicker = null;
+			imageView = null;
+			OutputImage = null;
+			InitialImageFileName = null;
+			Pc = null;
+			GotPicture = null;
+			ImageSaved = null;
+			ImageDeleted = null;
+			current_imagefilename = null;
+			ancestor = null;
+			base.Dispose (disposing);
+		}
+
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
@@ -53,13 +69,13 @@ namespace GarageIndex
 
 			//if stuff is loaded but not active a window it will be cleaned out.
 			if (this.IsViewLoaded && this.View.Window == null) {
-				Cleanup ();
+				//cleanup ();
 			}
 		}
 
 		public void Cleanup ()
 		{
-			imagePicker = null;
+			//this.Dispose ();
 		}
 
 		public override void LoadView ()

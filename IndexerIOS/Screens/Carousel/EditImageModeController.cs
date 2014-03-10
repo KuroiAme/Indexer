@@ -29,6 +29,42 @@ namespace GarageIndex
 		public event EventHandler<ThumbChangedEventArgs> ThumbChanged;
 		GalleryViewController gvc;
 
+		UILongPressGestureRecognizer longPressGesture;
+
+		UITapGestureRecognizer doubletap;
+
+		protected override void Dispose (bool disposing)
+		{
+			ThumbChanged = null;
+			gvc = null;
+			scrollView.Dispose ();
+			tgv.Dispose ();
+			go = null;
+			blend.Dispose ();
+			base.Dispose (disposing);
+		}
+
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			//DIspose();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
+		}
+
 		public EditImageModeController (GalleryObject go, GalleryViewController galleryViewController)
 		{
 			this.go = go;
@@ -56,7 +92,7 @@ namespace GarageIndex
 
 		void AddLongPress ()
 		{
-			var longPressGesture = new UILongPressGestureRecognizer (EditTagFrame);
+			longPressGesture = new UILongPressGestureRecognizer (EditTagFrame);
 			scrollView.AddGestureRecognizer (longPressGesture);
 		}
 
@@ -119,7 +155,7 @@ namespace GarageIndex
 
 			scrollView.ViewForZoomingInScrollView += (UIScrollView sv) => blend;
 
-			var doubletap = new UITapGestureRecognizer (AddTag);
+			doubletap = new UITapGestureRecognizer (AddTag);
 			doubletap.NumberOfTapsRequired = 2;
 			scrollView.AddGestureRecognizer (doubletap);
 
@@ -147,9 +183,13 @@ namespace GarageIndex
 
 		UIBarButtonItem taglistButton;
 
+		UIBarButtonItem tagMyZoomedObject;
+
+		List<UIBarButtonItem> buttons;
+
 		void CreateMenuOptions ()
 		{
-			List<UIBarButtonItem> buttons = new List<UIBarButtonItem> ();
+			buttons = new List<UIBarButtonItem> ();
 
 			taglistButton = new UIBarButtonItem (UIImage.FromBundle ("frames4832.png"), UIBarButtonItemStyle.Bordered, this.TagListPressed);
 			taglistButton.Clicked += (object sender, EventArgs e) => {
@@ -159,7 +199,7 @@ namespace GarageIndex
 
 			buttons.Add (taglistButton);
 
-			UIBarButtonItem tagMyZoomedObject = new UIBarButtonItem (UIImage.FromBundle ("startree.png"), UIBarButtonItemStyle.Bordered, this.zoomTagging);
+			tagMyZoomedObject = new UIBarButtonItem (UIImage.FromBundle ("startree.png"), UIBarButtonItemStyle.Bordered, this.zoomTagging);
 			tagMyZoomedObject.Clicked += (object sender, EventArgs e) => AddTagInner ();
 			buttons.Add (tagMyZoomedObject);
 
@@ -167,12 +207,20 @@ namespace GarageIndex
 			this.NavigationItem.SetRightBarButtonItems (buttons.ToArray(), true);
 		}
 
+		PointF point;
+
+		List<RectangleF> Rects;
+
+		IList<ImageTag> Tags;
+
+		TagDetailScreen tds;
+
 		void EditTagFrame (UIGestureRecognizer gestureRecognizer){
 			Console.WriteLine ("edittagframe triggered");
 			if (mylock == false) {
 				Console.WriteLine ("mutex aquired");
 				mylock = true;
-				PointF point = gestureRecognizer.LocationInView (this.blend);
+				point = gestureRecognizer.LocationInView (this.blend);
 //			Console.WriteLine ("presspoint:" + point);
 //			PointF center = scrollView.Center;
 //			Console.WriteLine("center:"+scrollView.Center);
@@ -183,8 +231,8 @@ namespace GarageIndex
 //			PointF guess = new PointF (con.X + point.X, con.Y + point.Y);
 //			Console.WriteLine ("guess:" + guess);
 
-				List<RectangleF> Rects = new List<RectangleF> ();
-				IList<ImageTag> Tags = AppDelegate.dao.GetTagsByGalleryObjectID (go.ID);
+				Rects = new List<RectangleF> ();
+				Tags = AppDelegate.dao.GetTagsByGalleryObjectID (go.ID);
 				for (int i = 0; i < Tags.Count; i++) {
 					TagUtility tu = new TagUtility (Tags [i]);
 					Rects.Add (tu.FetchAsRectangleF ());
@@ -194,7 +242,7 @@ namespace GarageIndex
 //						if (finds.Exists (x => x.ID == Tags [j].ID)) {
 //							Console.WriteLine ("pushing:" + Tags [j]);
 //							finds.Remove (Tags [j]);
-						TagDetailScreen tds = new TagDetailScreen (Tags [j]);
+						tds = new TagDetailScreen (Tags [j]);
 
 						found = true; 
 						tds.backpush += (object sender, BackClickedEventArgs e) => {
@@ -219,11 +267,13 @@ namespace GarageIndex
 			}
 		}
 
+		UIImage render;
+
 		async void ExtractNewThumbnail ()
 		{
 			Console.WriteLine ("extracting thumbnail");
 
-			UIImage render = ImageWithView (blend);
+			render = ImageWithView (blend);
 			string res = SaveGalleryThumbnail (go.Name, render);
 			go.thumbFileName = res;
 			RaiseThumbchanged ();

@@ -1,15 +1,9 @@
 using System;
-using System.Drawing;
 using MonoTouch.UIKit;
-using System.Collections.Generic;
 using no.dctapps.Garageindex.model;
 using GarageIndex;
-using no.dctapps.Garageindex.tables;
 using no.dctapps.Garageindex.events;
-using System.Text;
-using No.Dctapps.GarageIndex;
 using MonoTouch.MessageUI;
-using no.dctapps.Garageindex.businesslogic;
 using GoogleAnalytics.iOS;
 
 namespace no.dctapps.Garageindex.screens
@@ -29,6 +23,36 @@ namespace no.dctapps.Garageindex.screens
 		
 		public ContainerDetails () 
 		{
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+			cdc.Dispose ();
+			//boks = null;
+			mailContr.Dispose ();
+			LagerObjectSaved = null;
+			base.Dispose (disposing);
+		}
+
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
 		}
 
 		public override void ViewDidAppear (bool animated)

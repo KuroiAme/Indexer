@@ -15,7 +15,7 @@ namespace GarageIndex
 		public UIPopoverController popme;
 		SelectLager lagerselect;
 		const bool test = true;
-
+		
 		UIViewController ancestor;
 
 		public event EventHandler<LagerObjectSavedEventArgs> LagerObjectSaved;
@@ -24,6 +24,15 @@ namespace GarageIndex
 //		{
 //			this.boks = boks;
 //		}
+		protected override void Dispose (bool disposing)
+		{
+			this.ancestor = null;
+			lagerselect = null;
+			popme.Dispose ();
+			boks = null;
+			LagerObjectSaved = null;
+			base.Dispose (disposing);
+		}
 //
 		public ContainerDetailsContent (LagerObject boks, UIViewController ancestor)
 		{
@@ -72,8 +81,10 @@ namespace GarageIndex
 		/// </summary>
 		void cleanup ()
 		{
-			boks = null;
+			Dispose ();
 		}
+
+
 
 
 		public override void DidReceiveMemoryWarning ()
@@ -83,7 +94,7 @@ namespace GarageIndex
 
 			//cleanup only if view is loaded and not in a window.
 			if(this.IsViewLoaded && this.View.Window == null){
-				cleanup ();
+				//cleanup ();
 			}
 			// Release any cached data, images, etc that aren't in use.
 		}
@@ -212,7 +223,6 @@ namespace GarageIndex
 		{
 			base.ViewWillAppear (animated);
 			this.ShowDetails (this.boks);
-			//			Unclean();
 		}
 
 		public void ShowDetails (LagerObject myBox)

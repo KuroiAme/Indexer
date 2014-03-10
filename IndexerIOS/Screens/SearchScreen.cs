@@ -26,6 +26,36 @@ namespace IndexerIOS
 		WordsTableSource tableSource = null;
 		UITableView resultsTable;
 
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+			dictionary = null;
+			initialSearch = null;
+			tableSource.Dispose ();
+			resultsTable.Dispose ();
+			base.Dispose (disposing);
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
+		}
+
 		public override void LoadView ()
 		{
 			base.LoadView ();
@@ -84,7 +114,7 @@ namespace IndexerIOS
 		class WordsTableSource : UITableViewSource
 		{
 			protected string cellIdentifier = "wordsCell";
-
+			
 			UIViewController ancestor;
 
 			public WordsTableSource (UIViewController ancestor)

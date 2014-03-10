@@ -29,28 +29,29 @@ namespace no.dctapps.Garageindex.screens
             get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
         }
 
-
-		public BigItemsScreen () : base ()
-//			: base (UserInterfaceIdiomIsPhone ? "BigItemsScreen_iPhone" : "BigItemsScreen_iPad", null)
-		{
-		}
-
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
 			base.DidReceiveMemoryWarning ();
 
 			if(this.IsViewLoaded && this.View.Window == null){
-				Cleanup ();
+				//cleanup ();
 			}
 			// Release any cached data, images, etc that aren't in use.
 		}
 
-		public void Cleanup(){
-//			dao = null;
-//			Table = null;
-			TableSource = null;
+		protected override void Dispose (bool disposing)
+		{
+			TableSource.Dispose ();
 			tableItems = null;
+			ActivateDetail = null;
+			Pc.Dispose ();
+			table.Dispose ();
+			base.Dispose (disposing);
+		}
+
+		public void Cleanup(){
+			Dispose ();
 		}
 
 		public override void LoadView ()

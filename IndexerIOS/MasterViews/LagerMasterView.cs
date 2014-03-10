@@ -35,17 +35,33 @@ namespace No.DCTapps.GarageIndex
 			
 			ViewControllers = new UIViewController[] {primarynav, secondarynav};
 		}
-			
-			
-			
-			public override void DidReceiveMemoryWarning ()
-			{
-				// Releases the view if it doesn't have a superview.
-				base.DidReceiveMemoryWarning ();
 
-				
-				// Release any cached data, images, etc that aren't in use.
+		protected override void Dispose (bool disposing)
+		{
+			ViewControllers = null;
+			base.Dispose (disposing);
+		}
+			
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			//this.Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
 			}
+			// Release any cached data, images, etc that aren't in use.
+		}
 			
 			public override void ViewWillAppear (bool animated)
 			{

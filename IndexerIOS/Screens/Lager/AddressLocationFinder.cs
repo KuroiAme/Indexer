@@ -23,6 +23,36 @@ namespace IndexerIOS
 		MKMapView map;
 		public event EventHandler<CoordEventArgs> FoundCoords;
 
+		protected override void Dispose (bool disposing)
+		{
+			storageScreenContent.Dispose ();
+			searchBar.Dispose ();
+			searchController.Dispose ();
+			map.Dispose ();
+			FoundCoords = null;
+			base.Dispose (disposing);
+		}
+
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
+		}
 
 		public override void ViewDidLoad ()
 		{

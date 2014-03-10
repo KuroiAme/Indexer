@@ -1,1 +1,1 @@
-Flere ikoner og mer tutorials
+Fiks for delegater og gestureRecognizers som ikke ble lagret som felter i objektene sine.

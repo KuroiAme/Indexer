@@ -8,7 +8,16 @@ namespace GarageIndex
 	{
 		void cleanup ()
 		{
-			//DO DIDDLY FOR NOW
+			Dispose ();
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+
+			// Brute force, remove everything
+			foreach (var view in View.Subviews)
+				view.RemoveFromSuperview ();
+			base.Dispose ();
 		}
 
 	
@@ -18,7 +27,7 @@ namespace GarageIndex
 			base.DidReceiveMemoryWarning ();
 
 			if(this.IsViewLoaded && this.View.Window == null){
-				cleanup ();
+				//cleanup ();
 
 			}
 			// Release any cached data, images, etc that aren't in use.

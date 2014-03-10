@@ -11,31 +11,6 @@ namespace no.dctapps.Garageindex.screens
 {
 	public partial class Preferences : UIViewController
 	{
-		static bool UserInterfaceIdiomIsPhone {
-			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
-		}
-
-		public Preferences ()
-		//: base (UserInterfaceIdiomIsPhone ? "Preferences_iPhone" : "Preferences_iPad")
-		{
-//			bl = new GarageindexBL();
-		}
-		
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
-		}
-
-		public override void ViewDidAppear (bool animated)
-		{
-			base.ViewDidAppear (animated);
-			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Preferences Screen");
-			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
-		}
-
 		UILabel textLargeObjects;
 
 		UILabel textQR;
@@ -47,6 +22,54 @@ namespace no.dctapps.Garageindex.screens
 		UISwitch switchQR;
 
 		UISwitch switchGAI;
+
+		static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+		}
+
+		public Preferences ()
+		{
+
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+			textLargeObjects.Dispose ();
+			textQR.Dispose ();
+			textGAI.Dispose ();
+			switchLO.Dispose ();
+			switchQR.Dispose ();
+			switchGAI.Dispose ();
+			base.Dispose (disposing);
+		}
+		
+
+		void cleanup ()
+		{
+			this.Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
+		}
+
+		public override void ViewDidAppear (bool animated)
+		{
+			base.ViewDidAppear (animated);
+			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Preferences Screen");
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
+		}
+
+
 
 		public override void LoadView ()
 		{

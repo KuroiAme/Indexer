@@ -16,7 +16,8 @@ namespace GarageIndex
 	public class OverSightMap : UIViewController
 	{
 		MKMapView mapView;
-		RectangleF myFrame;
+		readonly RectangleF myFrame;
+		
 		UIViewController ancestor;
 
 		public OverSightMap (RectangleF myFrame, UIViewController ancestor)
@@ -30,6 +31,34 @@ namespace GarageIndex
 			base.LoadView ();
 			this.View.BackgroundColor = UIColor.Orange;
 			this.View.Frame = myFrame;
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+			ancestor = null;
+			mapView.Dispose ();
+			base.Dispose (disposing);
+		}
+
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
 		}
 
 		MapDelegate mappy;

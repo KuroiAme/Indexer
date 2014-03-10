@@ -18,6 +18,7 @@ namespace GarageIndex
 		const float textHeight = 30;
 		float currentheight = 0;
 		float rightPanelWidth;
+		
 		UIViewController ancestor;
 
 		public DashboardRightPanel (float rightPanelWidth, UIViewController ancestor)
@@ -33,6 +34,39 @@ namespace GarageIndex
 
 		public SizeF getSize(){
 			return new SizeF (rightPanelWidth, GetPanelHeight ());
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+			parentView = null;
+			ancestor = null;
+
+			MainMap = null;
+			clouds = null;
+			wordCloud = null;
+
+			base.Dispose (disposing);
+		}
+
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
 		}
 
 		public override void LoadView ()
@@ -51,6 +85,8 @@ namespace GarageIndex
 
 		System.Collections.Generic.List<WordCloudItem> clouds;
 
+		UITapGestureRecognizer doubletap;
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -63,7 +99,7 @@ namespace GarageIndex
 			wordCloud = new WordCloudIOS (ancestor, clouds, new RectangleF (0, currentheight, rightPanelWidth, elementHeight * 1.5f));
 			View.AddSubview (wordCloud.View);
 
-			var doubletap = new UITapGestureRecognizer (Share);
+			doubletap = new UITapGestureRecognizer (Share);
 			doubletap.NumberOfTapsRequired = 2;
 			wordCloud.View.AddGestureRecognizer (doubletap);
 			wordCloud.View.UserInteractionEnabled = true;
@@ -187,24 +223,9 @@ namespace GarageIndex
 			}
 		}
 
-		void cleanup ()
-		{
-			MainMap = null;
-			clouds = null;
-			wordCloud = null;
-		}
 
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
 
-			if(this.IsViewLoaded && this.View.Window == null){
-				cleanup ();
 
-			}
-			// Release any cached data, images, etc that aren't in use.
-		}
 
 
 		void RaiseSearchResult (no.dctapps.Garageindex.model.Lager find)

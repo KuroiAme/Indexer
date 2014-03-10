@@ -45,6 +45,13 @@
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
     <BuildIpa>true</BuildIpa>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchUseSGen>true</MtouchUseSGen>
+    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchUseLlvm>true</MtouchUseLlvm>
+    <MtouchUseThumb>true</MtouchUseThumb>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
@@ -213,75 +220,45 @@
     <Compile Include="InsurancePhotos\InsurancePhotoController.cs" />
     <Compile Include="InsurancePhotos\ViewInsurancePhoto.cs" />
     <Compile Include="MasterViews\BigItemMasterView.cs" />
-    <Compile Include="MasterViews\BigItemMasterView.designer.cs" />
     <Compile Include="MasterViews\ContainerMasterView.cs" />
     <Compile Include="MasterViews\ItemMasterView.cs" />
-    <Compile Include="MasterViews\ItemMasterView.designer.cs" />
     <Compile Include="MasterViews\LagerMasterView.cs" />
-    <Compile Include="Model\Container.cs" />
-    <Compile Include="Model\Lager.cs" />
     <Compile Include="Panels\ImagePanel.cs" />
-    <Compile Include="Panels\LoadingOverlay.cs" />
     <Compile Include="Panels\TagListController.cs" />
     <Compile Include="Panels\TagListView.cs" />
     <Compile Include="Screens\BigItems\BigItemDetailContent.cs" />
     <Compile Include="Screens\BigItems\BigItemDetailScreen.cs" />
-    <Compile Include="Screens\BigItems\BigItemDetailScreen.designer.cs" />
-    <Compile Include="Screens\BigItems\BigItemListInfo.cs" />
-    <Compile Include="Screens\BigItems\BigItemListInfo.designer.cs" />
     <Compile Include="Screens\BigItems\BigItemsScreen.cs" />
-    <Compile Include="Screens\BigItems\BigItemsScreen.designer.cs" />
-    <Compile Include="Screens\BigItems\DerezLargeObjectEventArgs.cs" />
     <Compile Include="Screens\Carousel\EditImageModeController.cs" />
     <Compile Include="Screens\Carousel\EditTags.cs" />
     <Compile Include="Screens\Carousel\TagDetailScreen.cs" />
-    <Compile Include="Screens\Carousel\TagDetailScreen.designer.cs" />
     <Compile Include="Screens\Carousel\TagGraphicsView.cs" />
-    <Compile Include="Screens\Container\BoxContent.cs" />
-    <Compile Include="Screens\Container\BoxContent.designer.cs" />
     <Compile Include="Screens\Container\ContainerContent.cs" />
-    <Compile Include="Screens\Container\ContainerContent.designer.cs" />
     <Compile Include="Screens\Container\ContainerContentListCell.cs" />
     <Compile Include="Screens\Container\ContainerContentListController.cs" />
     <Compile Include="Screens\Container\ContainerContentListSource.cs" />
     <Compile Include="Screens\Container\ContainerDetails.cs" />
-    <Compile Include="Screens\Container\ContainerDetails.designer.cs" />
     <Compile Include="Screens\Container\ContainerDetailsContent.cs" />
     <Compile Include="Screens\Container\ContainerScreen.cs" />
-    <Compile Include="Screens\Container\ContainerScreen.designer.cs" />
     <Compile Include="Screens\Dashboard\Background.cs" />
-    <Compile Include="Screens\Dashboard\BestLocationMiniViewController.cs" />
-    <Compile Include="Screens\Dashboard\DashBoardHeader.cs" />
     <Compile Include="Screens\Dashboard\DashBoardViewController.cs" />
     <Compile Include="Screens\Dashboard\DashboardRIghtPanel.cs" />
     <Compile Include="Screens\Dashboard\IndexerSateliteMenu.cs" />
     <Compile Include="Screens\Dashboard\OverSightMap.cs" />
     <Compile Include="Screens\Dashboard\StatisticsPanel.cs" />
     <Compile Include="Screens\Items\ItemCatalogue.cs" />
-    <Compile Include="Screens\Items\ItemCatalogue.designer.cs" />
     <Compile Include="Screens\Items\ItemDetailScreen.cs" />
-    <Compile Include="Screens\Items\ItemDetailScreen.designer.cs" />
     <Compile Include="Screens\Items\ItemDetailsController.cs" />
     <Compile Include="Screens\Items\ItemInfo.cs" />
-    <Compile Include="Screens\Items\ItemInfo.designer.cs" />
     <Compile Include="Screens\Items\SelectContainer.cs" />
-    <Compile Include="Screens\Items\SelectContainer.designer.cs" />
     <Compile Include="Screens\Lager\LagerList.cs" />
-    <Compile Include="Screens\Lager\LagerList.designer.cs" />
-    <Compile Include="Screens\Lager\LagerListCell.cs" />
     <Compile Include="Screens\Lager\LagerListController.cs" />
     <Compile Include="Screens\Lager\LagerListSource.cs" />
     <Compile Include="Screens\Lager\SelectLager.cs" />
-    <Compile Include="Screens\Lager\SelectLager.designer.cs" />
     <Compile Include="Screens\Lager\StorageCatalogue.cs" />
-    <Compile Include="Screens\Lager\StorageCatalogue.designer.cs" />
     <Compile Include="Screens\Lager\TheStorageScreen.cs" />
-    <Compile Include="Screens\Lager\TheStorageScreen.designer.cs" />
     <Compile Include="Screens\Preferences\Preferences.cs" />
-    <Compile Include="Screens\Preferences\Preferences.designer.cs" />
     <Compile Include="Screens\Scanner\Scanner.cs" />
-    <Compile Include="Screens\Scanner\Scanner.designer.cs" />
-    <Compile Include="Screens\Statistics\PiePlot.cs" />
     <Compile Include="TableSources\TableSourceItems.cs" />
     <Compile Include="TableSources\TableSourceItemsIndexed.cs" />
     <Compile Include="TableSources\TableSourceLager.cs" />
@@ -290,11 +267,8 @@
     <Compile Include="TableSources\TableSourceLagerSimple.cs" />
     <Compile Include="TableSources\TableSourceTags.cs" />
     <Compile Include="Utility\CustomLagerCell.cs" />
-    <Compile Include="Utility\GarageIndexTipsProvider.cs" />
     <Compile Include="Utility\GotPictureEventArgs.cs" />
-    <Compile Include="Utility\ImageHelper.cs" />
     <Compile Include="Utility\SQLite.cs" />
-    <Compile Include="Utility\TabController.cs" />
     <Compile Include="Utility\TagUtility.cs" />
     <Compile Include="Utility\UtilityViewController.cs" />
     <Compile Include="paintcode\BlueSea.cs" />
@@ -314,11 +288,9 @@
     <Compile Include="Screens\Dashboard\LagerAnnotationClicked.cs" />
     <Compile Include="paintcode\Letter.cs" />
     <Compile Include="Screens\SearchScreen.cs" />
-    <Compile Include="WordCloud\WordCloud.cs" />
     <Compile Include="WordCloud\WordCloudIOS.cs" />
     <Compile Include="WordCloud\WordCloudView.cs" />
     <Compile Include="WordCloud\IndexerUtils.cs" />
-    <Compile Include="WordCloud\Spiral.cs" />
     <Compile Include="Panels\SwipeDelegate.cs" />
     <Compile Include="Screens\Dashboard\HelpScreen.cs" />
     <Compile Include="Screens\Dashboard\HelpScreenInner.cs" />
@@ -328,6 +300,8 @@
     <Compile Include="paintcode\TableIcon.cs" />
     <Compile Include="paintcode\ContainerIcon.cs" />
     <Compile Include="paintcode\MansionIcon.cs" />
+    <Compile Include="Screens\Carousel\TagDetailScreen.designer.cs" />
+    <Compile Include="Screens\Lager\LagerListCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
@@ -338,41 +312,11 @@
     <ITunesArtwork Include="iTunesArtwork%402x" />
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="MasterViews\BigItemMasterView.xib" />
-    <InterfaceDefinition Include="Screens\BigItems\BigItemDetailScreen_iPad.xib" />
-    <InterfaceDefinition Include="Screens\BigItems\BigItemDetailScreen_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\BigItems\BigItemListInfo_iPad.xib" />
-    <InterfaceDefinition Include="Screens\BigItems\BigItemListInfo_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\BigItems\BigItemsScreen_iPad.xib" />
-    <InterfaceDefinition Include="Screens\BigItems\BigItemsScreen_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Carousel\TagDetailScreen_iPad.xib" />
+    <InterfaceDefinition Include="Resources\Screens\BigItems\BigItemDetailScreen_iPad.xib" />
+    <InterfaceDefinition Include="Resources\Screens\Scanner\Scanner_iPad.xib" />
+    <InterfaceDefinition Include="Resources\Screens\Scanner\Scanner_iPhone.xib" />
     <InterfaceDefinition Include="Screens\Carousel\TagDetailScreen_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Container\BoxContent_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Container\BoxContent_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Container\ContainerContent_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Container\ContainerContent_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Container\ContainerDetails_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Container\ContainerDetails_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Container\ContainerScreen_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Container\ContainerScreen_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Items\ItemCatalogue_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Items\ItemCatalogue_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Items\ItemDetailScreen_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Items\ItemDetailScreen_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Items\ItemInfo_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Items\ItemInfo_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Items\SelectContainer_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Items\SelectContainer_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Lager\LagerList_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Lager\LagerList_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Lager\SelectLager_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Lager\SelectLager_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Lager\StorageCatalogue_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Lager\StorageCatalogue_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Lager\TheStorageScreen_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Lager\TheStorageScreen_iPhone.xib" />
-    <InterfaceDefinition Include="Screens\Scanner\Scanner_iPad.xib" />
-    <InterfaceDefinition Include="Screens\Scanner\Scanner_iPhone.xib" />
+    <InterfaceDefinition Include="Screens\Carousel\TagDetailScreen_iPad.xib" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="googleadmob">

@@ -24,9 +24,16 @@ namespace GarageIndex
 
 		public UISearchBar Search;
 
+		protected override void Dispose (bool disposing)
+		{
+			rightPanel.Dispose ();
+			Search.Dispose ();
+			base.Dispose (disposing);
+		}
+
 		void cleanup ()
 		{
-			Search = null;
+			Dispose ();
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -35,7 +42,7 @@ namespace GarageIndex
 			base.DidReceiveMemoryWarning ();
 
 			if(this.IsViewLoaded && this.View.Window == null){
-				cleanup ();
+				//cleanup ();
 
 			}
 			// Release any cached data, images, etc that aren't in use.

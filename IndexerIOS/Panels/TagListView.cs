@@ -16,7 +16,15 @@ namespace GarageIndex
 		public event EventHandler MaxLinesReached;
 		List<RectangleF> hitTable;
 
-		//float heightmod;
+		protected override void Dispose (bool disposing)
+		{
+			tagframes = null;
+			taglist = null;
+			TagStringClicked = null;
+			MaxLinesReached = null;
+			hitTable = null;
+			base.Dispose (disposing);
+		}
 
 
 

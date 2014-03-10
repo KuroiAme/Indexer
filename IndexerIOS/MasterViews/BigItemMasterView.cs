@@ -26,10 +26,10 @@ namespace no.dctapps.garageindex
 
 			detailview.BigItemSaved += (object sender, BigItemSavedEventArgs e) => masterView.Refresh ();
 
-			detailview.Derezzy += (object sender, DerezLargeObjectEventArgs e) => {
-                detailnav.PopViewControllerAnimated(true);
-                masterView.Refresh();
-            };
+//			detailview.Derezzy += (object sender, DerezLargeObjectEventArgs e) => {
+//                detailnav.PopViewControllerAnimated(true);
+//                masterView.Refresh();
+//            };
 
 			detailview.GotPicture += (object sender, GotPictureEventArgs e) => masterView.Refresh ();
 
@@ -43,11 +43,30 @@ namespace no.dctapps.garageindex
 			ViewControllers = new UIViewController[] {masternav, detailnav};
 		}
 		
+		protected override void Dispose (bool disposing)
+		{
+			masterView.Dispose ();
+			detailview.Dispose ();
+			masternav.Dispose ();
+			detailnav.Dispose ();
+			ViewControllers = null;
+			base.Dispose (disposing);
+		}
+		void cleanup ()
+		{
+			//this.Dispose ();
+		}
+
+
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
 			base.DidReceiveMemoryWarning ();
-			
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
 			// Release any cached data, images, etc that aren't in use.
 		}
 

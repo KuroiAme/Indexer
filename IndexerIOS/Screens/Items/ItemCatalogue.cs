@@ -1,10 +1,4 @@
-using System;
 using MonoTouch.UIKit;
-using System.Collections.Generic;
-using no.dctapps.Garageindex;
-using No.Dctapps.Garageindex.Ios.Screens;
-using MonoTouch.Foundation;
-using No.DCTapps.GarageIndex;
 using GarageIndex;
 using no.dctapps.Garageindex.events;
 using No.Dctapps.GarageIndex;
@@ -12,6 +6,8 @@ using no.dctapps.Garageindex.tables;
 using no.dctapps.Garageindex.screens;
 using GoogleAnalytics.iOS;
 using System.Drawing;
+using System;
+using System.Collections.Generic;
 
 namespace no.dctapps.garageindex
 {
@@ -21,6 +17,33 @@ namespace no.dctapps.garageindex
 		UITableView table;
 
 		public event EventHandler<ItemClickedEventArgs> ActivateDetail;
+
+		protected override void Dispose (bool disposing)
+		{
+			ActivateDetail = null;
+			table.Dispose ();
+			source = null;
+			backbutton = null;
+			itemdetail = null;
+			base.Dispose (disposing);
+		}
+		void cleanup ()
+		{
+			Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
+		}
 
 		public override void ViewDidAppear (bool animated)
 		{
@@ -35,11 +58,15 @@ namespace no.dctapps.garageindex
 			PopulateTable();
 		}
 
+		TableSourceItems source;
+
+		UIButton backbutton;
+
 		void PopulateTable ()
 		{
 			IList<Item> items = AppDelegate.dao.GetAllItems ();
 
-			TableSourceItems source = new TableSourceItems (items);
+			source = new TableSourceItems (items);
 			table.Source = source;
 
 			source.ItemClicked += (object sender, ItemClickedEventArgs e) => this.ShowItemDetails(e.Item);
@@ -49,7 +76,7 @@ namespace no.dctapps.garageindex
 				this.Refresh();
 			};
 
-			UIButton backbutton = new UIButton(new RectangleF(10,25,48,32));
+			backbutton = new UIButton (new RectangleF (10, 25, 48, 32));
 			backbutton.SetImage (backarrow.MakeBackArrow(), UIControlState.Normal);
 			backbutton.TouchUpInside += (object sender, EventArgs e) => DismissViewControllerAsync (true);
 			Add (backbutton);
@@ -71,6 +98,7 @@ namespace no.dctapps.garageindex
 			this.NavigationItem.RightBarButtonItem.Clicked += (sender, e) => ShowItemDetails(new Item());
 		}
 
+		ItemDetailScreen itemdetail;
 
 		void ShowItemDetails (Item item)
 		{
@@ -78,7 +106,7 @@ namespace no.dctapps.garageindex
 			Console.WriteLine ("call itemdetailscreen");
 
 				//item.boxID = boks.ID;
-				ItemDetailScreen itemdetail = new ItemDetailScreen (item);
+				itemdetail = new ItemDetailScreen (item);
 				//this.NavigationController.PresentViewController(itemdetail, true, delegate{});
 				this.NavigationController.PushViewController (itemdetail, true);
 				//this.NavigationController.PushViewController(itemdetail, true);

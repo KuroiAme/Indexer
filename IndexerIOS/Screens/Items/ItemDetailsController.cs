@@ -14,47 +14,70 @@ namespace GarageIndex
 {
 	public class ItemDetailsController : UtilityViewController
 	{
-		UIImagePickerController imagePicker;
-		//		UIButton choosePhotoButton;
-		//        UIButton unselectPhotoButton;
+//		UIImagePickerController imagePicker;
+//
+//		UIImageView imageView;
+//		public UIImage OutputImage{ get; set;}
 
-		UIImageView imageView;
-		public UIImage OutputImage{ get; set;}
-
-		//		public RectangleF ImageRectangle{ get; set;}
-		//		public RectangleF PickerRect{ get; set;}
-		//        public RectangleF UnPickerRect{ get; set;}
-
-		public UIPopoverController Pc;
-	
-
-//		public event EventHandler<GotPictureEventArgs> GotPicture;
+//			public UIPopoverController Pc;
 
 		public event EventHandler<ItemSavedEventArgs> ItemSaved;
 		public event EventHandler ItemDeleted;
-//		public event EventHandler<DerezEventArgs> Derez;
+
 		public event EventHandler InContainerTouched;
 		public event EventHandler InLocationTouched;
 
 		public Item currentItem;
 
-		//UINavigationController nc;
+		InsurancePhotoController ipc;
+		
 		UIViewController ancestor;
+
+		UIActionSheet ass;
+
+		TagListController tlc;
+		ImageTag tag;
 
 		public ItemDetailsController (UIViewController parent)
 		{
 			this.ancestor = parent;
 		}
 
+		protected override void Dispose (bool disposing)
+		{
 
-//		public ItemDetailsController (UINavigationController nc, UIViewController parent)
-//		{
-//			this.parent = parent;
-//			this.nc = nc;
-//
-//			initRectangles ();
-//
-//		}
+//			OutputImage.Dispose ();
+//			Pc.Dispose ();
+			ItemSaved = null;
+			ItemDeleted = null;
+			InContainerTouched = null;
+			InLocationTouched = null;
+			currentItem = null;
+			ancestor = null;
+			ipc = null;
+			ass = null;
+			tlc = null;
+			tag = null;
+			base.Dispose (disposing);
+		}
+
+		void cleanup ()
+		{
+			Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
+		}
 
 
 		public ItemDetailsController (Item item, UIViewController parent)
@@ -72,11 +95,11 @@ namespace GarageIndex
 		}
 
 		private void InitView(){
-			this.View.BackgroundColor = UIColor.White;
+			//this.View.BackgroundColor = UIColor.White;
 //			this.View.Frame = 
 			if (UserInterfaceIdiomIsPhone) {
-				contentSize = new SizeF (UIScreen.MainScreen.Bounds.Width, 800);
-				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 800);
+				contentSize = new SizeF (UIScreen.MainScreen.Bounds.Width, 1000);
+				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
 			} else {
 				contentSize = new SizeF (UIScreen.MainScreen.Bounds.Width, 1000);
 				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
@@ -106,7 +129,7 @@ namespace GarageIndex
 			if (UserInterfaceIdiomIsPhone) {
 				//x and y under the representative image;
 				x = 10;
-				y = 620;
+				y = 750;
 			} else {
 				//on the right in a second collumn
 				x = 500;
@@ -188,12 +211,10 @@ namespace GarageIndex
 
 			btnInContainer = new UIButton (UIButtonType.RoundedRect);
 			btnInContainer.Frame = btnInContainerRect;
-			//btnInContainer.BackgroundColor = UIColor.Purple;
 			Add (btnInContainer);
 
 			btnInLocation = new UIButton (UIButtonType.RoundedRect);
 			btnInLocation.Frame = btnInLocationRect;
-			//btnInLocation.BackgroundColor = UIColor.Purple;
 			Add (btnInLocation);
 
 //			btnUnpickImageItem = new UIButton (UIButtonType.RoundedRect);
@@ -221,35 +242,18 @@ namespace GarageIndex
 		}
 
 
-		void cleanup ()
-		{
-			//			item = null;
-			imagePicker = null;
-			//			choosePhotoButton = null;
-			//			imageView = null;
-			OutputImage = null;
-			Pc = null;
-			//			dao = null;
-		}
+//		void cleanup ()
+//		{
+//			//			item = null;
+//
+//			//			dao = null;
+//		}
 
 		void Unclean ()
 		{
 
 		}
 
-
-
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-
-			if(this.IsViewLoaded && this.View.Window == null){
-				cleanup ();
-
-			}
-			// Release any cached data, images, etc that aren't in use.
-		}
 
 		void releaseKeyboard ()
 		{
@@ -375,7 +379,7 @@ namespace GarageIndex
 
 			showReceipts.SetTitle (NSBundle.MainBundle.LocalizedString ("Show Receipts", "Show Receipts"), UIControlState.Normal);
 			showReceipts.TouchUpInside += (object sender, EventArgs e) => {
-				InsurancePhotoController ipc = new InsurancePhotoController(myItem);
+				ipc = new InsurancePhotoController (myItem);
 				ancestor.NavigationController.PushViewController(ipc,true);
 			};
 		}
@@ -388,7 +392,8 @@ namespace GarageIndex
 			}
 		}
 
-		UIActionSheet ass;
+
+
 
 		void AddTagList ()
 		{
@@ -400,7 +405,7 @@ namespace GarageIndex
 			}
 
 			Console.WriteLine ("frame:" + frame);
-			ImageTag tag = AppDelegate.dao.GetImageTagById (this.currentItem.ImageTagId);
+			tag = AppDelegate.dao.GetImageTagById (this.currentItem.ImageTagId);
 			if (tag == null) {
 				Console.WriteLine ("Tag er null");
 				tag = new ImageTag ();
@@ -411,7 +416,7 @@ namespace GarageIndex
 				AppDelegate.dao.SaveItem (this.currentItem);
 			}
 
-			TagListController tlc = new TagListController (tag, frame);
+			tlc = new TagListController (tag, frame);
 			this.View.AddSubview (tlc.View);
 
 		}
@@ -438,7 +443,7 @@ namespace GarageIndex
 
 			sc.DismissEvent += (object sender, ContainerClickedEventArgs e) => {
 				if(UserInterfaceIdiomIsPhone){
-					ancestor.NavigationController.DismissViewController(true,null);
+					sc.NavigationController.PopViewControllerAnimated(true);
 				}else{
 					Ic.Dismiss (true);
 				}
@@ -461,7 +466,7 @@ namespace GarageIndex
 
 			sl.DismissEvent += (object sender, LagerClickedEventArgs e) => {
 				if(UserInterfaceIdiomIsPhone){
-					ancestor.NavigationController.DismissViewController(true,null);
+					sl.NavigationController.PopViewControllerAnimated(true);
 				}else{
 					pc.Dismiss (true);
 				}
@@ -475,15 +480,6 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 
-			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
-				ContentMode = UIViewContentMode.ScaleToFill,
-				AutoresizingMask = UIViewAutoresizing.All,
-				Frame = View.Bounds
-			};
-
-			View.AddSubview (imgView);
-			View.SendSubviewToBack (imgView);
-
 			this.fieldName.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Item Name", "Item Name");
 			this.fieldDescription.Placeholder = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Item description", "Item description");
 
@@ -496,7 +492,7 @@ namespace GarageIndex
 
 			releaseKeyboard ();
 
-			imp = new ImagePanel (new RectangleF (10, 400, UIScreen.MainScreen.Bounds.Width - 20, 200), this.ancestor);
+			imp = new ImagePanel (new RectangleF (10, 400, UIScreen.MainScreen.Bounds.Width - 20, 300), this.ancestor);
 
 			imp.ImageDeleted += (object sender, EventArgs e) => {
 				currentItem.ImageFileName = null;
@@ -516,6 +512,7 @@ namespace GarageIndex
 
 			ShowDetails (this.currentItem);
 
+			initializePlaceObject ();
 
 
 
@@ -547,15 +544,15 @@ namespace GarageIndex
 			RaiseItemSaved();
 		}
 
-		public void DeletePic(){
-			if (this.currentItem != null)
-			{
-				DeleteImage(this.currentItem.Name);
-				this.imageView.Image = null;
-				this.currentItem.ImageFileName = null;
-				this.currentItem.ThumbFileName = null;
-			}
-		}
+//		public void DeletePic(){
+//			if (this.currentItem != null)
+//			{
+//				//DeleteImage(this.currentItem.Name);
+//				this.imageView.Image = null;
+//				this.currentItem.ImageFileName = null;
+//				this.currentItem.ThumbFileName = null;
+//			}
+//		}
 
 
 

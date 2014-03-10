@@ -25,7 +25,7 @@ namespace no.dctapps.Garageindex.screens
 		public ItemDetailsController idc;
 
 		Item item;
-		UIScrollView innerview;
+		UIScrollView innerScroll;
 
 
 		public ItemDetailScreen (Item item)
@@ -42,10 +42,48 @@ namespace no.dctapps.Garageindex.screens
 
 		}
 
+		protected override void Dispose (bool disposing)
+		{
+			GotPicture = null;
+			ItemSaved = null;
+			Derez = null;
+			ItemDeleted = null;
+			idc.Dispose ();
+			item = null;
+			innerScroll.Dispose ();
+			base.Dispose (disposing);
+		}
+
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
+		}
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Item details", "Item details");
+
+			Background back = new Background ();
+			View.AddSubview (back.View);
+			View.SendSubviewToBack (back.View);
+
 			ShowDetails (item);
 		}
 
@@ -62,19 +100,19 @@ namespace no.dctapps.Garageindex.screens
 			this.item = item;
 			idc = new ItemDetailsController (item, this);
 			//idc = new ItemDetailsController (item, this.NavigationController, this);
-			innerview = new UIScrollView (UIScreen.MainScreen.Bounds);
-			innerview.ContentSize = idc.GetContentsize ();
-			innerview.AddSubview (idc.View);
-			innerview.BackgroundColor = UIColor.White;
+			innerScroll = new UIScrollView (View.Bounds);
+			innerScroll.ContentSize = idc.GetContentsize ();
+			innerScroll.AddSubview (idc.View);
+			innerScroll.UserInteractionEnabled = true;
 			idc.ShowDetails (item);
-			this.View = innerview;
+			View.AddSubview (innerScroll);
 
-//			idc.GotPicture += (object sender, GotPictureEventArgs e) => {
-//				var handler = this.GotPicture;
-//				if(handler != null){
-//					handler(this,e);
-//				}
-//			};
+//			HelpScreenInner innerViewController = new HelpScreenInner ();
+//			UIScrollView innerScroll = new UIScrollView (View.Bounds);
+//			innerScroll.ContentSize = innerViewController.GetContentSize ();
+//			innerScroll.AddSubview (innerViewController.View);
+//			innerScroll.UserInteractionEnabled = true;
+//			View.AddSubview (innerScroll);
 
 			idc.ItemSaved += (object sender, ItemSavedEventArgs e) => {
 				var handler = this.ItemSaved;

@@ -22,12 +22,44 @@ namespace GarageIndex
 //		}
 			
 		public event EventHandler<BigItemSavedEventArgs> BigItemSaved;
+
 		UIViewController ancestor;
 
 		public BigItemDetailContent (LagerObject myObject,UIViewController ancestor)
 		{
 			this.ancestor = ancestor;
 			this.MyCurrentObject = myObject;
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+			MyCurrentObject = null;
+			sl = null;
+			Ic.Dispose ();
+			ancestor = null;
+			base.Dispose (disposing);
+		}
+
+
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			//this.Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
 		}
 
 		public override void LoadView ()
@@ -269,11 +301,11 @@ namespace GarageIndex
 
 		public override void ViewDidLoad ()
 		{
-			base.ViewDidLoad ();
-			Background back = new Background ();
-			back.View.Frame = View.Bounds;
-			View.Add (back.View);
-			View.SendSubviewToBack (back.View);
+//			base.ViewDidLoad ();
+//			Background back = new Background ();
+//			back.View.Frame = View.Bounds;
+//			View.Add (back.View);
+//			View.SendSubviewToBack (back.View);
 
 			InitLegacyNib ();
 			InitInsuranceInfo ();

@@ -18,13 +18,19 @@ namespace GarageIndex
 			}
 		}
 
+		protected override void Dispose (bool disposing)
+		{
+			ikons = null;
+			base.Dispose (disposing);
+		}
+
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
 			base.DidReceiveMemoryWarning ();
 
 			if(this.IsViewLoaded && this.View.Window == null){
-				cleanup ();
+				//cleanup ();
 
 			}
 			// Release any cached data, images, etc that aren't in use.
@@ -50,10 +56,6 @@ namespace GarageIndex
 			base.ViewDidLoad ();
 
 			ikons = new List<UIImageView> ();
-
-//			Background back = new Background ();
-//			this.View.AddSubview (back.View);
-//			this.View.SendSubviewToBack (back.View);
 
 			currentheight = 100;
 

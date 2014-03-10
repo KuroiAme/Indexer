@@ -22,13 +22,41 @@ namespace GarageIndex
 		CarouselView carousel;
 		UIImagePickerController imagePicker;
 		public UIPopoverController Pc;
-		LoadingOverlay loadingOverlay;
+		//LoadingOverlay loadingOverlay;
 
 		public event EventHandler<GotPictureEventArgs> GotPicture;
 		public event EventHandler Clear;
 
 		public GalleryViewController ()
 		{
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+
+			carousel.Dispose ();
+			base.Dispose (disposing);
+		}
+
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			//Dispose ();
+		}
+
+
+		public override void DidReceiveMemoryWarning ()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning ();
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
+			// Release any cached data, images, etc that aren't in use.
 		}
 
 		void Tapped (UITapGestureRecognizer gestureRecognizer)
@@ -59,6 +87,12 @@ namespace GarageIndex
 			}
 		}
 
+		UITapGestureRecognizer tap;
+
+		GalleryDelegate gd;
+
+		IndexerSateliteMenu menu;
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -77,14 +111,14 @@ namespace GarageIndex
 			carousel = new CarouselView (UIScreen.MainScreen.Bounds);
 			//carousel. = images.Count;
 			carousel.DataSource = new GalleryDataSource (this);
-			GalleryDelegate gd = new GalleryDelegate (this);
+			gd = new GalleryDelegate (this);
 			carousel.Delegate = gd;
 			carousel.CarouselType = CarouselType.CoverFlow;
 			carousel.ConfigureView ();
 			View.AddSubview (carousel);
 
 
-			var tap = new UITapGestureRecognizer (Tapped);
+			tap = new UITapGestureRecognizer (Tapped);
 			tap.NumberOfTapsRequired = 1;
 			carousel.AddGestureRecognizer (tap);
 
@@ -97,7 +131,7 @@ namespace GarageIndex
 			//InitSateliteMenu ();
 			InitActiveField ();
 
-			IndexerSateliteMenu menu = new IndexerSateliteMenu ("Gallery", this);
+			menu = new IndexerSateliteMenu ("Gallery", this);
 			View.Add (menu.View);
 
 			CreateOptions ();
@@ -528,11 +562,11 @@ namespace GarageIndex
 
 		void RaiseImageGotten (UIImage image)
 		{
-			loadingOverlay = new LoadingOverlay (UIScreen.MainScreen.Bounds);
-			View.Add (loadingOverlay);
-			View.BringSubviewToFront (loadingOverlay);
+			//loadingOverlay = new LoadingOverlay (UIScreen.MainScreen.Bounds);
+			//.Add (loadingOverlay);
+			//View.BringSubviewToFront (loadingOverlay);
 			mySavePicture (image); //local event
-			loadingOverlay.Hide ();
+			//loadingOverlay.Hide ();
 
 		}
 

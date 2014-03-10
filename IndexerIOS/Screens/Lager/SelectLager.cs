@@ -28,11 +28,31 @@ namespace no.dctapps.Garageindex.screens
 		{
 		}
 
+		protected override void Dispose (bool disposing)
+		{
+			this.lagertableSource.Dispose ();
+			this.DismissEvent = null;
+			base.Dispose (disposing);
+		}
+
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			Dispose ();
+		}
+
+
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
 			base.DidReceiveMemoryWarning ();
-			
+
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
 			// Release any cached data, images, etc that aren't in use.
 		}
 
@@ -42,6 +62,7 @@ namespace no.dctapps.Garageindex.screens
 //			Xamarin.Themes.BlackLeatherTheme.Apply (this.View);
 
 			this.PopulateTable();
+
 			
 			// Perform any additional setup after loading the view, typically from a nib.
 		}

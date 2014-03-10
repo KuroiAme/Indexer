@@ -14,7 +14,8 @@ namespace No.DCTapps.GarageIndex
 {
 	public partial class Scanner //: UIViewController
     {
-		UIViewController parent;
+		
+		readonly UIViewController parent;
 
         static bool UserInterfaceIdiomIsPhone
         {
@@ -26,34 +27,6 @@ namespace No.DCTapps.GarageIndex
 			this.parent = parent;
 		}
 
-//        public Scanner()
-//			//: base (UserInterfaceIdiomIsPhone ? "Scanner_iPhone" : "Scanner_iPad", null)
-//        {
-//        }
-
-//        public override void DidReceiveMemoryWarning()
-//        {
-//            // Releases the view if it doesn't have a superview.
-//            base.DidReceiveMemoryWarning();
-//			
-//            // Release any cached data, images, etc that aren't in use.
-//        }
-//
-//        public override void ViewWillAppear(bool animated)
-//        {
-//            base.ViewWillAppear(animated);
-//
-//			//Scannit();
-//        }
-//			
-//
-//		public override void ViewDidAppear (bool animated)
-//		{
-//			base.ViewDidAppear (animated);
-//			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Scanner Screen");
-//			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
-//		}
-
 		async public void Scannit()
         {
 			var scanner = new MobileBarcodeScanner ();
@@ -63,17 +36,6 @@ namespace No.DCTapps.GarageIndex
             var result = await scanner.Scan(opt);
             HandleResult(result);
         }
-
-		//
-		//base.ViewDidLoad();
-			//itle = NSBundle.MainBundle.LocalizedString("Scanner", "Scanner");
-//            Xamarin.Themes.BlackLeatherTheme.Apply(this.View);
-          
-
-            // Perform any additional setup after loading the view, typically from a nib.
-			//}
-
-
 
         void HandleResult(ZXing.Result result){
 

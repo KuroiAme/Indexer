@@ -55,19 +55,35 @@ namespace no.dctapps.Garageindex.screens
 			ViewControllers = new UIViewController[] {primarynav, secondarynav};
 		}
 
+		protected override void Dispose (bool disposing)
+		{
+			primarynav.Dispose ();
+			primaryview.Dispose ();
+			this.secondarynav.Dispose ();
+			this.secondaryview.Dispose ();
+			base.Dispose (disposing);
+		}
+
 
 		
+		/// <summary>
+		/// Release everything not in use
+		/// </summary>
+		void cleanup ()
+		{
+			//this.Dispose ();
+		}
+
+
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
 			base.DidReceiveMemoryWarning ();
 
-//			primaryview = null;
-//			secondaryview= null;
-//
-//			primarynav= null;
-//			secondarynav= null;
-			
+			//cleanup only if view is loaded and not in a window.
+			if(this.IsViewLoaded && this.View.Window == null){
+				//cleanup ();
+			}
 			// Release any cached data, images, etc that aren't in use.
 		}
 

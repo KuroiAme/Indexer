@@ -2,13 +2,8 @@ using System;
 using MonoTouch.UIKit;
 using System.Drawing;
 using System.Collections.Generic;
-using no.dctapps.Garageindex.events;
 using MonoTouch.Foundation;
-using System.IO;
-using System.Linq;
 using MonoTouch.CoreGraphics;
-using MonoTouch.ObjCRuntime;
-//using paintcode;
 using MonoTouch.CoreText;
 
 namespace GarageIndex
@@ -26,6 +21,17 @@ namespace GarageIndex
 		CGColor shadow = color2.ColorWithAlpha(0.52f).CGColor;
 		readonly SizeF shadowOffset = new SizeF(0.1f, 1.1f);
 		readonly int shadowBlurRadius = 5;
+
+		protected override void Dispose (bool disposing)
+		{
+
+			color = null;
+			color2 = null;
+			color3 = null;
+			shadow = null;
+			go = null;
+			base.Dispose (disposing);
+		}
 
 		public TagGraphicsView (GalleryObject go, RectangleF canvas)
 		{
