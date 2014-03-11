@@ -47,6 +47,9 @@ namespace GarageIndex
 		public static KeyStorageServiceIos key;
 		public static ITranslationService its;
 		UINavigationController navController;
+
+		public static DashBoardViewController Dashboard;
+
 		//public static CouchDB db;
 
 		//
@@ -92,8 +95,8 @@ namespace GarageIndex
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 
-			DashBoardViewController dashboard = new DashBoardViewController ();
-			navController = new UINavigationController (dashboard);
+			Dashboard = new DashBoardViewController ();
+			navController = new UINavigationController (Dashboard);
 			//navController.NavigationBar.BackgroundColor = UIColor.Clear;
 
 

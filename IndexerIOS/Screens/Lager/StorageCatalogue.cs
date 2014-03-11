@@ -11,7 +11,7 @@ using System.Drawing;
 
 namespace no.dctapps.Garageindex.screens
 {
-	public partial class StorageCatalogue : UIViewController
+	public partial class StorageCatalogue : UtilityViewController
 	{
 		public event EventHandler<LagerClickedEventArgs> LagerClicked;
 

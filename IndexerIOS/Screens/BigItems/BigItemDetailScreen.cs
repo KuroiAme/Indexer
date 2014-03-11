@@ -51,25 +51,10 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 			//this.Dispose ();
 		}
 
-
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-
-			//cleanup only if view is loaded and not in a window.
-			if(this.IsViewLoaded && this.View.Window == null){
-				//cleanup ();
-			}
-			// Release any cached data, images, etc that aren't in use.
-		}
-
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			Background back = new Background ();
-			View.AddSubview (back.View);
-			View.SendSubviewToBack (back.View);
+			Title = AppDelegate.its.getTranslatedText ("Big details");
 			ShowDetails (myObject);
 		}
 

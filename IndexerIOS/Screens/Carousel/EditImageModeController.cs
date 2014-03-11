@@ -12,7 +12,7 @@ using GoogleAnalytics.iOS;
 
 namespace GarageIndex
 {
-	public class EditImageModeController : UIViewController
+	public class EditImageModeController : UtilityViewController
 	{
 		GalleryObject go;
 
@@ -135,13 +135,13 @@ namespace GarageIndex
 			tgv = new TagGraphicsView (go, Canvas);
 
 
-			scrollView.ContentSize = iv.Frame.Size;
+			scrollView.ContentSize = image.Size;
 
 
 
 			scrollView.MaximumZoomScale = 3f;
-			scrollView.MinimumZoomScale = .1f;
-			scrollView.SetZoomScale (1f, true);
+			scrollView.MinimumZoomScale = 0.3f;
+
 
 			blend = new UIView (Canvas);
 			blend.Frame = Canvas;
@@ -151,9 +151,14 @@ namespace GarageIndex
 			blend.AddSubview(tgv);
 
 			scrollView.AddSubview (blend);
-			Add(scrollView);
+
 
 			scrollView.ViewForZoomingInScrollView += (UIScrollView sv) => blend;
+			scrollView.SetZoomScale (0.3f, true);
+			scrollView.UserInteractionEnabled = true;
+			scrollView.AlwaysBounceHorizontal = true;
+			scrollView.AlwaysBounceVertical = true;
+			Add(scrollView);
 
 			doubletap = new UITapGestureRecognizer (AddTag);
 			doubletap.NumberOfTapsRequired = 2;

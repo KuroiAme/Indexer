@@ -9,12 +9,12 @@ using GarageIndex;
 
 namespace no.dctapps.Garageindex.screens
 {
-	public partial class SelectLager : UITableViewController
+	public partial class SelectLager : UtilityViewController
 	{
 
 //		LagerDAO dao;
 
-//		UITableView table;
+		UITableView table;
 		TableSourceLagerSimple lagertableSource;
 
 		public event EventHandler<LagerClickedEventArgs> DismissEvent;
@@ -75,12 +75,9 @@ namespace no.dctapps.Garageindex.screens
 
 		public void PopulateTable(){
 //			dao = new LagerDAO ();
-//			table = new UITableView(View.Bounds);
-			//			if (UserInterfaceIdiomIsPhone)
-			//				table = new UITableView (new RectangleF (0, 0, 300, 310)); //TODO FIx this with space for iAds
-			//			else {
-			//				table = new UITableView (new RectangleF (0, 0, 300, 800)); //TODO FIx this with space for iAds
-			//			}
+			table = new UITableView(View.Bounds);
+			Add (table);
+
 			IList<Lager> tableItems = new List<Lager> ();
 			try {
 				tableItems = (List<Lager>) AppDelegate.dao.GetAllLagers();
@@ -88,12 +85,12 @@ namespace no.dctapps.Garageindex.screens
 				Console.WriteLine ("catastrophe avoided:"+e.ToString());
 			}
 
-//			Add (table);
+
 
 			this.lagertableSource = new TableSourceLagerSimple(tableItems);
 			this.lagertableSource.LagerClicked += (object sender, LagerClickedEventArgs e) => raiseDismissal (e.Lager);
 
-			this.TableView.Source = this.lagertableSource;
+			table.Source = this.lagertableSource;
 		}
 
 		void raiseDismissal (Lager l)

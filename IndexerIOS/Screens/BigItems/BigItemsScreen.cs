@@ -12,7 +12,7 @@ using System.Drawing;
 
 namespace no.dctapps.Garageindex.screens
 {
-	public partial class BigItemsScreen : UIViewController
+	public partial class BigItemsScreen : UtilityViewController
 	{
 //		public UITableView Table{get; set;}
 		public TableSourceLagerObjects TableSource {get; set;}
@@ -24,21 +24,9 @@ namespace no.dctapps.Garageindex.screens
 		public UIPopoverController Pc;
 
 		UITableView table;
+	
 
-        public static bool UserInterfaceIdiomIsPhone {
-            get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
-        }
 
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-
-			if(this.IsViewLoaded && this.View.Window == null){
-				//cleanup ();
-			}
-			// Release any cached data, images, etc that aren't in use.
-		}
 
 		protected override void Dispose (bool disposing)
 		{
@@ -50,25 +38,11 @@ namespace no.dctapps.Garageindex.screens
 			base.Dispose (disposing);
 		}
 
-		public void Cleanup(){
-			Dispose ();
-		}
-
-		public override void LoadView ()
-		{
-			base.LoadView ();
-//			BlackLeatherTheme.Apply (this.View);
-		}
 		
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			//Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Large Objects", "Large Objects");
-			//this.View.BackgroundColor = UIColor.Clear;
-
-			Background back = new Background ();
-			Add (back.View);
-			View.SendSubviewToBack (back.View);
+			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Large Objects", "Large Objects");
 
 			table = new UITableView (new RectangleF (0, 75, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - 75), UITableViewStyle.Plain);
 			table.BackgroundColor = UIColor.Clear;

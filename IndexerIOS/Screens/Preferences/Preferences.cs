@@ -9,7 +9,7 @@ using MTiRate;
 
 namespace no.dctapps.Garageindex.screens
 {
-	public partial class Preferences : UIViewController
+	public partial class Preferences : UtilityViewController
 	{
 		UILabel textLargeObjects;
 
@@ -89,7 +89,7 @@ namespace no.dctapps.Garageindex.screens
 			if (UserInterfaceIdiomIsPhone) {
 				LargeObjectsRect = new RectangleF (10, 100, 250, 20);
 				QRRect = new RectangleF (10, 140, 250, 20);
-				GARect = new RectangleF (10, 180, 250, 20);
+				GARect = new RectangleF (10, 180, 250, 44);
 				lop = new PointF (260, 100);
 				qrp = new PointF (260, 140);
 				gaip = new PointF (260, 180);
@@ -100,7 +100,7 @@ namespace no.dctapps.Garageindex.screens
 				//ipad
 				LargeObjectsRect = new RectangleF (10, 100, 250, 20);
 				QRRect = new RectangleF (10, 140, 250, 20);
-				GARect = new RectangleF (10, 180, 250, 20);
+				GARect = new RectangleF (10, 180, 250, 60);
 				lop = new PointF (260, 100);
 				qrp = new PointF (260, 140);
 				gaip = new PointF (260, 180);
@@ -116,7 +116,7 @@ namespace no.dctapps.Garageindex.screens
 			Add (textQR);
 
 			textGAI = new UILabel (GARect);
-			Add (textGAI);
+
 
 
 
@@ -126,6 +126,8 @@ namespace no.dctapps.Garageindex.screens
 			textGAI.Text = NSBundle.MainBundle.LocalizedString ("help me improve the app: allow anonymous statistics", "help me improve the app: allow anonymous statistics");
 			textGAI.Lines = 2;
 			textGAI.LineBreakMode = UILineBreakMode.WordWrap;
+			textGAI.AdjustsFontSizeToFitWidth = true;
+			Add (textGAI);
 
 
 			switchLO = new UISwitch (rect_lo);

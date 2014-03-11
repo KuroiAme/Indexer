@@ -45,7 +45,6 @@ namespace GarageIndex
 		{
 			base.LoadView ();
 			this.View.Frame = myFrame;
-			this.View.BackgroundColor = UIColor.Purple;
 		}
 
 		public override void ViewDidLoad ()

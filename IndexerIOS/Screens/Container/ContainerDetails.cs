@@ -8,7 +8,7 @@ using GoogleAnalytics.iOS;
 
 namespace no.dctapps.Garageindex.screens
 {
-	public partial class ContainerDetails : UIViewController
+	public partial class ContainerDetails : UtilityViewController
 	{
 		LagerObject boks;
 		ContainerDetailsContent cdc;

@@ -12,7 +12,7 @@ using GoogleAnalytics.iOS;
 
 namespace No.DCTapps.GarageIndex
 {
-	public partial class Scanner //: UIViewController
+	public partial class Scanner //: UtilityViewController
     {
 		
 		readonly UIViewController parent;

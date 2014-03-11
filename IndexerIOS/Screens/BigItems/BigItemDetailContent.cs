@@ -8,7 +8,7 @@ using System.Text;
 
 namespace GarageIndex
 {
-	public class BigItemDetailContent : UtilityViewController
+	public class BigItemDetailContent : UIViewController
 	{
 
 		LagerObject MyCurrentObject;
@@ -17,9 +17,9 @@ namespace GarageIndex
 		public UIPopoverController Ic;
 	
 
-//		public static bool UserInterfaceIdiomIsPhone {
-//			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
-//		}
+		public static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+		}
 			
 		public event EventHandler<BigItemSavedEventArgs> BigItemSaved;
 
@@ -50,18 +50,6 @@ namespace GarageIndex
 			//this.Dispose ();
 		}
 
-
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-
-			//cleanup only if view is loaded and not in a window.
-			if(this.IsViewLoaded && this.View.Window == null){
-				//cleanup ();
-			}
-			// Release any cached data, images, etc that aren't in use.
-		}
 
 		public override void LoadView ()
 		{

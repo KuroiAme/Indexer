@@ -13,7 +13,7 @@ using no.dctapps.Garageindex;
 
 namespace IndexerIOS 
 {
-	public class SearchScreen : UIViewController
+	public class SearchScreen : UtilityViewController
 	{
 		string initialSearch;
 		public SearchScreen (string initialSearch)

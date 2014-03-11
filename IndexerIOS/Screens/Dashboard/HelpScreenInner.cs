@@ -60,13 +60,16 @@ namespace GarageIndex
 			currentheight = 100;
 
 			AddHeaders ();
-			AddIconAndDescription (Flosshatt.MakeFlosshatt(),AppDelegate.its.getTranslatedText("top hat, small things that fit into a container"));
-			AddIconAndDescription (GalleryIcon.MakeGallery (), AppDelegate.its.getTranslatedText ("two pictureframes, Gallery of your stuff"));
-			AddIconAndDescription (Eye.MakeImage (), AppDelegate.its.getTranslatedText ("An Eye, the QR code scanner for codes you make"));
-			AddIconAndDescription (PreferencesIcon.MakeImage(),AppDelegate.its.getTranslatedText ("a cog, settings in this app"));
-			AddIconAndDescription (TableIcon.MakeImage(),AppDelegate.its.getTranslatedText("a table, large items that dont fit into a container"));
-			AddIconAndDescription (ContainerIcon.MakeImage (), AppDelegate.its.getTranslatedText ("a box, a container to fit your items in, collections?"));
-			AddIconAndDescription (MansionIcon.MakeImage (), AppDelegate.its.getTranslatedText ("A mansion, a house  locations, this is where your stuff is"));
+			AddIconAndDescription (Flosshatt.MakeFlosshatt(),AppDelegate.its.getTranslatedText("Small items that fit in a container"));
+			AddIconAndDescription (GalleryIcon.MakeGallery (), AppDelegate.its.getTranslatedText ("Picture Gallery"));
+			AddIconAndDescription (Eye.MakeImage (), AppDelegate.its.getTranslatedText ("QR code scanner"));
+			AddIconAndDescription (PreferencesIcon.MakeImage(),AppDelegate.its.getTranslatedText ("Settings"));
+			AddIconAndDescription (TableIcon.MakeImage(),AppDelegate.its.getTranslatedText("Large items too big for a container"));
+			AddIconAndDescription (ContainerIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Container for items"));
+			AddIconAndDescription (MansionIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Locations"));
+			AddIconAndDescription (backarrow.MakeBackArrow(), AppDelegate.its.getTranslatedText ("Back one screen"));
+			AddIconAndDescription (Xmark.MakeImage(), AppDelegate.its.getTranslatedText ("Back to the dashboard"));
+			AddIconAndDescription (GarbageBin.MakeImage (), AppDelegate.its.getTranslatedText ("Delete"));
 
 
 			AddWhatToDo ();

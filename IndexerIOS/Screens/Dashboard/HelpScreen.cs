@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace GarageIndex
 {
-	class HelpScreen : UIViewController
+	class HelpScreen : UtilityViewController
 	{
 		void cleanup ()
 		{

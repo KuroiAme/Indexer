@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace GarageIndex
 {
-	public class TagListController : UIViewController
+	public class TagListController : UtilityViewController
 	{
 		ImageTag tag;
 		String[] taglist;

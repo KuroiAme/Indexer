@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace no.dctapps.garageindex
 {
-	public partial class ItemCatalogue : UIViewController
+	public partial class ItemCatalogue : UtilityViewController
 	{
 
 		UITableView table;

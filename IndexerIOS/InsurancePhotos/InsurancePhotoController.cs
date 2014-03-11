@@ -10,10 +10,11 @@ using MonoTouch.Foundation;
 using System.Linq;
 using Alliance.Carousel;
 using System.Collections.Generic;
+using IndexerIOS;
 
 namespace GarageIndex
 {
-	public class InsurancePhotoController : UIViewController
+	public class InsurancePhotoController : UtilityViewController
 	{
 		Item item;
 		public Boolean isLargeObject;
@@ -130,14 +131,10 @@ namespace GarageIndex
 		private void CreateDeleteBarButton ()
 		{
 
-			it2 = new UIBarButtonItem ();
-			var deltext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Delete", "Delete");
-			it2.Title = deltext;
+			it2 = new UIBarButtonItem (GarbageBin.MakeImage (), UIBarButtonItemStyle.Plain, null);
 			it2.Clicked += (object sender, EventArgs e) => ReallyDelete ();
 
-			UIBarButtonItem back = new UIBarButtonItem ();
-			var backtext = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("back", "back");
-			back.Title = backtext;
+			UIBarButtonItem back = new UIBarButtonItem (backarrow.MakeBackArrow (), UIBarButtonItemStyle.Plain, null);
 			back.Clicked += (object sender, EventArgs e) => this.NavigationController.PopViewControllerAnimated (false);
 
 			UIBarButtonItem[] items = { back, it2 };
@@ -507,9 +504,13 @@ namespace GarageIndex
 
 		ViewInsurancePhoto vip;
 
+		InsurancePhoto photo;
+
 		protected override void Dispose (bool disposing)
 		{
 			vip.Dispose ();
+			vc = null;
+			photo = null;
 			base.Dispose (disposing);
 		}
 
@@ -529,8 +530,7 @@ namespace GarageIndex
 
 		public override void DidSelectItem(CarouselView carousel, int index)
 		{
-			Console.WriteLine ("Selected: " + ++index);
-			InsurancePhoto photo = vc.Photos [index];
+			photo = vc.Photos [index];
 
 			vip = new ViewInsurancePhoto (photo);
 			vc.NavigationController.PushViewController (vip, false);

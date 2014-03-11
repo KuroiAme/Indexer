@@ -102,6 +102,7 @@ namespace GarageIndex
 			UIScrollView rightPanelScroll = new UIScrollView (rightPanelRect);
 			rightPanelScroll.ContentSize = rightPanel.getSize ();
 			rightPanelScroll.AddSubview (rightPanel.View);
+			rightPanelScroll.ShowsVerticalScrollIndicator = false;
 			View.AddSubview (rightPanelScroll);
 
 			IndexerSateliteMenu menu = new IndexerSateliteMenu ("Dashboard",this);

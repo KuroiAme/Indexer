@@ -14,10 +14,11 @@ using no.dctapps.Garageindex.screens;
 using no.dctapps.Garageindex.model;
 using no.dctapps.garageindex;
 using no.dctapps.Garageindex;
+using IndexerIOS;
 
 namespace GarageIndex
 {
-	public class GalleryViewController : UIViewController
+	public class GalleryViewController : UtilityViewController
 	{
 		CarouselView carousel;
 		UIImagePickerController imagePicker;
@@ -97,7 +98,8 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 
-			items = GetActiveGalleryItems ();
+			items = AppDelegate.dao.GetAllGalleryObjects ();
+
 			Console.WriteLine (items.Count);
 
 			var imgView = new UIImageView (BlueSea.MakeBlueSea ()) {
@@ -205,17 +207,17 @@ namespace GarageIndex
 		private void CreateOptions ()
 		{
 			List<UIBarButtonItem> buttons = new List<UIBarButtonItem> ();
-			addImageButton = new UIBarButtonItem (UIImage.FromBundle ("frames4832.png"), UIBarButtonItemStyle.Bordered, this.AddImagePressed);
+			addImageButton = new UIBarButtonItem (UIImage.FromBundle ("frames4832.png"), UIBarButtonItemStyle.Plain, this.AddImagePressed);
 			addImageButton.Clicked += (object sender, EventArgs e) => SelectSource();
 			//AddImagePressed += (object sender, EventArgs e) => SelectSource ();
 			buttons.Add (addImageButton);
 
-			delImageButton = new UIBarButtonItem (UIImage.FromBundle ("startree.png"), UIBarButtonItemStyle.Bordered, this.DelImagePressed);
+			delImageButton = new UIBarButtonItem (GarbageBin.MakeImage(), UIBarButtonItemStyle.Plain, this.DelImagePressed);
 			//DelImagePressed += (object sender, EventArgs e) => ReallyDelete ();
 			delImageButton.Clicked += (object sender, EventArgs e) => ReallyDelete ();
 			buttons.Add (delImageButton);
 
-			setActiveButton = new UIBarButtonItem (UIImage.FromBundle ("house.png"), UIBarButtonItemStyle.Bordered, this.SetActivePressed);
+			setActiveButton = new UIBarButtonItem (UIImage.FromBundle ("house.png"), UIBarButtonItemStyle.Plain, this.SetActivePressed);
 			setActiveButton.Clicked += (object sender, EventArgs e) => SetActive ();
 			//SetActivePressed += (object sender, EventArgs e) => SetActive ();
 			buttons.Add (setActiveButton);

@@ -9,7 +9,7 @@ using MonoTouch.MessageUI;
 
 namespace GarageIndex
 {
-	public class ContainerDetailsContent : UtilityViewController
+	public class ContainerDetailsContent : UIViewController
 	{
 		LagerObject boks;
 		public UIPopoverController popme;
@@ -58,11 +58,15 @@ namespace GarageIndex
 
 		}
 
+		public static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+		}
+
 		private void InitView(){
 			if (UserInterfaceIdiomIsPhone) {
-				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 800);
+				this.View.Frame = new RectangleF (0, 100, UIScreen.MainScreen.Bounds.Width, 900);
 			} else {
-				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
+				this.View.Frame = new RectangleF (0, 100, UIScreen.MainScreen.Bounds.Width, 1000);
 			}
 		}
 

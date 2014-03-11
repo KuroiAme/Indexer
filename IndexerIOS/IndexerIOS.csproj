@@ -103,9 +103,6 @@
     <Reference Include="zxing.monotouch">
       <HintPath>..\Indexer\Components\zxing.net.mobile-1.4.2\lib\ios\zxing.monotouch.dll</HintPath>
     </Reference>
-    <Reference Include="Alliance.Carousel">
-      <HintPath>..\..\..\Dropbox\DLL\Alliance.Carousel.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Auth.iOS">
       <HintPath>..\Indexer\Components\xamarin.social-1.1.1\lib\ios\Xamarin.Auth.iOS.dll</HintPath>
     </Reference>
@@ -115,11 +112,18 @@
     <Reference Include="GoogleAnalytics.iOS">
       <HintPath>..\Indexer\Components\googleanalytics-3.0.3.1\lib\ios\GoogleAnalytics.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="Alliance.Carousel">
+      <HintPath>..\Indexer\Components\Alliance.Carousel-1.1\lib\ios\Alliance.Carousel.dll</HintPath>
+    </Reference>
+    <Reference Include="AllianceProgressLoader">
+      <HintPath>..\Indexer\Components\progressLoader-1.1\lib\ios\AllianceProgressLoader.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="EventArgs\" />
     <Folder Include="WordCloud\" />
+    <Folder Include="images\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -210,6 +214,28 @@
     <BundleResource Include="de.lproj\Localizable.strings" />
     <BundleResource Include="en.lproj\Localizable.strings" />
     <BundleResource Include="no.lproj\Localizable.strings" />
+    <BundleResource Include="images\DOTS0.png" />
+    <BundleResource Include="images\DOTS0%402x.png" />
+    <BundleResource Include="images\DOTS1.png" />
+    <BundleResource Include="images\DOTS10.png" />
+    <BundleResource Include="images\DOTS10%402x.png" />
+    <BundleResource Include="images\DOTS1%402x.png" />
+    <BundleResource Include="images\DOTS2.png" />
+    <BundleResource Include="images\DOTS2%402x.png" />
+    <BundleResource Include="images\DOTS3.png" />
+    <BundleResource Include="images\DOTS3%402x.png" />
+    <BundleResource Include="images\DOTS4.png" />
+    <BundleResource Include="images\DOTS4%402x.png" />
+    <BundleResource Include="images\DOTS5.png" />
+    <BundleResource Include="images\DOTS5%402x.png" />
+    <BundleResource Include="images\DOTS6.png" />
+    <BundleResource Include="images\DOTS6%402x.png" />
+    <BundleResource Include="images\DOTS7.png" />
+    <BundleResource Include="images\DOTS7%402x.png" />
+    <BundleResource Include="images\DOTS8.png" />
+    <BundleResource Include="images\DOTS8%402x.png" />
+    <BundleResource Include="images\DOTS9.png" />
+    <BundleResource Include="images\DOTS9%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDelegate.cs" />
@@ -302,6 +328,8 @@
     <Compile Include="paintcode\MansionIcon.cs" />
     <Compile Include="Screens\Carousel\TagDetailScreen.designer.cs" />
     <Compile Include="Screens\Lager\LagerListCell.cs" />
+    <Compile Include="paintcode\Xmark.cs" />
+    <Compile Include="paintcode\GarbageBin.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
@@ -341,6 +369,14 @@
     </XamarinComponentReference>
     <XamarinComponentReference Include="googleanalytics">
       <Version>3.0.3.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="Alliance.Carousel">
+      <Version>1.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="progressLoader">
+      <Version>1.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

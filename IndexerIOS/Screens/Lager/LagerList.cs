@@ -11,7 +11,7 @@ using GoogleAnalytics.iOS;
 
 namespace GarageIndex
 {
-	public partial class LagerList : UIViewController
+	public partial class LagerList : UtilityViewController
 	{
 		public event EventHandler<LagerClickedEventArgs> LagerClicked;
 

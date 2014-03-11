@@ -14,7 +14,7 @@ namespace GarageIndex
 		public static UIImage MakeBackArrow (){
 			bool retina = (UIScreen.MainScreen.Scale > 1.0);
 			if (retina) {
-				UIGraphics.BeginImageContext (new System.Drawing.SizeF (96, 64));
+				UIGraphics.BeginImageContext (new System.Drawing.SizeF (44, 44));
 				//BEGIN PAINTCODE RETINA
 
 				//// Color Declarations
@@ -22,14 +22,14 @@ namespace GarageIndex
 
 				//// Bezier 5 Drawing
 				UIBezierPath bezier5Path = new UIBezierPath();
-				bezier5Path.MoveTo(new PointF(32.01f, 22.72f));
-				bezier5Path.AddLineTo(new PointF(93.5f, 22.72f));
-				bezier5Path.AddLineTo(new PointF(93.5f, 38.28f));
-				bezier5Path.AddLineTo(new PointF(32.01f, 38.28f));
-				bezier5Path.AddLineTo(new PointF(32.01f, 60.5f));
-				bezier5Path.AddLineTo(new PointF(2.5f, 28.74f));
-				bezier5Path.AddLineTo(new PointF(32.01f, 0.5f));
-				bezier5Path.AddLineTo(new PointF(32.01f, 22.72f));
+				bezier5Path.MoveTo(new PointF(14.5f, 16.31f));
+				bezier5Path.AddLineTo(new PointF(39.5f, 16.31f));
+				bezier5Path.AddLineTo(new PointF(39.5f, 26.69f));
+				bezier5Path.AddLineTo(new PointF(14.5f, 26.69f));
+				bezier5Path.AddLineTo(new PointF(14.5f, 41.5f));
+				bezier5Path.AddLineTo(new PointF(2.5f, 20.32f));
+				bezier5Path.AddLineTo(new PointF(14.5f, 1.5f));
+				bezier5Path.AddLineTo(new PointF(14.5f, 16.31f));
 				bezier5Path.ClosePath();
 				gradient2Color.SetFill();
 				bezier5Path.Fill();
@@ -42,30 +42,29 @@ namespace GarageIndex
 
 			} else {
 
-				UIGraphics.BeginImageContext (new System.Drawing.SizeF (48, 32));
+				UIGraphics.BeginImageContext (new System.Drawing.SizeF (22, 22));
 
 				//start paintcode NON RETINA
 
 				//// Color Declarations
-				UIColor gradient2Color = UIColor.FromRGBA (0.018f, 0.324f, 0.969f, 1.000f);
+				UIColor gradient2Color = UIColor.FromRGBA(0.018f, 0.324f, 0.969f, 1.000f);
 
 				//// Bezier 5 Drawing
-				UIBezierPath bezier5Path = new UIBezierPath ();
-				bezier5Path.MoveTo (new PointF (16.5f, 12.5f));
-				bezier5Path.AddLineTo (new PointF (41.5f, 12.5f));
-				bezier5Path.AddLineTo (new PointF (41.5f, 19.5f));
-				bezier5Path.AddLineTo (new PointF (16.5f, 19.5f));
-				bezier5Path.AddLineTo (new PointF (16.5f, 29.5f));
-				bezier5Path.AddLineTo (new PointF (4.5f, 15.21f));
-				bezier5Path.AddLineTo (new PointF (16.5f, 2.5f));
-				bezier5Path.AddLineTo (new PointF (16.5f, 12.5f));
-				bezier5Path.ClosePath ();
-				gradient2Color.SetFill ();
-				bezier5Path.Fill ();
-				gradient2Color.SetStroke ();
+				UIBezierPath bezier5Path = new UIBezierPath();
+				bezier5Path.MoveTo(new PointF(7.99f, 8.91f));
+				bezier5Path.AddLineTo(new PointF(21.5f, 8.91f));
+				bezier5Path.AddLineTo(new PointF(21.5f, 14.09f));
+				bezier5Path.AddLineTo(new PointF(7.99f, 14.09f));
+				bezier5Path.AddLineTo(new PointF(7.5f, 20.5f));
+				bezier5Path.AddLineTo(new PointF(1.5f, 10.91f));
+				bezier5Path.AddLineTo(new PointF(7.99f, 1.5f));
+				bezier5Path.AddLineTo(new PointF(7.99f, 8.91f));
+				bezier5Path.ClosePath();
+				gradient2Color.SetFill();
+				bezier5Path.Fill();
+				gradient2Color.SetStroke();
 				bezier5Path.LineWidth = 1;
-				bezier5Path.Stroke ();
-			
+				bezier5Path.Stroke();
 				//END PAINTCODE NON RETINA
 			}
 			var converted = UIGraphics.GetImageFromCurrentImageContext ();

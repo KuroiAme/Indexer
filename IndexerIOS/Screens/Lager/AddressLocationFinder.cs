@@ -5,6 +5,7 @@ using MonoTouch.MapKit;
 using System.Collections.Generic;
 using MonoTouch.CoreLocation;
 using MonoTouch.Foundation;
+using GarageIndex;
 
 namespace IndexerIOS
 {

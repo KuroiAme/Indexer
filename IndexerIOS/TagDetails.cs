@@ -7,10 +7,10 @@ using MonoTouch.UIKit;
 
 namespace GarageIndex
 {
-	public partial class TagDetails : UIViewController
+	public partial class TagDetails : UtilityViewController
 	{
-		public TagDetails (IntPtr handle) : base (handle)
-		{
-		}
+//		public TagDetails (IntPtr handle) : base (handle)
+//		{
+//		}
 	}
 }

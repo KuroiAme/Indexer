@@ -1,1 +1,1 @@
-Noen skjønnhetsoperasjoner, noen bugfixes.
+Revidert søppelkasseikonet, hjelpetekst korrigert. Dobbel back i navigasjonsbaren fiksa.

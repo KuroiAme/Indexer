@@ -5,7 +5,7 @@ using System.IO;
 
 namespace GarageIndex
 {
-	public class ViewInsurancePhoto : UIViewController
+	public class ViewInsurancePhoto : UtilityViewController
 	{
 
 		UIScrollView scrollView;
@@ -79,13 +79,11 @@ namespace GarageIndex
 			//			}
 			iv.Image = image;
 
-			scrollView.ContentSize = iv.Frame.Size;
+			scrollView.ContentSize = image.Size;
 
 
 
-			scrollView.MaximumZoomScale = 3f;
-			scrollView.MinimumZoomScale = .1f;
-			scrollView.SetZoomScale (1f, true);
+
 
 //			blend = new UIView (Canvas);
 //			blend.Frame = Canvas;
@@ -98,6 +96,11 @@ namespace GarageIndex
 			this.View = scrollView;
 
 			scrollView.ViewForZoomingInScrollView += (UIScrollView sv) => iv;
+
+
+			scrollView.MaximumZoomScale = 3f;
+			scrollView.MinimumZoomScale = .3f;
+			scrollView.SetZoomScale (0.3f, true);
 		}
 	}
 }

@@ -13,7 +13,7 @@ using IndexerIOS;
 
 namespace no.dctapps.Garageindex.screens
 {
-	public partial class TheStorageScreen : UIViewController
+	public partial class TheStorageScreen : UtilityViewController
 	{
 		Lager lm;
 //		LagerDAO dao;
