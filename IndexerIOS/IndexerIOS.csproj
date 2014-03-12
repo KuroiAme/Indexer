@@ -334,6 +334,7 @@
     <Compile Include="paintcode\Xmark.cs" />
     <Compile Include="paintcode\GarbageBin.cs" />
     <Compile Include="paintcode\SetActiveNavbarIcon.cs" />
+    <Compile Include="paintcode\DashboardIcon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />

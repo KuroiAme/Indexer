@@ -42,13 +42,13 @@ namespace GarageIndex
 
 		public SizeF GetContentSize ()
 		{
-			return new SizeF (UIScreen.MainScreen.Bounds.Width, 1600);
+			return new SizeF (UIScreen.MainScreen.Bounds.Width, 2000);
 		}
 
 		public override void LoadView ()
 		{
 			base.LoadView ();
-			this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1600);
+			this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 2000);
 		}
 
 		public override void ViewDidLoad ()
@@ -71,6 +71,7 @@ namespace GarageIndex
 			AddIconAndDescription (Xmark.MakeImage(), AppDelegate.its.getTranslatedText ("Back to the dashboard"));
 			AddIconAndDescription (GarbageBin.MakeImage (), AppDelegate.its.getTranslatedText ("Delete"));
 			AddIconAndDescription (SetActiveNavbarIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Set Active gallery to a container or location"));
+			AddIconAndDescription (DashboardIcon.MakeIconImage (), AppDelegate.its.getTranslatedText ("Dashboard"));
 
 
 			AddWhatToDo ();
@@ -88,7 +89,7 @@ namespace GarageIndex
 
 			UILabel subheading = new UILabel (new RectangleF (10, currentheight, UIScreen.MainScreen.Bounds.Width / 2, 22));
 			currentheight += 22 +margin;
-			hlap.Text = AppDelegate.its.getTranslatedText ("Icons used in indexer");
+			hlap.Text = AppDelegate.its.getTranslatedText ("Icons used in Indexer");
 			hlap.TextAlignment = UITextAlignment.Center;
 			hlap.AdjustsFontSizeToFitWidth = true;
 			View.AddSubview (subheading);

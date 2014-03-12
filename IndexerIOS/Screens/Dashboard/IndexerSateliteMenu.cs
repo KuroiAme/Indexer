@@ -94,7 +94,7 @@ namespace GarageIndex
 			}
 
 			if (excludeItem != "Dashboard") {
-				myList.Add (new SatelliteMenuButtonItem (UIImage.FromBundle ("math.png"), counter, "Dashboard"));
+				myList.Add (new SatelliteMenuButtonItem (DashboardIcon.MakeIconImage(), counter, "Dashboard"));
 				counter++;
 			}
 
