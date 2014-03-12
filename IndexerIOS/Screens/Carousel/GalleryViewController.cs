@@ -207,7 +207,7 @@ namespace GarageIndex
 		private void CreateOptions ()
 		{
 			List<UIBarButtonItem> buttons = new List<UIBarButtonItem> ();
-			addImageButton = new UIBarButtonItem (UIImage.FromBundle ("frames4832.png"), UIBarButtonItemStyle.Plain, this.AddImagePressed);
+			addImageButton = new UIBarButtonItem (UIBarButtonSystemItem.Add, null);
 			addImageButton.Clicked += (object sender, EventArgs e) => SelectSource();
 			//AddImagePressed += (object sender, EventArgs e) => SelectSource ();
 			buttons.Add (addImageButton);
@@ -217,7 +217,7 @@ namespace GarageIndex
 			delImageButton.Clicked += (object sender, EventArgs e) => ReallyDelete ();
 			buttons.Add (delImageButton);
 
-			setActiveButton = new UIBarButtonItem (UIImage.FromBundle ("house.png"), UIBarButtonItemStyle.Plain, this.SetActivePressed);
+			setActiveButton = new UIBarButtonItem (SetActiveNavbarIcon.MakeImage(), UIBarButtonItemStyle.Plain, this.SetActivePressed);
 			setActiveButton.Clicked += (object sender, EventArgs e) => SetActive ();
 			//SetActivePressed += (object sender, EventArgs e) => SetActive ();
 			buttons.Add (setActiveButton);
@@ -228,7 +228,7 @@ namespace GarageIndex
 
 		public void SetActive ()
 		{
-			UIActionSheet activeSheet = new UIActionSheet ();
+			UIActionSheet activeSheet = new UIActionSheet (AppDelegate.its.getTranslatedText("Set active to what?"));
 			activeSheet.AddButton ("Cancel");
 			activeSheet.AddButton ("Container");
 			activeSheet.AddButton ("Location");
@@ -239,7 +239,7 @@ namespace GarageIndex
 				}
 				if (e.ButtonIndex == 1) {
 					//select container
-					Console.WriteLine ("container");
+					Console.WriteLine ("a container");
 					SelectContainer sc = new SelectContainer ();
 					this.NavigationController.PushViewController(sc,true);
 					sc.DismissEvent += (object sender2, ContainerClickedEventArgs e2) => {
@@ -250,7 +250,7 @@ namespace GarageIndex
 				}
 				if (e.ButtonIndex == 2) {
 					//select Lager
-					Console.WriteLine ("location");
+					Console.WriteLine ("a location");
 				}
 				if (e.ButtonIndex == 3) {
 					Console.WriteLine ("ALL");

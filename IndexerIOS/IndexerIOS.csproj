@@ -43,7 +43,7 @@
     <WarningLevel>4</WarningLevel>
     <MtouchDebug>true</MtouchDebug>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: Daniel Treidene (3R962ELP46)</CodesignKey>
     <BuildIpa>true</BuildIpa>
     <MtouchI18n>
     </MtouchI18n>
@@ -52,6 +52,9 @@
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchUseLlvm>true</MtouchUseLlvm>
     <MtouchUseThumb>true</MtouchUseThumb>
+    <CodesignProvision>046E36F3-57C8-4BA1-835A-803ECE7CBB0E</CodesignProvision>
+    <IpaPackageName>
+    </IpaPackageName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
@@ -330,6 +333,7 @@
     <Compile Include="Screens\Lager\LagerListCell.cs" />
     <Compile Include="paintcode\Xmark.cs" />
     <Compile Include="paintcode\GarbageBin.cs" />
+    <Compile Include="paintcode\SetActiveNavbarIcon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />

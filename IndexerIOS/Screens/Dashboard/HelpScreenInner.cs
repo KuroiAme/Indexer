@@ -70,6 +70,7 @@ namespace GarageIndex
 			AddIconAndDescription (backarrow.MakeBackArrow(), AppDelegate.its.getTranslatedText ("Back one screen"));
 			AddIconAndDescription (Xmark.MakeImage(), AppDelegate.its.getTranslatedText ("Back to the dashboard"));
 			AddIconAndDescription (GarbageBin.MakeImage (), AppDelegate.its.getTranslatedText ("Delete"));
+			AddIconAndDescription (SetActiveNavbarIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Set Active gallery to a container or location"));
 
 
 			AddWhatToDo ();
