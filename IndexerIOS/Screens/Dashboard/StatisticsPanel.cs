@@ -7,11 +7,18 @@ namespace GarageIndex
 	public class StatisticsPanel : UIViewController
 	{
 
-		RectangleF myFrame;
+//		RectangleF myFrame;
+//
+//		public StatisticsPanel (RectangleF myFrame)
+//		{
+//			this.myFrame = myFrame;
+//		}
 
-		public StatisticsPanel (RectangleF myFrame)
+		SizeF size;
+
+		public StatisticsPanel (SizeF size)
 		{
-			this.myFrame = myFrame;
+			this.size = size;
 		}
 
 		protected override void Dispose (bool disposing)
@@ -44,7 +51,7 @@ namespace GarageIndex
 		public override void LoadView ()
 		{
 			base.LoadView ();
-			this.View.Frame = myFrame;
+			this.View.Frame = new RectangleF(0,0,size.Width,size.Height);
 		}
 
 		public override void ViewDidLoad ()
@@ -92,24 +99,28 @@ namespace GarageIndex
 		const float margin = 10;
 		const float x = 0;
 		float y = margin;
-		const float textheight = 22;
+		const float textheight = 10;
 		float textwidth;
+		readonly UIFont font = UIFont.FromName("Arial",10);
 
 
 		UILabel AddOneStatistic (string str, string str2, string number)
 		{
 			UILabel lineone = new UILabel (new RectangleF (x, y, textwidth, textheight));
-			lineone.Text = str;
+			lineone.Text = str + " " + str2;
+			lineone.Font = font;
 			y += textheight;
 			this.View.AddSubview (lineone);
 
-			UILabel linetwo = new UILabel (new RectangleF (x, y, textwidth, textheight));
-			linetwo.Text = str2;
-			y += textheight;
-			this.View.AddSubview (linetwo);
+//			UILabel linetwo = new UILabel (new RectangleF (x, y, textwidth, textheight));
+//			linetwo.Text = str2;
+//			linetwo.Font = UIFont.FromName ("Arial", 10);
+//			y += textheight;
+//			this.View.AddSubview (linetwo);
 
 			UILabel linethree = new UILabel (new RectangleF (x, y, textwidth, textheight));
 			linethree.Text = number;
+			linethree.Font = font;
 			y += textheight + margin;
 			this.View.AddSubview (linethree);
 			return linethree;

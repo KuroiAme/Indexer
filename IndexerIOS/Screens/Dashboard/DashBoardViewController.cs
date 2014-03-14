@@ -65,6 +65,8 @@ namespace GarageIndex
 		}
 
 		StatisticsPanel statpanel;
+		UIScrollView statpanelScroll;
+		public OverSightMap MainMap;
 
 		public override void ViewDidLoad ()
 		{
@@ -79,15 +81,26 @@ namespace GarageIndex
 			Add (back.View);
 			View.SendSubviewToBack (back.View);
 
+			const float mapHeight = 200;
+			const float navbarHeight = 100;
+			const float panelContentHeight = 1000;
+
+			MainMap = new OverSightMap (new RectangleF (10, navbarHeight, UIScreen.MainScreen.Bounds.Width - buffer * 2, mapHeight), this);
+			View.AddSubview (MainMap.View);
+
 			float statpanelwidth = UIScreen.MainScreen.Bounds.Width / 3;
 			float rightPanelWidth = UIScreen.MainScreen.Bounds.Width - statpanelwidth - 3*buffer;
 			const float headerheight = 100;
-			float panelsHeight = UIScreen.MainScreen.Bounds.Height - 125;
+			float panelsHeight = UIScreen.MainScreen.Bounds.Height - mapHeight - buffer;
 			const float panelY = headerheight + buffer;
-			statpanel = new StatisticsPanel (new RectangleF (buffer, panelY, statpanelwidth, panelsHeight));
-			Add (statpanel.View);
+			statpanel = new StatisticsPanel (new SizeF(statpanelwidth,panelContentHeight));
+			statpanelScroll = new UIScrollView (new RectangleF(buffer, mapHeight + buffer + navbarHeight, statpanelwidth, panelsHeight));
+			statpanelScroll.AddSubview (statpanel.View);
+			statpanelScroll.ContentSize = new SizeF (statpanelwidth, panelContentHeight);
+			statpanelScroll.UserInteractionEnabled = true;
+			View.AddSubview (statpanelScroll);
 
-			rightPanelRect = new RectangleF (statpanelwidth + buffer, panelY, rightPanelWidth, panelsHeight);
+			rightPanelRect = new RectangleF (statpanelwidth + buffer, mapHeight + buffer + navbarHeight, rightPanelWidth, panelsHeight);
 			rightPanel = new DashboardRightPanel (rightPanelWidth, this);
 
 //			DashBoardHeader header = new DashBoardHeader (new RectangleF(0, 20 ,UIScreen.MainScreen.Bounds.Width, 22));
@@ -103,9 +116,14 @@ namespace GarageIndex
 			rightPanelScroll.ContentSize = rightPanel.getSize ();
 			rightPanelScroll.AddSubview (rightPanel.View);
 			rightPanelScroll.ShowsVerticalScrollIndicator = false;
+			rightPanelScroll.UserInteractionEnabled = true;
 			View.AddSubview (rightPanelScroll);
 
 			IndexerSateliteMenu menu = new IndexerSateliteMenu ("Dashboard",this);
+			menu.View.UserInteractionEnabled = true;
+			foreach (UIView view in menu.View.Subviews) {
+				view.UserInteractionEnabled = true;
+			}
 			View.AddSubview (menu.View);
 
 			AddHelpButton ();
@@ -151,10 +169,15 @@ namespace GarageIndex
 				statpanel.UpdateStatistics ();
 			}
 
+//			if (MainMap == null) {
+//				MainMap = new OverSightMap (new RectangleF (0, currentheight, rightPanelWidth, elementHeight), ancestor);
+//
+//			}
+
 			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Dashboard");
 			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
-			if (rightPanel != null && rightPanel.MainMap != null) {
-				rightPanel.MainMap.ReloadData ();
+			if (MainMap != null) {
+				MainMap.ReloadData ();
 			}
 		}
 	}

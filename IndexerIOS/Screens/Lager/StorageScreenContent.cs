@@ -13,11 +13,13 @@ namespace IndexerIOS
 {
 	public class StorageScreenContent : UIViewController
 	{
-		RectangleF myRect;
+		readonly RectangleF myRect;
 		Lager myLager;
 		MKMapView mapView;
 		MFMailComposeViewController mailContr;
-		UIScrollView outerScroll;
+		readonly UIScrollView outerScroll;
+
+		GalleryViewController gvc;
 		
 		UIViewController ancestor;
 
@@ -84,15 +86,30 @@ namespace IndexerIOS
 			AddPicture ();
 
 			UIBarButtonItem email = CreateEmailButton ();
-			ancestor.NavigationItem.SetRightBarButtonItem (email, true);
+			UIBarButtonItem galleryLink = CreateGalleryLink ();
+			UIBarButtonItem[] items = { galleryLink, email };
+			ancestor.NavigationItem.SetRightBarButtonItems (items, true);
 
+		}
+
+		UIBarButtonItem CreateGalleryLink ()
+		{
+			UIBarButtonItem GalleryLink = new UIBarButtonItem (UIBarButtonSystemItem.Organize, null);
+			GalleryLink.Clicked += (object sender, EventArgs e) => OpenGalleryWithThisActive ();
+			return GalleryLink;
 		}
 
 		UIBarButtonItem CreateEmailButton ()
 		{
-			UIBarButtonItem email = new UIBarButtonItem (UIBarButtonSystemItem.Action, (sender, args) => MakeEmail ());
-			email.Image = Letter.MakeLetter ();
+			UIBarButtonItem email = new UIBarButtonItem (Letter.MakeLetter (), UIBarButtonItemStyle.Plain, null);
+			email.Clicked += (object sender, EventArgs e) => MakeEmail ();
 			return email;
+		}
+
+		void OpenGalleryWithThisActive ()
+		{
+			gvc = new GalleryViewController (myLager);
+			ancestor.NavigationController.PushViewController (gvc,true);
 		}
 
 		UITextField NameField;

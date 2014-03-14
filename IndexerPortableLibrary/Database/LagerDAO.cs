@@ -153,6 +153,19 @@ namespace no.dctapps.Garageindex.dao
 			return myList;
 		}
 
+		public string GetNumberOfItemsForLager (Lager myLager)
+		{
+			if (myLager == null) {
+				return "0";
+			}
+
+			IList<Item> myList =  conn.Query<Item> ("select * from Item where LagerID = ?", myLager.ID);
+
+			IList<LagerObject> myList2 =  conn.Query<LagerObject> ("select * from LagerObject where LagerID = ?", myLager.ID);
+
+			return (myList.Count + myList2.Count).ToString ();
+		}
+
 		public  InsurancePhoto InsurancePhotoByID (int iD)
 		{
 			IList<InsurancePhoto> myList = new List<InsurancePhoto>();

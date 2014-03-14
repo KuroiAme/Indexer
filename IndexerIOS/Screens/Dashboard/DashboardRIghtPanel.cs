@@ -29,7 +29,7 @@ namespace GarageIndex
 
 		static float GetPanelHeight ()
 		{
-			return elementHeight * 2.5f + buffer;
+			return elementHeight + buffer;
 		}
 
 		public SizeF getSize(){
@@ -40,8 +40,6 @@ namespace GarageIndex
 		{
 			parentView = null;
 			ancestor = null;
-
-			MainMap = null;
 			clouds = null;
 			wordCloud = null;
 
@@ -79,7 +77,7 @@ namespace GarageIndex
 
 		}
 
-		public OverSightMap MainMap;
+
 
 		WordCloudIOS wordCloud;
 
@@ -90,9 +88,9 @@ namespace GarageIndex
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			MainMap = new OverSightMap (new RectangleF (0, currentheight, rightPanelWidth, elementHeight), ancestor);
-			View.AddSubview (MainMap.View);
-			currentheight += elementHeight + buffer;
+//			MainMap = new OverSightMap (new RectangleF (0, currentheight, rightPanelWidth, elementHeight), ancestor);
+//			View.AddSubview (MainMap.View);
+//			currentheight += elementHeight + buffer;
 
 			clouds = AppDelegate.bl.GetWordCloudDictionary ();
 
@@ -206,10 +204,7 @@ namespace GarageIndex
 
 			currentheight = 0;
 
-			if (MainMap == null) {
-				MainMap = new OverSightMap (new RectangleF (0, currentheight, rightPanelWidth, elementHeight), ancestor);
 
-			}
 
 			currentheight += elementHeight;
 

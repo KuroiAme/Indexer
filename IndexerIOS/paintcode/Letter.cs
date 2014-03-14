@@ -14,66 +14,74 @@ namespace IndexerIOS
 		{
 			bool retina = (UIScreen.MainScreen.Scale > 1.0);
 			if (retina) {
-				UIGraphics.BeginImageContext (new System.Drawing.SizeF (96, 64));
+				UIGraphics.BeginImageContext (new System.Drawing.SizeF (44, 44));
 
 				//START PAINTCODE RETINA
 				//// Color Declarations
 				UIColor color = UIColor.FromRGBA(0.000f, 0.000f, 0.000f, 0.000f);
+				UIColor color3 = UIColor.FromRGBA(0.000f, 0.000f, 0.000f, 1.000f);
 
 				//// Group
 				{
 					//// Rectangle Drawing
-					var rectanglePath = UIBezierPath.FromRect(new RectangleF(4.5f, 4.5f, 86, 53));
+					var rectanglePath = UIBezierPath.FromRect(new RectangleF(3.5f, 6.5f, 36, 29));
 					color.SetFill();
 					rectanglePath.Fill();
-					UIColor.Blue.SetStroke();
+					color3.SetStroke();
 					rectanglePath.LineWidth = 2;
 					rectanglePath.Stroke();
 
 
 					//// Bezier Drawing
 					UIBezierPath bezierPath = new UIBezierPath();
-					bezierPath.MoveTo(new PointF(4.17f, 6.65f));
-					bezierPath.AddLineTo(new PointF(49.91f, 33.43f));
-					bezierPath.AddLineTo(new PointF(90.83f, 9.09f));
+					bezierPath.MoveTo(new PointF(4, 7));
+					bezierPath.AddLineTo(new PointF(22.52f, 22.37f));
+					bezierPath.AddLineTo(new PointF(40, 7));
 					color.SetFill();
 					bezierPath.Fill();
-					UIColor.Blue.SetStroke();
+					color3.SetStroke();
 					bezierPath.LineWidth = 2;
 					bezierPath.Stroke();
 				}
+
+
+
 				//END PAINTCODE RETINA
 
 
 			} else {
-				UIGraphics.BeginImageContext (new System.Drawing.SizeF (48, 32));
+				UIGraphics.BeginImageContext (new System.Drawing.SizeF (22, 22));
 
 				//start paintcode NON RETINA
-				// Color Declarations
+				//// Color Declarations
 				UIColor color = UIColor.FromRGBA(0.000f, 0.000f, 0.000f, 0.000f);
+				UIColor color3 = UIColor.FromRGBA(0.000f, 0.000f, 0.000f, 1.000f);
 
-				// Group
+				//// Group
 				{
 					//// Rectangle Drawing
-					var rectanglePath = UIBezierPath.FromRect(new RectangleF(3.5f, 3.5f, 40, 25));
+					var rectanglePath = UIBezierPath.FromRect(new RectangleF(2.5f, 2.5f, 17, 17));
 					color.SetFill();
 					rectanglePath.Fill();
-					UIColor.Blue.SetStroke();
+					color3.SetStroke();
 					rectanglePath.LineWidth = 2;
 					rectanglePath.Stroke();
 
 
 					//// Bezier Drawing
 					UIBezierPath bezierPath = new UIBezierPath();
-					bezierPath.MoveTo(new PointF(3.54f, 4.7f));
-					bezierPath.AddLineTo(new PointF(24.61f, 17.13f));
-					bezierPath.AddLineTo(new PointF(43.46f, 5.83f));
+					bezierPath.MoveTo(new PointF(2.49f, 2.6f));
+					bezierPath.AddLineTo(new PointF(11.5f, 11.82f));
+					bezierPath.AddLineTo(new PointF(20, 2.6f));
 					color.SetFill();
 					bezierPath.Fill();
-					UIColor.Blue.SetStroke();
+					color3.SetStroke();
 					bezierPath.LineWidth = 2;
 					bezierPath.Stroke();
 				}
+
+
+
 
 				//END PAINTCODE NON RETINA
 			}

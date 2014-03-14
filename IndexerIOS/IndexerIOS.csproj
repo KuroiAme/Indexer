@@ -50,7 +50,6 @@
     <MtouchArch>ARMv7</MtouchArch>
     <MtouchUseSGen>true</MtouchUseSGen>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
-    <MtouchUseLlvm>true</MtouchUseLlvm>
     <MtouchUseThumb>true</MtouchUseThumb>
     <CodesignProvision>046E36F3-57C8-4BA1-835A-803ECE7CBB0E</CodesignProvision>
     <IpaPackageName>

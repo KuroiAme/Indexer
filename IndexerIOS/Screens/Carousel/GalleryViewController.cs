@@ -25,11 +25,25 @@ namespace GarageIndex
 		public UIPopoverController Pc;
 		//LoadingOverlay loadingOverlay;
 
+		Lager ActiveLocation;
+
+		LagerObject ActiveContainer;
+
+		Boolean activeSet = false;
+		string activetype;
+
 		public event EventHandler<GotPictureEventArgs> GotPicture;
 		public event EventHandler Clear;
 
 		public GalleryViewController ()
 		{
+		}
+
+		public GalleryViewController (Lager myLager)
+		{
+			ActiveLocation = myLager;
+			activeSet = true;
+			activetype = "Lager";
 		}
 
 		protected override void Dispose (bool disposing)
@@ -73,18 +87,37 @@ namespace GarageIndex
 			carousel.ReloadData ();
 		}
 
+		//		public void setActiveLocation (Lager myLager)
+//		{
+//			string type = AppDelegate.key.GetActiveGalleryType ();
+//			int id = AppDelegate.key.GetActiveGalleryID ();
+//		
+////			return AppDelegate.dao.GetAllGalleryObjects ();
+//
+//		}
+
 		IList<GalleryObject> GetActiveGalleryItems ()
 		{
-			string type = AppDelegate.key.GetActiveGalleryType ();
-			int id = AppDelegate.key.GetActiveGalleryID ();
-			Console.WriteLine ("type:" + type + ",id:" + id);
-			if (string.IsNullOrEmpty (type)) {
-				type = "ALL";
-			}
-			if (type != "ALL") {
-				return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (type, id);
+			if (activeSet) {
+				if (activetype == "Lager") {
+					return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (activetype, ActiveLocation.ID);
+				} else if (activeType == "Container") {
+					return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (activetype, ActiveContainer.ID);
+				} else {
+					return new List<GalleryObject> ();
+				}
 			} else {
-				return AppDelegate.dao.GetAllGalleryObjects ();
+				string type = AppDelegate.key.GetActiveGalleryType ();
+				int id = AppDelegate.key.GetActiveGalleryID ();
+				Console.WriteLine ("type:" + type + ",id:" + id);
+				if (string.IsNullOrEmpty (type)) {
+					type = "ALL";
+				}
+				if (type != "ALL") {
+					return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (type, id);
+				} else {
+					return AppDelegate.dao.GetAllGalleryObjects ();
+				}
 			}
 		}
 

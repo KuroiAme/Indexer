@@ -314,7 +314,7 @@ namespace GarageIndex
 		{
 			this.Coordinate = new CLLocationCoordinate2D (myLager.latitude, myLager.longitude);
 			this.title = myLager.Name;
-			this.subtitle = AppDelegate.its.getTranslatedText ("location");
+			this.subtitle = AppDelegate.dao.GetNumberOfItemsForLager (myLager)+ " objects";
 			this.MyLager = myLager;
 		}
 	}
