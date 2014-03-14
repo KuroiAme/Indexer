@@ -591,9 +591,9 @@ namespace GarageIndex
 			}
 		}
 
-		public static bool UserInterfaceIdiomIsPhone {
-			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
-		}
+//		public static bool UserInterfaceIdiomIsPhone {
+//			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+//		}
 
 		void RaiseImageGotten (UIImage image)
 		{
@@ -618,12 +618,12 @@ namespace GarageIndex
 			go.thumbFileName = names [1];
 
 			if (activeLager != null) {
-				go.LocationID = activeLager.ID.ToString ();
+				go.LocationID = activeLager.ID;
 				go.LocationType = "Lager";
 			}
 
 			if (activeContainer != null) {
-				go.LocationID = activeContainer.ID.ToString ();
+				go.LocationID = activeContainer.ID;
 				go.LocationType = "Container";
 			}
 

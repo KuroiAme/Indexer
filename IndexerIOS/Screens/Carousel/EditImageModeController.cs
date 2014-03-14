@@ -9,6 +9,8 @@ using System.Linq;
 using MonoTouch.CoreGraphics;
 using MonoTouch.ObjCRuntime;
 using GoogleAnalytics.iOS;
+using no.dctapps.Garageindex.screens;
+using no.dctapps.Garageindex.model;
 
 namespace GarageIndex
 {
@@ -31,6 +33,8 @@ namespace GarageIndex
 
 		UILongPressGestureRecognizer longPressGesture;
 
+		RectangleF myBounds;
+
 		UITapGestureRecognizer doubletap;
 
 		protected override void Dispose (bool disposing)
@@ -41,6 +45,8 @@ namespace GarageIndex
 			tgv.Dispose ();
 			go = null;
 			blend.Dispose ();
+			longPressGesture.Dispose ();
+			doubletap.Dispose ();
 			base.Dispose (disposing);
 		}
 
@@ -96,6 +102,15 @@ namespace GarageIndex
 			scrollView.AddGestureRecognizer (longPressGesture);
 		}
 
+		public override void LoadView ()
+		{
+			base.LoadView ();
+
+			//this.View.Frame = new RectangleF (0, navbar, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - navbar);
+		}
+
+		const float navbar = 66;
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -104,7 +119,7 @@ namespace GarageIndex
 				this.ThumbChanged += (object sender, ThumbChangedEventArgs e) => gvc.ChangeThumb ();
 			}
 
-			RectangleF myBounds = UIScreen.MainScreen.Bounds;
+			myBounds = new RectangleF (0, navbar, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - navbar);
 
 			scrollView = new UIScrollView (myBounds);
 
@@ -116,6 +131,8 @@ namespace GarageIndex
 			UIImage image = UIImage.FromFile (path);
 			var CanvasSize = image.Size;
 			RectangleF Canvas = new RectangleF (new PointF (0, 0), CanvasSize);
+			//Canvas = new RectangleF (Canvas.X, Canvas.Y, Canvas.Width, Canvas.Height + myBounds.Y);
+
 
 //			string thumbfilename = AppDelegate.dao.GetThumbfilenameForIndex (index);
 //			string path = Path.Combine (gallerydirectory, thumbfilename);
@@ -125,7 +142,7 @@ namespace GarageIndex
 
 			//create new view if none is availble fr recycling
 //			if (iv == null) {
-			iv = new UIImageView(new RectangleF(0,0, CanvasSize.Width,CanvasSize.Height)){
+			iv = new UIImageView(Canvas){
 				ContentMode = UIViewContentMode.ScaleAspectFill
 			};
 //			}
@@ -135,7 +152,7 @@ namespace GarageIndex
 			tgv = new TagGraphicsView (go, Canvas);
 
 
-			scrollView.ContentSize = image.Size;
+			scrollView.ContentSize = Canvas.Size;
 
 
 
@@ -189,6 +206,7 @@ namespace GarageIndex
 		UIBarButtonItem taglistButton;
 
 		UIBarButtonItem tagMyZoomedObject;
+		UIBarButtonItem AssignPictureButton;
 
 		List<UIBarButtonItem> buttons;
 
@@ -208,8 +226,48 @@ namespace GarageIndex
 			tagMyZoomedObject.Clicked += (object sender, EventArgs e) => AddTagInner ();
 			buttons.Add (tagMyZoomedObject);
 
+			AssignPictureButton = new  UIBarButtonItem (UIBarButtonSystemItem.Save, null);
+			AssignPictureButton.Clicked += (object sender, EventArgs e) => AssignToWhere ();
+			buttons.Add (AssignPictureButton);
+
 
 			this.NavigationItem.SetRightBarButtonItems (buttons.ToArray(), true);
+		}
+
+		UIActionSheet assignWhere;
+
+		private void AssignToWhere ()
+		{
+			assignWhere = new UIActionSheet ("Save picture to");
+			assignWhere.AddButton ("cancel");
+			assignWhere.AddButton ("location");
+			assignWhere.AddButton ("container");
+
+			assignWhere.Clicked += (object sender, UIButtonEventArgs e) => {
+				if(e.ButtonIndex == 0){
+					//DO DIDDLY
+				}
+				if(e.ButtonIndex == 1){
+					SelectLager sl = new SelectLager();
+					sl.DismissEvent += (object sender2, LagerClickedEventArgs e2) => {
+						this.go.LocationType = "Lager";
+						this.go.LocationID = e2.Lager.ID;
+					};
+					NavigationController.PushViewController(sl,true);
+				}
+				if(e.ButtonIndex == 2){
+					SelectContainer sc = new SelectContainer();
+					sc.DismissEvent += (object sender3, ContainerClickedEventArgs e3) => {
+						this.go.LocationType = "Container";
+						this.go.LocationID = e3.container.ID;
+					};
+					NavigationController.PushViewController(sc,true);
+				}
+			};
+
+
+
+			assignWhere.ShowFrom (AssignPictureButton,true);
 		}
 
 		PointF point;
@@ -400,11 +458,12 @@ namespace GarageIndex
 					const float heightmod = 0.70f;
 					//float widthmod = 1f;
 					RectangleF contentFrame = new RectangleF (scrollView.ContentOffset.X / scale, scrollView.ContentOffset.Y / scale, scrollView.Frame.Size.Width / scale, scrollView.Frame.Size.Height / scale * heightmod);
+					RectangleF MyContentFrame = new RectangleF(contentFrame.X, contentFrame.Y - navbar,contentFrame.Width, contentFrame.Height + navbar);
 					//contentFrame.Y = contentFrame.Y + this.NavigationController.View.Bounds.Y;
 					//contentFrame.X = contentFrame.X + this.NavigationController.View.Bounds.Bottom;
 					contentFrame.Y = contentFrame.Y + 90;
 					TagUtility tu = new TagUtility(tag);
-					tu.StoreRectangleF (contentFrame);
+					tu.StoreRectangleF (MyContentFrame);
 					AppDelegate.dao.SaveTag (tag);
 //					Console.WriteLine ("tagtext:" + tag.TagString);
 //					Console.WriteLine ("spot:" + tag.FetchAsRectangleF ());

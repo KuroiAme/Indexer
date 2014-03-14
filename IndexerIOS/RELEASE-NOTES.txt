@@ -1,1 +1,4 @@
-Småplukk her og der..Nærmer seg release nå. Setter pris på å bli fortalt om skavanker nå.
+*lagt til funksjon for å lagre et galleryobjekt til en Beholder eller lokasjon.
+*ymse småplukk, bugfixes og polering.
+*raffinering av søppelkasseikonet.
+*ymse? husker ikke 
