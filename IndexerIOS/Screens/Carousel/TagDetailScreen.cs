@@ -11,6 +11,7 @@ using no.dctapps.Garageindex.model;
 using No.Dctapps.Garageindex.Ios.Screens;
 using GoogleAnalytics.iOS;
 using System.Collections.Generic;
+using IndexerIOS;
 
 namespace GarageIndex
 {
@@ -24,12 +25,19 @@ namespace GarageIndex
 
 		RectangleF fetcher;
 
-		public event EventHandler<BackClickedEventArgs> backpush;
+		//public event EventHandler<BackClickedEventArgs> backpush;
+		EditImageModeController ancestor{ get; set;}
+
+		public TagDetailScreen (ImageTag tag, EditImageModeController ancestor) : base (UserInterfaceIdiomIsPhone ? "TagDetailScreen_iPhone" : "TagDetailScreen_iPad",null)
+		{
+			this.tag = tag;
+			this.ancestor = ancestor;
+			Console.WriteLine ("nib:"+this.NibName);
+		}
 
 		public TagDetailScreen (ImageTag tag) : base (UserInterfaceIdiomIsPhone ? "TagDetailScreen_iPhone" : "TagDetailScreen_iPad",null)
 		{
 			this.tag = tag;
-			Console.WriteLine ("nib:"+this.NibName);
 		}
 
 		public TagDetailScreen () : base (UserInterfaceIdiomIsPhone ? "TagDetailScreen_iPhone" : "TagDetailScreen_iPad", null){
@@ -41,7 +49,10 @@ namespace GarageIndex
 		{
 			tag = null;
 			tlc = null;
-			backpush = null;
+			//backpush = null;
+			extractButton.Dispose ();
+			ExtractPressed = null;
+			ancestor = null;
 			base.Dispose (disposing);
 		}
 
@@ -73,39 +84,48 @@ namespace GarageIndex
 			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
 		}
 
-		private void backpress(object sender, EventArgs e){
-			var handler = this.backpush;
-			if(handler != null){
-				handler(this, new BackClickedEventArgs());
-			}
-			this.NavigationController.PopViewControllerAnimated (true);
-		}
+		UIBarButtonItem backOne;
+
+		UIBarButtonItem backAll;
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 			RectangleF frame;
 
-			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
-				ContentMode = UIViewContentMode.ScaleToFill,
-				AutoresizingMask = UIViewAutoresizing.All,
-				Frame = View.Bounds
-			};
-
-			View.AddSubview (imgView);
-			View.SendSubviewToBack (imgView);
+			Background back = new Background ();
+			View.AddSubview (back.View);
+			View.SendSubviewToBack (back.View);
 
 			if (UserInterfaceIdiomIsPhone) {
-				frame = new RectangleF (0, 125, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (0, 110, UIScreen.MainScreen.Bounds.Width, 125);
 			} else {
-				frame = new RectangleF (0, 200, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (0, 125, UIScreen.MainScreen.Bounds.Width, 125);
 			}
 			tlc = new TagListController (tag, frame);
 			this.Add (tlc.View);
-			//CreateExtractBarButton ();
+			backOne = new UIBarButtonItem (backarrow.MakeBackArrow (), UIBarButtonItemStyle.Plain, null);
 
-			//UIBarButtonItem back = new UIBarButtonItem ("back", UIBarButtonItemStyle.Bordered,backpress);
-			//this.NavigationItem.LeftBarButtonItem = back;
+
+			backAll = new UIBarButtonItem (Xmark.MakeImage (), UIBarButtonItemStyle.Plain, null);
+
+			backOne.Clicked += (object sender, EventArgs e) => {
+				if(ancestor != null){
+					ancestor.ReleaseLock();
+				}
+				this.NavigationController.PopViewControllerAnimated (true);
+			};
+			backAll.Clicked += (object sender, EventArgs e) => {
+				if(ancestor != null){
+					ancestor.ReleaseLock();
+				}
+				this.NavigationController.PopToRootViewController (true);
+			};
+
+
+			UIBarButtonItem[] leftbuttons = { backOne, backAll };
+
+			this.NavigationItem.SetLeftBarButtonItems (leftbuttons, true);
 
 
 			this.ShowDetails (tag);
@@ -131,15 +151,14 @@ namespace GarageIndex
 
 		public event EventHandler ExtractPressed;
 
-		EditTags tags;
+		//EditTags tags;
 
 		void CreateMenuOptions ()
 		{
 			List<UIBarButtonItem> buttons = new List<UIBarButtonItem> ();
 
-			extractButton = new UIBarButtonItem (UIImage.FromBundle ("frames4832.png"), UIBarButtonItemStyle.Bordered, this.ExtractPressed);
-
-			ExtractPressed += (object sender, EventArgs e) => {
+			extractButton = new UIBarButtonItem (ScissorsIcon.MakeImage(), UIBarButtonItemStyle.Bordered, null);
+			extractButton.Clicked += (object sender, EventArgs e) => {
 				Console.WriteLine("trying to extract");
 				Extract ();
 			};

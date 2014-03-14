@@ -28,9 +28,9 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 
-			Background back = new Background ();
-			View.Add (back.View);
-			View.SendSubviewToBack (back.View);
+//			Background back = new Background ();
+//			View.Add (back.View);
+
 		
 
 			backOne = new UIBarButtonItem (backarrow.MakeBackArrow (), UIBarButtonItemStyle.Plain, null);

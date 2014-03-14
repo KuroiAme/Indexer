@@ -62,7 +62,7 @@ namespace IndexerIOS
 			// Color Declarations
 			UIColor color = UIColor.FromRGBA(0.000f, 0.429f, 0.143f, 1.000f);
 			UIColor color3 = UIColor.FromRGBA(0.819f, 0.069f, 0.069f, 1.000f);
-			UIColor color2 = UIColor.FromRGBA(0.035f, 0.018f, 0.343f, 1.000f);
+			UIColor color2 = UIColor.Purple;
 			UIColor color4 = UIColor.FromRGBA(0.925f, 0.040f, 0.704f, 1.000f);
 
 			Random rnd = new Random ();

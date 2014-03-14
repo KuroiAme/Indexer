@@ -73,6 +73,7 @@ namespace GarageIndex
 			AddIconAndDescription (SetActiveNavbarIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Set Active gallery to a container or location"));
 			AddIconAndDescription (DashboardIcon.MakeIconImage (), AppDelegate.its.getTranslatedText ("Dashboard"));
 			AddIconAndDescription (Letter.MakeLetter(),AppDelegate.its.getTranslatedText("Write en email"));
+			AddIconAndDescription (ScissorsIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Extract your tag image area into a more detailed object"));
 
 
 			AddWhatToDo ();

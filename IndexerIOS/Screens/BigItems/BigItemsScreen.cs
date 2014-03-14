@@ -43,6 +43,9 @@ namespace no.dctapps.Garageindex.screens
 		{
 			base.ViewDidLoad ();
 			Title = MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString ("Large Objects", "Large Objects");
+			Background back = new Background ();
+			View.AddSubview (back.View);
+			View.SendSubviewToBack (back.View);
 
 			table = new UITableView (new RectangleF (0, 75, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - 75), UITableViewStyle.Plain);
 			table.BackgroundColor = UIColor.Clear;

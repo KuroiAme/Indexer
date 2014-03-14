@@ -334,6 +334,7 @@
     <Compile Include="paintcode\GarbageBin.cs" />
     <Compile Include="paintcode\SetActiveNavbarIcon.cs" />
     <Compile Include="paintcode\DashboardIcon.cs" />
+    <Compile Include="paintcode\ScissorsIcon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />

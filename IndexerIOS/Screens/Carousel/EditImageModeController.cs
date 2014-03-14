@@ -119,7 +119,7 @@ namespace GarageIndex
 				this.ThumbChanged += (object sender, ThumbChangedEventArgs e) => gvc.ChangeThumb ();
 			}
 
-			myBounds = new RectangleF (0, navbar, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - navbar);
+			myBounds = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height);
 
 			scrollView = new UIScrollView (myBounds);
 
@@ -278,6 +278,10 @@ namespace GarageIndex
 
 		TagDetailScreen tds;
 
+		public void ReleaseLock(){
+			mylock = false;
+		}
+
 		void EditTagFrame (UIGestureRecognizer gestureRecognizer){
 			Console.WriteLine ("edittagframe triggered");
 			if (mylock == false) {
@@ -305,13 +309,13 @@ namespace GarageIndex
 //						if (finds.Exists (x => x.ID == Tags [j].ID)) {
 //							Console.WriteLine ("pushing:" + Tags [j]);
 //							finds.Remove (Tags [j]);
-						tds = new TagDetailScreen (Tags [j]);
+						tds = new TagDetailScreen (Tags [j],this);
 
 						found = true; 
-						tds.backpush += (object sender, BackClickedEventArgs e) => {
-							Console.WriteLine("mutex released");
-							mylock = false;
-						};
+//						tds.backpush += (object sender, BackClickedEventArgs e) => {
+//							Console.WriteLine("mutex released");
+//							mylock = false;
+//						};
 						this.NavigationController.PushViewController(tds, true);
 						//this.NavigationController.PushViewController (tds, false);
 						break;
@@ -458,12 +462,12 @@ namespace GarageIndex
 					const float heightmod = 0.70f;
 					//float widthmod = 1f;
 					RectangleF contentFrame = new RectangleF (scrollView.ContentOffset.X / scale, scrollView.ContentOffset.Y / scale, scrollView.Frame.Size.Width / scale, scrollView.Frame.Size.Height / scale * heightmod);
-					RectangleF MyContentFrame = new RectangleF(contentFrame.X, contentFrame.Y - navbar,contentFrame.Width, contentFrame.Height + navbar);
+					//RectangleF MyContentFrame = new RectangleF(contentFrame.X, contentFrame.Y - navbar,contentFrame.Width, contentFrame.Height + navbar);
 					//contentFrame.Y = contentFrame.Y + this.NavigationController.View.Bounds.Y;
 					//contentFrame.X = contentFrame.X + this.NavigationController.View.Bounds.Bottom;
 					contentFrame.Y = contentFrame.Y + 90;
 					TagUtility tu = new TagUtility(tag);
-					tu.StoreRectangleF (MyContentFrame);
+					tu.StoreRectangleF (contentFrame);
 					AppDelegate.dao.SaveTag (tag);
 //					Console.WriteLine ("tagtext:" + tag.TagString);
 //					Console.WriteLine ("spot:" + tag.FetchAsRectangleF ());

@@ -56,10 +56,7 @@ namespace GarageIndex
 			};
 
 		}
-		//		public ImagePanel (RectangleF myFrame)
-		//		{
-		//			this.myFrame = myFrame;
-		//		}
+	
 		public void ResetImageView ()
 		{
 			Console.WriteLine ("reset image");
