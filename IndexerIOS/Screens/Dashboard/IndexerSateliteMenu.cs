@@ -130,32 +130,32 @@ namespace GarageIndex
 					scanner.Scannit();
 				}
 				if(args.MenuItem.Name == "Items"){
-					if(UserInterfaceIdiomIsPhone){
+//					if(UserInterfaceIdiomIsPhone){
 						ItemCatalogue cat = new ItemCatalogue();
 						//PresentViewControllerAsync(cat, true);
 						ancestor.NavigationController.PushViewController(cat,true);
-					}else{
-						ItemMasterView itemMaster = new ItemMasterView();
-						PresentViewController(itemMaster,true,null);
-					}
+//					}else{
+//						ItemMasterView itemMaster = new ItemMasterView();
+//						ancestor.NavigationController.PushViewController(itemMaster,true);
+//					}
 				}
 				if(args.MenuItem.Name == "Big Items"){
-					if(UserInterfaceIdiomIsPhone){
+//					if(UserInterfaceIdiomIsPhone){
 						BigItemsScreen biggies = new BigItemsScreen();
 						ancestor.NavigationController.PushViewController(biggies, true);
-					}else{
-						BigItemMasterView bigMaster = new BigItemMasterView();
-						PresentViewController(bigMaster,true, null);
-					}
+//					}else{
+//						BigItemMasterView bigMaster = new BigItemMasterView();
+//						ancestor.NavigationController.PushViewController(bigMaster,true);
+//					}
 				}
 				if(args.MenuItem.Name == "Containers"){
-					if(UserInterfaceIdiomIsPhone){
+//					if(UserInterfaceIdiomIsPhone){
 						ContainerScreen containers = new ContainerScreen();
 						ancestor.NavigationController.PushViewController(containers,true);
-					}else{
-						ContainerMasterView containerMaster = new ContainerMasterView();
-						PresentViewController(containerMaster,true,null);
-					}
+//					}else{
+//						ContainerMasterView containerMaster = new ContainerMasterView();
+//						ancestor.NavigationController.PushViewController(containerMaster,true);
+//					}
 				}
 
 				if(args.MenuItem.Name == "Gallery"){
@@ -164,13 +164,13 @@ namespace GarageIndex
 				}
 
 				if(args.MenuItem.Name == "Locations"){
-					if(UserInterfaceIdiomIsPhone){
+//					if(UserInterfaceIdiomIsPhone){
 					StorageCatalogue sc = new StorageCatalogue();
 					ancestor.NavigationController.PushViewController(sc,true);
-					}else{
-						LagerMasterView lmv = new LagerMasterView();
-						PresentViewController(lmv,true,null);
-					}
+//					}else{
+//						LagerMasterView lmv = new LagerMasterView();
+//						ancestor.NavigationController.PushViewController(lmv,true);
+//					}
 				}
 
 				if(args.MenuItem.Name == "Dashboard"){
