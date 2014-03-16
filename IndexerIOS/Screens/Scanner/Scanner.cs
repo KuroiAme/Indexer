@@ -50,9 +50,10 @@ namespace No.DCTapps.GarageIndex
                 }catch(Exception e){
                     Console.WriteLine(e.Message);
                 }
-                IList<LagerObject> lol = null;
+				IList<LagerObject> lol = null;
                 if(id != -1){
-					lol = AppDelegate.dao.GetLagerObjectByID(id);
+					lol = new List<LagerObject> ();
+					lol.Add(AppDelegate.dao.GetLagerObjectByID(id));
                 }
 
                 if (lol != null)

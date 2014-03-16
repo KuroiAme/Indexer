@@ -73,7 +73,7 @@ namespace IndexerIOS
 			View.Add(back.View);
 			View.SendSubviewToBack (back.View);
 
-			RectangleF resultsRect = new RectangleF (0, 75, View.Bounds.Width, View.Bounds.Height - 40);
+			RectangleF resultsRect = new RectangleF (0, 75, View.Bounds.Width, View.Bounds.Height - 75);
 			resultsTable = new UITableView (resultsRect);
 			resultsTable.BackgroundColor = UIColor.Clear;
 			Add (resultsTable);
@@ -231,25 +231,21 @@ namespace IndexerIOS
 					}
 				}
 				if (word.type == "Container") {
-					IList<LagerObject> los = AppDelegate.dao.GetLagerObjectByID (word.id);
-					if (los.Count > 0) {
-						LagerObject lo = los [0];
+					LagerObject lo = AppDelegate.dao.GetLagerObjectByID (word.id);
 						if (lo != null) {
 							ContainerDetails cd = new ContainerDetails (lo);
 							ancestor.NavigationController.PushViewController (cd, true);
-						}
 					}
 				}
+
 				if (word.type == "LargeObject") {
-					IList<LagerObject> los = AppDelegate.dao.GetLagerObjectByID (word.id);
-					if(los.Count > 0){
-						LagerObject lo = los [0];
-						if (lo != null) {
-							BigItemDetailScreen bids = new BigItemDetailScreen (lo);
-							ancestor.NavigationController.PushViewController (bids, true);
-						}
+					LagerObject lo = AppDelegate.dao.GetLagerObjectByID (word.id);
+					if (lo != null) {
+						BigItemDetailScreen bids = new BigItemDetailScreen (lo);
+						ancestor.NavigationController.PushViewController (bids, true);
 					}
 				}
+				
 
 				tableView.DeselectRow (indexPath, true);
 			}

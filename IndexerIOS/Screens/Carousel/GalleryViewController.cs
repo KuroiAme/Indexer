@@ -30,7 +30,7 @@ namespace GarageIndex
 		LagerObject ActiveContainer;
 
 		Boolean activeSet = false;
-		string activetype;
+		string ActiveType;
 
 		public event EventHandler<GotPictureEventArgs> GotPicture;
 		public event EventHandler Clear;
@@ -43,13 +43,22 @@ namespace GarageIndex
 		{
 			ActiveLocation = myLager;
 			activeSet = true;
-			activetype = "Lager";
+			ActiveType = "Lager";
+		}
+
+		public GalleryViewController (LagerObject Container)
+		{
+			ActiveContainer = Container;
+			activeSet = true;
+			ActiveType = "Container";
 		}
 
 		protected override void Dispose (bool disposing)
 		{
 
 			carousel.Dispose ();
+			SetActivePressed = null;
+			DelImagePressed = null;
 			base.Dispose (disposing);
 		}
 
@@ -98,11 +107,16 @@ namespace GarageIndex
 
 		IList<GalleryObject> GetActiveGalleryItems ()
 		{
+			Console.WriteLine ("Fetching active gallery items");
 			if (activeSet) {
-				if (activetype == "Lager") {
-					return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (activetype, ActiveLocation.ID);
-				} else if (activeType == "Container") {
-					return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (activetype, ActiveContainer.ID);
+				if (ActiveType == "Lager") {
+					if(!string.IsNullOrWhiteSpace(ActiveLocation.Name))
+						active.Text = ActiveLocation.Name;
+					return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (ActiveType, ActiveLocation.ID);
+				} else if (ActiveType == "Container") {
+					if(!string.IsNullOrWhiteSpace(ActiveContainer.Name))
+						active.Text = ActiveContainer.Name;
+					return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (ActiveType, ActiveContainer.ID);
 				} else {
 					return new List<GalleryObject> ();
 				}
@@ -112,10 +126,21 @@ namespace GarageIndex
 				Console.WriteLine ("type:" + type + ",id:" + id);
 				if (string.IsNullOrEmpty (type)) {
 					type = "ALL";
+
 				}
 				if (type != "ALL") {
+					if (type == "Lager") {
+						Lager lag = AppDelegate.dao.GetLagerById (id);
+						if(lag != null)
+							active.Text = lag.Name;
+					} else if (type == "Container") {
+						LagerObject lo = AppDelegate.dao.GetLagerObjectByID (id);
+						if(lo != null)
+							active.Text = lo.Name;
+					}
 					return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (type, id);
 				} else {
+					active.Text = "ALL";
 					return AppDelegate.dao.GetAllGalleryObjects ();
 				}
 			}
@@ -131,7 +156,9 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 
-			items = AppDelegate.dao.GetAllGalleryObjects ();
+			InitActiveField ();
+
+			items = GetActiveGalleryItems ();
 
 			Console.WriteLine (items.Count);
 
@@ -164,7 +191,7 @@ namespace GarageIndex
 			//carousel.CurrentItemIndex
 
 			//InitSateliteMenu ();
-			InitActiveField ();
+
 
 			menu = new IndexerSateliteMenu ("Gallery", this);
 			View.Add (menu.View);
@@ -183,10 +210,7 @@ namespace GarageIndex
 		}
 
 		UILabel active;
-		LagerObject activeContainer;
-		Lager activeLager;
 		int activeID;
-		string activeType;
 
 		void InitActiveField ()
 		{
@@ -196,37 +220,43 @@ namespace GarageIndex
 			active.ShadowColor = UIColor.Gray;
 			active.ShadowOffset = new SizeF (1.0f, 0.2f);
 			active.TextColor = UIColor.White;
-			activeID = AppDelegate.key.GetActiveGalleryID ();
-			activeType = AppDelegate.key.GetActiveGalleryType ();
 
-			if (activeType == null) {
-				activeType = "ALL";
-			}
+			if (!activeSet) {
 
-			if (activeType.Equals ("Lager")) {
-				activeContainer = null;
-				activeLager = AppDelegate.dao.GetLagerById (activeID);
+				activeID = AppDelegate.key.GetActiveGalleryID ();
+
+				if (ActiveType == null) {
+					ActiveType = AppDelegate.key.GetActiveGalleryType ();
+				}
+
+				if (ActiveType == null) {
+					ActiveType = "ALL";
+				}
+
+				if (ActiveType.Equals ("Lager")) {
+					ActiveContainer = null;
+					ActiveLocation = AppDelegate.dao.GetLagerById (activeID);
 					
+				}
+
+
+				if (ActiveType.Equals ("Container")) {
+					ActiveLocation = null;
+					ActiveContainer = AppDelegate.dao.GetContainerById (activeID);
+				}
+
+				if (ActiveType == "ALL") {
+					ActiveLocation = null;
+					ActiveContainer = null;
+				}
+
+				Add (active);
+				View.BringSubviewToFront (active);
+
 			}
-			if (activeType.Equals ("Container")) {
-				activeLager = null;
-				activeContainer = AppDelegate.dao.GetContainerById (activeID);
-			}
-
-			if (activeType == "ALL") {
-				activeLager = null;
-				activeContainer = null;
-			}
-
-				
-			
-			Add (active);
-			View.BringSubviewToFront (active);
-
-
 		}
 
-		private event EventHandler AddImagePressed;
+		//private event EventHandler AddImagePressed;
 
 		UIBarButtonItem addImageButton;
 		UIBarButtonItem delImageButton;
@@ -279,14 +309,25 @@ namespace GarageIndex
 						//active.BackgroundColor = UIColor.White;
 						active.Text = e2.container.Name;
 						AppDelegate.key.StoreActiveGallery (e2.container);
+						this.items = AppDelegate.dao.GetAllGalleryObjectsByTypeAndID("Container",e2.container.ID); //TODO check if type needs to be "LAGEROBJECT"
+						carousel.ReloadData();
 					};
 				}
 				if (e.ButtonIndex == 2) {
 					//select Lager
 					Console.WriteLine ("a location");
+					SelectLager sl = new SelectLager();
+					this.NavigationController.PushViewController(sl,true);
+					sl.DismissEvent += (object sender2, LagerClickedEventArgs e2) => {
+						active.Text = e2.Lager.Name;
+						AppDelegate.key.StoreActiveGallery (e2.Lager);
+						this.items = AppDelegate.dao.GetAllGalleryObjectsByTypeAndID("Lager",e2.Lager.ID);
+						carousel.ReloadData();
+					};
 				}
 				if (e.ButtonIndex == 3) {
 					Console.WriteLine ("ALL");
+					AppDelegate.key.StoreActiveGalleryType("ALL");
 					this.items = AppDelegate.dao.GetAllGalleryObjects ();
 					carousel.ReloadData ();
 			
@@ -304,72 +345,7 @@ namespace GarageIndex
 				handler (this, new EventArgs ());
 			}
 		}
-
-
-//		SatelliteMenuButton MainButton;
-
-//		public void InitSateliteMenu ()
-//		{
-//
-//			var image = UIImage.FromFile ("menu.png");
-//			var yPos = View.Frame.Height - image.Size.Height - 10;
-//			var frame = new RectangleF (10, yPos, image.Size.Width, image.Size.Height);
-//
-//			var SateliteItems = new [] { 
-//				new SatelliteMenuButtonItem (UIImage.FromBundle ("scanner4832.png"), 1, "Scanner"),
-//				new SatelliteMenuButtonItem (Flosshatt.MakeFlosshatt (), 2, "Items"),
-//				new SatelliteMenuButtonItem (UIImage.FromFile ("table4832.png"), 3, "Big Items"),
-//				new SatelliteMenuButtonItem (UIImage.FromFile ("container4832.png"), 4, "Containers"),
-//				new SatelliteMenuButtonItem (UIImage.FromFile ("preferences4832.png"), 5, "Preferences"),
-//			};
-//
-//			MainButton = new SatelliteMenuButton (View, image, SateliteItems, frame);
-//
-//			MainButton.MenuItemClick += (_, args) => {
-//				Console.WriteLine ("{0} was clicked!", args.MenuItem.Name);
-//
-//				if (args.MenuItem.Name == "Scanner") {
-//					Scanner scanner = new Scanner (this);
-//					scanner.Scannit ();
-//				}
-//				if (args.MenuItem.Name == "Items") {
-//					if (UserInterfaceIdiomIsPhone) {
-//						ItemCatalogue cat = new ItemCatalogue ();
-//						PresentViewControllerAsync (cat, true);
-//					} else {
-//						ItemMasterView itemMaster = new ItemMasterView ();
-//						PresentViewControllerAsync (itemMaster, true);
-//					}
-//				}
-//				if (args.MenuItem.Name == "Big Items") {
-//					if (UserInterfaceIdiomIsPhone) {
-//						BigItemsScreen biggies = new BigItemsScreen ();
-//						PresentViewControllerAsync (biggies, true);
-//					} else {
-//						BigItemMasterView bigMaster = new BigItemMasterView ();
-//						PresentViewControllerAsync (bigMaster, true);
-//					}
-//				}
-//				if (args.MenuItem.Name == "Containers") {
-//					if (UserInterfaceIdiomIsPhone) {
-//						ContainerScreen containers = new ContainerScreen ();
-//						PresentViewControllerAsync (containers, true);
-//					} else {
-//						ContainerMasterView containerMaster = new ContainerMasterView ();
-//						PresentViewControllerAsync (containerMaster, true);
-//					}
-//				}
-//				if (args.MenuItem.Name == "Preferences") {
-//					Preferences pref = new Preferences ();
-//					PresentViewControllerAsync (pref, true);
-//				}
-//
-//
-//			};
-//
-//			View.AddSubview (MainButton);
-//		}
-
+			
 		public override void ViewDidAppear (bool animated)
 		{
 			base.ViewDidAppear (animated);
@@ -475,7 +451,7 @@ namespace GarageIndex
 			imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
 			imagePicker.Canceled += Handle_Canceled;
 			// show the picker
-			PresentViewControllerAsync (imagePicker, true);
+			PresentViewController (imagePicker, true,null);
 //			if(UserInterfaceIdiomIsPhone){
 //				NavigationController.PresentViewController (imagePicker, true, delegate {});
 //			}else{
@@ -498,7 +474,7 @@ namespace GarageIndex
 		{
 			imagePicker.FinishedPickingMedia += HandleFinishedPickingMedia;
 			imagePicker.Canceled += Handle_Canceled;
-			PresentViewControllerAsync (imagePicker, true);
+			PresentViewController (imagePicker, true,null);
 			// show the picker
 //			if (UserInterfaceIdiomIsPhone) {
 //				NavigationController.PresentViewController (imagePicker, true, delegate{});
@@ -515,6 +491,7 @@ namespace GarageIndex
 			Console.WriteLine ("picker cancelled");
 			imagePicker.DismissViewController (true, delegate {
 			});
+			imagePicker = null;
 		}
 		// This is a sample method that handles the FinishedPickingMediaEvent
 		protected void HandleFinishedPickingMedia (object sender, UIImagePickerMediaPickedEventArgs e)
@@ -585,7 +562,9 @@ namespace GarageIndex
 
 			if (UserInterfaceIdiomIsPhone) {
 				imagePicker.DismissViewController (true, delegate {
+
 				});
+				imagePicker = null;
 			} else {
 				Pc.Dismiss (false);
 			}
@@ -617,13 +596,13 @@ namespace GarageIndex
 			go.imageFileName = names [0];
 			go.thumbFileName = names [1];
 
-			if (activeLager != null) {
-				go.LocationID = activeLager.ID;
+			if (ActiveLocation != null) {
+				go.LocationID = ActiveLocation.ID;
 				go.LocationType = "Lager";
 			}
 
-			if (activeContainer != null) {
-				go.LocationID = activeContainer.ID;
+			if (ActiveContainer != null) {
+				go.LocationID = ActiveContainer.ID;
 				go.LocationType = "Container";
 			}
 

@@ -29,7 +29,16 @@ namespace GarageIndex
 
 		static float GetPanelHeight ()
 		{
-			return elementHeight + buffer;
+			return elementHeight * 4f + buffer;
+		}
+
+		public RectangleF getBottom ()
+		{
+			return new RectangleF(0,elementHeight * 2.5f + buffer,rightPanelWidth,elementHeight * 1.5f);
+		}
+
+		public RectangleF getTop(){
+			return new RectangleF (0, 0, rightPanelWidth, elementHeight * 1.5f);
 		}
 
 		public SizeF getSize(){
@@ -98,6 +107,7 @@ namespace GarageIndex
 			View.AddSubview (wordCloud.View);
 
 			doubletap = new UITapGestureRecognizer (Share);
+			doubletap.Delegate = new SwipeDelegate ();
 			doubletap.NumberOfTapsRequired = 2;
 			wordCloud.View.AddGestureRecognizer (doubletap);
 			wordCloud.View.UserInteractionEnabled = true;

@@ -76,9 +76,9 @@ namespace no.dctapps.Garageindex.dao
 
 		public void SaveLagerObject (LagerObject myObject)
 		{
-			IList<LagerObject> thelist = this.GetLagerObjectByID(myObject.ID);
+			LagerObject obj = this.GetLagerObjectByID(myObject.ID);
 
-				if(thelist.Count == 0){
+			if(obj == null){
 					conn.Insert (myObject);
 				}else{
 					conn.Update  (myObject);
@@ -148,7 +148,12 @@ namespace no.dctapps.Garageindex.dao
 		{
 			IList<InsurancePhoto> myList;
 
-			myList =  conn.Query<InsurancePhoto> ("select * from InsurancePhoto where ObjectReferenceID = ? and IsLargeObject = ?", currentID, isLargeObject.ToString());
+			string s = "false";
+			if (isLargeObject) {
+				s = "true";
+			}
+
+			myList =  conn.Query<InsurancePhoto> ("select * from InsurancePhoto where ObjectReferenceID = ? and IsLargeObject = ?", currentID, s);
 
 			return myList;
 		}
@@ -192,14 +197,16 @@ namespace no.dctapps.Garageindex.dao
 			}
 		}
 
-		public  IList<LagerObject> GetLagerObjectByID (int ID)
+		public LagerObject GetLagerObjectByID (int ID)
 		{
 
 			IList<LagerObject> myList = new List<LagerObject>();
 		
 				myList =  conn.Query<LagerObject> ("select * from LagerObject where ID = ?", ID);
-
-			return myList;
+			if (myList.Count > 0)
+				return myList [0];
+			else
+				return null;
 		}
 
 		[Obsolete]

@@ -54,6 +54,17 @@ namespace GarageIndex
 			this.View.Frame = new RectangleF(0,0,size.Width,size.Height);
 		}
 
+		public RectangleF getBottom ()
+		{
+			return new RectangleF(0,size.Height / 2,size.Width,size.Height / 2);
+		}
+
+		public RectangleF getTop(){
+			return new RectangleF (0, 0, size.Width, 100);
+		}
+
+
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();

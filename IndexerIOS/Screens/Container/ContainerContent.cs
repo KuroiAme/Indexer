@@ -11,18 +11,18 @@ using no.dctapps.Garageindex.screens;
 
 namespace GarageIndex
 {
-	public partial class ContainerContent : UITableViewController
+	public partial class ContainerContent : UtilityViewController
 	{
 
-//		LagerDAO dao;
+		UITableView table;
 		LagerObject boks;
 		TableSourceItems itemtableSource;
 
 		public event EventHandler<ContainerContentClickedEventArgs> ActivateDetail;
 
-		static bool UserInterfaceIdiomIsPhone {
-			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
-		}
+//		static bool UserInterfaceIdiomIsPhone {
+//			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+//		}
 
 		public ContainerContent (LagerObject boks)
 			: base ()
@@ -35,6 +35,7 @@ namespace GarageIndex
 			this.boks = null;
 			ActivateDetail = null;
 			itemtableSource.Dispose ();
+			table.Dispose ();
 			base.Dispose (disposing);
 		}
 
@@ -62,6 +63,12 @@ namespace GarageIndex
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+			Background back = new Background ();
+			View.AddSubview (back.View);
+			View.SendSubviewToBack (back.View);
+
+			this.PopulateTable ();	
+
 			//Initialize ();
 			
 			// Perform any additional setup after loading the view, typically from a nib.
@@ -85,45 +92,25 @@ namespace GarageIndex
 		public void PopulateTable ()
 		{
 			Console.WriteLine("PopulateTable ()");
-//			AppDelegate.dao = new LagerDAO ();
-//			RectangleF rect;
 
-			//			if(UserInterfaceIdiomIsPhone){
-			//				Console.WriteLine("phone?");
-			//				rect = new RectangleF(10,100,300,240);
-			//			}else{
-			//				Console.WriteLine("ipad!");
-			//				rect = new RectangleF(10,160,300,800);
-			//			}
-			//            this.myTable;
-			//			Table = new UITableView(rect);
+			table = new UITableView(new RectangleF(0,66,View.Bounds.Width,View.Bounds.Height -66f));
+			table.BackgroundColor = UIColor.Clear;
 
-			//			table.AutoresizingMask = UIViewAutoresizing.All;
+			IList<Item> tableItems= AppDelegate.dao.GetAllItemsInBox(boks);
 
-			IList<Item> tableItems = new List<Item> ();
-
-			try{
-				tableItems = AppDelegate.dao.GetAllItemsInBox(boks);
-			}catch(Exception e){
-				Console.WriteLine ("catastrophe avoided:" + e.ToString ());
-			}
-
-			//			Add (Table);
-
-			TableSourceItems itemsource = new TableSourceItems (tableItems);
-
-			this.TableView.Source = itemsource;
 			this.itemtableSource = new TableSourceItems (tableItems);
 
 			this.itemtableSource.ItemDeleted += (object sender, ItemClickedEventArgs e) => this.DeleteTaskRow(e.Item.ID);
 			this.itemtableSource.ItemClicked += (object sender, ItemClickedEventArgs e) => this.ShowItemDetails(e.Item);
-			this.TableView.Source = this.itemtableSource;
+
+			table.Source = this.itemtableSource;
+			Add (table);
 		}
 
-		public override void ViewWillAppear (bool animated)
+		public override void ViewDidAppear (bool animated)
 		{
-			base.ViewWillAppear (animated);
-			this.PopulateTable ();	
+			base.ViewDidAppear (animated);
+			PopulateTable ();
 		}
 
 		

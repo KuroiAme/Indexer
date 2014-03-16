@@ -158,10 +158,10 @@ namespace GarageIndex
 		{
 			var store = NSUbiquitousKeyValueStore.DefaultStore;
 			int id = (int)store.GetLong ("activeLocation");
-			IList<LagerObject> xs;
+			LagerObject xs;
 			xs = AppDelegate.dao.GetLagerObjectByID (id);
-			if (xs.Count > 0) {
-				return xs [0];
+			if (xs != null) {
+				return xs;
 			}
 			
 			return null;
@@ -178,6 +178,13 @@ namespace GarageIndex
 			var store = NSUbiquitousKeyValueStore.DefaultStore;
 			store.SetLong ("activeLocation", (long)lo.ID);
 			store.SetString ("activeGalleryType", "LagerObject");
+			store.Synchronize ();
+		}
+
+		public void StoreActiveGalleryType (string type)
+		{
+			var store = NSUbiquitousKeyValueStore.DefaultStore;
+			store.SetString ("activeGalleryType", type);
 			store.Synchronize ();
 		}
 

@@ -24,10 +24,6 @@ namespace GarageIndex
 			this.ancestor = ancestor;
 		}
 
-		public IndexerSateliteMenu ()
-		{
-		}
-
 		protected override void Dispose (bool disposing)
 		{
 
@@ -61,7 +57,7 @@ namespace GarageIndex
 			// Release any cached data, images, etc that aren't in use.
 		}
 
-		SatelliteMenuButton SateliteButton;
+		public SatelliteMenuButton SateliteButton;
 
 		public static bool UserInterfaceIdiomIsPhone {
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
@@ -71,12 +67,12 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 			InitSateliteMenu ();
-			//this.View.BackgroundColor = UIColor.Red;
+//			this.View.BackgroundColor = UIColor.Magenta;
 		}
 
 		public override void LoadView ()
 		{
-			float cube = 190;
+			const float cube = 200;
 			base.LoadView ();
 			this.View.Frame = new RectangleF (0, ancestor.View.Bounds.Height - cube, cube, cube);
 
@@ -116,7 +112,7 @@ namespace GarageIndex
 
 		public void InitSateliteMenu(){
 
-			var image = UIImage.FromFile ("menu.png");
+			var image = MenuIcon.MakeImage ();
 			var yPos = View.Frame.Height - image.Size.Height - 10;
 			var frame = new RectangleF (10, yPos, image.Size.Width, image.Size.Height);
 
@@ -124,6 +120,7 @@ namespace GarageIndex
 
 
 			SateliteButton = new SatelliteMenuButton (View, image, items, frame);
+			SateliteButton.CloseItemsOnClick = false;
 
 			SateliteButton.MenuItemClick += (_, args) => {
 				Console.WriteLine ("{0} was clicked!", args.MenuItem.Name);
@@ -180,6 +177,7 @@ namespace GarageIndex
 			};
 			this.View.BackgroundColor = UIColor.Clear;
 			View.AddSubview (SateliteButton);
+			View.UserInteractionEnabled = true;
 		}
 
 	}

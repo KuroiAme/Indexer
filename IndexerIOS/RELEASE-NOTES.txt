@@ -1,4 +1,2 @@
-*lagt til funksjon for å lagre et galleryobjekt til en Beholder eller lokasjon.
-*ymse småplukk, bugfixes og polering.
-*raffinering av søppelkasseikonet.
-*ymse? husker ikke 
+*Tweaking av dashboardet, masse nytt som må testes.
+*Menyen på dashboardet får nå resten av underdelen av skjermen for seg selv når den er åpen.

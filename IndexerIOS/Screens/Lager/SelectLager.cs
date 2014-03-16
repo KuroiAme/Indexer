@@ -59,7 +59,9 @@ namespace no.dctapps.Garageindex.screens
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-//			Xamarin.Themes.BlackLeatherTheme.Apply (this.View);
+			Background back = new Background ();
+			View.AddSubview (back.View);
+			View.SendSubviewToBack (back.View);
 
 			this.PopulateTable();
 
@@ -75,7 +77,7 @@ namespace no.dctapps.Garageindex.screens
 
 		public void PopulateTable(){
 //			dao = new LagerDAO ();
-			table = new UITableView(View.Bounds);
+			table = new UITableView(new RectangleF(0,66,View.Bounds.Width,View.Bounds.Height - 66));
 			Add (table);
 
 			IList<Lager> tableItems = new List<Lager> ();

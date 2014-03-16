@@ -293,6 +293,7 @@ namespace GarageIndex
 			this.btnShowContent.SetTitle(MonoTouch.Foundation.NSBundle.MainBundle.LocalizedString("Show Content", "Show content"),UIControlState.Normal);
 
 			this.btnShowContent.TouchUpInside += (object sender, EventArgs e) => {
+				Console.WriteLine("showContent.TouchupInside()");
 				cc = new ContainerContent (boks);
 				ancestor.NavigationController.PushViewController(cc,true);
 			};

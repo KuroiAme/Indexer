@@ -68,6 +68,10 @@ namespace GarageIndex
 		UIScrollView statpanelScroll;
 		public OverSightMap MainMap;
 
+		UIScrollView rightPanelScroll;
+
+		IndexerSateliteMenu menu;
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -96,6 +100,9 @@ namespace GarageIndex
 			statpanel = new StatisticsPanel (new SizeF(statpanelwidth,panelContentHeight));
 			statpanelScroll = new UIScrollView (new RectangleF(buffer, mapHeight + buffer + navbarHeight, statpanelwidth, panelsHeight));
 			statpanelScroll.AddSubview (statpanel.View);
+//			foreach (UIGestureRecognizer uig in statpanel.View.GestureRecognizers) {
+//				uig.Delegate = new SwipeDelegate ();
+//			}
 			statpanelScroll.ContentSize = new SizeF (statpanelwidth, panelContentHeight);
 			statpanelScroll.UserInteractionEnabled = true;
 			View.AddSubview (statpanelScroll);
@@ -112,23 +119,55 @@ namespace GarageIndex
 
 			View.AddSubview (Search);
 
-			UIScrollView rightPanelScroll = new UIScrollView (rightPanelRect);
+			rightPanelScroll = new UIScrollView (rightPanelRect);
 			rightPanelScroll.ContentSize = rightPanel.getSize ();
 			rightPanelScroll.AddSubview (rightPanel.View);
 			rightPanelScroll.ShowsVerticalScrollIndicator = false;
 			rightPanelScroll.UserInteractionEnabled = true;
 			View.AddSubview (rightPanelScroll);
 
-			IndexerSateliteMenu menu = new IndexerSateliteMenu ("Dashboard",this);
+			menu = new IndexerSateliteMenu ("Dashboard", this);
 			menu.View.UserInteractionEnabled = true;
-			foreach (UIView view in menu.View.Subviews) {
-				view.UserInteractionEnabled = true;
-			}
+//			foreach (UIGestureRecognizer uig in menu.View.GestureRecognizers) {
+//				uig.Delegate = new SwipeDelegate ();
+//			}
 			View.AddSubview (menu.View);
 
 			AddHelpButton ();
 			AddSettingsButton ();
 
+			curtainsIsDown = true;
+			PullDownCurtain ();
+
+			menu.SateliteButton.TouchUpInside += (object sender, EventArgs e) => ToggleCurtains();
+
+		}
+
+		Boolean curtainsIsDown = true;
+
+		void ToggleCurtains ()
+		{
+			Console.WriteLine ("curtains toggled:"+curtainsIsDown);
+			if (curtainsIsDown) {
+				curtainsIsDown = false;
+				PullUpCurtains ();
+			} else {
+				curtainsIsDown = true;
+				PullDownCurtain ();
+			}
+
+		}
+
+		void PullUpCurtains ()
+		{
+			rightPanelScroll.ScrollRectToVisible (rightPanel.getBottom (),true);
+			statpanelScroll.ScrollRectToVisible (statpanel.getBottom (),true);
+		}
+
+		void PullDownCurtain ()
+		{
+			rightPanelScroll.ScrollRectToVisible (rightPanel.getTop (),true);
+			statpanelScroll.ScrollRectToVisible (statpanel.getTop (), true);
 		}
 
 		void AddHelpButton ()
@@ -164,6 +203,12 @@ namespace GarageIndex
 			if (Search == null) {
 				AddSearchBar ();
 			}
+			if (menu != null && menu.SateliteButton != null) {
+				if (!menu.SateliteButton.Enabled) {
+					curtainsIsDown = true;
+					PullDownCurtain ();
+				}
+			}
 
 			if (statpanel != null) {
 				statpanel.UpdateStatistics ();
@@ -179,6 +224,8 @@ namespace GarageIndex
 			if (MainMap != null) {
 				MainMap.ReloadData ();
 			}
+
+		
 		}
 	}
 }
