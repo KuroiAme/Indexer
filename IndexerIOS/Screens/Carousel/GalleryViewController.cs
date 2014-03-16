@@ -32,11 +32,11 @@ namespace GarageIndex
 		Boolean activeSet = false;
 		string ActiveType;
 
-		public event EventHandler<GotPictureEventArgs> GotPicture;
 		public event EventHandler Clear;
 
 		public GalleryViewController ()
 		{
+			activeSet = false;
 		}
 
 		public GalleryViewController (Lager myLager)
@@ -59,6 +59,7 @@ namespace GarageIndex
 			carousel.Dispose ();
 			SetActivePressed = null;
 			DelImagePressed = null;
+			Clear = null;
 			base.Dispose (disposing);
 		}
 
@@ -109,13 +110,14 @@ namespace GarageIndex
 		{
 			Console.WriteLine ("Fetching active gallery items");
 			if (activeSet) {
+				Console.WriteLine ("Active is Set");
 				if (ActiveType == "Lager") {
-					if(!string.IsNullOrWhiteSpace(ActiveLocation.Name))
-						active.Text = ActiveLocation.Name;
+//					if(!string.IsNullOrWhiteSpace(ActiveLocation.Name))
+						ActiveText.Text = ActiveLocation.Name;
 					return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (ActiveType, ActiveLocation.ID);
 				} else if (ActiveType == "Container") {
-					if(!string.IsNullOrWhiteSpace(ActiveContainer.Name))
-						active.Text = ActiveContainer.Name;
+//					if(!string.IsNullOrWhiteSpace(ActiveContainer.Name))
+						ActiveText.Text = ActiveContainer.Name;
 					return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (ActiveType, ActiveContainer.ID);
 				} else {
 					return new List<GalleryObject> ();
@@ -126,21 +128,21 @@ namespace GarageIndex
 				Console.WriteLine ("type:" + type + ",id:" + id);
 				if (string.IsNullOrEmpty (type)) {
 					type = "ALL";
-
+					ActiveText.Text = "ALL";
 				}
 				if (type != "ALL") {
 					if (type == "Lager") {
 						Lager lag = AppDelegate.dao.GetLagerById (id);
 						if(lag != null)
-							active.Text = lag.Name;
+							ActiveText.Text = lag.Name;
 					} else if (type == "Container") {
 						LagerObject lo = AppDelegate.dao.GetLagerObjectByID (id);
 						if(lo != null)
-							active.Text = lo.Name;
+							ActiveText.Text = lo.Name;
 					}
 					return AppDelegate.dao.GetAllGalleryObjectsByTypeAndID (type, id);
 				} else {
-					active.Text = "ALL";
+					ActiveText.Text = "ALL";
 					return AppDelegate.dao.GetAllGalleryObjects ();
 				}
 			}
@@ -159,6 +161,8 @@ namespace GarageIndex
 			InitActiveField ();
 
 			items = GetActiveGalleryItems ();
+
+
 
 			Console.WriteLine (items.Count);
 
@@ -199,7 +203,7 @@ namespace GarageIndex
 			CreateOptions ();
 
 
-
+			View.BringSubviewToFront (ActiveText);
 		}
 
 		public void Open (int index)
@@ -209,17 +213,18 @@ namespace GarageIndex
 			this.NavigationController.PushViewController (eimc, true);
 		}
 
-		UILabel active;
+		UILabel ActiveText;
 		int activeID;
 
 		void InitActiveField ()
 		{
-			RectangleF activeRect = new RectangleF (100, 100, 200, 40);
-			active = new UILabel (activeRect);
-			active.AdjustsFontSizeToFitWidth = true;
-			active.ShadowColor = UIColor.Gray;
-			active.ShadowOffset = new SizeF (1.0f, 0.2f);
-			active.TextColor = UIColor.White;
+			RectangleF activeRect = new RectangleF (0, 66, View.Bounds.Width, 40);
+			ActiveText = new UILabel (activeRect);
+			ActiveText.Font = UIFont.FromName ("Helvetica", 24);
+			ActiveText.ShadowColor = UIColor.Gray;
+			ActiveText.ShadowOffset = new SizeF (1.0f, 0.2f);
+			ActiveText.TextColor = UIColor.Black;
+			ActiveText.TextAlignment = UITextAlignment.Center;
 
 			if (!activeSet) {
 
@@ -236,22 +241,23 @@ namespace GarageIndex
 				if (ActiveType.Equals ("Lager")) {
 					ActiveContainer = null;
 					ActiveLocation = AppDelegate.dao.GetLagerById (activeID);
-					
+					ActiveText.Text = ActiveLocation.Name;
 				}
 
 
 				if (ActiveType.Equals ("Container")) {
 					ActiveLocation = null;
 					ActiveContainer = AppDelegate.dao.GetContainerById (activeID);
+					ActiveText.Text = ActiveContainer.Name;
 				}
 
 				if (ActiveType == "ALL") {
 					ActiveLocation = null;
 					ActiveContainer = null;
+					ActiveText.Text = "ALL";
 				}
 
-				Add (active);
-				View.BringSubviewToFront (active);
+				View.AddSubview(ActiveText);
 
 			}
 		}
@@ -307,10 +313,11 @@ namespace GarageIndex
 					this.NavigationController.PushViewController(sc,true);
 					sc.DismissEvent += (object sender2, ContainerClickedEventArgs e2) => {
 						//active.BackgroundColor = UIColor.White;
-						active.Text = e2.container.Name;
+						ActiveText.Text = e2.container.Name;
 						AppDelegate.key.StoreActiveGallery (e2.container);
 						this.items = AppDelegate.dao.GetAllGalleryObjectsByTypeAndID("Container",e2.container.ID); //TODO check if type needs to be "LAGEROBJECT"
 						carousel.ReloadData();
+						sc.NavigationController.PopViewControllerAnimated(true);
 					};
 				}
 				if (e.ButtonIndex == 2) {
@@ -319,14 +326,16 @@ namespace GarageIndex
 					SelectLager sl = new SelectLager();
 					this.NavigationController.PushViewController(sl,true);
 					sl.DismissEvent += (object sender2, LagerClickedEventArgs e2) => {
-						active.Text = e2.Lager.Name;
+						ActiveText.Text = e2.Lager.Name;
 						AppDelegate.key.StoreActiveGallery (e2.Lager);
 						this.items = AppDelegate.dao.GetAllGalleryObjectsByTypeAndID("Lager",e2.Lager.ID);
 						carousel.ReloadData();
+						sl.NavigationController.PopViewControllerAnimated(true);
 					};
 				}
 				if (e.ButtonIndex == 3) {
 					Console.WriteLine ("ALL");
+					ActiveText.Text = "ALL";
 					AppDelegate.key.StoreActiveGalleryType("ALL");
 					this.items = AppDelegate.dao.GetAllGalleryObjects ();
 					carousel.ReloadData ();

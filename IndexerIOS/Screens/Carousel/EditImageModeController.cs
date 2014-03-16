@@ -11,6 +11,7 @@ using MonoTouch.ObjCRuntime;
 using GoogleAnalytics.iOS;
 using no.dctapps.Garageindex.screens;
 using no.dctapps.Garageindex.model;
+using IndexerIOS;
 
 namespace GarageIndex
 {
@@ -37,6 +38,17 @@ namespace GarageIndex
 
 		UITapGestureRecognizer doubletap;
 
+		public event EventHandler ZoomTagging;
+
+		EditTags tags;
+
+		UIBarButtonItem taglistButton;
+
+		//UIBarButtonItem tagMyZoomedObject;
+		UIBarButtonItem AssignPictureButton;
+
+		List<UIBarButtonItem> buttons;
+
 		protected override void Dispose (bool disposing)
 		{
 			ThumbChanged = null;
@@ -47,6 +59,13 @@ namespace GarageIndex
 			blend.Dispose ();
 			longPressGesture.Dispose ();
 			doubletap.Dispose ();
+			this.ZoomTagging = null;
+			this.taglistButton = null;
+			taglistButton.Dispose ();
+			AssignPictureButton.Dispose ();
+			iv.Dispose ();
+			buttons = null;
+
 			base.Dispose (disposing);
 		}
 
@@ -100,13 +119,6 @@ namespace GarageIndex
 		{
 			longPressGesture = new UILongPressGestureRecognizer (EditTagFrame);
 			scrollView.AddGestureRecognizer (longPressGesture);
-		}
-
-		public override void LoadView ()
-		{
-			base.LoadView ();
-
-			//this.View.Frame = new RectangleF (0, navbar, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - navbar);
 		}
 
 		const float navbar = 66;
@@ -198,23 +210,11 @@ namespace GarageIndex
 
 		}
 
-		public event EventHandler TagListPressed;
-		public event EventHandler zoomTagging;
-
-		EditTags tags;
-
-		UIBarButtonItem taglistButton;
-
-		UIBarButtonItem tagMyZoomedObject;
-		UIBarButtonItem AssignPictureButton;
-
-		List<UIBarButtonItem> buttons;
-
 		void CreateMenuOptions ()
 		{
 			buttons = new List<UIBarButtonItem> ();
 
-			taglistButton = new UIBarButtonItem (UIImage.FromBundle ("frames4832.png"), UIBarButtonItemStyle.Bordered, this.TagListPressed);
+			taglistButton = new UIBarButtonItem (ListIcon.MakeImage(), UIBarButtonItemStyle.Plain, null);
 			taglistButton.Clicked += (object sender, EventArgs e) => {
 				tags = new EditTags (this.go);
 				this.NavigationController.PushViewController(tags,true);
@@ -222,11 +222,11 @@ namespace GarageIndex
 
 			buttons.Add (taglistButton);
 
-			tagMyZoomedObject = new UIBarButtonItem (UIImage.FromBundle ("startree.png"), UIBarButtonItemStyle.Bordered, this.zoomTagging);
-			tagMyZoomedObject.Clicked += (object sender, EventArgs e) => AddTagInner ();
-			buttons.Add (tagMyZoomedObject);
+//			tagMyZoomedObject = new UIBarButtonItem (ZoomTagIcon.MakeImage(), UIBarButtonItemStyle.Plain, null);
+//			tagMyZoomedObject.Clicked += (object sender, EventArgs e) => AddTagInner ();
+//			buttons.Add (tagMyZoomedObject);
 
-			AssignPictureButton = new  UIBarButtonItem (UIBarButtonSystemItem.Save, null);
+			AssignPictureButton = new  UIBarButtonItem (FloppyDiscIcon.MakeImage (), UIBarButtonItemStyle.Plain, null);
 			AssignPictureButton.Clicked += (object sender, EventArgs e) => AssignToWhere ();
 			buttons.Add (AssignPictureButton);
 
@@ -485,10 +485,10 @@ namespace GarageIndex
 
 		}
 
-		public static bool UserInterfaceIdiomIsPhone 
-		{
-			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
-		}
+//			public static bool UserInterfaceIdiomIsPhone 
+//			{
+//				get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+//			}
 
 
 	}

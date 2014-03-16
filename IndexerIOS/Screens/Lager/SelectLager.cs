@@ -62,6 +62,7 @@ namespace no.dctapps.Garageindex.screens
 			Background back = new Background ();
 			View.AddSubview (back.View);
 			View.SendSubviewToBack (back.View);
+			View.BackgroundColor = UIColor.Clear;
 
 			this.PopulateTable();
 
@@ -78,6 +79,7 @@ namespace no.dctapps.Garageindex.screens
 		public void PopulateTable(){
 //			dao = new LagerDAO ();
 			table = new UITableView(new RectangleF(0,66,View.Bounds.Width,View.Bounds.Height - 66));
+			table.BackgroundColor = UIColor.Clear;
 			Add (table);
 
 			IList<Lager> tableItems = new List<Lager> ();

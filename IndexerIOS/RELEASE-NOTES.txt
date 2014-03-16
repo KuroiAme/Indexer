@@ -1,2 +1,10 @@
-*Tweaking av dashboardet, masse nytt som må testes.
-*Menyen på dashboardet får nå resten av underdelen av skjermen for seg selv når den er åpen.
+Fikset små skjønnhetsfeil på iphone. iPhone versjonen er nå klar for release. Endelig release av 2.1 skjer ikke i kveld da ipad versjonen ser ut og funker drit elendig. Blås i å teste for ipad til jeg har fått tatt en gjennomgang av ipad koden.
+
+*Optimalisert bygg for LLVM -- burde ha mye bedre minneforbruk
+
+Testscenario: 
+*Gå til galleriet
+*Legg til et bilde med kamera.
+*åpne bilde
+*lukk bilde
+*åpne bilde, vil vite om det krasjer for dere der.

@@ -112,7 +112,7 @@ namespace GarageIndex
 		float y = margin;
 		const float textheight = 10;
 		float textwidth;
-		readonly UIFont font = UIFont.FromName("Arial",10);
+		readonly UIFont font = UIFont.FromName("Helvetica-Bold",10);
 
 
 		UILabel AddOneStatistic (string str, string str2, string number)

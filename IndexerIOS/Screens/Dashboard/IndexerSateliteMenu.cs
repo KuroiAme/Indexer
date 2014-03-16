@@ -136,7 +136,7 @@ namespace GarageIndex
 						ancestor.NavigationController.PushViewController(cat,true);
 					}else{
 						ItemMasterView itemMaster = new ItemMasterView();
-						ancestor.NavigationController.PushViewController(itemMaster,true);
+						PresentViewController(itemMaster,true,null);
 					}
 				}
 				if(args.MenuItem.Name == "Big Items"){
@@ -145,7 +145,7 @@ namespace GarageIndex
 						ancestor.NavigationController.PushViewController(biggies, true);
 					}else{
 						BigItemMasterView bigMaster = new BigItemMasterView();
-						ancestor.NavigationController.PushViewController(bigMaster, true);
+						PresentViewController(bigMaster,true, null);
 					}
 				}
 				if(args.MenuItem.Name == "Containers"){
@@ -154,7 +154,7 @@ namespace GarageIndex
 						ancestor.NavigationController.PushViewController(containers,true);
 					}else{
 						ContainerMasterView containerMaster = new ContainerMasterView();
-						ancestor.NavigationController.PushViewController(containerMaster, true);
+						PresentViewController(containerMaster,true,null);
 					}
 				}
 
@@ -164,8 +164,13 @@ namespace GarageIndex
 				}
 
 				if(args.MenuItem.Name == "Locations"){
+					if(UserInterfaceIdiomIsPhone){
 					StorageCatalogue sc = new StorageCatalogue();
 					ancestor.NavigationController.PushViewController(sc,true);
+					}else{
+						LagerMasterView lmv = new LagerMasterView();
+						PresentViewController(lmv,true,null);
+					}
 				}
 
 				if(args.MenuItem.Name == "Dashboard"){

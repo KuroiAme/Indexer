@@ -2,11 +2,13 @@ using System;
 using MonoTouch.UIKit;
 using System.Collections.Generic;
 using GoogleAnalytics.iOS;
+using System.Drawing;
 
 namespace GarageIndex
 {
-	class EditTags : UITableViewController
+	class EditTags : UtilityViewController
 	{
+		UITableView table;
 		TableSourceTags itemtableSource;
 		GalleryObject go;
 
@@ -33,6 +35,7 @@ namespace GarageIndex
 			itemtableSource.Dispose ();
 			go = null;
 			ActivateDetail = null;
+			table.Dispose ();
 			base.Dispose (disposing);
 		}
 
@@ -54,6 +57,15 @@ namespace GarageIndex
 			base.ViewDidAppear (animated);
 			GAI.SharedInstance.DefaultTracker.Set (GAIConstants.ScreenName, "Edit tags");
 			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateAppView ().Build ());
+		}
+
+		public override void ViewDidLoad ()
+		{
+			base.ViewDidLoad ();
+			Background back = new Background ();
+			View.Add (back.View);
+			View.SendSubviewToBack (back.View);
+			View.BackgroundColor = UIColor.Clear;
 		}
 
 		protected void DeleteTagRow(int id)
@@ -89,6 +101,8 @@ namespace GarageIndex
 
 			//			table.AutoresizingMask = UIViewAutoresizing.All;
 
+			table = new UITableView (new RectangleF (0, 66, View.Bounds.Width, View.Bounds.Height - 66));
+			table.BackgroundColor = UIColor.Clear;
 			IList<ImageTag> tableItems = new List<ImageTag> ();
 //			IList<ImageTag> tags = AppDelegate.dao.GetTagsByGalleryObjectID (go.ID);
 
@@ -100,14 +114,15 @@ namespace GarageIndex
 
 			//			Add (Table);
 
-			TableSourceTags tagsource = new TableSourceTags (tableItems);
-
-			this.TableView.Source = tagsource;
+//			TableSourceTags tagsource = new TableSourceTags (tableItems);
+//
+//			this.TableView.Source = tagsource;
 			this.itemtableSource = new TableSourceTags (tableItems);
 
 			this.itemtableSource.TagDeleted += (object sender, TagClickedEventArgs e) => this.DeleteTagRow(e.tag.ID);
 			this.itemtableSource.TagClicked += (object sender, TagClickedEventArgs e) => this.ShowTagDetails(e.tag);
-			this.TableView.Source = this.itemtableSource;
+			table.Source = this.itemtableSource;
+			View.AddSubview (table);
 		}
 
 		public override void ViewWillAppear (bool animated)

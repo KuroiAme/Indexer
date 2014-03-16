@@ -42,13 +42,13 @@ namespace GarageIndex
 
 		public SizeF GetContentSize ()
 		{
-			return new SizeF (UIScreen.MainScreen.Bounds.Width, 2000);
+			return new SizeF (UIScreen.MainScreen.Bounds.Width, 3000);
 		}
 
 		public override void LoadView ()
 		{
 			base.LoadView ();
-			this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 2000);
+			this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 3000);
 		}
 
 		public override void ViewDidLoad ()
@@ -60,20 +60,23 @@ namespace GarageIndex
 			currentheight = 100;
 
 			AddHeaders ();
-			AddIconAndDescription (Flosshatt.MakeFlosshatt(),AppDelegate.its.getTranslatedText("Small items that fit in a container"));
-			AddIconAndDescription (GalleryIcon.MakeGallery (), AppDelegate.its.getTranslatedText ("Picture Gallery"));
-			AddIconAndDescription (Eye.MakeImage (), AppDelegate.its.getTranslatedText ("QR code scanner"));
-			AddIconAndDescription (PreferencesIcon.MakeImage(),AppDelegate.its.getTranslatedText ("Settings"));
-			AddIconAndDescription (TableIcon.MakeImage(),AppDelegate.its.getTranslatedText("Large items too big for a container"));
-			AddIconAndDescription (ContainerIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Container for items"));
-			AddIconAndDescription (MansionIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Locations"));
-			AddIconAndDescription (backarrow.MakeBackArrow(), AppDelegate.its.getTranslatedText ("Back one screen"));
-			AddIconAndDescription (Xmark.MakeImage(), AppDelegate.its.getTranslatedText ("Back to the dashboard"));
-			AddIconAndDescription (GarbageBin.MakeImage (), AppDelegate.its.getTranslatedText ("Delete"));
-			AddIconAndDescription (SetActiveNavbarIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Set Active gallery to a container or location"));
-			AddIconAndDescription (DashboardIcon.MakeIconImage (), AppDelegate.its.getTranslatedText ("Dashboard"));
-			AddIconAndDescription (Letter.MakeLetter(),AppDelegate.its.getTranslatedText("Write en email"));
-			AddIconAndDescription (ScissorsIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Extract your tag image area into a more detailed object"));
+			AddIconAndDescription (Flosshatt.MakeFlosshatt(),AppDelegate.its.getTranslatedText("Small items that fit in a container."));
+			AddIconAndDescription (GalleryIcon.MakeGallery (), AppDelegate.its.getTranslatedText ("Picture Gallery."));
+			AddIconAndDescription (Eye.MakeImage (), AppDelegate.its.getTranslatedText ("QR code scanner."));
+			AddIconAndDescription (PreferencesIcon.MakeImage(),AppDelegate.its.getTranslatedText ("Settings."));
+			AddIconAndDescription (TableIcon.MakeImage(),AppDelegate.its.getTranslatedText("Large items too big for a container."));
+			AddIconAndDescription (ContainerIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Container for items."));
+			AddIconAndDescription (MansionIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Locations."));
+			AddIconAndDescription (backarrow.MakeBackArrow(), AppDelegate.its.getTranslatedText ("Back one screen."));
+			AddIconAndDescription (Xmark.MakeImage(), AppDelegate.its.getTranslatedText ("Back to the dashboard."));
+			AddIconAndDescription (GarbageBin.MakeImage (), AppDelegate.its.getTranslatedText ("Delete."));
+			AddIconAndDescription (SetActiveNavbarIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Set Active gallery to a container or location."));
+			AddIconAndDescription (DashboardIcon.MakeIconImage (), AppDelegate.its.getTranslatedText ("Dashboard."));
+			AddIconAndDescription (Letter.MakeLetter(),AppDelegate.its.getTranslatedText("Write en email."));
+			AddIconAndDescription (ScissorsIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Extract your tag image area into a more detailed object."));
+			AddIconAndDescription (FloppyDiscIcon.MakeImage(),AppDelegate.its.getTranslatedText("Save this gallery object to container or location."));
+			//AddIconAndDescription (ZoomTagIcon.MakeImage(),AppDelegate.its.getTranslatedText("Tag zoomed object"));
+			AddIconAndDescription (ListIcon.MakeImage (), AppDelegate.its.getTranslatedText ("List of tags."));
 
 
 			AddWhatToDo ();
@@ -118,7 +121,7 @@ namespace GarageIndex
 		void AddWhatToDo ()
 		{
 			UILabel desc = new UILabel (new RectangleF (10, currentheight, UIScreen.MainScreen.Bounds.Width -20 , 300));
-			desc.Text = AppDelegate.its.getTranslatedText ("Take photographs with your camera and view them in a carousel.Zoom into objects you like, then double-tap. Tag your stuff like faces on Facebook.To look at each tag/keyword hold your finger on the tag. If you want, you can make your tag into a small or big item, or even a container.Send an email with a list of your stuff to whoever you like. ");
+			desc.Text = AppDelegate.its.getTranslatedText ("Take photographs with your camera and view them in a carousel. Zoom into objects you like, then double-tap. Tag your stuff like faces on Facebook. To look at each tag/keyword hold your finger on the tag. If you want, you can make your tag into a small or big item, or even a container. Send an email with a list of your stuff to whoever you like.");
 			desc.Lines = 20;
 			desc.LineBreakMode = UILineBreakMode.WordWrap;
 			desc.AdjustsFontSizeToFitWidth = true;

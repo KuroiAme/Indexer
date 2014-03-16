@@ -51,7 +51,7 @@
     <MtouchUseSGen>true</MtouchUseSGen>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchUseThumb>true</MtouchUseThumb>
-    <CodesignProvision>046E36F3-57C8-4BA1-835A-803ECE7CBB0E</CodesignProvision>
+    <CodesignProvision>F6D2AD90-81BE-4FE8-A1A2-E3F12DBB2626</CodesignProvision>
     <IpaPackageName>
     </IpaPackageName>
   </PropertyGroup>
@@ -336,6 +336,9 @@
     <Compile Include="paintcode\DashboardIcon.cs" />
     <Compile Include="paintcode\ScissorsIcon.cs" />
     <Compile Include="paintcode\MenuIcon.cs" />
+    <Compile Include="paintcode\FloppyDiscIcon.cs" />
+    <Compile Include="paintcode\ZoomTagIcon.cs" />
+    <Compile Include="paintcode\ListIcon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
