@@ -291,10 +291,7 @@ namespace GarageIndex
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			Background back = new Background ();
-			back.View.Frame = View.Bounds;
-			View.Add (back.View);
-			View.SendSubviewToBack (back.View);
+
 
 			InitLegacyNib ();
 			InitInsuranceInfo ();

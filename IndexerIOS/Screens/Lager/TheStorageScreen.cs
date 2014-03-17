@@ -233,11 +233,9 @@ namespace no.dctapps.Garageindex.screens
 
 			RectangleF neo = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
 
-			var imgView = new UIImageView(BlueSea.MakeBlueSea()){
-				ContentMode = UIViewContentMode.ScaleToFill,
-				AutoresizingMask = UIViewAutoresizing.All,
-				Frame = neo
-			};
+			Background back = new Background ();
+			View.Add (back.View);
+			View.SendSubviewToBack (back.View);
 
 
 			UIScrollView scrollview = new UIScrollView (View.Bounds);
@@ -248,8 +246,6 @@ namespace no.dctapps.Garageindex.screens
 			this.View.UserInteractionEnabled = true;
 			scrollview.ContentSize = neo.Size;
 			scrollview.AddSubview (innerViewController.View);
-			scrollview.AddSubview (imgView);
-			scrollview.SendSubviewToBack (imgView);
 			scrollview.BackgroundColor = UIColor.Clear;
 			Add (scrollview);
 

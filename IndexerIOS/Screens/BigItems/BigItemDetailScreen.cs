@@ -54,6 +54,11 @@ namespace No.Dctapps.Garageindex.Ios.Screens
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+
+			Background back = new Background ();
+			View.Add (back.View);
+			View.SendSubviewToBack (back.View);
+
 			Title = AppDelegate.its.getTranslatedText ("Big details");
 			ShowDetails (myObject);
 		}

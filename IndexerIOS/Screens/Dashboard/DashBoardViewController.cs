@@ -72,6 +72,10 @@ namespace GarageIndex
 
 		IndexerSateliteMenu menu;
 
+		public static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+		}
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -85,9 +89,13 @@ namespace GarageIndex
 			Add (back.View);
 			View.SendSubviewToBack (back.View);
 
-			const float mapHeight = 200;
+			float mapHeight = 200;
 			const float navbarHeight = 100;
 			const float panelContentHeight = 1000;
+
+			if (!UserInterfaceIdiomIsPhone) {
+				mapHeight = 450;
+			}
 
 			MainMap = new OverSightMap (new RectangleF (10, navbarHeight, UIScreen.MainScreen.Bounds.Width - buffer * 2, mapHeight), this);
 			View.AddSubview (MainMap.View);
@@ -142,15 +150,15 @@ namespace GarageIndex
 				menu.SateliteButton.TouchUpInside += (object sender, EventArgs e) => ToggleCurtains ();
 			}
 		}
-		public static bool UserInterfaceIdiomIsPhone {
-			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
-		}
+//		public static bool UserInterfaceIdiomIsPhone {
+//			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+//		}
 
 		Boolean curtainsIsDown = true;
 
 		void ToggleCurtains ()
 		{
-			Console.WriteLine ("curtains toggled:"+curtainsIsDown);
+			//Console.WriteLine ("curtains toggled:"+curtainsIsDown);
 			if (curtainsIsDown) {
 				curtainsIsDown = false;
 				PullUpCurtains ();

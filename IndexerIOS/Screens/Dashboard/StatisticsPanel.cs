@@ -110,13 +110,21 @@ namespace GarageIndex
 		const float margin = 10;
 		const float x = 0;
 		float y = margin;
-		const float textheight = 10;
+		float textheight = 10;
 		float textwidth;
-		readonly UIFont font = UIFont.FromName("Helvetica-Bold",10);
 
+		public static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+		}
 
 		UILabel AddOneStatistic (string str, string str2, string number)
 		{
+			UIFont font = UIFont.FromName("Helvetica-Bold",10);
+			if (!UserInterfaceIdiomIsPhone) {
+				font = UIFont.FromName("Helvetica",20);
+				textheight = 20;
+			}
+
 			UILabel lineone = new UILabel (new RectangleF (x, y, textwidth, textheight));
 			lineone.Text = str + " " + str2;
 			lineone.Font = font;

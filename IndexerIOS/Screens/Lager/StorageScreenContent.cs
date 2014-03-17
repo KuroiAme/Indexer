@@ -81,6 +81,9 @@ namespace IndexerIOS
 		{
 			mywidth = this.View.Bounds.Width - margin * 2;
 			base.ViewDidLoad ();
+
+
+
 			AddNameTextField ();
 			AddLocationBox ();
 			AddPicture ();
@@ -242,10 +245,10 @@ namespace IndexerIOS
 				}
 				if(e.ButtonIndex == 0){
 					Console.WriteLine("delete:"+e.ButtonIndex);
-					myLager.longitude = double.NaN;
-					myLager.latitude = double.NaN;
-					AppDelegate.dao.SaveLager(myLager);
-
+//					myLager.longitude = double.NaN;
+//					myLager.latitude = double.NaN;
+//					AppDelegate.dao.SaveLager(myLager);
+//
 					//DEFAULT TO USERS LOCATION;
 					SetMapToUserLocation();
 				}

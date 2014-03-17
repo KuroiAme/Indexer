@@ -84,11 +84,11 @@ namespace GarageIndex
 			// Release any cached data, images, etc that aren't in use.
 		}
 
-		void Tapped (UITapGestureRecognizer gestureRecognizer)
-		{
-			Console.WriteLine ("tapped");
-			RaiseClear ();
-		}
+//		void Tapped (UITapGestureRecognizer gestureRecognizer)
+//		{
+//			Console.WriteLine ("tapped");
+//			RaiseClear ();
+//		}
 
 		public IList<GalleryObject> items;
 
@@ -148,7 +148,7 @@ namespace GarageIndex
 			}
 		}
 
-		UITapGestureRecognizer tap;
+//		UITapGestureRecognizer tap;
 
 		GalleryDelegate gd;
 
@@ -183,10 +183,10 @@ namespace GarageIndex
 			carousel.ConfigureView ();
 			View.AddSubview (carousel);
 
-
-			tap = new UITapGestureRecognizer (Tapped);
-			tap.NumberOfTapsRequired = 1;
-			carousel.AddGestureRecognizer (tap);
+//
+//			tap = new UITapGestureRecognizer (Tapped);
+//			tap.NumberOfTapsRequired = 1;
+//			carousel.AddGestureRecognizer (tap);
 
 			View.AddSubview (carousel);
 			//CreateAddBarButton ();

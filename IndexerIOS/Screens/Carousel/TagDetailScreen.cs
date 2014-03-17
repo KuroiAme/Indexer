@@ -98,9 +98,9 @@ namespace GarageIndex
 			View.SendSubviewToBack (back.View);
 
 			if (UserInterfaceIdiomIsPhone) {
-				frame = new RectangleF (0, 110, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (10, 110, UIScreen.MainScreen.Bounds.Width - 20, 125);
 			} else {
-				frame = new RectangleF (0, 125, UIScreen.MainScreen.Bounds.Width, 125);
+				frame = new RectangleF (10, 450, UIScreen.MainScreen.Bounds.Width - 20, 125);
 			}
 			tlc = new TagListController (tag, frame);
 			this.Add (tlc.View);

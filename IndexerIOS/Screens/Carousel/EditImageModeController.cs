@@ -44,7 +44,7 @@ namespace GarageIndex
 
 		UIBarButtonItem taglistButton;
 
-		//UIBarButtonItem tagMyZoomedObject;
+		UIBarButtonItem tagMyZoomedObject;
 		UIBarButtonItem AssignPictureButton;
 
 		List<UIBarButtonItem> buttons;
@@ -65,7 +65,7 @@ namespace GarageIndex
 			AssignPictureButton.Dispose ();
 			iv.Dispose ();
 			buttons = null;
-
+			tagMyZoomedObject = null;
 			base.Dispose (disposing);
 		}
 
@@ -221,11 +221,11 @@ namespace GarageIndex
 			};
 
 			buttons.Add (taglistButton);
-
-//			tagMyZoomedObject = new UIBarButtonItem (ZoomTagIcon.MakeImage(), UIBarButtonItemStyle.Plain, null);
-//			tagMyZoomedObject.Clicked += (object sender, EventArgs e) => AddTagInner ();
-//			buttons.Add (tagMyZoomedObject);
-
+			if (!UserInterfaceIdiomIsPhone) {
+				tagMyZoomedObject = new UIBarButtonItem (ZoomTagIcon.MakeImage(), UIBarButtonItemStyle.Plain, null);
+				tagMyZoomedObject.Clicked += (object sender, EventArgs e) => AddTagInner ();
+				buttons.Add (tagMyZoomedObject);
+			}
 			AssignPictureButton = new  UIBarButtonItem (FloppyDiscIcon.MakeImage (), UIBarButtonItemStyle.Plain, null);
 			AssignPictureButton.Clicked += (object sender, EventArgs e) => AssignToWhere ();
 			buttons.Add (AssignPictureButton);
@@ -363,6 +363,9 @@ namespace GarageIndex
 			float aspectRatio = ourpic.Size.Width / ourpic.Size.Height;
 			Console.WriteLine ("ratio:" + aspectRatio);
 			float sc = 200;
+			if (!UserInterfaceIdiomIsPhone) {
+				sc = 450;
+			}
 			SizeF newSize = new SizeF (sc, sc / aspectRatio);
 			UIImage thumbPic = ourpic.Scale (newSize); //measurements taken from CustomCell, alternatly 33x33
 

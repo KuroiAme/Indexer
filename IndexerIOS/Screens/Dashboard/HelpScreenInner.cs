@@ -75,12 +75,18 @@ namespace GarageIndex
 			AddIconAndDescription (Letter.MakeLetter(),AppDelegate.its.getTranslatedText("Write en email."));
 			AddIconAndDescription (ScissorsIcon.MakeImage (), AppDelegate.its.getTranslatedText ("Extract your tag image area into a more detailed object."));
 			AddIconAndDescription (FloppyDiscIcon.MakeImage(),AppDelegate.its.getTranslatedText("Save this gallery object to container or location."));
-			//AddIconAndDescription (ZoomTagIcon.MakeImage(),AppDelegate.its.getTranslatedText("Tag zoomed object"));
+			if (!UserInterfaceIdiomIsPhone) {
+				AddIconAndDescription (ZoomTagIcon.MakeImage(),AppDelegate.its.getTranslatedText("Tag zoomed object"));
+			}
 			AddIconAndDescription (ListIcon.MakeImage (), AppDelegate.its.getTranslatedText ("List of tags."));
 
 
 			AddWhatToDo ();
 
+		}
+
+		public static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 
 		void AddHeaders ()
@@ -121,7 +127,7 @@ namespace GarageIndex
 		void AddWhatToDo ()
 		{
 			UILabel desc = new UILabel (new RectangleF (10, currentheight, UIScreen.MainScreen.Bounds.Width -20 , 300));
-			desc.Text = AppDelegate.its.getTranslatedText ("Take photographs with your camera and view them in a carousel. Zoom into objects you like, then double-tap. Tag your stuff like faces on Facebook. To look at each tag/keyword hold your finger on the tag. If you want, you can make your tag into a small or big item, or even a container. Send an email with a list of your stuff to whoever you like.");
+			desc.Text = AppDelegate.its.getTranslatedText ("IntroText");
 			desc.Lines = 20;
 			desc.LineBreakMode = UILineBreakMode.WordWrap;
 			desc.AdjustsFontSizeToFitWidth = true;

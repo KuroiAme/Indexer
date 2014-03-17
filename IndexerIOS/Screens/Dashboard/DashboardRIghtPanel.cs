@@ -119,7 +119,7 @@ namespace GarageIndex
 		UIActionSheet shareOptions;
 
 		private void Share(UIGestureRecognizer recognizer){
-			shareOptions = new UIActionSheet (AppDelegate.its.getTranslatedText ("share the WordCloud on what social network?"));
+			shareOptions = new UIActionSheet (AppDelegate.its.getTranslatedText ("share the WordCloud?"));
 			shareOptions.AddButton (AppDelegate.its.getTranslatedText ("cancel"));
 			shareOptions.AddButton ("Facebook");
 			shareOptions.AddButton ("Twitter");
@@ -127,6 +127,7 @@ namespace GarageIndex
 				if(e.ButtonIndex == 0){
 					//cancel
 					Console.WriteLine("user didnt want to share");
+					//TODO append this event to GAI.
 				}
 				if(e.ButtonIndex == 1){
 					ShareOnFacebook();

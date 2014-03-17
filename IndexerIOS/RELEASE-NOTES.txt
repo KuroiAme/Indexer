@@ -1,10 +1,10 @@
-Fikset små skjønnhetsfeil på iphone. iPhone versjonen er nå klar for release. Endelig release av 2.1 skjer ikke i kveld da ipad versjonen ser ut og funker drit elendig. Blås i å teste for ipad til jeg har fått tatt en gjennomgang av ipad koden.
-
-*Optimalisert bygg for LLVM -- burde ha mye bedre minneforbruk
-
 Testscenario: 
 *Gå til galleriet
 *Legg til et bilde med kamera.
 *åpne bilde
 *lukk bilde
 *åpne bilde, vil vite om det krasjer for dere der.
+
+*Nye tekster i appen oversatt.
+*Ikke optimalisert bygg, endelige versjonen vil bli endel mindre, raskere og mindre minneforbrukende enn denne. Men egner seg til å få ut feilmeldinger fra xcode på. (Se testscenario over).
+*Opplegg på iPad fiksa, ser ikke lenger ut som et slakt. Måtte begrense den til Portrettmodus men.
