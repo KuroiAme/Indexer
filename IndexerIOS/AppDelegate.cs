@@ -1,13 +1,12 @@
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using no.dctapps.Garageindex.businesslogic;
-using no.dctapps.Garageindex.dao;
+using System.IO;
 using GoogleAnalytics.iOS;
 using MTiRate;
-using System.IO;
-using Tasky.DL.SQLiteBase;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 using Tasky.DL.SQLite;
+using no.dctapps.Garageindex.dao;
+using no.dctapps.Garageindex.businesslogic;
 
 namespace GarageIndex
 {

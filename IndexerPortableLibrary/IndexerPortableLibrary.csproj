@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
+    <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8E3274A1-69E3-413D-AFE6-6819C3348B8C}</ProjectGuid>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,7 +39,6 @@
     <Compile Include="Model\Item.cs" />
     <Compile Include="Model\Lager.cs" />
     <Compile Include="Model\LagerObject.cs" />
-    <Compile Include="Database\LagerDAO.cs" />
     <Compile Include="Buisnesslogic\TranslationService.cs" />
     <Compile Include="Buisnesslogic\IndexerBuisnessService.cs" />
     <Compile Include="EventArgs\BackClickedEventArgs.cs" />
