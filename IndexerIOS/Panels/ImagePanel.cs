@@ -285,11 +285,11 @@ namespace GarageIndex
 
 
 
-			if (UserInterfaceIdiomIsPhone) {
+//			if (UserInterfaceIdiomIsPhone) {
 				imagePicker.DismissViewController (true, null);
-			} else {
-				Pc.Dismiss (false);
-			}
+//			} else {
+//				Pc.Dismiss (false);
+//			}
 
 			ProgressLoader.ShowLoading();
 

@@ -138,9 +138,12 @@ namespace GarageIndex
 
 			curtainsIsDown = true;
 			PullDownCurtain ();
-
-			menu.SateliteButton.TouchUpInside += (object sender, EventArgs e) => ToggleCurtains();
-
+			if (UserInterfaceIdiomIsPhone) {
+				menu.SateliteButton.TouchUpInside += (object sender, EventArgs e) => ToggleCurtains ();
+			}
+		}
+		public static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 
 		Boolean curtainsIsDown = true;

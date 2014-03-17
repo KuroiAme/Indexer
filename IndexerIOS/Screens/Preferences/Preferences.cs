@@ -23,9 +23,9 @@ namespace no.dctapps.Garageindex.screens
 
 		UISwitch switchGAI;
 
-		static bool UserInterfaceIdiomIsPhone {
-			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
-		}
+//		static bool UserInterfaceIdiomIsPhone {
+//			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+//		}
 
 		public Preferences ()
 		{
@@ -98,12 +98,12 @@ namespace no.dctapps.Garageindex.screens
 				rect_gai = new RectangleF (gaip, rect_size);
 			} else {
 				//ipad
-				LargeObjectsRect = new RectangleF (10, 100, 250, 20);
-				QRRect = new RectangleF (10, 140, 250, 20);
-				GARect = new RectangleF (10, 180, 250, 60);
-				lop = new PointF (260, 100);
-				qrp = new PointF (260, 140);
-				gaip = new PointF (260, 180);
+				LargeObjectsRect = new RectangleF (10, 100, 400, 20);
+				QRRect = new RectangleF (10, 140, 400, 20);
+				GARect = new RectangleF (10, 180, 400, 60);
+				lop = new PointF (410, 100);
+				qrp = new PointF (410, 140);
+				gaip = new PointF (410, 180);
 				rect_lo = new RectangleF (lop, rect_size);
 				rect_qr = new RectangleF (qrp, rect_size);
 				rect_gai = new RectangleF (gaip, rect_size);

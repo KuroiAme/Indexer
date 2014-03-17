@@ -97,13 +97,13 @@ namespace no.dctapps.Garageindex.screens
 
 		public void ShowBoxItemDetails (LagerObject box)
 		{
-			if(UserInterfaceIdiomIsPhone){
+//			if(UserInterfaceIdiomIsPhone){
 				Console.WriteLine ("showBoxItemDetails()");
 				boxdetail = new ContainerDetails (box);
 				this.NavigationController.PushViewController (boxdetail, true);
-			}else{
-				RaiseContainerClicked(box);
-			}
+//			}else{
+//				RaiseContainerClicked(box);
+//			}
 
 			if (boxdetail != null) {
 				boxdetail.LagerObjectSaved += (object sender, LagerObjectSavedEventArgs e) => PopulateTable ();

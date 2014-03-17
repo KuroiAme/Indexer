@@ -84,25 +84,16 @@ namespace GarageIndex
 		{
 			this.ancestor = parent;
 			currentItem = item;
-//			initRectangles ();
 			this.ancestor = parent;
-		}
-
-		SizeF contentSize;
-
-		public static bool UserInterfaceIdiomIsPhone {
-			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 
 		private void InitView(){
 			//this.View.BackgroundColor = UIColor.White;
 //			this.View.Frame = 
 			if (UserInterfaceIdiomIsPhone) {
-				contentSize = new SizeF (UIScreen.MainScreen.Bounds.Width, 1000);
 				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
 			} else {
-				contentSize = new SizeF (UIScreen.MainScreen.Bounds.Width, 1000);
-				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1000);
+				this.View.Frame = new RectangleF (0, 0, UIScreen.MainScreen.Bounds.Width, 1500);
 			}
 		}
 
@@ -401,7 +392,7 @@ namespace GarageIndex
 			if (UserInterfaceIdiomIsPhone) {
 				frame = new RectangleF (10, 170, View.Bounds.Width -20, 125);
 			} else {
-				frame = new RectangleF (10, 240, View.Bounds.Width -20, 125);			
+				frame = new RectangleF (10, 300, View.Bounds.Width -20, 125);			
 			}
 
 			Console.WriteLine ("frame:" + frame);
@@ -491,9 +482,11 @@ namespace GarageIndex
 
 
 			releaseKeyboard ();
-
-			imp = new ImagePanel (new RectangleF (10, 400, UIScreen.MainScreen.Bounds.Width - 20, 300), this.ancestor);
-
+			if (UserInterfaceIdiomIsPhone) {
+				imp = new ImagePanel (new RectangleF (10, 400, UIScreen.MainScreen.Bounds.Width - 20, 300), this.ancestor);
+			} else {
+				imp = new ImagePanel (new RectangleF (10, 475, UIScreen.MainScreen.Bounds.Width - 20, 500), this.ancestor);
+			}
 			imp.ImageDeleted += (object sender, EventArgs e) => {
 				currentItem.ImageFileName = null;
 				currentItem.ThumbFileName = null;

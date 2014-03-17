@@ -174,6 +174,10 @@ namespace IndexerIOS
 			mapView.ShowsUserLocation = true;
 			View.AddSubview(mapView);
 
+			if (Double.IsNaN (this.myLager.latitude)) {
+				SetMapToUserLocation ();
+			}
+
 			doubletap = new UITapGestureRecognizer (AddLocation);
 			doubletap.NumberOfTapsRequired = 2;
 			this.dtdelegate = new SwipeDelegate ();
@@ -194,9 +198,17 @@ namespace IndexerIOS
 
 		ImagePanel image;
 
+		public static bool UserInterfaceIdiomIsPhone {
+			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
+		}
+
 		void AddPicture ()
 		{
-			image = new ImagePanel (new RectangleF (x, y, cube, cube),this.ancestor);
+			if (UserInterfaceIdiomIsPhone) {
+				image = new ImagePanel (new RectangleF (x, y, cube, cube), this.ancestor);
+			} else {
+				image = new ImagePanel (new RectangleF (x, y + 10, UIScreen.MainScreen.Bounds.Width - 20, cube * 2 - 50), this.ancestor);
+			}
 
 			image.ImageSaved += (object sender, SavedImageStringsEventArgs e) => {
 				myLager.thumbFileName = e.Thumbfilename;
@@ -257,13 +269,15 @@ namespace IndexerIOS
 		void SetMapToUserLocation ()
 		{
 			var uloc = mapView.UserLocation;
-			myLager.longitude = uloc.Location.Coordinate.Longitude;
-			myLager.latitude = uloc.Location.Coordinate.Latitude;
+			myLager.longitude = uloc.Coordinate.Longitude;
+			myLager.latitude = uloc.Coordinate.Latitude;
 			AppDelegate.dao.SaveLager (myLager);
 			CLLocationCoordinate2D coords = new CLLocationCoordinate2D (myLager.latitude, myLager.longitude);
 			MKCoordinateSpan span = new MKCoordinateSpan (KilometresToLatitudeDegrees (10), KilometresToLongitudeDegrees (10, coords.Latitude));
 			mapView.Region = new MKCoordinateRegion (coords, span);
-			mapView.RemoveAnnotation(LagerAnnotation); 
+			if (LagerAnnotation != null) {
+				mapView.RemoveAnnotation (LagerAnnotation);
+			}
 			AnnotateMapWithLagerName (this.myLager, myLager.latitude, myLager.latitude);
 			mapView.ReloadInputViews ();
 			mapView.SetNeedsDisplay ();

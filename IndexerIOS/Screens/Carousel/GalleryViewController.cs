@@ -241,7 +241,9 @@ namespace GarageIndex
 				if (ActiveType.Equals ("Lager")) {
 					ActiveContainer = null;
 					ActiveLocation = AppDelegate.dao.GetLagerById (activeID);
-					ActiveText.Text = ActiveLocation.Name;
+					if (ActiveLocation != null && ActiveLocation.Name != null) {
+						ActiveText.Text = ActiveLocation.Name;
+					}
 				}
 
 
@@ -569,14 +571,14 @@ namespace GarageIndex
 			//			
 
 
-			if (UserInterfaceIdiomIsPhone) {
+//			if (UserInterfaceIdiomIsPhone) {
 				imagePicker.DismissViewController (true, delegate {
 
 				});
 				imagePicker = null;
-			} else {
-				Pc.Dismiss (false);
-			}
+//			} else {
+//				Pc.Dismiss (false);
+//			}
 		}
 
 //		public static bool UserInterfaceIdiomIsPhone {
@@ -629,7 +631,11 @@ namespace GarageIndex
 			Console.WriteLine ("Save");
 			float aspectRatio = ourpic.Size.Width / ourpic.Size.Height;
 			Console.WriteLine ("ratio:" + aspectRatio);
+
 			float sc = 200;
+			if (!UserInterfaceIdiomIsPhone) {
+				sc = 450;
+			}
 			SizeF newSize = new SizeF (sc, sc / aspectRatio);
 			UIImage thumbPic = ourpic.Scale (newSize); //measurements taken from CustomCell, alternatly 33x33
 			UIImage resImage = ourpic.Scale (new SizeF (ourpic.Size.Width, ourpic.Size.Height));

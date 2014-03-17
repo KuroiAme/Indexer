@@ -117,6 +117,21 @@ namespace GarageIndex
 		{
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
+
+		public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations (UIApplication application, UIWindow forWindow)
+		{
+			return UIInterfaceOrientationMask.Portrait;
+		}
+			
+//		public override UIInterfaceOrientation PreferredInterfaceOrientationForPresentation ()
+//		{
+//			return UIInterfaceOrientation.Portrait;
+//		}
+//
+//		public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations ()
+//		{
+//			return UIInterfaceOrientationMask.Portrait;
+//		}
 	}
 }
 

@@ -132,7 +132,7 @@ namespace no.dctapps.Garageindex.screens
 
 		void ShowItemDetails (Lager lager)
 		{
-			if(UserInterfaceIdiomIsPhone){
+//			if(UserInterfaceIdiomIsPhone){
 				Console.WriteLine ("call itemdetailscreen");
 				
 				//item.boxID = boks.ID;
@@ -140,9 +140,9 @@ namespace no.dctapps.Garageindex.screens
 				//this.NavigationController.PresentViewController(itemdetail, true, delegate{});
 				//PresentViewController(storage, true, null);
 				this.NavigationController.PushViewController (storage, true);
-			}else{
-				RaiseLagerClicked(lager);
-			}
+//			}else{
+//				RaiseLagerClicked(lager);
+//			}
 		}
 
 	}

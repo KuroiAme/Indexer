@@ -5,6 +5,12 @@ namespace no.dctapps.Garageindex.model
 {
 	public class Lager
 	{
+		public Lager ()
+		{
+			latitude = Double.NaN;
+			longitude = Double.NaN;
+		}
+
 		[PrimaryKey, AutoIncrement]
 		public int ID { get; set; }
 		public string Name{get; set;}
