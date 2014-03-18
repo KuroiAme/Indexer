@@ -63,6 +63,7 @@
     <Compile Include="EventArgs\SavedImageStringsEventArgs.cs" />
     <Compile Include="Model\IndexerDictionaryItem.cs" />
     <Compile Include="Model\WordCloudItem.cs" />
+    <Compile Include="Database\LagerDAO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
