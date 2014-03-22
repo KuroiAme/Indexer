@@ -29,7 +29,6 @@ namespace GarageIndex
 			this.ancestor = null;
 			lagerselect = null;
 			popme.Dispose ();
-			boks = null;
 			LagerObjectSaved = null;
 			base.Dispose (disposing);
 		}
@@ -131,8 +130,8 @@ namespace GarageIndex
 			fieldContainerNameRect = new RectangleF (x, y, broad,lineheight);
 			fieldDescriptionRect = new RectangleF (x, y + lineheight + linemargin, broad, lineheight);
 			fieldTypeRect = new RectangleF (x, y + lineheight * 2 + linemargin * 2, broad, lineheight);
-			inStorageRect = new RectangleF (x, y + tagheight + linemargin * 3 + lineheight * 3, broad, lineheight);
-			btnShowContentRect = new RectangleF (x, y + tagheight + linemargin * 4 + lineheight * 4, broad, lineheight);
+			inStorageRect = new RectangleF (x, y + tagheight + linemargin * 5 + lineheight * 3, broad, lineheight);
+			btnShowContentRect = new RectangleF (x, y + tagheight + linemargin * 6 + lineheight * 4, broad, lineheight);
 
 			fieldContainerName = new UITextField (fieldContainerNameRect);
 			fieldContainerName.BorderStyle = UITextBorderStyle.RoundedRect;
@@ -195,9 +194,10 @@ namespace GarageIndex
 				}else{
 					popme.Dismiss (true);
 				}
-				this.boks.LagerID = e.Lager.ID;
+				boks.LagerID = e.Lager.ID;
 				SetLagerButtonLabel (this.boks);
 				AppDelegate.dao.SaveLagerObject(this.boks);
+				RaiseSavedEvent();
 			};
 		}
 

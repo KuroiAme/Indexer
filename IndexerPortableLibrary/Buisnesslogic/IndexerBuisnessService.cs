@@ -6,6 +6,7 @@ using No.Dctapps.GarageIndex;
 using GarageIndex;
 using no.dctapps.Garageindex.dao;
 using IndexerIOS;
+using System.Linq;
 
 namespace no.dctapps.Garageindex.businesslogic
 {
@@ -26,7 +27,7 @@ namespace no.dctapps.Garageindex.businesslogic
 			IList<Item> allItems = dao.GetAllItems ();
 			IList<LagerObject> allLarge = dao.GetAllLargeItems ();
 			foreach (Item it in allItems) {
-					cashvalue += it.cashValue;
+				cashvalue += it.cashValue;
 			}
 
 			foreach (LagerObject myobj in allLarge) {
@@ -36,39 +37,42 @@ namespace no.dctapps.Garageindex.businesslogic
 			return cashvalue;
 		}
 
-		private string getHeaderTextLagerObject(){
+		private string getHeaderTextLagerObject ()
+		{
 			var name = translate.getTranslatedText ("Name");
 			var desc = translate.getTranslatedText ("Description");
-			StringBuilder sb = new StringBuilder();
+			StringBuilder sb = new StringBuilder ();
 			sb.Append (name);
 			sb.Append ("\t");
 			sb.Append ("\"");
 			sb.Append (desc);
 			sb.Append ("\"");
 			sb.Append ("\t");
-			sb.AppendLine("\n-----------------------------------");
-			return sb.ToString();
+			sb.AppendLine ("\n-----------------------------------");
+			return sb.ToString ();
 		}
 
 		public string GenerateContainerSubject (LagerObject input)
 		{
 			string ContainerIndex = translate.getTranslatedText ("Manifest/index for Container");
-			StringBuilder sb = new StringBuilder();
-			if(input != null)
-				sb.AppendLine(ContainerIndex + ":" + input.Name);
-			return sb.ToString();
+			StringBuilder sb = new StringBuilder ();
+			if (input != null)
+				sb.AppendLine (ContainerIndex + ":" + input.Name);
+			return sb.ToString ();
 		}
 
-		public string GenerateSubject(Lager input){
-			string index = translate.getTranslatedText ("Manifest/index for storage","Manifest/index for storage");
-			StringBuilder sb = new StringBuilder();
-			if(input != null)
-				sb.AppendLine(index + ":" + input.Name);
-			return sb.ToString();
+		public string GenerateSubject (Lager input)
+		{
+			string index = translate.getTranslatedText ("Contents for location", "Contents for location");
+			StringBuilder sb = new StringBuilder ();
+			if (input != null)
+				sb.AppendLine (index + ":" + input.Name);
+			return sb.ToString ();
 		}
 
-		public string GenerateSubject(LagerObject input){
-			string index = translate.getTranslatedText ("Manifest/index for ","Manifest/index for ");
+		public string GenerateSubject (LagerObject input)
+		{
+			string index = translate.getTranslatedText ("Manifest/index for ", "Manifest/index for ");
 			string word = "";
 			if (input.isContainer == "true") {
 				word = translate.getTranslatedText ("Container", "Container");
@@ -77,92 +81,104 @@ namespace no.dctapps.Garageindex.businesslogic
 			} else {
 				word = translate.getTranslatedText ("Item", "Item");
 			}
-			StringBuilder sb = new StringBuilder();
-			sb.AppendLine(index + word + ":" + input.Name);
-			return sb.ToString();
+			StringBuilder sb = new StringBuilder ();
+			sb.AppendLine (index + word + ":" + input.Name);
+			return sb.ToString ();
 		}
 
-		public string GenerateSubject(Item input){
-			string index = translate.getTranslatedText ("Manifest/index for ","Manifest/index for ");
+		public string GenerateSubject (Item input)
+		{
+			string index = translate.getTranslatedText ("Manifest/index for ", "Manifest/index for ");
 			string word = translate.getTranslatedText ("Item", "Item");
-			StringBuilder sb = new StringBuilder();
-			sb.AppendLine(index + word + ":" + input.Name);
-			return sb.ToString();
+			StringBuilder sb = new StringBuilder ();
+			sb.AppendLine (index + word + ":" + input.Name);
+			return sb.ToString ();
 		}
-			
-		public string GenerateManifest(Lager input){
 
-			string lo = translate.getTranslatedText ("Large Objects","Large Objects");
-			string cont = translate.getTranslatedText ("Containers","Containers");
-			string ic = translate.getTranslatedText ("Items in this container","Items in this container");
+		public string GenerateManifest (Lager input)
+		{
 
-			StringBuilder sb = new StringBuilder();
-			if(input != null){
-			sb.AppendLine(lo+":"+dao.GetAntallStore(input.ID));
-			IList<LagerObject> storeting = dao.GetAllLargeItems(input.ID);
-			sb.Append(getHeaderTextLagerObject());
-			foreach(LagerObject lobj in storeting){
-				sb.AppendLine(lobj.toString());
-			}
-			
-				sb.AppendLine ("");
-			sb.AppendLine("-----------------------------------");
-			sb.AppendLine(cont+":"+dao.GetAntallBeholdere());
-				sb.AppendLine ("");
+			string lo = translate.getTranslatedText ("Large Objects", "Large Objects");
+			string cont = translate.getTranslatedText ("Containers", "Containers");
+			string ic = translate.getTranslatedText ("Items in this container", "Items in this container");
+
+			StringBuilder sb = new StringBuilder ();
+
+			if (input != null) {
+				int x = dao.GetAntallStore (input.ID);
+				if (x > 0) {
+					sb.AppendLine (lo + ":" + x);
+					IList<LagerObject> storeting = dao.GetAllLargeItems (input.ID);
+					sb.Append (getHeaderTextLagerObject ());
+					foreach (LagerObject lobj in storeting) {
+						sb.AppendLine (lobj.toString ());
+					}
+				}
+
+				List<LagerObject> containers = dao.GetAllContainersFromLagerId (input.ID).ToList();
+				int count = (containers.Select (i => i)).Count();
+
+				if (count > 0) {
+
+					sb.AppendLine ("");
+					sb.AppendLine (cont + ":" + count);
+					sb.AppendLine ("");
 
 
-			IList<LagerObject> containers = dao.GetAllContainers(input.ID);
-			foreach(LagerObject con in containers){
-				sb.AppendLine("-----------------------------------");
-				sb.AppendLine(con.toString());
-				IList<Item> items = dao.GetAllItemsInBox(con);
-				sb.AppendLine (ic+":"+items.Count);
-				sb.AppendLine("++++++++++++++++++++++++");
-				foreach(Item it in items){
-					sb.AppendLine(it.toString());
+
+					foreach (LagerObject con in containers) {
+		
+						sb.AppendLine (con.toString ());
+						IList<Item> items = dao.GetAllItemsInBox (con);
+						sb.AppendLine (ic + ":" + items.Count);
+						foreach (Item it in items) {
+							sb.AppendLine ("\t" + it.Name + "," + it.Description);
+						}
+					}
 				}
 			}
-			}
-			return sb.ToString();
+			return sb.ToString ();
 			
 		}
 
-		public string GenerateContainerManifest(LagerObject input){
-			string ic = translate.getTranslatedText ("Items in this container","Items in this container");
-			string name = translate.getTranslatedText ("Name","Name");
+		public string GenerateContainerManifest (LagerObject input)
+		{
+			string ic = translate.getTranslatedText ("Items in this container", "Items in this container");
+			string name = translate.getTranslatedText ("Name", "Name");
 			string desc = translate.getTranslatedText ("Description", "Description");
 			string inn = translate.getTranslatedText ("In", "In");
 
-			StringBuilder sb = new StringBuilder();
+			StringBuilder sb = new StringBuilder ();
 			if (input != null) {
 				Lager laggy = dao.GetLagerByID (input.LagerID);
-				sb.AppendLine(name + ":" + input.Name +"--"+ desc + ":"+input.Description );
-				if(laggy != null){
-					sb.AppendLine(inn+":"+laggy.Name); 
+				sb.AppendLine (name + ":" + input.Name + "--" + desc + ":" + input.Description);
+				if (laggy != null) {
+					sb.AppendLine (inn + ":" + laggy.Name); 
 				}
 
 				if (input.isContainer == "true") {
-					sb.AppendLine (ic+";");
+					sb.AppendLine (ic + ";");
 					IList<Item> items = dao.GetAllItemsInBox (input);
 					foreach (Item itty in items) {
-						sb.AppendLine (itty.toString());		
+						sb.AppendLine (itty.toString ());		
 					}
 				}
 
 			}
-			return sb.ToString();
+			return sb.ToString ();
 		}
 
-		public string GenerateManifest(Item input){
-			string inn = translate.getTranslatedText ("In","In");
+		public string GenerateManifest (Item input)
+		{
+			string inn = translate.getTranslatedText ("In", "In");
 		
-			StringBuilder sb = new StringBuilder();
-			sb.AppendLine (input.toString());
+			StringBuilder sb = new StringBuilder ();
+			sb.AppendLine (input.toString ());
 			LagerObject lo = dao.GetContainerById (input.boxID);
-			if(lo != null){
-				sb.AppendLine (inn +":"+lo.Name);
+			if (lo != null) {
+				sb.AppendLine (inn + ":" + lo.Name);
 			}
-			return sb.ToString();
+			return sb.ToString ();
 		}
 
 		char[] sep = { ',', ' ' };
@@ -329,29 +345,23 @@ namespace no.dctapps.Garageindex.businesslogic
 			return Dictionary;
 
 		}
-
-
-//		public List<Item> SearchItems (string text)
-//		{
-//
-//			//TODO implement async here when async (mono 3.0) gets out of BETA
-//			List<Item> res = new List<Item>();
-//
-//			res.AddRange(dao.GetItemsWithName(text));
-//			res.AddRange(dao.GetItemsWithDesc(text));
-//
-//			//Console.WriteLine("Found "+res.Count + " items "); 
-//			return res;
-//		}
-
-
-
-
+		//		public List<Item> SearchItems (string text)
+		//		{
+		//
+		//			//TODO implement async here when async (mono 3.0) gets out of BETA
+		//			List<Item> res = new List<Item>();
+		//
+		//			res.AddRange(dao.GetItemsWithName(text));
+		//			res.AddRange(dao.GetItemsWithDesc(text));
+		//
+		//			//Console.WriteLine("Found "+res.Count + " items ");
+		//			return res;
+		//		}
 		public List<WordCloudItem> GetWordCloudDictionary ()
 		{
 			List<WordCloudItem> dictionary = new List<WordCloudItem> ();
 			List<IndexerDictionaryItem> origin = GetAllSearchableWordsDictionary ();
-			foreach(IndexerDictionaryItem item in origin){
+			foreach (IndexerDictionaryItem item in origin) {
 				WordCloudItem it = new WordCloudItem ();
 				it.word = item.value;
 				Boolean found = false;

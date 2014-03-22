@@ -30,7 +30,6 @@ namespace IndexerIOS
 			outerScroll.Dispose ();
 			mailContr.Dispose ();
 			mapView.Dispose ();
-			myLager = null;
 			base.Dispose (disposing);
 		}
 

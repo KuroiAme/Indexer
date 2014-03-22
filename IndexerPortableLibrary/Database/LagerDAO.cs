@@ -4,6 +4,7 @@ using No.Dctapps.GarageIndex;
 using GarageIndex;
 using Tasky.DL.SQLiteBase;
 using System;
+using System.Linq;
 
 namespace no.dctapps.Garageindex.dao
 {
@@ -401,10 +402,10 @@ namespace no.dctapps.Garageindex.dao
 			return list.Count.ToString();
 		}
 
-		public string GetAntallStore (int lagerID)
+		public int GetAntallStore (int lagerID)
 		{
 			IList<LagerObject> list = GetAllLargeItems(lagerID);
-			return list.Count.ToString();
+			return list.Count;
 		}
 
 		public string GetAntallBeholdere ()
@@ -549,10 +550,14 @@ namespace no.dctapps.Garageindex.dao
 
 		}
 
-		public  IList<LagerObject> GetAllContainers(int lagerid){
+		public  IEnumerable<LagerObject> GetAllContainersFromLagerId(int lagerid){
 
-				string x = "true";
-				return  conn.Query<LagerObject>("select * from LagerObject where isContainer = ? and LagerID = ?", x, lagerid);
+			IList<LagerObject> myList = conn.Query<LagerObject> ("select * from LagerObject");
+			return (myList.Where (x => x.LagerID == lagerid).Where (x => x.isContainer == "true"));
+//
+//				string x = "true";
+//				
+//				return  conn.Query<LagerObject>("select * from LagerObject where isContainer = ? and LagerID = ?", x, lagerid);
 
 		}
 

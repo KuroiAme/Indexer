@@ -51,6 +51,11 @@ namespace GarageIndex
 			innerScroll.AddSubview (innerViewController.View);
 			innerScroll.UserInteractionEnabled = true;
 			View.AddSubview (innerScroll);
+
+			UIBarButtonItem YouTube = new UIBarButtonItem ("YouTube", UIBarButtonItemStyle.Plain, null);
+			YouTube.Clicked += (object sender, System.EventArgs e) => UIApplication.SharedApplication.OpenUrl (new MonoTouch.Foundation.NSUrl ("https://www.youtube.com/watch?v=aq1Ml2O8ado"));
+			this.NavigationItem.SetRightBarButtonItem (YouTube,true);
+
 		}
 
 	}
