@@ -9,7 +9,7 @@ using MonoTouch.Foundation;
 using No.Dctapps.GarageIndex;
 using System.Linq;
 using IndexerIOS;
-using AllianceProgressLoader;
+//using AllianceProgressLoader;
 
 namespace GarageIndex
 {
@@ -41,19 +41,19 @@ namespace GarageIndex
 			this.ancestor = ancestor;
 
 
-			loadingImages = new string[] {
-				"images/DOTS0.png",
-				"images/DOTS1.png",
-				"images/DOTS2.png",
-				"images/DOTS3.png",
-				"images/DOTS4.png",
-				"images/DOTS5.png",
-				"images/DOTS6.png",
-				"images/DOTS7.png",
-				"images/DOTS8.png",
-				"images/DOTS9.png",
-				"images/DOTS10.png"
-			};
+//			loadingImages = new string[] {
+//				"images/DOTS0.png",
+//				"images/DOTS1.png",
+//				"images/DOTS2.png",
+//				"images/DOTS3.png",
+//				"images/DOTS4.png",
+//				"images/DOTS5.png",
+//				"images/DOTS6.png",
+//				"images/DOTS7.png",
+//				"images/DOTS8.png",
+//				"images/DOTS9.png",
+//				"images/DOTS10.png"
+//			};
 
 		}
 	
@@ -104,13 +104,13 @@ namespace GarageIndex
 		{
 			base.ViewDidLoad ();
 
-			ProgressLoader.ImageHeight = 48;
-			ProgressLoader.ImageWidth = 48;
-			ProgressLoader.LoadDelay = 0.4;
-			ProgressLoader.LoadingSprites = loadingImages;
-			ProgressLoader.TitleLabelText = AppDelegate.its.getTranslatedText("Saving Image, Please Wait…");
-			ProgressLoader.MainView = this.View;
-			ProgressLoader.TitleColor = UIColor.Green;
+//			ProgressLoader.ImageHeight = 48;
+//			ProgressLoader.ImageWidth = 48;
+//			ProgressLoader.LoadDelay = 0.4;
+//			ProgressLoader.LoadingSprites = loadingImages;
+//			ProgressLoader.TitleLabelText = AppDelegate.its.getTranslatedText("Saving Image, Please Wait…");
+//			ProgressLoader.MainView = this.View;
+//			ProgressLoader.TitleColor = UIColor.Green;
 
 			InitializeEmptyImage ();
 
@@ -122,7 +122,7 @@ namespace GarageIndex
 				this.imageView.Image = display;
 				this.imageView.Frame = View.Bounds;
 				this.imageView.SetNeedsDisplay ();
-				ProgressLoader.HideLoading ();
+//				ProgressLoader.HideLoading ();
 			};
 		}
 
@@ -291,7 +291,7 @@ namespace GarageIndex
 //				Pc.Dismiss (false);
 //			}
 
-			ProgressLoader.ShowLoading();
+//			ProgressLoader.ShowLoading();
 
 			bool isImage = false;
 			switch (e.Info [UIImagePickerController.MediaType].ToString ()) {

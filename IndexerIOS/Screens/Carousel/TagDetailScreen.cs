@@ -12,6 +12,7 @@ using No.Dctapps.Garageindex.Ios.Screens;
 using GoogleAnalytics.iOS;
 using System.Collections.Generic;
 using IndexerIOS;
+using System.Text;
 
 namespace GarageIndex
 {
@@ -337,9 +338,25 @@ namespace GarageIndex
 			return new string[2]{"",""};
 		}
 
+		char[] sep = {' ', ','};
+
+		string Recombine ()
+		{
+			StringBuilder sb = new StringBuilder ();
+			string[] fromTag = tag.TagString.Split (sep);
+			foreach (string s in fromTag) {
+				sb.Append (s);
+				sb.Append (" ");
+			}
+			return sb.ToString ();
+		}
+
 		void ExtractSmall ()
 		{
 			Item item = new Item ();
+			String recomb = Recombine ();
+			item.Name = recomb;
+			item.Description = recomb;
 
 			item.ImageTagId = tag.ID;
 			String[] res = ExtractTagImages (tag);
@@ -352,6 +369,11 @@ namespace GarageIndex
 		void ExtractContainer ()
 		{
 			LagerObject lo = new LagerObject ();
+			String recomb = Recombine ();
+			lo.Name = recomb;
+			lo.Description = recomb;
+			lo.type = recomb;
+
 			lo.ImageTagId = tag.ID;
 			string[] res = ExtractTagImages (tag);
 			lo.thumbFileName = res [1];
@@ -365,6 +387,11 @@ namespace GarageIndex
 		void ExtractLarge ()
 		{
 			LagerObject lo = new LagerObject ();
+
+			String recomb = Recombine ();
+			lo.Name = recomb;
+			lo.Description = recomb;
+
 			lo.ImageTagId = tag.ID;
 			string[] res = ExtractTagImages (tag);
 			lo.thumbFileName = res [1];

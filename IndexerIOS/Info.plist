@@ -42,8 +42,8 @@
 	<key>CFBundleIdentifier</key>
 	<key>CFBundleDisplayName</key>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1 RC</string>
+	<string>2.1</string>
 	<key>CFBundleVersion</key>
-	<string>30</string>
+	<string>33</string>
 </dict>
 </plist>

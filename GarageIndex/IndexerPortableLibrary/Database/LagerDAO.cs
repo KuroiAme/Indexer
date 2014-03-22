@@ -4,7 +4,6 @@ using No.Dctapps.GarageIndex;
 using GarageIndex;
 using Tasky.DL.SQLiteBase;
 using System;
-using System.Linq;
 
 namespace no.dctapps.Garageindex.dao
 {
@@ -77,9 +76,9 @@ namespace no.dctapps.Garageindex.dao
 
 		public void SaveLagerObject (LagerObject myObject)
 		{
-			LagerObject obj = this.GetLagerObjectByID(myObject.ID);
+			IList<LagerObject> thelist = this.GetLagerObjectByID(myObject.ID);
 
-			if(obj == null){
+				if(thelist.Count == 0){
 					conn.Insert (myObject);
 				}else{
 					conn.Update  (myObject);
@@ -149,27 +148,9 @@ namespace no.dctapps.Garageindex.dao
 		{
 			IList<InsurancePhoto> myList;
 
-			string s = "false";
-			if (isLargeObject) {
-				s = "true";
-			}
-
-			myList =  conn.Query<InsurancePhoto> ("select * from InsurancePhoto where ObjectReferenceID = ? and IsLargeObject = ?", currentID, s);
+			myList =  conn.Query<InsurancePhoto> ("select * from InsurancePhoto where ObjectReferenceID = ? and IsLargeObject = ?", currentID, isLargeObject.ToString());
 
 			return myList;
-		}
-
-		public string GetNumberOfItemsForLager (Lager myLager)
-		{
-			if (myLager == null) {
-				return "0";
-			}
-
-			IList<Item> myList =  conn.Query<Item> ("select * from Item where LagerID = ?", myLager.ID);
-
-			IList<LagerObject> myList2 =  conn.Query<LagerObject> ("select * from LagerObject where LagerID = ?", myLager.ID);
-
-			return (myList.Count + myList2.Count).ToString ();
 		}
 
 		public  InsurancePhoto InsurancePhotoByID (int iD)
@@ -198,16 +179,14 @@ namespace no.dctapps.Garageindex.dao
 			}
 		}
 
-		public LagerObject GetLagerObjectByID (int ID)
+		public  IList<LagerObject> GetLagerObjectByID (int ID)
 		{
 
 			IList<LagerObject> myList = new List<LagerObject>();
 		
 				myList =  conn.Query<LagerObject> ("select * from LagerObject where ID = ?", ID);
-			if (myList.Count > 0)
-				return myList [0];
-			else
-				return null;
+
+			return myList;
 		}
 
 		[Obsolete]
@@ -402,10 +381,10 @@ namespace no.dctapps.Garageindex.dao
 			return list.Count.ToString();
 		}
 
-		public int GetAntallStore (int lagerID)
+		public string GetAntallStore (int lagerID)
 		{
 			IList<LagerObject> list = GetAllLargeItems(lagerID);
-			return list.Count;
+			return list.Count.ToString();
 		}
 
 		public string GetAntallBeholdere ()
@@ -550,14 +529,10 @@ namespace no.dctapps.Garageindex.dao
 
 		}
 
-		public  IEnumerable<LagerObject> GetAllContainersFromLagerId(int lagerid){
+		public  IList<LagerObject> GetAllContainers(int lagerid){
 
-			IList<LagerObject> myList = conn.Query<LagerObject> ("select * from LagerObject");
-			return (myList.Where (x => x.LagerID == lagerid).Where (x => x.isContainer == "true"));
-//
-//				string x = "true";
-//				
-//				return  conn.Query<LagerObject>("select * from LagerObject where isContainer = ? and LagerID = ?", x, lagerid);
+				string x = "true";
+				return  conn.Query<LagerObject>("select * from LagerObject where isContainer = ? and LagerID = ?", x, lagerid);
 
 		}
 

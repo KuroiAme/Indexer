@@ -26,10 +26,10 @@ namespace IndexerIOS
 
 		protected override void Dispose (bool disposing)
 		{
-			storageScreenContent.Dispose ();
-			searchBar.Dispose ();
-			searchController.Dispose ();
-			map.Dispose ();
+			//storageScreenContent.Dispose ();
+			//searchBar.Dispose ();
+			//searchController.Dispose ();
+			//map.Dispose ();
 			FoundCoords = null;
 			base.Dispose (disposing);
 		}

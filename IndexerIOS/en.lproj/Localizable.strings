@@ -57,6 +57,7 @@
 "Statistics" = "Statistics";
 "allow anonymous statistics" = "allow anonymous statistics";
 "What type of object is it?" = "What type of object is it?";
+"Contents for location" = "Contents for location";
 "Extract" = "Extract";
 "Back" = "Back";
 "small" = "small";
@@ -101,7 +102,7 @@
 "storages" = "locations";
 "Items" = "Items";
 "Containers" = "Containers";
-"Large Objects" = "Large Objects";
+"Large Objects" = "Big items";
 "Indexer Dashboard" = "Indexer Dashboard";
 "Saving Image, Please Wait…" = "Saving Image, Please Wait…";
 "Big details" = "Big details";
