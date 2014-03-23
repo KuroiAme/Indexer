@@ -6,6 +6,7 @@ using System.Drawing;
 using no.dctapps.Garageindex.model;
 using IndexerIOS;
 using no.dctapps.Garageindex.screens;
+using GoogleAdMobAds;
 
 namespace GarageIndex
 {
@@ -23,6 +24,9 @@ namespace GarageIndex
 		DashboardRightPanel rightPanel;
 
 		public UISearchBar Search;
+
+		GADBannerView adView;
+		bool viewOnScreen = false;
 
 		protected override void Dispose (bool disposing)
 		{
@@ -99,6 +103,20 @@ namespace GarageIndex
 
 			MainMap = new OverSightMap (new RectangleF (10, navbarHeight, UIScreen.MainScreen.Bounds.Width - buffer * 2, mapHeight), this);
 			View.AddSubview (MainMap.View);
+
+			if (AppDelegate.Variant == "LITE") {
+				adView = new GADBannerView (size: GADAdSizeCons.Banner, origin: new PointF (0, navbarHeight + mapHeight)) {
+					AdUnitID = AppDelegate.AdmobID,
+					RootViewController = this
+				};
+
+				adView.DidReceiveAd += (sender, args) => {
+					if (!viewOnScreen) View.AddSubview (adView);
+					viewOnScreen = true;
+				};
+
+				adView.LoadRequest (GADRequest.Request);
+			}
 
 			float statpanelwidth = UIScreen.MainScreen.Bounds.Width / 3;
 			float rightPanelWidth = UIScreen.MainScreen.Bounds.Width - statpanelwidth - 3*buffer;

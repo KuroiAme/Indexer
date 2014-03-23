@@ -54,12 +54,12 @@ namespace no.dctapps.Garageindex.tables
 			}
 
 //			var cellStyle = UITableViewCellStyle.Subtitle;
-			CustomLagerCell cell = tableView.DequeueReusableCell (cellIdentifier) as CustomLagerCell;
+			DCTCell cell = tableView.DequeueReusableCell (cellIdentifier) as DCTCell;
 
 
 
 			if (cell == null)
-				cell = new CustomLagerCell ((MonoTouch.Foundation.NSString)o.Name);
+				cell = new DCTCell ((MonoTouch.Foundation.NSString)o.Name);
 //			cell.Accessory = UITableViewCellAccessory.DetailDisclosureButton;
 //    			Xamarin.Themes.BlackLeatherTheme.Apply (cell);
 

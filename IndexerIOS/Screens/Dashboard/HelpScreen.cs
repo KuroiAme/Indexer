@@ -1,11 +1,15 @@
 using MonoTouch.UIKit;
 using System.Collections.Generic;
 using System.Drawing;
+using GoogleAdMobAds;
 
 namespace GarageIndex
 {
 	class HelpScreen : UtilityViewController
 	{
+		GADBannerView adView;
+		bool viewOnScreen = false;
+
 		void cleanup ()
 		{
 			Dispose ();
@@ -43,6 +47,20 @@ namespace GarageIndex
 			Background back = new Background ();
 			this.View.AddSubview (back.View);
 			this.View.SendSubviewToBack (back.View);
+
+			if (AppDelegate.Variant == "LITE") {
+				adView = new GADBannerView (size: GADAdSizeCons.Banner, origin: new PointF (0, 66)) {
+					AdUnitID = AppDelegate.AdmobID,
+					RootViewController = this
+				};
+
+				adView.DidReceiveAd += (sender, args) => {
+					if (!viewOnScreen) View.AddSubview (adView);
+					viewOnScreen = true;
+				};
+
+				adView.LoadRequest (GADRequest.Request);
+			}
 
 
 			HelpScreenInner innerViewController = new HelpScreenInner ();

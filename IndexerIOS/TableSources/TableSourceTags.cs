@@ -38,12 +38,12 @@ namespace GarageIndex
 		public override UITableViewCell GetCell (UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath)
 		{
 			ImageTag item = tableItems[indexPath.Row];
-			CustomLagerCell cell = tableView.DequeueReusableCell (cellIdentifier) as CustomLagerCell;
+			DCTCell cell = tableView.DequeueReusableCell (cellIdentifier) as DCTCell;
 
 
 
 			if (cell == null)
-				cell = new CustomLagerCell ((MonoTouch.Foundation.NSString)item.ID.ToString());
+				cell = new DCTCell ((MonoTouch.Foundation.NSString)item.ID.ToString());
 				
 			cell.UpdateCell(item.ID.ToString(),item.TagString);
 

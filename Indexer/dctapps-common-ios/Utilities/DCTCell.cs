@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace no.dctapps.Garageindex
 {
-	public class CustomLagerCell : UITableViewCell  {
+	public class DCTCell : UITableViewCell  {
 		UILabel headingLabel;
 		UILabel subheadingLabel;
 		UIImageView imageView;
@@ -14,7 +14,7 @@ namespace no.dctapps.Garageindex
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 
-		public CustomLagerCell (NSString cellId) : base (UITableViewCellStyle.Subtitle, cellId)
+		public DCTCell (NSString cellId) : base (UITableViewCellStyle.Subtitle, cellId)
 		{
 			SelectionStyle = UITableViewCellSelectionStyle.Gray;
 			imageView = new UIImageView();

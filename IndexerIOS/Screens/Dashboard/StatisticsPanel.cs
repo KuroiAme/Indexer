@@ -87,8 +87,8 @@ namespace GarageIndex
 		void CreateStatistics ()
 		{
 			value = AddOneStatistic (AppDelegate.its.getTranslatedText ("Total cash"), AppDelegate.its.getTranslatedText ("value"), AppDelegate.bl.GetTotalValue ().ToString ());
-			lagre = AddOneStatistic (AppDelegate.its.getTranslatedText ("number of"), AppDelegate.its.getTranslatedText ("storages"), AppDelegate.dao.GetAntallLagre ());
-			ting = AddOneStatistic (AppDelegate.its.getTranslatedText ("number of"), AppDelegate.its.getTranslatedText ("Items"), AppDelegate.dao.GetAntallTing ());
+			lagre = AddOneStatistic (AppDelegate.its.getTranslatedText ("number of"), AppDelegate.its.getTranslatedText ("storages"), AppDelegate.dao.GetAntallLagre ().ToString());
+			ting = AddOneStatistic (AppDelegate.its.getTranslatedText ("number of"), AppDelegate.its.getTranslatedText ("Items"), AppDelegate.dao.GetAntallTing ().ToString());
 			beholdere = AddOneStatistic (AppDelegate.its.getTranslatedText ("number of"), AppDelegate.its.getTranslatedText ("Containers"), AppDelegate.dao.GetAntallBeholdere ());
 			store = AddOneStatistic (AppDelegate.its.getTranslatedText ("number of"), AppDelegate.its.getTranslatedText ("Large Objects"), AppDelegate.dao.GetAntallStore ());
 		}
@@ -101,8 +101,8 @@ namespace GarageIndex
 		public void UpdateStatistics ()
 		{
 			value.Text = AppDelegate.bl.GetTotalValue ().ToString ();
-			lagre.Text = AppDelegate.dao.GetAntallLagre ();
-			ting.Text =  AppDelegate.dao.GetAntallTing ();
+			lagre.Text = AppDelegate.dao.GetAntallLagre ().ToString();
+			ting.Text =  AppDelegate.dao.GetAntallTing ().ToString();
 			beholdere.Text = AppDelegate.dao.GetAntallBeholdere ();
 			store.Text = AppDelegate.dao.GetAntallStore ();
 		}

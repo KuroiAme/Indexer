@@ -46,12 +46,12 @@ namespace no.dctapps.Garageindex.tables
 				image = UIImage.FromFile (filename); //TODO get a better default image
 			}
 
-			CustomLagerCell cell = tableView.DequeueReusableCell (cellIdentifier) as CustomLagerCell;
+			DCTCell cell = tableView.DequeueReusableCell (cellIdentifier) as DCTCell;
 
 
 
 			if (cell == null)
-				cell = new CustomLagerCell ((MonoTouch.Foundation.NSString)item.Name);
+				cell = new DCTCell ((MonoTouch.Foundation.NSString)item.Name);
 
 //			Xamarin.Themes.BlackLeatherTheme.Apply (cell);
 

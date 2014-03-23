@@ -6,6 +6,7 @@ using no.dctapps.Garageindex.events;
 using MonoTouch.MessageUI;
 using GoogleAnalytics.iOS;
 using GoogleAdMobAds;
+using System.Drawing;
 
 namespace no.dctapps.Garageindex.screens
 {

@@ -104,12 +104,12 @@ namespace no.dctapps.Garageindex.tables
 //			if (cell == null)
 //				cell = new UITableViewCell (UITableViewCellStyle.Default, cellIdentifier);
 //
-			CustomLagerCell cell = tableView.DequeueReusableCell (cellIdentifier) as CustomLagerCell;
+			DCTCell cell = tableView.DequeueReusableCell (cellIdentifier) as DCTCell;
 			
 			
 			
 			if (cell == null)
-				cell = new CustomLagerCell ((MonoTouch.Foundation.NSString)cellIdentifier);
+				cell = new DCTCell ((MonoTouch.Foundation.NSString)cellIdentifier);
 
 			//cell.Editing = true; // Make the cell deletable
 			//cell.ShouldIndentWhileEditing = true;

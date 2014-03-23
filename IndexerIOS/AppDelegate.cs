@@ -20,8 +20,10 @@ namespace GarageIndex
 		public static readonly string TrackingId = "UA-47719330-1";
 
 		public static string Variant {
-			get{return "PRO";}
+			get{return "LITE";}
 		}
+
+		public static string AdmobID = "<Get your ID at google.com/ads/admob>";
 
 		static AppDelegate()
 		{
@@ -30,6 +32,12 @@ namespace GarageIndex
 
 			iRate.SharedInstance.DaysUntilPrompt = 5;
 			iRate.SharedInstance.UsesUntilPrompt = 3;
+
+			if (UserInterfaceIdiomIsPhone) {
+				AdmobID = "a151431a930a1e9";
+			} else {
+				AdmobID = "a151431e078e783";
+			}
 
 		}
 
@@ -87,7 +95,11 @@ namespace GarageIndex
 
 			Connection conn = new Connection (pathToDatabase);
 
-			dao = new LagerDAO (conn);
+			dao = new LagerDAO (conn,Variant);
+
+			dao.LimitExceeded += (object sender, EventArgs e) => PleaseBuyFullVersion ();
+
+
 			bl = new IndexerBuisnessService (dao, new TranslationServiceIos());
 			its = new TranslationServiceIos ();
 
@@ -100,7 +112,7 @@ namespace GarageIndex
 
 
 //			if(MonoTouch.Foundation.isi
-			this.window.TintColor = UIColor.Purple;
+//			window.TintColor = UIColor.Purple;
 
 			window.RootViewController = navController;
 			// If you have defined a root view controller, set it here:
@@ -110,6 +122,26 @@ namespace GarageIndex
 			window.MakeKeyAndVisible ();
 
 			return true;
+		}
+
+		UIActionSheet pleaseBuy;
+
+		void PleaseBuyFullVersion ()
+		{
+			GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("Limit Exceeded", "promting user to buy!","UsesCount", iRate.SharedInstance.UsesCount).Build ());
+			pleaseBuy = new UIActionSheet ("You have exceeded the number of things you can store in the lite version, please buy the full version");
+			pleaseBuy.AddButton ("buy the full version");
+			pleaseBuy.AddButton ("cancel");
+			pleaseBuy.Clicked += (object sender, UIButtonEventArgs e) => {
+				if(e.ButtonIndex == 1){
+					GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("Limit Exceeded", "User didnt want to buy","UsesCount", iRate.SharedInstance.UsesCount).Build ());
+				}
+				if(e.ButtonIndex == 0){
+					GAI.SharedInstance.DefaultTracker.Send (GAIDictionaryBuilder.CreateEvent ("Limit Exceeded", "User bought the app at exceeded limit","UsesCount", iRate.SharedInstance.UsesCount).Build ());
+					UIApplication.SharedApplication.OpenUrl (new NSUrl("https://itunes.apple.com/app/id647311169"));
+				}
+			};
+			pleaseBuy.ShowInView (UIApplication.SharedApplication.KeyWindow);
 		}
 		
 		public static bool UserInterfaceIdiomIsPhone 

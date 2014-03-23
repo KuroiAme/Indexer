@@ -12,6 +12,24 @@ namespace no.dctapps.Garageindex.dao
 	{
 		const int topID = 1;
 		SQLiteConnection conn;
+		bool limitedSave = false;
+		const int limitedSaves = 5;
+
+		public event EventHandler LimitExceeded;
+
+		public LagerDAO (SQLiteConnection conn, string version)
+		{
+			this.conn = conn;
+			conn.CreateTable<Item>();
+			conn.CreateTable<LagerObject>();
+			conn.CreateTable<Lager>();
+			conn.CreateTable<GalleryObject> ();
+			conn.CreateTable<ImageTag> ();
+			conn.CreateTable<InsurancePhoto> ();
+			if (version == "LITE") {
+				limitedSave = true;
+			}
+		}
 
 		public LagerDAO (SQLiteConnection conn)
 		{
@@ -52,38 +70,111 @@ namespace no.dctapps.Garageindex.dao
 				conn.Delete (deleteme);
 		}
 
+		void SaveGalleryObjectInner (GalleryObject myObject, GalleryObject item)
+		{
+			if (item == null) {
+				conn.Insert (myObject);
+			}
+			else {
+				conn.Update (myObject);
+			}
+		}
+
+		void RaiseLimitExceeded ()
+		{
+			if (LimitExceeded != null) {
+				var handler = LimitExceeded;
+				handler (this, new EventArgs ());
+			}
+		}
+
 		public void SaveGalleryObject (GalleryObject myObject)
 		{
 			GalleryObject item = this.GetGalleryObjectByID (myObject.ID);
 
-				if(item == null){
-					conn.Insert (myObject);
-				}else{
-					conn.Update (myObject);
+			if (limitedSave) {
+				IList<GalleryObject> gos = GetAllGalleryObjects ();
+				int count = (from g in gos
+							select g).Count();
+				if (count > limitedSaves) {
+					RaiseLimitExceeded ();
+				} else {
+					SaveGalleryObjectInner (myObject, item);
 				}
-			
+			} else {
+				SaveGalleryObjectInner (myObject, item);
+			}
+		}
+
+		void SaveInsurancePhotoInner (InsurancePhoto photo, InsurancePhoto item)
+		{
+			if (item == null) {
+				conn.Insert (photo);
+			}
+			else {
+				conn.Update (photo);
+			}
+		}
+
+		int GetAntallForsikringsBilder ()
+		{
+			IList<InsurancePhoto> myList;
+			myList = conn.Query<InsurancePhoto>("select * from InsurancePhoto");
+			return (from p in myList
+			        select p).Count ();
+		}
+
+		int GetNumberOfTags ()
+		{
+			IList<ImageTag> myList;
+			myList = conn.Query<ImageTag>("select * from ImageTag");
+			return (from p in myList
+				select p).Count ();
+		}
+
+		int getLagerOBjectsCount ()
+		{
+			IList<LagerObject> myList;
+			myList = conn.Query<LagerObject>("select * from LagerObject");
+			return (from p in myList
+				select p).Count ();
 		}
 
 		public void SaveInsurancePhoto (InsurancePhoto photo)
 		{
 			InsurancePhoto item = this.InsurancePhotoByID (photo.ID);
 
-				if(item == null){
-					conn.Insert (photo);
-				}else{
-					conn.Update (photo);
+			if (limitedSave) {
+				int count = GetAntallForsikringsBilder ();
+				if (count > limitedSaves) {
+					RaiseLimitExceeded ();
+				} else {
+					SaveInsurancePhotoInner (photo, item);
 				}
+			}else{
+
+				SaveInsurancePhotoInner (photo, item);
+			}
+		}
+
+		void SaveLagerObjectInner (LagerObject myObject)
+		{
+			LagerObject obj = this.GetLagerObjectByID (myObject.ID);
+			if (obj == null) {
+				conn.Insert (myObject);
+			}
+			else {
+				conn.Update (myObject);
+			}
 		}
 
 		public void SaveLagerObject (LagerObject myObject)
 		{
-			LagerObject obj = this.GetLagerObjectByID(myObject.ID);
-
-			if(obj == null){
-					conn.Insert (myObject);
-				}else{
-					conn.Update  (myObject);
-				}
+			if (limitedSave && getLagerOBjectsCount () > limitedSaves) {
+				RaiseLimitExceeded ();
+			} else {
+				SaveLagerObjectInner (myObject);
+			}
 		}
 
 		public IList<ImageTag> GetTagsByGalleryObjectID (int iD)
@@ -300,52 +391,75 @@ namespace no.dctapps.Garageindex.dao
 			return myList;
 		}
 
+		void SaveItemInner (Item item)
+		{
+			if (item != null && item.Name != "") {
+				IList<Item> items = GetItemById (item.ID);
+				if (items.Count == 0) {
+					conn.Insert (item);
+				}
+				else {
+					conn.Update (item);
+				}
+			}
+		}
+
 		public void SaveItem (Item item)
 		{
-			if(item != null && item.Name != ""){
-				IList<Item> items = GetItemById (item.ID);
+			if (limitedSave && GetAntallTing () > limitedSaves) {
+				RaiseLimitExceeded ();
+			} else {
+				SaveItemInner (item);
+			}
+		}
 
-			
-					if(items.Count == 0){
-					conn.Insert (item);
-					}else{
-						conn.Update (item);
-					}
+		int SaveTagInner (ImageTag tag)
+		{
+			if (tag != null) {
+				ImageTag checktag = GetTagById (tag.ID);
+				if (checktag == null) {
+					conn.Insert (tag);
+					return tag.ID;
 				}
-
+				else {
+					conn.Update (tag);
+					return tag.ID;
+				}
+			}
+			else {
+				return -1;
+			}
 		}
 
 		public int SaveTag (ImageTag tag)
 		{
-			if (tag != null) {
-				ImageTag checktag = GetTagById (tag.ID);
-
-
-					if (checktag == null) {
-						conn.Insert (tag);
-						return tag.ID;
-					} else {
-						conn.Update (tag);
-						return tag.ID;
-					}
-				}
-			 else {
+			if (limitedSave && GetNumberOfTags () > limitedSaves) {
+				RaiseLimitExceeded ();
 				return -1;
+			} else {
+				return SaveTagInner (tag);
+			}
+		}
+
+		void SaveLagerInner (Lager lager)
+		{
+			if (lager != null && lager.Name != "") {
+				IList<Lager> items = GetLagersById (lager.ID);
+				if (items.Count == 0) {
+					conn.Insert (lager);
+				}
+				else {
+					conn.Update (lager);
+				}
 			}
 		}
 
 		public void SaveLager (Lager lager)
 		{
-			if(lager != null && lager.Name != ""){
-				IList<Lager> items = GetLagersById (lager.ID);
-
-
-					if(items.Count == 0){
-						conn.Insert (lager);
-					}else{
-						conn.Update (lager);
-					}
-
+			if (limitedSave && GetAntallLagre() > limitedSaves) {
+				RaiseLimitExceeded ();
+			} else {
+				SaveLagerInner (lager);
 			}
 		}
 
@@ -390,10 +504,10 @@ namespace no.dctapps.Garageindex.dao
 			
 		}
 
-		public  string GetAntallTing ()
+		public int GetAntallTing ()
 		{
-			IList<Item> list =  GetAllItems();
-			return list.Count.ToString();
+			IList<Item> list = GetAllItems();
+			return list.Count;
 		}
 
 		public string GetAntallStore ()
@@ -414,10 +528,10 @@ namespace no.dctapps.Garageindex.dao
 			return mylist.Count.ToString();
 		}
 
-		public string GetAntallLagre ()
+		public int GetAntallLagre ()
 		{
 			IList<Lager> mylist = GetAllLagers();
-			return mylist.Count.ToString();
+			return mylist.Count;
 		}
 
 

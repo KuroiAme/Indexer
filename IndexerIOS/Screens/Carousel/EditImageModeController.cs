@@ -336,7 +336,7 @@ namespace GarageIndex
 
 		UIImage render;
 
-		async void ExtractNewThumbnail ()
+		void ExtractNewThumbnail ()
 		{
 			Console.WriteLine ("extracting thumbnail");
 

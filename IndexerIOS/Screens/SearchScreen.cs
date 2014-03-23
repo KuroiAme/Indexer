@@ -185,12 +185,12 @@ namespace IndexerIOS
 			public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 			{
 				// declare vars
-				CustomLagerCell cell = (CustomLagerCell)tableView.DequeueReusableCell (cellIdentifier);
+				DCTCell cell = (DCTCell)tableView.DequeueReusableCell (cellIdentifier);
 				string word = words[indexPath.Row].value;
 
 				// if there are no cells to reuse, create a new one
 				if (cell == null)
-					cell = new CustomLagerCell (new NSString (word));
+					cell = new DCTCell (new NSString (word));
 
 				if (words [indexPath.Row].Name == null) {
 					cell.UpdateCell (words [indexPath.Row].value, words [indexPath.Row].type);

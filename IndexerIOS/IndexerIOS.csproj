@@ -56,7 +56,7 @@
     <MtouchUseSGen>true</MtouchUseSGen>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchUseThumb>true</MtouchUseThumb>
-    <CodesignProvision>F6D2AD90-81BE-4FE8-A1A2-E3F12DBB2626</CodesignProvision>
+    <CodesignProvision>E9F314DB-DA8D-47FC-975B-4B9C5FB62E2C</CodesignProvision>
     <IpaPackageName>
     </IpaPackageName>
     <MtouchUseLlvm>true</MtouchUseLlvm>
@@ -89,7 +89,7 @@
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Distribution: Daniel  Treidene (B5LDC8XCTZ)</CodesignKey>
     <ConsolePause>false</ConsolePause>
-    <CodesignProvision>AD6CA640-98B6-4E38-A5AB-6B6BE659C9AB</CodesignProvision>
+    <CodesignProvision>5ABF7D7D-3103-450A-A757-63785EF596A5</CodesignProvision>
     <MtouchUseLlvm>true</MtouchUseLlvm>
     <MtouchUseThumb>true</MtouchUseThumb>
     <MtouchUseSGen>true</MtouchUseSGen>
@@ -138,7 +138,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <BundleResource Include="Info.plist" />
     <BundleResource Include="Resources\Default-568h%402x.png" />
     <BundleResource Include="Resources\Default-Landscape.png" />
     <BundleResource Include="Resources\Default-Landscape%402x.png" />
@@ -162,12 +161,12 @@
     <BundleResource Include="de.lproj\Localizable.strings" />
     <BundleResource Include="en.lproj\Localizable.strings" />
     <BundleResource Include="no.lproj\Localizable.strings" />
+    <BundleResource Include="Info.plist_old" />
+    <BundleResource Include="Info.plist" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="TagDetails.cs" />
     <Compile Include="Buisnesslogic\ServiceLayerIOS.cs" />
-    <Compile Include="Buisnesslogic\TranslationServiceIos.cs" />
     <Compile Include="Database\SQLite.MonoTouchAdmin.cs" />
     <Compile Include="InsurancePhotos\InsurancePhotoController.cs" />
     <Compile Include="InsurancePhotos\ViewInsurancePhoto.cs" />
@@ -175,7 +174,6 @@
     <Compile Include="MasterViews\ContainerMasterView.cs" />
     <Compile Include="MasterViews\ItemMasterView.cs" />
     <Compile Include="MasterViews\LagerMasterView.cs" />
-    <Compile Include="Panels\ImagePanel.cs" />
     <Compile Include="Panels\TagListController.cs" />
     <Compile Include="Panels\TagListView.cs" />
     <Compile Include="Screens\BigItems\BigItemDetailContent.cs" />
@@ -212,18 +210,15 @@
     <Compile Include="Screens\Preferences\Preferences.cs" />
     <Compile Include="Screens\Scanner\Scanner.cs" />
     <Compile Include="TableSources\TableSourceItems.cs" />
-    <Compile Include="TableSources\TableSourceItemsIndexed.cs" />
     <Compile Include="TableSources\TableSourceLager.cs" />
     <Compile Include="TableSources\TableSourceLagerObjects.cs" />
     <Compile Include="TableSources\TableSourceLagerObjectsSimple.cs" />
     <Compile Include="TableSources\TableSourceLagerSimple.cs" />
     <Compile Include="TableSources\TableSourceTags.cs" />
-    <Compile Include="Utility\CustomLagerCell.cs" />
     <Compile Include="Utility\GotPictureEventArgs.cs" />
     <Compile Include="Utility\SQLite.cs" />
     <Compile Include="Utility\TagUtility.cs" />
     <Compile Include="Utility\UtilityViewController.cs" />
-    <Compile Include="paintcode\BlueSea.cs" />
     <Compile Include="paintcode\EmptyImageCanvas.cs" />
     <Compile Include="paintcode\Flosshatt.cs" />
     <Compile Include="paintcode\GalleryIcon.cs" />
@@ -310,6 +305,10 @@
     <ProjectReference Include="..\IndexerPortableLibrary\IndexerPortableLibrary.csproj">
       <Project>{8E3274A1-69E3-413D-AFE6-6819C3348B8C}</Project>
       <Name>IndexerPortableLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Indexer\dctapps-common-ios\dctapps-common-ios.csproj">
+      <Project>{E0FD4C09-8E89-4C9C-A50C-5EE39AE8A146}</Project>
+      <Name>dctapps-common-ios</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
