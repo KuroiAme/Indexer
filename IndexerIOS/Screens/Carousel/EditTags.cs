@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using GoogleAnalytics.iOS;
 using System.Drawing;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	class EditTags : UtilityViewController
 	{

@@ -4,10 +4,10 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using No.Dctapps.Garageindex.Ios.Screens;
 using No.Dctapps.GarageIndex;
-using GarageIndex;
+using no.dctapps.commons.events;
 using GoogleAnalytics.iOS;
 
-namespace no.dctapps.Garageindex.screens
+namespace no.dctapps.commons.events
 {
 	public partial class ItemInfo : UIViewController
 	{

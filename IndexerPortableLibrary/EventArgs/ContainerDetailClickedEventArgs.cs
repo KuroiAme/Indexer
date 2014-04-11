@@ -1,7 +1,7 @@
 using System;
 using No.Dctapps.GarageIndex;
 
-namespace no.dctapps.Garageindex.events
+namespace no.dctapps.commons.events
 {
 	public class ContainerContentClickedEventArgs : EventArgs
 	{

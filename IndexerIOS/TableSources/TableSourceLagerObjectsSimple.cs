@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.events;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.events;
+using no.dctapps.commons.events.model;
 
-namespace no.dctapps.Garageindex.screens
+namespace no.dctapps.commons.events
 {
 	public class TableSourceLagerObjectsSimple : UITableViewSource
 	{

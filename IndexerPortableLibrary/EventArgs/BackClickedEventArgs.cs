@@ -1,5 +1,5 @@
 using System;
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class BackClickedEventArgs : EventArgs
 	{

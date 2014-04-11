@@ -6,11 +6,11 @@ using System.Drawing;
 using MonoTouch.MapKit;
 using MonoTouch.CoreLocation;
 using System.Collections.Generic;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.model;
 using MonoTouch.Foundation;
 using System.IO;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class LagerAnnotationClicked
 	{

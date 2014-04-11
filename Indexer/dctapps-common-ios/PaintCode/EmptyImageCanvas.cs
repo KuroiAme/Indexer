@@ -4,7 +4,7 @@ using System.Drawing;
 using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
 
-namespace GarageIndex
+namespace no.dctapps.commons
 {
 	public class EmptyImageCanvas
 	{

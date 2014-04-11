@@ -3,7 +3,7 @@ using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using System.Drawing;
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
 	public static class ZoomTagIcon
 	{

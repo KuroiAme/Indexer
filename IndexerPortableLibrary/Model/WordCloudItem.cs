@@ -1,6 +1,6 @@
 using System;
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
 	public class WordCloudItem : IComparable<WordCloudItem>
 	{

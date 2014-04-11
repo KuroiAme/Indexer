@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using Tasky.DL.SQLite;
 
-namespace  no.dctapps.Garageindex.model
+namespace  no.dctapps.commons.events
 {
 	public class LagerObject
 	{

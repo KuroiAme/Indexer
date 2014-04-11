@@ -1,7 +1,7 @@
 ﻿using System;
 using MonoTouch.UIKit;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class EmptyClass : UIImageView
 	{

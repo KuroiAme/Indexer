@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using GoogleAdMobAds;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	class HelpScreen : UtilityViewController
 	{

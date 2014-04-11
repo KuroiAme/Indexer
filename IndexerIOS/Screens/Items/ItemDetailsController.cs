@@ -1,16 +1,16 @@
 ﻿using System;
 using No.Dctapps.GarageIndex;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.events;
+using no.dctapps.commons.events.events;
 using GoogleAnalytics.iOS;
 using System.Drawing;
 using System.Text;
 using MonoTouch.Foundation;
-using no.dctapps.Garageindex.model;
-using no.dctapps.Garageindex.screens;
+using no.dctapps.commons.events.model;
+using no.dctapps.commons.events.screens;
 using MonoTouch.MessageUI;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class ItemDetailsController : UtilityViewController
 	{

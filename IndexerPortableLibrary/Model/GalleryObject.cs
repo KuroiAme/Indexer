@@ -1,7 +1,7 @@
 using Tasky.DL.SQLite;
 
 
-namespace GarageIndex
+namespace no.dctapps.common
 {
 	public class GalleryObject
 	{

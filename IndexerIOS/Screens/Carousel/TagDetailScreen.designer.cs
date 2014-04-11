@@ -7,7 +7,7 @@
 using MonoTouch.Foundation;
 using System.CodeDom.Compiler;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	[Register ("TagDetailScreen")]
 	partial class TagDetailScreen

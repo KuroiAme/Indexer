@@ -1,7 +1,7 @@
 using System;
 using MonoTouch.UIKit;
 
-namespace no.dctapps.Garageindex.events
+namespace no.dctapps.commons.events
 {
 	public class GotPictureEventArgs : EventArgs
 	{

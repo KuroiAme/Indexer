@@ -3,7 +3,7 @@ using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.CoreGraphics;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class Flosshatt
 	{

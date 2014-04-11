@@ -4,7 +4,7 @@ using MonoTouch.Foundation;
 using System.Drawing;
 using MonoTouch.CoreGraphics;
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
 	public static class MenuIcon
 	{

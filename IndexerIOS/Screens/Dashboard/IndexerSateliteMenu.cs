@@ -4,12 +4,12 @@ using SatelliteMenu;
 using No.DCTapps.GarageIndex;
 using System.Drawing;
 using no.dctapps.garageindex;
-using no.dctapps.Garageindex.screens;
-using no.dctapps.Garageindex;
+using no.dctapps.commons.events.screens;
+using no.dctapps.commons.events;
 using System.Collections.Generic;
-using IndexerIOS;
+using no.dctapps.commons;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class IndexerSateliteMenu : UIViewController
 	{

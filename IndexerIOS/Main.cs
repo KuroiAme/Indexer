@@ -4,7 +4,7 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class Application
 	{

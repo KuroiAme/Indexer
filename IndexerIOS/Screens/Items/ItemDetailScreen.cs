@@ -1,18 +1,18 @@
 using GoogleAnalytics.iOS;
 using GoogleAdMobAds;
 
-namespace no.dctapps.Garageindex.screens
+namespace no.dctapps.commons.events
 {
 	using System;
 	using System.Drawing;
 	using MonoTouch.Foundation;
 	using MonoTouch.UIKit;
-	using no.dctapps.Garageindex.events;
+	using no.dctapps.commons.events.events;
 	using System.Text;
-	using no.dctapps.Garageindex.model;
+	using no.dctapps.commons.events.model;
 	using No.Dctapps.GarageIndex;
 	using MonoTouch.MessageUI;
-	using GarageIndex;
+	using no.dctapps.commons.events;
 
 	public partial class ItemDetailScreen : UtilityViewController
       {

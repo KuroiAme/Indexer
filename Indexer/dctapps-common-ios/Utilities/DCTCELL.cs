@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace no.dctapps.commons
 {
-	public class DCTCELL : UITableViewCell  {
+	public class DCTCell : UITableViewCell  {
 		UILabel headingLabel;
 		UILabel subheadingLabel;
 		UIImageView imageView;
@@ -14,7 +14,7 @@ namespace no.dctapps.commons
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 
-		public DCTCELL (NSString cellId) : base (UITableViewCellStyle.Subtitle, cellId)
+		public DCTCell (NSString cellId) : base (UITableViewCellStyle.Subtitle, cellId)
 		{
 			SelectionStyle = UITableViewCellSelectionStyle.Gray;
 			imageView = new UIImageView();

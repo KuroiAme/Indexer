@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace no.dctapps.commons
 {
-	public class DCTCELL : UITableViewCell  {
+	public class DCTCELL2 : UITableViewCell  {
 		UILabel headingLabel;
 		UILabel subheadingLabel;
 		UIImageView imageView;
@@ -14,7 +14,7 @@ namespace no.dctapps.commons
 			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
 		}
 
-		public DCTCELL (NSString cellId) : base (UITableViewCellStyle.Subtitle, cellId)
+		public DCTCELL2 (NSString cellId) : base (UITableViewCellStyle.Subtitle, cellId)
 		{
 			SelectionStyle = UITableViewCellSelectionStyle.Gray;
 			imageView = new UIImageView();
@@ -63,7 +63,7 @@ namespace no.dctapps.commons
 			if (UserInterfaceIdiomIsPhone) {
 				imageView.Frame = new RectangleF (ContentView.Bounds.Width - 63, 5, 50, 50);
 				headingLabel.Frame = new RectangleF (5, 4, ContentView.Bounds.Width - 63, 25);
-				subheadingLabel.Frame = new RectangleF (100, 18, 200, 20);
+				subheadingLabel.Frame = new RectangleF (5, 18, ContentView.Bounds.Width, 20);
 			} else {
 //				imageView.Frame = new RectangleF (ContentView.Bounds.Width - 63, 5, 33, 33);
 				imageView.Frame = new RectangleF (ContentView.Bounds.Width - 63, 5, 50, 50);

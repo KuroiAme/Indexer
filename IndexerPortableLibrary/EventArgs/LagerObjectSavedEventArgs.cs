@@ -1,6 +1,6 @@
 using System;
 
-namespace no.dctapps.Garageindex.events
+namespace no.dctapps.commons.events
 {
 	public class LagerObjectSavedEventArgs : EventArgs
 	{

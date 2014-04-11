@@ -3,9 +3,9 @@ using System;
 
 
 
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.model;
 
-namespace no.dctapps.Garageindex.events
+namespace no.dctapps.commons.events
 {
 	public class ContainerClickedEventArgs : EventArgs
 	{

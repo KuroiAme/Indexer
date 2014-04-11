@@ -2,7 +2,7 @@
 using MonoTouch.UIKit;
 using System.Drawing;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class StatisticsPanel : UIViewController
 	{

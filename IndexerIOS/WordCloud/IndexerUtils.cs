@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
 	public static class IndexerUtils
 	{

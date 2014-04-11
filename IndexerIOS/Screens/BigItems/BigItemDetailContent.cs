@@ -1,12 +1,15 @@
 ﻿using System;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.model;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.screens;
-using no.dctapps.Garageindex.events;
+using no.dctapps.commons.events.screens;
+using no.dctapps.commons.events.events;
 using System.Drawing;
 using System.Text;
+using no.dctapps.commons.panels;
+using no.dctapps.Garageindex.model;
+using no.dctapps.common;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class BigItemDetailContent : UIViewController
 	{

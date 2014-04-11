@@ -6,7 +6,7 @@ using MonoTouch.Foundation;
 using MonoTouch.CoreGraphics;
 using MonoTouch.CoreText;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class TagGraphicsView : UIView
 	{

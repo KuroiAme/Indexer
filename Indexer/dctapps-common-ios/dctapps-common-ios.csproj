@@ -41,13 +41,21 @@
     <Folder Include="PaintCode\" />
     <Folder Include="Utilities\" />
     <Folder Include="Panels\" />
+    <Folder Include="EventArgs\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="PaintCode\BlueSea.cs" />
-    <Compile Include="Utilities\DCTCell.cs" />
     <Compile Include="Utilities\TranslationService.cs" />
     <Compile Include="Utilities\TranslationServiceIos.cs" />
     <Compile Include="Panels\ImagePanel.cs" />
+    <Compile Include="Utilities\Background.cs" />
+    <Compile Include="EventArgs\SavedImageStringsEventArgs.cs" />
+    <Compile Include="EventArgs\GotPictureEventArgs.cs" />
+    <Compile Include="Utilities\GestureDelegate.cs" />
+    <Compile Include="PaintCode\EmptyImageCanvas.cs" />
+    <Compile Include="PaintCode\ToCloudIcon.cs" />
+    <Compile Include="Utilities\DCTCell2.cs" />
+    <Compile Include="Utilities\DCTCELL.cs" />
   </ItemGroup>
 </Project>

@@ -3,7 +3,7 @@ using MonoTouch.UIKit;
 using MonoTouch.CoreGraphics;
 using System.Drawing;
 
-namespace GarageIndex
+namespace no.dctapps.commons
 {
 	public class BlueSea
 	{

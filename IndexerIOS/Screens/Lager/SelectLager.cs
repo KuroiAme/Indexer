@@ -3,11 +3,11 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using System.Collections.Generic;
-using no.dctapps.Garageindex.model;
-using no.dctapps.Garageindex.events;
-using GarageIndex;
+using no.dctapps.commons.events.model;
+using no.dctapps.commons.events.events;
+using no.dctapps.commons.events;
 
-namespace no.dctapps.Garageindex.screens
+namespace no.dctapps.commons.events
 {
 	public partial class SelectLager : UtilityViewController
 	{

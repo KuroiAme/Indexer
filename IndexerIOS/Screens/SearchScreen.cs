@@ -1,17 +1,17 @@
 ﻿using System;
 using MonoTouch.UIKit;
 using System.Collections.Generic;
-using GarageIndex;
+using no.dctapps.commons.events;
 using System.Linq;
 using MonoTouch.Foundation;
-using no.dctapps.Garageindex.screens;
+using no.dctapps.commons.events.screens;
 using No.Dctapps.GarageIndex;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.model;
 using No.Dctapps.Garageindex.Ios.Screens;
 using System.Drawing;
-using no.dctapps.Garageindex;
+using no.dctapps.commons.events;
 
-namespace IndexerIOS 
+namespace no.dctapps.commons 
 {
 	public class SearchScreen : UtilityViewController
 	{

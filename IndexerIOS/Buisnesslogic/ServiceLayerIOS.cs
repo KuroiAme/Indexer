@@ -4,10 +4,10 @@ using MonoTouch.MessageUI;
 using MonoTouch.UIKit;
 using System.Collections.Generic;
 using ZXing;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.model;
 using No.Dctapps.GarageIndex;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class KeyStorageServiceIos
 	{

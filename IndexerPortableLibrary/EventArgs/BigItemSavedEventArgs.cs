@@ -2,7 +2,7 @@
 using System;
 
 
-namespace no.dctapps.Garageindex.screens
+namespace no.dctapps.commons.events
 {
 	public class BigItemSavedEventArgs : EventArgs
 	{

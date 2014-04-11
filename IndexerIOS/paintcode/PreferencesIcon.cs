@@ -3,7 +3,7 @@ using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.CoreGraphics;
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
 	public static class PreferencesIcon
 	{

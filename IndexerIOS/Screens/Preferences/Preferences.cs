@@ -1,14 +1,14 @@
 using System;
 using MonoTouch.Foundation;
-using no.dctapps.Garageindex.businesslogic;
-using GarageIndex;
+using no.dctapps.commons.events.businesslogic;
+using no.dctapps.commons.events;
 using GoogleAnalytics.iOS;
 using MonoTouch.UIKit;
 using System.Drawing;
 using MTiRate;
 using GoogleAdMobAds;
 
-namespace no.dctapps.Garageindex.screens
+namespace no.dctapps.commons.events
 {
 	public partial class Preferences : UtilityViewController
 	{

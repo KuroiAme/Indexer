@@ -3,11 +3,11 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using ZXing.Mobile;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.model;
 using System.Collections.Generic;
-using no.dctapps.Garageindex.screens;
+using no.dctapps.commons.events.screens;
 using No.Dctapps.Garageindex.Ios.Screens;
-using GarageIndex;
+using no.dctapps.commons.events;
 using GoogleAnalytics.iOS;
 
 namespace No.DCTapps.GarageIndex
@@ -69,7 +69,7 @@ namespace No.DCTapps.GarageIndex
                         LagerObject lo = lol[0];
                         if (lo.isContainer == "true")
                         {
-							var cd = new no.dctapps.Garageindex.screens.ContainerDetails(lo);
+							var cd = new no.dctapps.commons.events.screens.ContainerDetails(lo);
 							parent.PresentViewControllerAsync(cd, true);
                         }
                         else if (lo.isLargeObject == "true")

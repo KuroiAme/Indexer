@@ -1,7 +1,7 @@
 ﻿using System;
 using MonoTouch.UIKit;
 
-namespace GarageIndex
+namespace no.dctapps.commons
 {
 	public class Background : UIViewController
 	{

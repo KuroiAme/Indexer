@@ -190,7 +190,6 @@
     <Compile Include="Screens\Container\ContainerDetails.cs" />
     <Compile Include="Screens\Container\ContainerDetailsContent.cs" />
     <Compile Include="Screens\Container\ContainerScreen.cs" />
-    <Compile Include="Screens\Dashboard\Background.cs" />
     <Compile Include="Screens\Dashboard\DashBoardViewController.cs" />
     <Compile Include="Screens\Dashboard\DashboardRIghtPanel.cs" />
     <Compile Include="Screens\Dashboard\IndexerSateliteMenu.cs" />
@@ -215,11 +214,9 @@
     <Compile Include="TableSources\TableSourceLagerObjectsSimple.cs" />
     <Compile Include="TableSources\TableSourceLagerSimple.cs" />
     <Compile Include="TableSources\TableSourceTags.cs" />
-    <Compile Include="Utility\GotPictureEventArgs.cs" />
     <Compile Include="Utility\SQLite.cs" />
     <Compile Include="Utility\TagUtility.cs" />
     <Compile Include="Utility\UtilityViewController.cs" />
-    <Compile Include="paintcode\EmptyImageCanvas.cs" />
     <Compile Include="paintcode\Flosshatt.cs" />
     <Compile Include="paintcode\GalleryIcon.cs" />
     <Compile Include="paintcode\WandIcon.cs" />
@@ -238,7 +235,6 @@
     <Compile Include="WordCloud\WordCloudIOS.cs" />
     <Compile Include="WordCloud\WordCloudView.cs" />
     <Compile Include="WordCloud\IndexerUtils.cs" />
-    <Compile Include="Panels\SwipeDelegate.cs" />
     <Compile Include="Screens\Dashboard\HelpScreen.cs" />
     <Compile Include="Screens\Dashboard\HelpScreenInner.cs" />
     <Compile Include="paintcode\QRIcon.cs" />

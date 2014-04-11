@@ -1,15 +1,15 @@
 using MonoTouch.UIKit;
 using System;
-using no.dctapps.Garageindex.events;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.events;
+using no.dctapps.commons.events.model;
 using System.Collections.Generic;
-using GarageIndex;
-using no.dctapps.Garageindex.tables;
+using no.dctapps.commons.events;
+using no.dctapps.commons.events.tables;
 using GoogleAnalytics.iOS;
 using System.Drawing;
 
 
-namespace no.dctapps.Garageindex.screens
+namespace no.dctapps.commons.events
 {
 	public partial class StorageCatalogue : UtilityViewController
 	{

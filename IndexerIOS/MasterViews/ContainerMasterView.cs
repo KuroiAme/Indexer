@@ -1,9 +1,9 @@
 using MonoTouch.ObjCRuntime;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.events;
-using no.dctapps.Garageindex.screens;
+using no.dctapps.commons.events.events;
+using no.dctapps.commons.events.screens;
 
-namespace no.dctapps.Garageindex
+namespace no.dctapps.commons.events
 {
 	public partial class ContainerMasterView : UISplitViewController
 	{

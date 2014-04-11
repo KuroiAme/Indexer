@@ -1,9 +1,9 @@
 ﻿using System;
 using MonoTouch.UIKit;
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
-	public class SwipeDelegate : UIGestureRecognizerDelegate
+	public class GestureDelegate : UIGestureRecognizerDelegate
 	{
 		public override bool ShouldRecognizeSimultaneously (UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
 		{

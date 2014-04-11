@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class TagUtility
 	{

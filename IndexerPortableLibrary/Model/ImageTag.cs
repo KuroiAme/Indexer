@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using Tasky.DL.SQLite;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class ImageTag
 	{

@@ -2,18 +2,19 @@ using System;
 using MonoTouch.UIKit;
 using System.Drawing;
 using System.Collections.Generic;
-using no.dctapps.Garageindex.events;
+using no.dctapps.commons.events.events;
 using MonoTouch.Foundation;
 using System.IO;
 using System.Linq;
 using MonoTouch.CoreGraphics;
 using MonoTouch.ObjCRuntime;
 using GoogleAnalytics.iOS;
-using no.dctapps.Garageindex.screens;
-using no.dctapps.Garageindex.model;
-using IndexerIOS;
+using no.dctapps.commons.events.screens;
+using no.dctapps.commons.events.model;
+using no.dctapps.commons;
+using no.dctapps.common;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class EditImageModeController : UtilityViewController
 	{

@@ -1,14 +1,14 @@
 using System;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.model;
 using System.Collections.Generic;
 using System.Text;
 using No.Dctapps.GarageIndex;
-using GarageIndex;
-using no.dctapps.Garageindex.dao;
-using IndexerIOS;
+using no.dctapps.commons.events;
+using no.dctapps.commons.events.dao;
+using no.dctapps.commons;
 using System.Linq;
 
-namespace no.dctapps.Garageindex.businesslogic
+namespace no.dctapps.commons.events
 {
 	public class IndexerBuisnessService
 	{

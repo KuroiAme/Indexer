@@ -3,7 +3,7 @@ using MonoTouch.UIKit;
 using MonoTouch.CoreGraphics;
 using System.Drawing;
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
 	public class TableIcon
 	{

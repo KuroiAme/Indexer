@@ -3,20 +3,20 @@ using MonoTouch.UIKit;
 using Alliance.Carousel;
 using System.Drawing;
 using System.Collections.Generic;
-using no.dctapps.Garageindex.events;
+using no.dctapps.commons.events.events;
 using MonoTouch.Foundation;
 using System.IO;
 using System.Linq;
 using GoogleAnalytics.iOS;
 using SatelliteMenu;
 using No.DCTapps.GarageIndex;
-using no.dctapps.Garageindex.screens;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.screens;
+using no.dctapps.commons.events.model;
 using no.dctapps.garageindex;
-using no.dctapps.Garageindex;
-using IndexerIOS;
+using no.dctapps.commons.events;
+using no.dctapps.commons;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class GalleryViewController : UtilityViewController
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using Tasky.DL.SQLite;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class InsurancePhoto
 	{

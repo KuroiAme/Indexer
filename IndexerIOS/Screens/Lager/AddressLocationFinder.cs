@@ -5,9 +5,9 @@ using MonoTouch.MapKit;
 using System.Collections.Generic;
 using MonoTouch.CoreLocation;
 using MonoTouch.Foundation;
-using GarageIndex;
+using no.dctapps.commons.events;
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
 	public class AddressLocationFinder : UIViewController
 	{

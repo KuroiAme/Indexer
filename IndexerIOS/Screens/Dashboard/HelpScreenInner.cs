@@ -1,9 +1,9 @@
 using MonoTouch.UIKit;
 using System.Collections.Generic;
 using System.Drawing;
-using IndexerIOS;
+using no.dctapps.commons;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class HelpScreenInner : UIViewController
 	{

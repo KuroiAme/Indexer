@@ -1,17 +1,17 @@
 using System;
 using MonoTouch.Foundation;
-using no.dctapps.Garageindex.model;
-using no.dctapps.Garageindex.events;
+using no.dctapps.commons.events.model;
+using no.dctapps.commons.events.events;
 using MonoTouch.UIKit;
 using MonoTouch.MessageUI;
-using no.dctapps.Garageindex.businesslogic;
-using GarageIndex;
+using no.dctapps.commons.events.businesslogic;
+using no.dctapps.commons.events;
 using GoogleAnalytics.iOS;
 using System.Drawing;
 using System.Collections.Generic;
-using IndexerIOS;
+using no.dctapps.commons;
 
-namespace no.dctapps.Garageindex.screens
+namespace no.dctapps.commons.events
 {
 	public partial class TheStorageScreen : UtilityViewController
 	{

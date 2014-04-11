@@ -2,7 +2,7 @@
 using MonoTouch.UIKit;
 using System.Drawing;
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
 	public static class ScissorsIcon
 	{

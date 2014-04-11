@@ -1,15 +1,15 @@
 ﻿using System;
 using MonoTouch.UIKit;
 using System.Drawing;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.model;
 using MonoTouch.MessageUI;
 using MonoTouch.Foundation;
 using MonoTouch.MapKit;
-using GarageIndex;
+using no.dctapps.commons.events;
 using MonoTouch.CoreLocation;
 using System.Collections.Generic;
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
 	public class StorageScreenContent : UIViewController
 	{

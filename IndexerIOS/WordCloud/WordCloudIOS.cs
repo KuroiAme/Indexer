@@ -3,7 +3,7 @@ using MonoTouch.UIKit;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
 	public class WordCloudIOS : UIViewController
 	{

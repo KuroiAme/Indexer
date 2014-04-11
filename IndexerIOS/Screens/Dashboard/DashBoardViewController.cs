@@ -3,12 +3,12 @@ using MonoTouch.UIKit;
 using GoogleAnalytics.iOS;
 using SatelliteMenu;
 using System.Drawing;
-using no.dctapps.Garageindex.model;
-using IndexerIOS;
-using no.dctapps.Garageindex.screens;
+using no.dctapps.commons.events.model;
+using no.dctapps.commons;
+using no.dctapps.commons.events.screens;
 using GoogleAdMobAds;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class DashBoardViewController : UIViewController
 	{

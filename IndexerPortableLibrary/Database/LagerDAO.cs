@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.model;
 using No.Dctapps.GarageIndex;
-using GarageIndex;
+using no.dctapps.commons.events;
 using Tasky.DL.SQLiteBase;
 using System;
 using System.Linq;
 
-namespace no.dctapps.Garageindex.dao
+namespace no.dctapps.commons.events
 {
 	public class LagerDAO
 	{

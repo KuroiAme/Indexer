@@ -3,18 +3,18 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using No.Dctapps.GarageIndex;
-using no.dctapps.Garageindex.screens;
+using no.dctapps.commons.events.screens;
 using System.IO;
 using MonoTouch.CoreGraphics;
 using System.Linq;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.model;
 using No.Dctapps.Garageindex.Ios.Screens;
 using GoogleAnalytics.iOS;
 using System.Collections.Generic;
-using IndexerIOS;
+using no.dctapps.commons;
 using System.Text;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public partial class TagDetailScreen : UIViewController
 	{

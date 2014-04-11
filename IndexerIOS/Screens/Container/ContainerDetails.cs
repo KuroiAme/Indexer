@@ -1,14 +1,14 @@
 using System;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.model;
-using GarageIndex;
-using no.dctapps.Garageindex.events;
+using no.dctapps.commons.events.model;
+using no.dctapps.commons.events;
+using no.dctapps.commons.events.events;
 using MonoTouch.MessageUI;
 using GoogleAnalytics.iOS;
 using GoogleAdMobAds;
 using System.Drawing;
 
-namespace no.dctapps.Garageindex.screens
+namespace no.dctapps.commons.events
 {
 	public partial class ContainerDetails : UtilityViewController
 	{

@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using MonoTouch.Foundation;
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
 	public class WordCloudView : UIView
 	{

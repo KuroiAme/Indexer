@@ -2,9 +2,9 @@ using System;
 using No.Dctapps.Garageindex.Ios.Screens;
 using MonoTouch.UIKit;
 using MonoTouch.ObjCRuntime;
-using no.dctapps.Garageindex.screens;
-using no.dctapps.Garageindex.events;
-using GarageIndex;
+using no.dctapps.commons.events.screens;
+using no.dctapps.commons.events.events;
+using no.dctapps.commons.events;
 
 namespace No.DCTapps.GarageIndex
 {

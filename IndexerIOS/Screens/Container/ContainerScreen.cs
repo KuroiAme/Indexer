@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex;
-using no.dctapps.Garageindex.events;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events;
+using no.dctapps.commons.events.events;
+using no.dctapps.commons.events.model;
 using No.DCTapps.GarageIndex;
-using no.dctapps.Garageindex.tables;
-using GarageIndex;
+using no.dctapps.commons.events.tables;
+using no.dctapps.commons.events;
 using GoogleAnalytics.iOS;
 
-namespace no.dctapps.Garageindex.screens
+namespace no.dctapps.commons.events
 {
 	public partial class ContainerScreen : UITableViewController
 	{

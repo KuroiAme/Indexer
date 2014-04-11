@@ -1,5 +1,5 @@
 
-namespace IndexerIOS
+namespace no.dctapps.commons
 {
 	public class IndexerDictionaryItem
 	{

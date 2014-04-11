@@ -1,17 +1,13 @@
 ﻿using System;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.events;
-using no.dctapps.Garageindex.screens;
-using No.Dctapps.Garageindex.Ios.Screens;
-using no.dctapps.Garageindex.model;
 using System.Drawing;
 using MonoTouch.Foundation;
-using No.Dctapps.GarageIndex;
 using System.Linq;
-using IndexerIOS;
+using no.dctapps.commons;
 //using AllianceProgressLoader;
+using no.dctapps.commons.events;
 
-namespace GarageIndex
+namespace no.dctapps.commons.panels
 {
 	public class ImagePanel : UIViewController
 	{
@@ -127,7 +123,7 @@ namespace GarageIndex
 		}
 
 		UITapGestureRecognizer doubletap;
-		SwipeDelegate dtdelegate;
+		GestureDelegate dtdelegate;
 		UILongPressGestureRecognizer longpress;
 
 		private void InitializeEmptyImage ()
@@ -144,7 +140,7 @@ namespace GarageIndex
 
 			doubletap = new UITapGestureRecognizer (AddImage);
 			doubletap.NumberOfTapsRequired = 2;
-			this.dtdelegate = new SwipeDelegate ();
+			this.dtdelegate = new GestureDelegate ();
 			doubletap.Delegate = dtdelegate;
 			imageView.AddGestureRecognizer (doubletap);
 

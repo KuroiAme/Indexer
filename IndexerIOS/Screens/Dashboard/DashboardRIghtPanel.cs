@@ -1,12 +1,12 @@
 ﻿using System;
 using MonoTouch.UIKit;
 using System.Drawing;
-using IndexerIOS;
+using no.dctapps.commons;
 using Xamarin.Social.Services;
 using Xamarin.Social;
 using System.Collections.Generic;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class DashboardRightPanel : UIViewController
 	{
@@ -107,7 +107,7 @@ namespace GarageIndex
 			View.AddSubview (wordCloud.View);
 
 			doubletap = new UITapGestureRecognizer (Share);
-			doubletap.Delegate = new SwipeDelegate ();
+			doubletap.Delegate = new GestureDelegate ();
 			doubletap.NumberOfTapsRequired = 2;
 			wordCloud.View.AddGestureRecognizer (doubletap);
 			wordCloud.View.UserInteractionEnabled = true;
@@ -234,7 +234,7 @@ namespace GarageIndex
 
 
 
-		void RaiseSearchResult (no.dctapps.Garageindex.model.Lager find)
+		void RaiseSearchResult (no.dctapps.commons.events.model.Lager find)
 		{
 			Console.WriteLine ("foo");
 			//TOD implement me

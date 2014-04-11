@@ -2,14 +2,14 @@ using System;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.tables;
+using no.dctapps.commons.events.tables;
 using System.Collections.Generic;
-using no.dctapps.Garageindex.model;
-using no.dctapps.Garageindex.events;
-using no.dctapps.Garageindex.screens;
+using no.dctapps.commons.events.model;
+using no.dctapps.commons.events.events;
+using no.dctapps.commons.events.screens;
 using GoogleAnalytics.iOS;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public partial class LagerList : UtilityViewController
 	{

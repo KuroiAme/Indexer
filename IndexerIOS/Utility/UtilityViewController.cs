@@ -2,9 +2,9 @@ using System;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using System.Drawing;
-using IndexerIOS;
+using no.dctapps.commons;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class UtilityViewController : UIViewController
 	{

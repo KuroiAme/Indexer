@@ -3,12 +3,12 @@ using MTiRate;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Tasky.DL.SQLite;
-using no.dctapps.Garageindex.dao;
-using no.dctapps.Garageindex.businesslogic;
+using no.dctapps.commons.events.dao;
+using no.dctapps.commons.events.businesslogic;
 using System;
 using System.IO;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	// The UIApplicationDelegate for the application. This class is responsible for launching the
 	// User Interface of the application, as well as listening (and optionally responding) to

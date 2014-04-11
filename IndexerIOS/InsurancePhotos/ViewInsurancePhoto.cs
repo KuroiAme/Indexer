@@ -3,7 +3,7 @@ using MonoTouch.UIKit;
 using System.Drawing;
 using System.IO;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class ViewInsurancePhoto : UtilityViewController
 	{

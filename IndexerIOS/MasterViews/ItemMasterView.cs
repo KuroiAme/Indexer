@@ -1,13 +1,13 @@
 using MonoTouch.ObjCRuntime;
 using MonoTouch.UIKit;
 using No.Dctapps.Garageindex.Ios.Screens;
-using no.dctapps.Garageindex.events;
+using no.dctapps.commons.events.events;
 using no.dctapps.garageindex;
-using no.dctapps.Garageindex.screens;
+using no.dctapps.commons.events.screens;
 using No.Dctapps.GarageIndex;
 using System;
 
-namespace no.dctapps.Garageindex.screens
+namespace no.dctapps.commons.events
 {
 	public partial class ItemMasterView : UISplitViewController
 	{

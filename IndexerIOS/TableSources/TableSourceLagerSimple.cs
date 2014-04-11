@@ -2,11 +2,11 @@ using System;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using System.Collections.Generic;
-using no.dctapps.Garageindex.model;
-using no.dctapps.Garageindex.events;
+using no.dctapps.commons.events.model;
+using no.dctapps.commons.events.events;
 
 
-namespace no.dctapps.Garageindex.screens
+namespace no.dctapps.commons.events
 {
 	public class TableSourceLagerSimple : UITableViewSource
 	{

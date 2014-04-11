@@ -1,8 +1,8 @@
 ﻿using System;
 using No.Dctapps.GarageIndex;
-using no.dctapps.Garageindex.model;
+using no.dctapps.commons.events.model;
 using MonoTouch.UIKit;
-using no.dctapps.Garageindex.events;
+using no.dctapps.commons.events.events;
 using GoogleAnalytics.iOS;
 using System.Drawing;
 using System.IO;
@@ -10,9 +10,9 @@ using MonoTouch.Foundation;
 using System.Linq;
 using Alliance.Carousel;
 using System.Collections.Generic;
-using IndexerIOS;
+using no.dctapps.commons;
 
-namespace GarageIndex
+namespace no.dctapps.commons.events
 {
 	public class InsurancePhotoController : UtilityViewController
 	{
